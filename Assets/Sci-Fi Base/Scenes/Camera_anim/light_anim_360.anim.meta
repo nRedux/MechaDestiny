@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f656940ff460567479a27c7c9ef5aa6e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173333
+  packageName: Sci-Fi base
+  packageVersion: 1.1
+  assetPath: Assets/Sci-Fi Base/Scenes/Camera_anim/light_anim_360.anim
+  uploadId: 378875

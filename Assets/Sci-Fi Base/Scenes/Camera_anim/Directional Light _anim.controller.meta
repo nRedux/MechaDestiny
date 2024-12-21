@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2b34de44bc9e3ce4ca8abe859ce3e0bf
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173333
+  packageName: Sci-Fi base
+  packageVersion: 1.1
+  assetPath: Assets/Sci-Fi Base/Scenes/Camera_anim/Directional Light _anim.controller
+  uploadId: 378875

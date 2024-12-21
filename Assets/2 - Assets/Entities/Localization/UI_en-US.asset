@@ -1,0 +1,149 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: UI_en-US
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en-US
+  m_SharedData: {fileID: 11400000, guid: c9f6f54132f444c459cb15fcd0afa795, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 5273162348295618567
+  m_TableData:
+  - m_Id: 6429229056
+    m_Localized: Left Arm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 93465231360
+    m_Localized: Right Arm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 103196016640
+    m_Localized: Torso
+    m_Metadata:
+      m_Items: []
+  - m_Id: 111215525888
+    m_Localized: Legs
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390066853003264
+    m_Localized: Victory!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 390115116859392
+    m_Localized: Defeated!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1687686636519424
+    m_Localized: Rifle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1717553943953408
+    m_Localized: Shotgun
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74399972475682816
+    m_Localized: Turn {TurnSource.CurrentTurn}
+    m_Metadata:
+      m_Items:
+      - rid: 5273162348295618567
+  - m_Id: 74405923618439168
+    m_Localized: Player Turn
+    m_Metadata:
+      m_Items: []
+  - m_Id: 74405979251687424
+    m_Localized: Enemy Turn
+    m_Metadata:
+      m_Items: []
+  - m_Id: 77265368899796992
+    m_Localized: Move
+    m_Metadata:
+      m_Items: []
+  - m_Id: 77265407919407104
+    m_Localized: Attack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78308797100474368
+    m_Localized: AP {CurSource.Value}
+    m_Metadata:
+      m_Items:
+      - rid: 5273162348295618567
+  - m_Id: 78608737513127936
+    m_Localized: Select Weapon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 78614728455634944
+    m_Localized: '{InputSource.SwitchWeaponInput}'
+    m_Metadata:
+      m_Items:
+      - rid: 5273162348295618567
+  - m_Id: 79379362095710208
+    m_Localized: End
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79745777336205312
+    m_Localized: AP {ValSource.CurrentAP} - {ValSource.Change}
+    m_Metadata:
+      m_Items:
+      - rid: 5273162348295618567
+  - m_Id: 80090122274881536
+    m_Localized: Arm LR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80132237168099328
+    m_Localized: AP  {CurSource.Value} / {MaxSource.Value}
+    m_Metadata:
+      m_Items:
+      - rid: 5273162348295618567
+  - m_Id: 80169282330574848
+    m_Localized: Dmg.  {Source.Damage} x {Source.ShotCount}
+    m_Metadata:
+      m_Items:
+      - rid: 5273162348295618567
+  - m_Id: 80472641272954880
+    m_Localized: Sigur
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80472780922306560
+    m_Localized: Insurgent
+    m_Metadata:
+      m_Items: []
+  - m_Id: 80546117417582592
+    m_Localized: '{Source.Accuracy}%'
+    m_Metadata:
+      m_Items:
+      - rid: 5273162348295618567
+  - m_Id: 88451820014682112
+    m_Localized: AP {host.Cost}
+    m_Metadata:
+      m_Items:
+      - rid: 5273162348295618567
+  - m_Id: 88844880485695488
+    m_Localized: Engage
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 5273162348295618567
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 
+        m_SharedEntries:
+        - id: 74399972475682816
+        - id: 78614728455634944
+        - id: 79745777336205312
+        - id: 80132237168099328
+        - id: 80169282330574848
+        - id: 78308797100474368
+        - id: 80546117417582592
+        - id: 88451820014682112

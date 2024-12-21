@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e82de3661ea123e4792465f77413d793, type: 3}
+  m_Name: Player Actor
+  m_EditorClassIdentifier: 
+  Data:
+    AssetReference:
+      m_AssetGUID: 8088efe2bbee2d34d88d319711641d90
+      m_SubObjectName: 
+      m_SubObjectGUID: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    ID: 
+    Statistics:
+      _serializedKeys: 1000000011000000
+      _serializedValues:
+      - _value: 10
+        _startValue: 3
+        Type: 0
+      - _value: 10
+        _startValue: 10
+        Type: 0
+    Avatar:
+      m_AssetGUID: eb4c868af97a1aa40b03688adf15e685
+      m_SubObjectName: 
+      m_SubObjectGUID: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    RunActionsAutomatically: 0
+  PortraitImage: {fileID: 21300000, guid: 086aff097f81f6649bacc742fbbdd7b6, type: 3}
+  DisplayName:
+    m_TableReference:
+      m_TableCollectionName: GUID:c9f6f54132f444c459cb15fcd0afa795
+    m_TableEntryReference:
+      m_KeyId: 80472641272954880
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  MechReference:
+    m_AssetGUID: 19f517940b291084caac4da5afe38bf6
+    m_SubObjectName: 
+    m_SubObjectGUID: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  Actions:
+  - {fileID: 11400000, guid: 72cb06a9691705546b29c7ed448044d8, type: 2}
+  - {fileID: 11400000, guid: 0c3a1ef0a23efb84fb8bd8909819ddcc, type: 2}
+  - {fileID: 11400000, guid: 909baa77636579e4da6340fba6992660, type: 2}
+  - {fileID: 11400000, guid: 849cc63c6059b2c4a8ef0904f34d1b05, type: 2}
+  references:
+    version: 2
+    RefIds: []

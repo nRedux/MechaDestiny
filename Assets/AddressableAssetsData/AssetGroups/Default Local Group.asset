@@ -1,0 +1,206 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_GUID: e685836adff638348b8e50fcce93461c
+  m_SerializeEntries:
+  - m_GUID: 05c74de10b68b2a4588ef87409590f38
+    m_Address: Assets/2 - Assets/Data/Mechs/Test Mech/Rifle.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0a6968b25d9dee54b808f5d9c1157495
+    m_Address: Assets/2 - Assets/Data/Mechs/Test AI Mech/AI Legs.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0ba063b3a4219ae43953438ea5836988
+    m_Address: Assets/2 - Assets/Data/Mechs/Test Mech/Mech Left Arm.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0c3a1ef0a23efb84fb8bd8909819ddcc
+    m_Address: Assets/2 - Assets/Data/Move Action.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 19f517940b291084caac4da5afe38bf6
+    m_Address: Assets/2 - Assets/Data/Mech Asset.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1b94ecdd1d930fc408545dde50568766
+    m_Address: Assets/2 - Assets/Data/Mechs/Test Mech/Mech Legs.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1ecdf63da3b259141b43cad5da1018cf
+    m_Address: Assets/2 - Assets/Entities/Map Objects/Harvest Patch.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 25cf1dd3425cc0843a00500cc80c4a4a
+    m_Address: Assets/3 - Prefabs/Meta/Caravan.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 370b5f5514c2bbc40a3e7c7cc1c658ff
+    m_Address: Assets/2 - Assets/Data/Mechs/Test AI Mech/AI Right Arm.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5ae462e3049984b409f5c980e78005ee
+    m_Address: Assets/2 - Assets/Encounter Graphs/Test Graph.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 634cf266f8eccec47a91d727f51dd717
+    m_Address: Assets/2 - Assets/Entities/Map Objects/Caravan.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6d2c5b9d83c7de94fa4d28a262700c50
+    m_Address: Assets/2 - Assets/Data/Mechs/Test Mech/Shotgun.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 78a1279eccbcc0c4a9dce7ba60788597
+    m_Address: Assets/3 - Prefabs/Avatar.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8088efe2bbee2d34d88d319711641d90
+    m_Address: Assets/2 - Assets/Data/Player Actor.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 814cb73cd9c6bad4597f4eb4e28d5357
+    m_Address: Assets/3 - Prefabs/Rifle.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 82c5ea2312c1e0746a24a45d170d3354
+    m_Address: Assets/2 - Assets/Data/Mechs/Test AI Mech/AI Mech.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 849cc63c6059b2c4a8ef0904f34d1b05
+    m_Address: Assets/2 - Assets/Data/Player End Actor.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8a289ba85b3167b429167d1e9e952c22
+    m_Address: Assets/2 - Assets/Data/Mechs/Test Mech/Mech Torso.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 96192f87cc04bd64cb4095633a416bd0
+    m_Address: Assets/3 - Prefabs/Meta/Harvest Patch.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9b7a0ccb2cc1ad2478e272b61f93ef1e
+    m_Address: Assets/3 - Prefabs/SKM_Dummy_Mech_Offset Variant.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a21dc18a742506146ac6e1f798b0c91e
+    m_Address: Assets/2 - Assets/Encounter Graphs/Combat End.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a5d0d91ec7cdce24d895c603bf1fcff1
+    m_Address: Assets/3 - Prefabs/Projectiles/Bullet_Small_Goldfire_Template/Bullet_GoldFire_Small_Projectile_Template.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a60ee5734704dc543b6f959a7fa7e5a3
+    m_Address: Assets/2 - Assets/Data/Mechs/Test AI Mech/AI Left Arm.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a76bed771f181044dbef4e4b9338e7b9
+    m_Address: Assets/2 - Assets/Data/Mechs/Attachment Types/Single Hand Weapon.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7c7f0be105776540adcfb3b44a65ebe
+    m_Address: Assets/3 - Prefabs/Shotgun.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b9821e3fc6af5ba45a9d6a2bb217d67d
+    m_Address: Assets/3 - Prefabs/Projectile.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cb2db94eff8bf564f8f5dfde0c7d585a
+    m_Address: Assets/2 - Assets/Data/Mechs/Test AI Mech/AI Torso.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d34a77c62755a894da481947f1126ca5
+    m_Address: Assets/2 - Assets/Data/AI Actor.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eb4c868af97a1aa40b03688adf15e685
+    m_Address: Assets/3 - Prefabs/Thorin Variant.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f0cc40bbd6ea05e479eab6b5a084f791
+    m_Address: Assets/2 - Assets/Data/Mechs/Test Mech/Mech Right Arm.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f8808b9b1df17634d9ab5bb706e8984a
+    m_Address: Assets/2 - Assets/Encounter Graphs/Harvest Patch Test Graph.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 3a8d356ceb2f93143b324ebf12aae8aa, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 50b803d96a0598d4f843cba2cff6a256, type: 2}
+    - {fileID: 11400000, guid: 6dbf033e92815d84e929aaba91683eac, type: 2}

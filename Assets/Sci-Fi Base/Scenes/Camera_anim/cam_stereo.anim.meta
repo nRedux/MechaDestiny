@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8fdfc2fc70038ed4f86b69f984ed3155
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173333
+  packageName: Sci-Fi base
+  packageVersion: 1.1
+  assetPath: Assets/Sci-Fi Base/Scenes/Camera_anim/cam_stereo.anim
+  uploadId: 378875

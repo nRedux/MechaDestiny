@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1566d3cb9359677468648e42b3e4c6eb
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173333
+  packageName: Sci-Fi base
+  packageVersion: 1.1
+  assetPath: Assets/Sci-Fi Base/Scenes/Camera_anim/Scene Postprocessing 1.controller
+  uploadId: 378875

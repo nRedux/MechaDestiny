@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35109af7e5a07964dbfb8884adb3f672, type: 3}
+  m_Name: SUI Manager
+  m_EditorClassIdentifier: 
+  UIPrefab: {fileID: 5910728717874611713, guid: e0b1795d27b6662468ea26207f2a23f2, type: 3}

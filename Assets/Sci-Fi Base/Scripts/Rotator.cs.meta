@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: f1c0fb3b253de434eac4640ee292ecf1
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173333
+  packageName: Sci-Fi base
+  packageVersion: 1.1
+  assetPath: Assets/Sci-Fi Base/Scripts/Rotator.cs
+  uploadId: 378875

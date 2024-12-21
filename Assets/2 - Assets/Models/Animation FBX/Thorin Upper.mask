@@ -1,0 +1,117 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Thorin Upper
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Chassis_v2
+    m_Weight: 0
+  - m_Path: HUM_arms_joint_L
+    m_Weight: 0
+  - m_Path: HUM_arms_joint_R
+    m_Weight: 0
+  - m_Path: Root_Bone
+    m_Weight: 0
+  - m_Path: Root_Bone/Hip
+    m_Weight: 0
+  - m_Path: Root_Bone/Hip/Bridge_Body_Legs
+    m_Weight: 0
+  - m_Path: Root_Bone/Hip/Bridge_Body_Legs/Bridge_Body_Torso
+    m_Weight: 0
+  - m_Path: Root_Bone/Hip/Bridge_Body_Legs/Bridge_Body_Torso/Bridge_Body_Arm_L
+    m_Weight: 1
+  - m_Path: Root_Bone/Hip/Bridge_Body_Legs/Bridge_Body_Torso/Bridge_Body_Arm_L/Bridge_Arm_L
+    m_Weight: 1
+  - m_Path: Root_Bone/Hip/Bridge_Body_Legs/Bridge_Body_Torso/Bridge_Body_Arm_L/Bridge_Arm_L/Arm
+      L
+    m_Weight: 1
+  - m_Path: Root_Bone/Hip/Bridge_Body_Legs/Bridge_Body_Torso/Bridge_Body_Arm_L/Bridge_Arm_L/Arm
+      L/Arm Piston Target L
+    m_Weight: 1
+  - m_Path: Root_Bone/Hip/Bridge_Body_Legs/Bridge_Body_Torso/Bridge_Body_Arm_L/Bridge_Arm_L/Arm
+      L/Forearm L
+    m_Weight: 1
+  - m_Path: Root_Bone/Hip/Bridge_Body_Legs/Bridge_Body_Torso/Bridge_Body_Arm_L/Bridge_Arm_L/Arm
+      L/Forearm L/Forearm Piston L
+    m_Weight: 1
+  - m_Path: Root_Bone/Hip/Bridge_Body_Legs/Bridge_Body_Torso/Bridge_Body_Arm_L/Bridge_Arm_L/Arm
+      L/Forearm L/Hand L
+    m_Weight: 1
+  - m_Path: Root_Bone/Hip/Bridge_Body_Legs/Bridge_Body_Torso/Bridge_Body_Arm_L/Bridge_Arm_L/Arm
+      L/Forearm Piston Target L
+    m_Weight: 1
+  - m_Path: Root_Bone/Hip/Bridge_Body_Legs/Bridge_Body_Torso/Bridge_Body_Arm_L/Bridge_Arm_L/Arm
+      Piston L
+    m_Weight: 1
+  - m_Path: Root_Bone/Hip/Bridge_Body_Legs/Bridge_Body_Torso/Bridge_Body_Arm_R
+    m_Weight: 1
+  - m_Path: Root_Bone/Hip/Bridge_Body_Legs/Bridge_Body_Torso/Bridge_Body_Arm_R/Bridge_Arm_R
+    m_Weight: 1
+  - m_Path: Root_Bone/Hip/Bridge_Body_Legs/Bridge_Body_Torso/Bridge_Body_Arm_R/Bridge_Arm_R/Arm
+      Piston R
+    m_Weight: 1
+  - m_Path: Root_Bone/Hip/Bridge_Body_Legs/Bridge_Body_Torso/Bridge_Body_Arm_R/Bridge_Arm_R/Arm
+      R
+    m_Weight: 1
+  - m_Path: Root_Bone/Hip/Bridge_Body_Legs/Bridge_Body_Torso/Bridge_Body_Arm_R/Bridge_Arm_R/Arm
+      R/Arm Piston Target R
+    m_Weight: 1
+  - m_Path: Root_Bone/Hip/Bridge_Body_Legs/Bridge_Body_Torso/Bridge_Body_Arm_R/Bridge_Arm_R/Arm
+      R/Forearm Piston Target R
+    m_Weight: 1
+  - m_Path: Root_Bone/Hip/Bridge_Body_Legs/Bridge_Body_Torso/Bridge_Body_Arm_R/Bridge_Arm_R/Arm
+      R/Forearm R
+    m_Weight: 1
+  - m_Path: Root_Bone/Hip/Bridge_Body_Legs/Bridge_Body_Torso/Bridge_Body_Arm_R/Bridge_Arm_R/Arm
+      R/Forearm R/Forearm Piston R
+    m_Weight: 1
+  - m_Path: Root_Bone/Hip/Bridge_Body_Legs/Bridge_Body_Torso/Bridge_Body_Arm_R/Bridge_Arm_R/Arm
+      R/Forearm R/Hand R
+    m_Weight: 1
+  - m_Path: Root_Bone/Hip/Leg Hip L
+    m_Weight: 0
+  - m_Path: Root_Bone/Hip/Leg Hip L/Thigh L
+    m_Weight: 0
+  - m_Path: Root_Bone/Hip/Leg Hip L/Thigh L/Thigh Bridge L
+    m_Weight: 0
+  - m_Path: Root_Bone/Hip/Leg Hip L/Thigh L/Thigh Bridge L/Calf Bridge L
+    m_Weight: 0
+  - m_Path: Root_Bone/Hip/Leg Hip L/Thigh L/Thigh Bridge L/Calf Bridge L/Calf L
+    m_Weight: 0
+  - m_Path: Root_Bone/Hip/Leg Hip L/Thigh L/Thigh Bridge L/Calf Bridge L/Calf L/Foot
+      L
+    m_Weight: 0
+  - m_Path: Root_Bone/Hip/Leg Hip L/Thigh L/Thigh Bridge L/Thigh Bridge Piston L
+    m_Weight: 0
+  - m_Path: Root_Bone/Hip/Leg Hip L/Thigh L/Thigh Flap L
+    m_Weight: 0
+  - m_Path: Root_Bone/Hip/Leg Hip L/Thigh L/Thigh Piston L
+    m_Weight: 0
+  - m_Path: Root_Bone/Hip/Leg Hip R
+    m_Weight: 0
+  - m_Path: Root_Bone/Hip/Leg Hip R/Thigh R
+    m_Weight: 0
+  - m_Path: Root_Bone/Hip/Leg Hip R/Thigh R/Thigh Bridge R
+    m_Weight: 0
+  - m_Path: Root_Bone/Hip/Leg Hip R/Thigh R/Thigh Bridge R/Calf Bridge R
+    m_Weight: 0
+  - m_Path: Root_Bone/Hip/Leg Hip R/Thigh R/Thigh Bridge R/Calf Bridge R/Calf R
+    m_Weight: 0
+  - m_Path: Root_Bone/Hip/Leg Hip R/Thigh R/Thigh Bridge R/Calf Bridge R/Calf R/Foot
+      R
+    m_Weight: 0
+  - m_Path: Root_Bone/Hip/Leg Hip R/Thigh R/Thigh Bridge R/Thigh Bridge Piston R
+    m_Weight: 0
+  - m_Path: Root_Bone/Hip/Leg Hip R/Thigh R/Thigh Flap R
+    m_Weight: 0
+  - m_Path: Root_Bone/Hip/Leg Hip R/Thigh R/Thigh Piston R
+    m_Weight: 0
+  - m_Path: Torso_v2
+    m_Weight: 0

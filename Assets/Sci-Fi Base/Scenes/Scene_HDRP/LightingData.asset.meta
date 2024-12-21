@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 62c6fd4cc2a7bb14bba1da32cf2c79bb
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 173333
+  packageName: Sci-Fi base
+  packageVersion: 1.1
+  assetPath: Assets/Sci-Fi Base/Scenes/Scene_HDRP/LightingData.asset
+  uploadId: 378875
