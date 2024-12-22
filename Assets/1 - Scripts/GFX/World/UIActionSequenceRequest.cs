@@ -24,6 +24,7 @@ public class UIActionSequenceRequest : UIRequest<List<ActorAction>, bool>
     public override void Cleanup()
     {
         UIManager.Instance.HideActionPicker();
+        UIManager.Instance.HideActionSequence();
     }
 
 
@@ -38,7 +39,6 @@ public class UIActionSequenceRequest : UIRequest<List<ActorAction>, bool>
         if( Input.GetKeyDown( KeyCode.F ) || _uiWantsFire )
         {
             Succeed( UIManager.Instance.ActionSequence.GetSelectedSequence() );
-            UIManager.Instance.HideActionSequence();
         }
 
         frames++;
