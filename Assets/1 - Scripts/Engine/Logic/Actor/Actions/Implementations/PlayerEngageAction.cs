@@ -151,18 +151,41 @@ public class PlayerEngageAction : AttackAction
             }
 
             var targetAvatar = GameEngine.Instance.AvatarManager.GetAvatar( targetActor );
-            SpendAP( attackerAvatar.Actor );
-            _state = ActorActionState.Executing;
 
             UIManager.Instance.ShowSideBMechInfo( targetActor, UIManager.MechInfoDisplayMode.Full );
             this._actor.Target = targetActor;
 
-            End();
+            TryPickSequence( attackerAvatar.Actor);
         };
 
         UIRequestFailureCallback<bool> failure = moveTarget => { End(); _uiRequest = null; };
         UIRequestCancelResult cancel = () => { End(); _uiRequest = null; };
         return new UIFindAttackTargetRequest( attackerAvatar.Actor, attackOptions, success, failure, cancel );
+    }
+
+    UIActionSequenceRequest _sequencePickRequest;
+
+    private void TryPickSequence( Actor attacker )
+    {
+        _sequencePickRequest = new UIActionSequenceRequest( _actor,
+        x =>
+        {
+            _sequencePickRequest = null;
+            this._actor.Sequence = x;
+            End();
+        },
+        y =>
+        {
+            End();
+            _sequencePickRequest = null;
+        },
+        () =>
+        {
+            End();
+            _sequencePickRequest = null;
+        } );
+
+        UIManager.Instance.RequestUI( _sequencePickRequest, true );
     }
 
 

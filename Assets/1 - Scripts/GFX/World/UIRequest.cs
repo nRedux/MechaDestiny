@@ -44,7 +44,7 @@ public abstract class UIRequest<TResult, TError>: IUIRequest
     public UIRequestCancelResult Cancelled;
 
     private object _requester;
-    private UIRequestState _state = UIRequestState.Idle;
+    protected UIRequestState _state = UIRequestState.Idle;
 
     public UIRequestState State => _state;
 

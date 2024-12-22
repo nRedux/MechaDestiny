@@ -41,8 +41,12 @@ public class Actor : SimpleEntity<ActorAsset>
     public Vector2Int Position { get; private set; }
     public bool IsPlayer { get; private set; } = true;
     public Actor Target { get; set; }
+    public List<ActorAction> Sequence { get; set; }
     public ActorAction ActiveAction { get => ActionHandler?.ActiveAction; }
 
+    public bool NewSequence { get; set; }
+
+    
 
     [JsonConstructor]
     public Actor() { }
@@ -59,7 +63,6 @@ public class Actor : SimpleEntity<ActorAsset>
 
         //SetPosition( other.Position );
     }
-
 
     public void SetIsPlayer( bool isPlayer )
     {

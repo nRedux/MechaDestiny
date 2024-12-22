@@ -307,6 +307,11 @@ public class UIManager : Singleton<UIManager>
     }
 
 
+    /// <summary>
+    /// Request UI start activity.
+    /// </summary>
+    /// <param name="request">The request</param>
+    /// <param name="queue">If activating this from within another request, you MUST set queue = true</param>
     public void RequestUI( IUIRequest request, bool queue = true )
     {
         if( request == null )

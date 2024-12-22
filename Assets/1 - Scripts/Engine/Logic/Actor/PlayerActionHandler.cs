@@ -90,8 +90,10 @@ public class PlayerActionHandler : ActorActionHandler
     {
 
         TryRequestWeaponPick();
-        if( HandleCompleteActiveAction( game ) )
-            return;
+        
+        if( _activeAction != null && _activeAction.State() == ActorActionState.Finished )
+            _activeAction = null;
+
         PerformActionSequence( game );
 
         //Need to check some sort of input to see if we want to perform an action.
@@ -111,19 +113,9 @@ public class PlayerActionHandler : ActorActionHandler
 
     }
 
-    private bool HandleCompleteActiveAction( Game game )
+    private void HandleCompleteActiveAction( Game game )
     {
-        if( _activeAction != null && _activeAction.State() == ActorActionState.Finished )
-        {
-            if( _activeAction is PlayerEngageAction && _actor.Target != null )
-            {
-                _activeAction = null;
-                TryPickAction( game );
-                return true;
-            }
-            _activeAction = null;
-        }
-        return false;
+
     }
 
 
@@ -147,7 +139,23 @@ public class PlayerActionHandler : ActorActionHandler
 
     private bool PerformActionSequence( Game game )
     {
-        if( _sequence == null )
+        //Take sequence from actor, if one exists, and we're not executing one.
+        if( this._sequence == null && this._actor.Sequence != null )
+        {
+            //Reset indexing
+            this._sequenceIndex = 0;
+            //Take
+            this._sequence = this._actor.Sequence;
+            //Clear from actor.
+            this._actor.Sequence = null;
+
+            //Nuke anything which was going on.
+            _activeAction?.End();
+            _activeAction = null;
+            _sequenceIndex = 0;
+        }
+
+        if( this._sequence == null )
             return false;
 
         if( _activeAction == null )
@@ -206,23 +214,9 @@ public class PlayerActionHandler : ActorActionHandler
             }
             else if( x is List<ActorAction> sequence )
             {
-                _activeAction?.End();
-                _activeAction = null;
-                _sequenceIndex = 0;
+
                 this._sequence = sequence;
                 _actionPickRequest = null;
-                return;
-            }
-
-            /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-             * TODO: SPLIT SEQUENCE SELECTION INTO IT'S OWN REQUEST!!
-             * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
-            //This is here for the case where engage has selected a target. This is ugly, and not clear.
-            if( _actor.Target != null )
-            {
-                //Begin sequence mode in the request. Reset to running for this action.
-                _actionPickRequest.SetStateRunning();
-                _actionPickRequest.DoSequenceMode();
                 return;
             }
 

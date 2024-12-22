@@ -453,8 +453,8 @@ MonoBehaviour:
   switchSettingsMigration: 1
   HasSourceProject: 1
   HasPlatforms: 1
-  sourceProjectPath: DreamersDawn/DreamersDawn.fspro
-  sourceBankPath: DreamersDawn/Build
+  sourceProjectPath: ../MechaDestiny_FMOD/DreamersDawn/DreamersDawn.fspro
+  sourceBankPath: ../MechaDestiny_FMOD/DreamersDawn/Build
   sourceBankPathUnformatted: 
   BankRefreshCooldown: 5
   ShowBankRefreshWindow: 1
