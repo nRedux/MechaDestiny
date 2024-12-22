@@ -8,9 +8,14 @@ public class PlayerActionHandler : ActorActionHandler
     private MoveAction _moveAction = null;
     private ActorAction _activeAction = null;
     private List<ActorAction> _nonMoveActions = new List<ActorAction>();
-    private bool _forceEndActor = false;
+    /// <summary>
+    /// If true, we will end the turn for the current actor.
+    /// </summary>
+    private bool _forceEndActorTurn = false;
     private UIPickActionRequest _actionPickRequest = null;
     private UIPickWeaponRequest _weaponPickRequest = null;
+    private List<ActorAction> _sequence = null;
+    private int _sequenceIndex = 0;
 
     public override ActorAction ActiveAction => _activeAction;
 
@@ -21,12 +26,12 @@ public class PlayerActionHandler : ActorActionHandler
 
     public override bool ShouldForceEndActor()
     {
-        return _forceEndActor;
+        return _forceEndActorTurn;
     }
 
     public override void SetupForPhase()
     {
-        _forceEndActor = false;
+        _forceEndActorTurn = false;
         _activeAction = null;
         _moveAction = _actor.GetActionsOfType( ActionType.Move ).FirstOrDefault() as MoveAction;
     }
@@ -80,55 +85,14 @@ public class PlayerActionHandler : ActorActionHandler
         return GetUsableActions().Count() > 0;
     }
 
-    private List<ActorAction> _sequence = null;
-    private int _sequenceIndex;
+
     public override void Tick( Game game )
     {
 
         TryRequestWeaponPick();
-
-        if( _activeAction != null && _activeAction.State() == ActorActionState.Finished )
-        {
-            //Restart?
-            /*if( _activeAction.AllowedToExecute( _actor ) == CanStartActionResult.Success )
-                StartAction( _activeAction, game );
-            else*/
-            if( _activeAction is PlayerEngageAction && _actor.Target != null )
-            {
-                _activeAction = null;
-                TryPickAction( game );
-                return;
-            }
-            _activeAction = null;
-        }
-
-
-        if( _sequence != null )
-        {
-            if( _activeAction == null )
-            {
-                if( _sequenceIndex < _sequence.Count )
-                {
-                    var nextAction = _sequence[_sequenceIndex];
-                    if( nextAction is AttackAction attack )
-                    {
-                        SequencePos seqPos = SequencePos.Start;
-                        if( _sequenceIndex > 0 && _sequenceIndex < _sequence.Count - 1 )
-                            seqPos = SequencePos.Mid;
-                        else if( _sequenceIndex == _sequence.Count - 1 )
-                            seqPos = SequencePos.End;
-                        attack.SequencePos = seqPos;
-                    }
-                    _sequenceIndex++;
-                    StartAction( nextAction, game );
-                }
-                else
-                {
-                    _actor.Target = null;
-                    _sequence = null;
-                }
-            }
-        }
+        if( HandleCompleteActiveAction( game ) )
+            return;
+        PerformActionSequence( game );
 
         //Need to check some sort of input to see if we want to perform an action.
         if( _actionPickRequest == null && Input.GetMouseButtonDown( 1 ) )
@@ -136,12 +100,39 @@ public class PlayerActionHandler : ActorActionHandler
             TryPickAction( game );
         }
 
-
-
-
         if( _actionPickRequest != null )
             return;
 
+        TickActiveOrSelectDefault( game );
+
+        //Force the actor to end it's turn?
+        if( !HasActionsAvailable() )
+            _forceEndActorTurn = true;
+
+    }
+
+    private bool HandleCompleteActiveAction( Game game )
+    {
+        if( _activeAction != null && _activeAction.State() == ActorActionState.Finished )
+        {
+            if( _activeAction is PlayerEngageAction && _actor.Target != null )
+            {
+                _activeAction = null;
+                TryPickAction( game );
+                return true;
+            }
+            _activeAction = null;
+        }
+        return false;
+    }
+
+
+    /// <summary>
+    /// If we have an active action, run it's tick. If not, try to select default action
+    /// </summary>
+    /// <param name="game">The game state instance</param>
+    private void TickActiveOrSelectDefault( Game game )
+    {
         if( _activeAction == null )
         {
             if( _moveAction.AllowedToExecute( _actor ) == CanStartActionResult.Success )
@@ -151,10 +142,39 @@ public class PlayerActionHandler : ActorActionHandler
         {
             _activeAction.Tick();
         }
+    }
 
-        if( !HasActionsAvailable() )
-            _forceEndActor = true;
 
+    private bool PerformActionSequence( Game game )
+    {
+        if( _sequence == null )
+            return false;
+
+        if( _activeAction == null )
+        {
+            if( _sequenceIndex < _sequence.Count )
+            {
+                var nextAction = _sequence[_sequenceIndex];
+                if( nextAction is AttackAction attack )
+                {
+                    SequencePos seqPos = SequencePos.Start;
+                    if( _sequenceIndex > 0 && _sequenceIndex < _sequence.Count - 1 )
+                        seqPos = SequencePos.Mid;
+                    else if( _sequenceIndex == _sequence.Count - 1 )
+                        seqPos = SequencePos.End;
+                    attack.SequencePos = seqPos;
+                }
+                _sequenceIndex++;
+                StartAction( nextAction, game );
+            }
+            else
+            {
+                _actor.Target = null;
+                _sequence = null;
+            }
+        }
+
+        return true;
     }
 
 
@@ -180,7 +200,7 @@ public class PlayerActionHandler : ActorActionHandler
             //Player selected to end this actor turn.
             if( x is EndActorAction )
             {
-                _forceEndActor = true;
+                _forceEndActorTurn = true;
                 _actionPickRequest = null;
                 return;
             }
@@ -214,17 +234,17 @@ public class PlayerActionHandler : ActorActionHandler
 
             _actionPickRequest = null;
         },
-    y =>
-    {
-        _actionPickRequest = null;
-    },
-    () =>
-    {
-        _activeAction?.End();
-        //This is to clear any time there's a cancel... not terrible, but not clearly linked to being in a "Targeting state" where clearing makes sense.
-        _actor.Target = null;
-        _actionPickRequest = null;
-    } );
+        y =>
+        {
+            _actionPickRequest = null;
+        },
+        () =>
+        {
+            _activeAction?.End();
+            //This is to clear any time there's a cancel... not terrible, but not clearly linked to being in a "Targeting state" where clearing makes sense.
+            _actor.Target = null;
+            _actionPickRequest = null;
+        } );
 
         UIManager.Instance.RequestUI( _actionPickRequest, false );
 
@@ -247,7 +267,6 @@ public class PlayerActionHandler : ActorActionHandler
     }
 
 
-
     public override void TurnEnded()
     {
         _actionPickRequest = null;
@@ -256,6 +275,7 @@ public class PlayerActionHandler : ActorActionHandler
             _activeAction.TurnEnded();
         _activeAction = null;
     }
+
 
     public override List<ActorAction> GetActionOptions( ActionCategory category )
     {

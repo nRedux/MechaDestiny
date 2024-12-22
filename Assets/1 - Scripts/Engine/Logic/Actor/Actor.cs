@@ -25,8 +25,6 @@ public class Actor : SimpleEntity<ActorAsset>
 
     public ActorAction[] Actions = null;
     public GameObjectReference Avatar;
-    public ActorAction ActiveAction { get => ActionHandler?.ActiveAction; }
-
     /// <summary>
     /// Run all actions automatically - for NPCs
     /// </summary>
@@ -43,6 +41,7 @@ public class Actor : SimpleEntity<ActorAsset>
     public Vector2Int Position { get; private set; }
     public bool IsPlayer { get; private set; } = true;
     public Actor Target { get; set; }
+    public ActorAction ActiveAction { get => ActionHandler?.ActiveAction; }
 
 
     [JsonConstructor]
