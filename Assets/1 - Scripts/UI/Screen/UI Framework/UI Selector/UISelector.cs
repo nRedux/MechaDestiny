@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 
 public class UISelector<TDataSource, TUIOptionType> : UIPanel where TUIOptionType : UISelectorItemOption<TDataSource> where TDataSource : class
@@ -56,6 +57,7 @@ public class UISelector<TDataSource, TUIOptionType> : UIPanel where TUIOptionTyp
             EventSystem.current.SetSelectedGameObject( instance.gameObject );
         instance.transform.SetParent( OptionsRoot, false );
         instance.Initialize( entity, OnPick );
+
         return instance;
     }
 
@@ -73,5 +75,9 @@ public class UISelector<TDataSource, TUIOptionType> : UIPanel where TUIOptionTyp
     {
         OptionsRoot.DestroyChildren();
         optionData.Do( x => CreateOption( x, x == selected ) );
+        var rootRT = OptionsRoot.GetComponent<RectTransform>();
+        LayoutRebuilder.ForceRebuildLayoutImmediate( rootRT );
+        var thisRT = gameObject.GetComponent<RectTransform>();
+        LayoutRebuilder.ForceRebuildLayoutImmediate( thisRT );
     }
 }

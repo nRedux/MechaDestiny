@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8313128938942302417}
   - component: {fileID: 8313128938942302418}
   - component: {fileID: 6874697541044341602}
+  - component: {fileID: 1437157705401189301}
   m_Layer: 5
   m_Name: UI Action Option
   m_TagString: Untagged
@@ -135,6 +136,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NameText: {fileID: 8313128940047298896}
+--- !u!114 &1437157705401189301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8313128938942302252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: 45.14
+  m_PreferredWidth: -1
+  m_PreferredHeight: 45.14
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &8313128940047298898
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,15 +264,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 00000000
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
