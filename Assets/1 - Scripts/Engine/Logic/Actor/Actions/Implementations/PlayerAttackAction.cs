@@ -110,34 +110,21 @@ public class PlayerAttackAction : AttackAction
         BeginBehavior(game, actor);
     }
 
+    public System.Action OnKillTarget;
+
 
     public void BeginBehavior( Game game, Actor actor )
     {
         //Get valid move locations. Notify the UI we need to display a collection of move locations. Wait for UI to return a result. Execute move.
         _state = ActorActionState.Started;
-
-        var attackerMechEntity = actor.GetSubEntities()[0];
-        var attackerMechData = attackerMechEntity as MechData;
-        var weapon = attackerMechData.ActiveWeapon;
-
-        //TODO: will have to validate that the assets which define these are correct. Make finding these problems easy!
-        var range = weapon.GetStatistic( StatisticType.Range );
-
-        var attackOptions = new BoolWindow( range.Value * 2 );
-        attackOptions.MoveCenter( actor.Position );
-        _game.Board.GetCellsManhattan( range.Value, attackOptions );
-        Board.LOS_PruneBoolWindow( attackOptions, actor.Position ); 
-
-
         GfxActor attackerAvatar = GameEngine.Instance.AvatarManager.GetAvatar( actor );
-
+        DoAttack( attackerAvatar );
         if( SequencePos == SequencePos.Start )
         {
             UIManager.Instance.ShowSideAMechInfo( actor, UIManager.MechInfoDisplayMode.Mini );
             UIManager.Instance.ShowSideBMechInfo( actor.Target, UIManager.MechInfoDisplayMode.Mini );
         }
-
-        DoAttack( attackerAvatar );
+        
         /*_uiRequest = CreateFindAttackTargetRequest( attackerAvatar, attackOptions );
         //Don't target actors on the same team
         _uiRequest.MarkInvalidTeams( actor.GetTeamID() );*/
@@ -166,6 +153,8 @@ public class PlayerAttackAction : AttackAction
         };
 
         AttackHelper.DoAttackDamage( res );
+        if( targetActor.IsDead() )
+            OnKillTarget?.Invoke();
 
         RunAttack( res );
     }

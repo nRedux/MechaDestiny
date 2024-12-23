@@ -127,7 +127,7 @@ public class PlayerActionHandler : ActorActionHandler
         if( _activeAction == null )
         {
             if( _moveAction.AllowedToExecute( _actor ) == CanStartActionResult.Success )
-                StartAction( _moveAction, game );
+                ExecuteAction( _moveAction, game );
         }
         else
         {
@@ -136,7 +136,7 @@ public class PlayerActionHandler : ActorActionHandler
     }
 
 
-    private bool PerformActionSequence( Game game )
+    private void PerformActionSequence( Game game )
     {
         //Take sequence from actor, if one exists, and we're not executing one.
         if( this._sequence == null && this._actor.Sequence != null )
@@ -155,14 +155,14 @@ public class PlayerActionHandler : ActorActionHandler
         }
 
         if( this._sequence == null )
-            return false;
+            return;
 
         if( _activeAction == null )
         {
             if( _sequenceIndex < _sequence.Count )
             {
                 var nextAction = _sequence[_sequenceIndex];
-                if( nextAction is AttackAction attack )
+                if( nextAction is PlayerAttackAction attack )
                 {
                     SequencePos seqPos = SequencePos.Start;
                     if( _sequenceIndex > 0 && _sequenceIndex < _sequence.Count - 1 )
@@ -170,9 +170,19 @@ public class PlayerActionHandler : ActorActionHandler
                     else if( _sequenceIndex == _sequence.Count - 1 )
                         seqPos = SequencePos.End;
                     attack.SequencePos = seqPos;
+
+                    //If this kills the target, break out of the sequence so we don't fire on something dead.
+                    attack.OnKillTarget = () =>
+                    {
+                        if( nextAction is AttackAction endSeqNow )
+                            endSeqNow.SequencePos = SequencePos.End;
+                        _actor.Target = null;
+                        _sequence = null;
+                    };
                 }
                 _sequenceIndex++;
-                StartAction( nextAction, game );
+               
+                ExecuteAction( nextAction, game );
             }
             else
             {
@@ -181,7 +191,7 @@ public class PlayerActionHandler : ActorActionHandler
             }
         }
 
-        return true;
+        return;
     }
 
 
@@ -221,7 +231,7 @@ public class PlayerActionHandler : ActorActionHandler
 
             if( x is ActorAction singleAction )
             {
-                StartAction( singleAction, game );
+                ExecuteAction( singleAction, game );
             }
 
 
@@ -245,7 +255,7 @@ public class PlayerActionHandler : ActorActionHandler
     }
 
 
-    public bool StartAction( ActorAction action, Game game )
+    public bool ExecuteAction( ActorAction action, Game game )
     {
         if( action == null )
             return false;

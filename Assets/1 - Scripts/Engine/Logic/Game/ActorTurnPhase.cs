@@ -54,7 +54,12 @@ public class ActorTurnPhase: TurnPhase
             _delayAIActionsTimer = DevConfiguration.DELAY_AI_ACTIONS_DURATION;
         }
 
-        SetActiveActor( _team.GetMember( ++_activeActorIndex ) );
+        var nextActor = _team.GetMember( ++_activeActorIndex );
+        //Next attempt will check next team member.
+        if( nextActor.IsDead() )
+            return;
+
+        SetActiveActor( nextActor );
     }
 
 
