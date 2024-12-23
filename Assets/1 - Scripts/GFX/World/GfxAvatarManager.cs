@@ -34,8 +34,8 @@ public class GfxAvatarManager
             avatarInstance.name += "__" + actor.GetTeamID().ToString();
             BuildMech( actor, gfxActorInstance );
             ActorCreated?.Invoke( gfxActorInstance );
-            onReady?.Invoke( gfxActorInstance );
             _actors.Add( actor, gfxActorInstance );
+            onReady?.Invoke( gfxActorInstance );
 
             return gfxActorInstance;
         }

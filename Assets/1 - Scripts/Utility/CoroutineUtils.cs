@@ -162,7 +162,6 @@ public class CoroutineUtils : Singleton<CoroutineUtils> {
 		{
 			time = Mathf.Clamp(time + Time.deltaTime, 0f, duration);
 			float t = time / duration;
-            System.Func<float, float, float, float> lerp = interpolator;
             if (interpolator == null)
                 interpolator = Mathf.Lerp;
 			if(!step(interpolator(start, end, t)))
@@ -298,5 +297,17 @@ public class CoroutineUtils : Singleton<CoroutineUtils> {
             return true;
         }, interpolator, onComplete, delay: delay);
     }
-   
+
+    public static Coroutine DoTransformLerp( Transform t, Transform targetPos, float duration, System.Func<float, float, float, float> interpolator = null, System.Action onComplete = null, float delay = 0f )
+    {
+        Vector3 offset = t.position - targetPos.position;
+
+        Vector3 startPos = t.position;
+        return DoInterpolation( duration, 0f, 1f, ( f ) =>
+        {
+            t.position = targetPos.position + Vector3.Lerp( offset, Vector3.zero, f );
+            return true;
+        }, interpolator, onComplete, delay: delay );
+    }
+
 }

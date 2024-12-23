@@ -44,6 +44,8 @@ public class UIManager : Singleton<UIManager>
 
     public GameObject PlayerAttackUI;
 
+    public CombatCamera CombatCamera;
+
     public string SwitchWeaponInput = KeyCode.Q.ToString();
 
     //public UIMechInfo 
@@ -54,7 +56,7 @@ public class UIManager : Singleton<UIManager>
 
     private List<IUIRequest> _activeRequests = new List<IUIRequest>();
 
-    public GfxAvatarManager AvatarManager = new GfxAvatarManager();
+
 
     private Queue<ActionResult> _actionResults = new Queue<ActionResult>();
     private ActionResult _currentActionResult = null;
@@ -78,6 +80,9 @@ public class UIManager : Singleton<UIManager>
         base.Awake();
         SetupListeners();
         HideMechInfos();
+
+        if( CombatCamera == null )
+            CombatCamera = FindFirstObjectByType<CombatCamera>( FindObjectsInactive.Include );
     }
 
     private void Start()
@@ -178,14 +183,14 @@ public class UIManager : Singleton<UIManager>
     private void SetupListeners()
     {
         Events.Instance.AddListener<GameOverEvent>( OnGameOverEvent );
-        Events.Instance.AddListener<CurrentActorEvent>( OnCurrentActorevent );
+        Events.Instance.AddListener<CurrentActorEvent>( OnCurrentActorEvent );
         Events.Instance.AddListener<GameTurnChangeEvent>( OnGameTurnChange );
     }
 
     private void TeardownListeners()
     {
         Events.Instance.RemoveListener<GameOverEvent>( OnGameOverEvent );
-        Events.Instance.RemoveListener<CurrentActorEvent>( OnCurrentActorevent );
+        Events.Instance.RemoveListener<CurrentActorEvent>( OnCurrentActorEvent );
         Events.Instance.RemoveListener<GameTurnChangeEvent>( OnGameTurnChange );
     }
 
@@ -207,9 +212,14 @@ public class UIManager : Singleton<UIManager>
         e.Game.RunGameLogic = true;
     }
 
-    private void OnCurrentActorevent( CurrentActorEvent e )
+    private void OnCurrentActorEvent( CurrentActorEvent e )
     {
         _activeActor = e.Actor;
+        if( e.Actor == null )
+            return;
+        var avatar = GameEngine.Instance.AvatarManager.GetAvatar( e.Actor );
+        CombatCamera.MoveToTransform( avatar.transform, 1f );
+        CombatCamera.LockedTargetActor = e.Actor.IsPlayer ? null : e.Actor;
     }
 
 

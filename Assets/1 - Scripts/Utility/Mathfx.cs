@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
+using UnityEngine;
 //using Sirenix.OdinInspector;
 public sealed class Mathfx
 {
@@ -133,17 +135,22 @@ public sealed class Mathfx
 	// compares the square of the distance to the square of the range as this 
 	// avoids calculating a square root which is much slower than squaring the range
 	public static bool Approx(Vector3 val, Vector3 about, float range)
-	{
+    {
 		return ((val - about).sqrMagnitude < range * range);
 	}
 
-	/*
-      * CLerp - Circular Lerp - is like lerp but handles the wraparound from 0 to 360.
-      * This is useful when interpolating eulerAngles and the object
-      * crosses the 0/360 boundary.  The standard Lerp function causes the object
-      * to rotate in the wrong direction and looks stupid. Clerp fixes that.
-      */
-	public static float Clerp(float start, float end, float value)
+    public static float EaseInOutQuint( float start, float end, float time) 
+	{
+		return time < 0.5 ? 16 * time* time* time* time* time : 1 - Mathf.Pow(-2 * time + 2, 5) / 2;
+	}
+
+/*
+  * CLerp - Circular Lerp - is like lerp but handles the wraparound from 0 to 360.
+  * This is useful when interpolating eulerAngles and the object
+  * crosses the 0/360 boundary.  The standard Lerp function causes the object
+  * to rotate in the wrong direction and looks stupid. Clerp fixes that.
+  */
+public static float Clerp(float start, float end, float value)
 	{
 		float min = 0.0f;
 		float max = 360.0f;

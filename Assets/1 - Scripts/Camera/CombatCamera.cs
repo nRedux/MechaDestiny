@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Cinemachine;
 using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
 public class CombatCamera : MonoBehaviour
 {
@@ -15,15 +16,55 @@ public class CombatCamera : MonoBehaviour
 
     private float ZoomMin = 100;
     private float ZoomMax = 400;
-
     private float _height = 0;
+    private Coroutine _relocationRoutine = null;
+    private Actor _lockedTargetActor = null;
 
+
+    private bool UserControlsActive
+    {
+        get
+        {
+            return GameEngine.Instance.IsPlayerTurn && 
+                _relocationRoutine == null && 
+                _lockedTargetActor == null;
+        }
+    }
+
+
+    public Actor LockedTargetActor
+    {
+        set
+        {
+            _lockedTargetActor = value;
+        }
+    }
 
 
     public void Update()
     {
         if( !GameEngine.InstanceExists )
             return;
+
+        ExecuteLockToActor();
+        ExecuteUserControls();
+
+        UpdateHeight();
+    }
+
+
+    private void ExecuteLockToActor()
+    {
+        if( _lockedTargetActor == null )
+            return;
+        var target = GameEngine.Instance.AvatarManager.GetAvatar( _lockedTargetActor );
+        transform.position = target.transform.position;
+    }
+
+
+    private void ExecuteUserControls()
+    {
+        if( !UserControlsActive ) return;
 
         float x = Input.mousePosition.x;
         float y = Input.mousePosition.y;
@@ -32,16 +73,14 @@ public class CombatCamera : MonoBehaviour
         //Debug.Log( $"Camera input x:{x} y:{y}" );
         if( !RotationActive() && !EventSystem.current.IsPointerOverGameObject() )
         {
-            PanScreen(x, y);
+            PanScreen( x, y );
         }
 
-        //Need to get the mouse horisontal and
+        //Need to get the mouse horizontal and
         if( RotationActive() )
         {
-            RotateCamera( Input.GetAxis("Mouse X") );
+            RotateCamera( Input.GetAxis( "Mouse X" ) );
         }
-
-        UpdateHeight();
     }
 
 
@@ -49,6 +88,7 @@ public class CombatCamera : MonoBehaviour
     {
         transform.Rotate( Vector3.up * value * RotationSpeed * Time.deltaTime, Space.World );
     }
+
 
     public bool RotationActive()
     {
@@ -132,6 +172,7 @@ public class CombatCamera : MonoBehaviour
         transform.position = clampedPos;
     }
 
+
     private Vector3 ClampVectorToBoard( Vector3 position )
     {
         return new Vector3( 
@@ -139,5 +180,18 @@ public class CombatCamera : MonoBehaviour
             position.y, 
             Mathf.Clamp( position.z, 0, GameEngine.Instance.Board.Height ) 
         );
+    }
+
+
+    public void MoveToLocation( Vector3 position, float duration )
+    {
+        CoroutineUtils.EndCoroutine( ref _relocationRoutine );
+        _relocationRoutine = CoroutineUtils.DoTransformPositionLerp( transform, position, duration, Mathfx.EaseInOutQuint, onComplete: () => _relocationRoutine = null );
+    }
+
+    public void MoveToTransform( Transform destination, float duration )
+    {
+        CoroutineUtils.EndCoroutine( ref _relocationRoutine );
+        _relocationRoutine = CoroutineUtils.DoTransformLerp( transform, destination, duration, Mathfx.EaseInOutQuint, onComplete: () => _relocationRoutine = null );
     }
 }

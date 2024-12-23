@@ -91,6 +91,14 @@ public class GameEngine : Singleton<GameEngine>
     }
 
 
+    public bool IsPlayerTurn
+    {
+        get
+        {
+            return _game.TurnManager.ActiveTeam.IsPlayerTeam;
+        }
+    }
+
     protected override void Awake()
     {
         base.Awake();
@@ -118,6 +126,7 @@ public class GameEngine : Singleton<GameEngine>
     {
         InitializeGameState();
         await CreateAvatars();
+        _game.Start();
         _initializationDone = true;
     }
 
@@ -227,8 +236,6 @@ public class GameEngine : Singleton<GameEngine>
         AI2.SetIsPlayer( false );
         AI2.SetPosition( new Vector2Int( 3, 5 ), Game );
         team2.AddMember( AI2 );
-
-        _game.Start();
     }
 
 
