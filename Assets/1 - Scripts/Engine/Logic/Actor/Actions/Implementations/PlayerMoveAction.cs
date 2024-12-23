@@ -68,7 +68,7 @@ public class PlayerMoveAction : MoveAction
 
         //Unset the cell under the mover.
         Vector2Int myWindowPos = _moveOptionsWindow.WorldToLocalIndex( actor.Position );
-        _moveOptionsWindow[myWindowPos] = false;
+        //_moveOptionsWindow[myWindowPos] = false;
 
         UIRequestSuccessCallback<Vector2Int> success = moveTarget =>
         {

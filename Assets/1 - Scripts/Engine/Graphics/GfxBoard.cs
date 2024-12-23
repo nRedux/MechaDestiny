@@ -49,7 +49,7 @@ public class GfxBoard : SerializedMonoBehaviour
     }
 
 
-    public void RenderCells( BoolWindow cells )
+    public void RenderCells( BoolWindow cells, bool highlightCenter = false )
     {
         _moveOverlay.ReturnAllCells();
         cells.Do( iter => {
@@ -62,9 +62,17 @@ public class GfxBoard : SerializedMonoBehaviour
 
             var renderCell = _moveOverlay.GetCell( cells.GetWorldPosition( iter.local.x, iter.local.y ) );
             renderCell.Tint = 1f - manDist / maxDist;
+            if( highlightCenter && iter.world == cells.Center )
+            {
+                renderCell.Color = Color.magenta;
+            }
 
             renderCell.SetActive( true );
         } );
+
+
+
+
     }
 
 

@@ -40,7 +40,7 @@ public class UIFindAttackTargetRequest : UIRequest<Actor, bool>
         base.Start();
 
         GameEngine.Instance.GfxBoard.SetCellColor( GfxCellMode.Attack );
-        GameEngine.Instance.GfxBoard.RenderCells( Cells );
+        GameEngine.Instance.GfxBoard.RenderCells( Cells, true );
     }
 
 

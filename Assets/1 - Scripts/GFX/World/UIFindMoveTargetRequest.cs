@@ -52,7 +52,7 @@ public class UIFindMoveTargetRequest : UIRequest<Vector2Int, bool>
         base.Start();
 
         GameEngine.Instance.GfxBoard.SetCellColor( GfxCellMode.Move );
-        GameEngine.Instance.GfxBoard.RenderCells( Cells );
+        GameEngine.Instance.GfxBoard.RenderCells( Cells, true );
     }
 
 
