@@ -55,7 +55,14 @@ public class GfxBoard : SerializedMonoBehaviour
         cells.Do( iter => {
             if( iter.value == false )
                 return;
+
+            Vector2Int offs = cells.Center - iter.world;
+            float maxDist = (cells.Width * .5f) + (cells.Height * .5f);
+            float manDist = Mathf.Abs(offs.x) + Mathf.Abs( offs.y );
+
             var renderCell = _moveOverlay.GetCell( cells.GetWorldPosition( iter.local.x, iter.local.y ) );
+            renderCell.Tint = 1f - manDist / maxDist;
+
             renderCell.SetActive( true );
         } );
     }
@@ -64,13 +71,15 @@ public class GfxBoard : SerializedMonoBehaviour
     public void HighlightCell( Vector2 location )
     {
         var cell = _moveOverlay.GetCellAtLocation( location );
-        _moveOverlay.HighlightCell( cell );
+        if( cell == null ) return;
+        cell.Highlight = true;
     }
 
     public void UnHighlightCell( Vector2 location )
     {
         var cell = _moveOverlay.GetCellAtLocation( location );
-        _moveOverlay.UnHighlightCell( cell );
+        if( cell == null ) return;
+        cell.Highlight = false;
     }
 
 

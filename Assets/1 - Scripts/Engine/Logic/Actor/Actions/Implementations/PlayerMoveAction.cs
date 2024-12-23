@@ -66,6 +66,10 @@ public class PlayerMoveAction : MoveAction
         _moveOptionsWindow.MoveCenter( actor.Position );
         _game.Board.GetMovableCellsManhattan( _range, _moveOptionsWindow );
 
+        //Unset the cell under the mover.
+        Vector2Int myWindowPos = _moveOptionsWindow.WorldToLocalIndex( actor.Position );
+        _moveOptionsWindow[myWindowPos] = false;
+
         UIRequestSuccessCallback<Vector2Int> success = moveTarget =>
         {
             var avatar = GameEngine.Instance.AvatarManager.GetAvatar( actor );
