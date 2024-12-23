@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class ActorTurnPhase: TurnPhase
 {
-
     private const int ACTIVE_ACTOR_START_VALUE = -1;
+
     private Game _game;
     private Team _team;
     private bool _isComplete = false;
-
+    private float _delayAIActionsTimer = 0f;
     private int _activeActorIndex = ACTIVE_ACTOR_START_VALUE;
     private Actor _activeActor;
 
@@ -20,9 +20,9 @@ public class ActorTurnPhase: TurnPhase
 
     public override bool EndOnPhasesExhausted => true;
 
+
     public override void Setup( Game game, Team team )
     {
-
         _game = game;
         _team = team;
         SetActiveActor( null );
@@ -37,6 +37,7 @@ public class ActorTurnPhase: TurnPhase
         StartNextActor( game );
     }
 
+
     private void StartNextActor( Game game )
     {
         if( _activeActorIndex + 1 >= _team.MemberCount )
@@ -46,7 +47,13 @@ public class ActorTurnPhase: TurnPhase
             SetActiveActor( null );
             return;
         }
-        //Debug.Log( "Start next actor for phase" );
+
+        if( !_team.IsPlayerTeam )
+        {
+            //Debug.Log( "Start next actor for phase" );
+            _delayAIActionsTimer = DevConfiguration.DELAY_AI_ACTIONS_DURATION;
+        }
+
         SetActiveActor( _team.GetMember( ++_activeActorIndex ) );
     }
 
@@ -85,8 +92,12 @@ public class ActorTurnPhase: TurnPhase
 
     }
 
+
     private void RunActorActions()
     {
+        _delayAIActionsTimer -= Time.deltaTime;
+        if( _delayAIActionsTimer > 0 )
+            return;
         _activeActor.RunActions( _game );
 
         if( !_activeActor.HasActionsAvailable() && _activeActor.ActiveAction == null || _activeActor.ShouldForceEnd() )

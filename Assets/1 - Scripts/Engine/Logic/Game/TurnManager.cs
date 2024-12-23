@@ -17,6 +17,7 @@ public class TurnManager
 
     public int TurnNumber { get { return _turnNumber; } }
 
+
     [JsonConstructor]
     public TurnManager()
     {
