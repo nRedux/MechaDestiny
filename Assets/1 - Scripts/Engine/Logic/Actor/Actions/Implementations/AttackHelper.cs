@@ -32,6 +32,28 @@ public static class AttackHelper
     }
 
 
+    private static MechComponentData SelectComponentTarget( this MechData data )
+    {
+        if( DevConfiguration.TARGET_TORSO_ONLY )
+        {
+            return data.Torso;
+        }
+        else if ( DevConfiguration.TARGET_LEGS_ONLY )
+        {
+            return data.Torso;
+        }
+        else if ( DevConfiguration.TARGET_L_ARM_ONLY )
+        {
+            return data.LeftArm;
+        }
+        else if( DevConfiguration.TARGET_R_ARM_ONLY )
+        {
+            return data.RightArm;
+        }
+
+        return data.GetSubEntities().Random() as MechComponentData;
+    }
+
     public static void DoAttackDamage( AttackActionResult res )
     {
         var actor = res.Attacker.Actor;
@@ -44,7 +66,7 @@ public static class AttackHelper
 
         for( int i = 0; i < shotCount; i++ )
         {
-            var randomCompEntity = targetMechData.GetSubEntities().Random() as MechComponentData;
+            var randomCompEntity = targetMechData.SelectComponentTarget();
             var targetStats = randomCompEntity.GetStatistics();
             var healthStat = targetStats.GetStatistic( StatisticType.Health );
             bool isHit = CalculateHitOrMiss( actor, targetActor );
