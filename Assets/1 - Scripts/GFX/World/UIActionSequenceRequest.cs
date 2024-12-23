@@ -70,6 +70,7 @@ public class UIActionSequenceRequest : UIRequest<List<ActorAction>, bool>
 
         ActionCategory category = ActionCategory.Control; 
 
+        //TODO: Actor.Target deciding how so many things function is not good. That property is too open to modification and failure to cleanup (setting null)
         category = _requester.GetInteractionCategory( _requester.Target );
 
         UIManager.Instance.ShowActionPicker( OnSelect, category );
@@ -79,6 +80,7 @@ public class UIActionSequenceRequest : UIRequest<List<ActorAction>, bool>
 
     protected override void OnCancelled()
     {
+        _requester.Target = null;
         UIManager.Instance.HideActionPicker();
         UIManager.Instance.HideActionSequence();
     }

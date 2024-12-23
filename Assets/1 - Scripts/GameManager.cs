@@ -331,7 +331,6 @@ public class GameManager : Singleton<GameManager>
     
     private MapObjectData _playerHarvester;
 
-
     protected override void Awake()
     {
         base.Awake();

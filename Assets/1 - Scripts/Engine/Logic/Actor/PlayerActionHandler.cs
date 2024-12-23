@@ -85,7 +85,6 @@ public class PlayerActionHandler : ActorActionHandler
         return GetUsableActions().Count() > 0;
     }
 
-
     public override void Tick( Game game )
     {
 
@@ -97,7 +96,7 @@ public class PlayerActionHandler : ActorActionHandler
         PerformActionSequence( game );
 
         //Need to check some sort of input to see if we want to perform an action.
-        if( _actionPickRequest == null && Input.GetMouseButtonDown( 1 ) )
+        if( _actionPickRequest == null && Input.GetKeyDown( KeyCode.Space ) )
         {
             TryPickAction( game );
         }

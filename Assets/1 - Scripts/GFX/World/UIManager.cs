@@ -50,7 +50,7 @@ public class UIManager : Singleton<UIManager>
 
     private GameEngine _gameEngine;
 
-    private List<IUIRequest> _requests = new List<IUIRequest>();
+    private List<IUIRequest> _pendingRequests = new List<IUIRequest>();
 
     private List<IUIRequest> _activeRequests = new List<IUIRequest>();
 
@@ -193,6 +193,9 @@ public class UIManager : Singleton<UIManager>
     {
         if( TurnChange == null )
             return;
+        TerminateActiveRequests();
+        _pendingRequests.Clear();
+        HideMechInfos();
         ExecuteTurnChangeUI( e );
     }
 
@@ -239,7 +242,7 @@ public class UIManager : Singleton<UIManager>
 #if !DISABLE_DEBUG
         if( !Input.GetKeyDown( KeyCode.R ) )
             return;
-        _requests.Do( x => Debug.Log( x.GetType().Name ) );
+        _pendingRequests.Do( x => Debug.Log( x.GetType().Name ) );
         _activeRequests.Do( x => Debug.Log( x.GetType().Name ) );
 #endif
     }
@@ -319,7 +322,7 @@ public class UIManager : Singleton<UIManager>
 
         if( queue )
         {
-            _requests.Add( request );
+            _pendingRequests.Add( request );
         }
         else
         {
@@ -338,11 +341,11 @@ public class UIManager : Singleton<UIManager>
 
     private void TryActivateQueuedRequests()
     {
-        if( _activeRequests.Count != 0 || _requests.Count == 0 )
+        if( _activeRequests.Count != 0 || _pendingRequests.Count == 0 )
             return;
 
-        var newActiveRequest = _requests.First();
-        _requests.RemoveAt( 0 );
+        var newActiveRequest = _pendingRequests.First();
+        _pendingRequests.RemoveAt( 0 );
 
         ActivateRequest( newActiveRequest );
     }
@@ -352,6 +355,7 @@ public class UIManager : Singleton<UIManager>
         if( newActiveRequest == null )
             return;
         _activeRequests.Insert( 0, newActiveRequest );
+        DebugUIQueue();
         newActiveRequest.Start();
     }
 
@@ -377,7 +381,17 @@ public class UIManager : Singleton<UIManager>
         {
             req.Cleanup();
             _activeRequests.RemoveAt(0);
+            DebugUIQueue();
         }
+    }
+
+    private void DebugUIQueue()
+    {
+        Debug.Log( $"Current UI Queue: Active_Requests: {_activeRequests.Count()}" );
+        _activeRequests.Do( x =>
+        {
+            Debug.Log( $"Type: {x.GetType().Name}" );
+        } );
     }
 
 
@@ -654,8 +668,8 @@ public class UIManager : Singleton<UIManager>
         {
             _activeRequests[0].Cleanup();
             _activeRequests.RemoveAt( 0 );
-            
         }
+        DebugUIQueue();
     }
 
 
@@ -679,7 +693,7 @@ public class UIManager : Singleton<UIManager>
     /// <returns>True if request was pending and was terminated. False if wasn't a pending request.</returns>
     internal bool TerminatePending( IUIRequest request )
     {
-        return _requests.Remove( request );
+        return _pendingRequests.Remove( request );
     }
 
 
@@ -689,8 +703,8 @@ public class UIManager : Singleton<UIManager>
     /// <param name="requester">The object which was specified as the requester when the request was created.</param>
     internal void TerminatePending( object requester )
     {
-        var terminationTargets = _requests.Where( x => x.GetRequester() == requester ).ToList();
-        terminationTargets.Do( x => _requests.Remove( x ) );
+        var terminationTargets = _pendingRequests.Where( x => x.GetRequester() == requester ).ToList();
+        terminationTargets.Do( x => _pendingRequests.Remove( x ) );
     }
 
 
