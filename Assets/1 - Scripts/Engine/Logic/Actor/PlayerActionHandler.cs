@@ -284,8 +284,17 @@ public class PlayerActionHandler : ActorActionHandler
     {
         if( this._actor.Target != null )
         {
-            ActionCategory forcedCategory = _actor.GetInteractionCategory( _actor.Target );
-            return GetUsableActions().Where( x => x.Category == forcedCategory ).ToList();//.Where( x => x != _activeAction ).ToList();
+            if( _actor.Target.GfxActor != null )
+            {
+                ActionCategory forcedCategory = _actor.GetInteractionCategory( _actor.Target.GfxActor.Actor );
+                return GetUsableActions().Where( x => x.Category == forcedCategory ).ToList();//.Where( x => x != _activeAction ).ToList();
+            }
+            else
+            {
+                //Will need to find a way to ask the active weapon for it's category type. For now assume attack.
+                ActionCategory forcedCategory = ActionCategory.Attack;
+                return GetUsableActions().Where( x => x.Category == forcedCategory ).ToList();//.Where( x => x != _activeAction ).ToList();
+            }
         }
 
         return GetUsableActions().Where( x => x.Category == category ).ToList();//.Where( x => x != _activeAction ).ToList();

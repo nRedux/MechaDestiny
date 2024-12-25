@@ -50,7 +50,7 @@ public abstract class ActionResult
 {
 
     public MechData MechData;
-    public GfxActor TargetAvatar;
+    public SmartPoint Target;
     public System.Action OnComplete;
 
     private List<Statistic> _watchedStatistics = new List<Statistic>();

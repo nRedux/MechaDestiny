@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -87,10 +88,17 @@ public class RigidBodyProjectile : ActionEffect, IGfxResult
     /// <param name="actionResult">Action result we're visually presenting for.</param>
     private void AimAtTarget( ActionResult actionResult )
     {
-        var targetComponent = actionResult.TargetAvatar.FindComponent( _statisticChange.MechComponent );
-        _targetPoint = new SmartPoint( targetComponent.transform );
+        Vector3 toTarget = Vector3.zero;
+        if( ActionResult.Target.GfxActor != null )
+        {
+            var targetComponent = ActionResult.Target.GfxActor.FindComponent( _statisticChange.MechComponent );
+            toTarget = targetComponent.transform.position - transform.position;
+        }
+        else
+        {
+            toTarget = ActionResult.Target.Position - transform.position; 
+        }
 
-        Vector3 toTarget = targetComponent.transform.position - transform.position;
         transform.forward = toTarget;
 
         //Expects to be faced the right direction already
@@ -111,18 +119,7 @@ public class RigidBodyProjectile : ActionEffect, IGfxResult
 
     private IEnumerator CheckDeadTarget()
     {
-        if( ActionResult.MechData == null )
-            yield break;
-
-        if( ActionResult.MechData.Torso == null )
-            yield break;//TODO: Bad mech data setup. But need to validate that elsewhere. VALIDATE IT!!!
-
-        if( ActionResult.MechData.IsTorsoDestroyed() )
-        {
-            //TODO: Should also be doing a fallback in the action itself if there are no graphic things like projectile to do this.
-            //Dead mech! Run death procedure.
-            yield return ActionResult.TargetAvatar.DoDeathSequence();
-        }
+        yield return GameEngine.Instance.AvatarManager.DoDestroySequenceAllDeadActors();
     }
 
 }

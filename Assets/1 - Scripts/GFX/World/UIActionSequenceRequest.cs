@@ -68,10 +68,17 @@ public class UIActionSequenceRequest : UIRequest<List<ActorAction>, bool>
     {
         //Check if we can actually pick any more actions.
 
-        ActionCategory category = ActionCategory.Control; 
+        ActionCategory category = ActionCategory.Control;
 
-        //TODO: Actor.Target deciding how so many things function is not good. That property is too open to modification and failure to cleanup (setting null)
-        category = _requester.GetInteractionCategory( _requester.Target );
+        if( _requester.Target?.GfxActor == null )
+        {
+            category = ActionCategory.Attack;
+        }
+        else
+        {
+            //TODO: Actor.Target deciding how so many things function is not good. That property is too open to modification and failure to cleanup (setting null)
+            category = _requester.GetInteractionCategory( _requester.Target?.GfxActor.Actor );
+        }
 
         UIManager.Instance.ShowActionPicker( OnSelect, category );
         return true;

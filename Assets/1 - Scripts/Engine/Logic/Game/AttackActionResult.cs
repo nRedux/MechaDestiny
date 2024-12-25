@@ -13,19 +13,11 @@ public class AttackActionResult : ActionResult
     public Transform _fireSource;
     public SequencePos SequencePosition = SequencePos.Unset;
 
-    private Vector2Int _target;
-    private GfxActor _targetAvatar;
-
     ActionResultStatus _status = ActionResultStatus.Running;
 
 
-    public AttackActionResult( Vector2Int target, Transform fireSource )
+    public AttackActionResult()
     {
-        _target = target;
-        _fireSource = fireSource;
-
-        var actor = UIManager.Instance.GetActorAtCell( target );
-        _targetAvatar = GameEngine.Instance.AvatarManager.GetAvatar( actor );
     }
 
 
@@ -62,7 +54,7 @@ public class AttackActionResult : ActionResult
             Attacker.StartAttackCamera( () =>
             {
                 camDone = true;
-            }, Attacker, TargetAvatar );
+            }, Attacker, Target );
         
 
             //OnComplete += () => { Attacker.StopAttackCamera(); };

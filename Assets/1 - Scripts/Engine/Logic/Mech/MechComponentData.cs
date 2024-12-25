@@ -6,7 +6,8 @@ using UnityEngine;
 public enum WeaponFlags
 {
     NONE = 0,
-    ShotgunFireMode = 0x00000001,
+    ShotgunFireMode = 1 << 1,
+    AOE = 1 << 2
     /*
     FLAG2 = 0x00000002,
     FLAG3 = 0x00000004,
@@ -39,6 +40,8 @@ public class MechComponentData : SimpleEntity<MechComponentAsset>
     public AttachmentSlot[] Attachments;
 
     public WeaponFlags Flags;
+
+    public GridShape AOEShape;
 
     public System.Action OnBroken;
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -112,5 +113,34 @@ public class GfxAvatarManager
         if( !_actors.ContainsKey( actor ) )
             return null;
         return _actors[actor];
+    }
+
+    public IEnumerator DoDestroySequenceAllDeadActors()
+    {
+        yield return CoroutineUtils.Instance.StartCoroutine( DestroySequenceAllDeadActors() );
+    }
+
+    public IEnumerator DestroySequenceAllDeadActors()
+    {
+        //Hacky check to make sure anything which needs to die visually does.
+        var dead = GameEngine.Instance.Game.Teams.SelectMany( x =>
+        {
+            var members = x.GetMembers();
+            return members.Where( y => y.GetMechData().IsTorsoDestroyed() );
+        } ).ToList();
+
+        GfxActor lastDead = null;
+        for( int i = 0; i < dead.Count; i++ )
+        {
+            var avatar = GameEngine.Instance.AvatarManager.GetAvatar( dead[i] );
+            if( avatar == null )
+                continue;
+            lastDead = avatar;
+            lastDead.DoDeathSequence();
+            if( i == dead.Count - 1 )
+            {
+                yield return lastDead.DoDeathSequence();
+            }
+        }
     }
 }

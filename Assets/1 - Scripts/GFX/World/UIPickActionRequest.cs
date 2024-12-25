@@ -16,8 +16,6 @@ public class UIPickActionRequest : UIRequest<object, bool>
     private List<ActorAction> _actions;
     private Actor _requester;
 
-    private bool _inSequenceMode = false;
-
     public UIPickActionRequest( object requester, SuccessCallback onSuccess, FailureCallback onFailure, CancelCallback onCancel ) : base( onSuccess, onFailure, onCancel, requester )
     {
         _requester = requester as Actor;
@@ -25,12 +23,6 @@ public class UIPickActionRequest : UIRequest<object, bool>
 
     private bool _uiWantsFire = false;
 
-    public void DoSequenceMode()
-    {
-        if( !_inSequenceMode )
-            UIManager.Instance.ShowActionSequence( _requester, () => _uiWantsFire = true );
-        _inSequenceMode = true;
-    }
 
     public void SetActions( List<ActorAction> actions )
     {
@@ -48,13 +40,6 @@ public class UIPickActionRequest : UIRequest<object, bool>
     {
         if( !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown( 1 ) && frames > 2 )
             this.Cancel();
-
-        if( _inSequenceMode && ( Input.GetKeyDown( KeyCode.F ) || _uiWantsFire ) )
-        {
-            Succeed( UIManager.Instance.ActionSequence.GetSelectedSequence() );
-            UIManager.Instance.HideActionSequence();
-        }
-
         frames++;
     }
 
@@ -68,12 +53,7 @@ public class UIPickActionRequest : UIRequest<object, bool>
 
     private void OnSelect( ActorAction selected )
     {
-        if( !_inSequenceMode )
-            Succeed( selected );
-
-        UIManager.Instance.ActionSequence.AddItem( selected );
-        //When do we return success on full sequence? (Should be based on other input?
-        GetNextAction();
+        Succeed( selected );
     }
 
 
@@ -82,9 +62,6 @@ public class UIPickActionRequest : UIRequest<object, bool>
         //Check if we can actually pick any more actions.
 
         ActionCategory category = ActionCategory.Control; 
-
-        if( _inSequenceMode )
-            category = _requester.GetInteractionCategory( _requester.Target );
 
         UIManager.Instance.ShowActionPicker( OnSelect, category );
         return true;

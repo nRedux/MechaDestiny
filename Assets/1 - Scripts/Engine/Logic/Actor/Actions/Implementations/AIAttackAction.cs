@@ -81,7 +81,7 @@ public class AIAttackAction : AttackAction
 
         
         _state = ActorActionState.Executing;
-        AttackActionResult res = AttackHelper.CreateAttackActionResult( attackerAvatar, targetAvatar );
+        AttackActionResult res = AttackHelper.CreateAttackActionResult( attackerAvatar, new SmartPoint( targetAvatar ) );
 
         UIManager.Instance.ShowSideAMechInfo( actor, UIManager.MechInfoDisplayMode.Mini );
         UIManager.Instance.ShowSideBMechInfo( targetActor, UIManager.MechInfoDisplayMode.Mini );

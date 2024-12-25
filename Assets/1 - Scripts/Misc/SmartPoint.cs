@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using UnityEngine;
 using Newtonsoft.Json;
+using Unity.VisualScripting;
+
 
 
 [System.Serializable]
@@ -27,6 +29,14 @@ public class SmartPoint
             _transform = value;
         }
     }
+
+    public GfxActor GfxActor
+    {
+        get;
+        private set;
+    }
+
+    public static implicit operator GfxActor( SmartPoint sp ) => sp.GfxActor;
 
     public override string ToString()
     {
@@ -67,6 +77,12 @@ public class SmartPoint
     public SmartPoint( Transform target )
     {
         this.Transform = target;
+    }
+
+    public SmartPoint( GfxActor target )
+    {
+        this.GfxActor = target;
+        this.Transform = target.transform;
     }
 
 

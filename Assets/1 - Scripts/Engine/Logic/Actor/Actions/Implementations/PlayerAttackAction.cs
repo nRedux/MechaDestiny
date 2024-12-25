@@ -122,7 +122,8 @@ public class PlayerAttackAction : AttackAction
         if( SequencePos == SequencePos.Start )
         {
             UIManager.Instance.ShowSideAMechInfo( actor, UIManager.MechInfoDisplayMode.Mini );
-            UIManager.Instance.ShowSideBMechInfo( actor.Target, UIManager.MechInfoDisplayMode.Mini );
+            if( actor.Target.GfxActor != null )
+                UIManager.Instance.ShowSideBMechInfo( actor.Target.GfxActor.Actor, UIManager.MechInfoDisplayMode.Mini );
         }
         
         /*_uiRequest = CreateFindAttackTargetRequest( attackerAvatar, attackOptions );
@@ -134,13 +135,13 @@ public class PlayerAttackAction : AttackAction
     private void DoAttack( GfxActor attackerAvatar )
     {
         var targetActor = attackerAvatar.Actor.Target;
-        var targetAvatar = GameEngine.Instance.AvatarManager.GetAvatar( targetActor );
+        var targetAvatar = targetActor.GfxActor;
         SpendAP( attackerAvatar.Actor );
         _state = ActorActionState.Executing;
 
         //UIManager.Instance.ShowSideAMechInfo( attackerAvatar.Actor, UIManager.MechInfoDisplayMode.Mini );
         //UIManager.Instance.ShowSideBMechInfo( targetActor, UIManager.MechInfoDisplayMode.Mini );
-        AttackActionResult res = AttackHelper.CreateAttackActionResult( attackerAvatar, targetAvatar );
+        AttackActionResult res = AttackHelper.CreateAttackActionResult( attackerAvatar, new SmartPoint( targetAvatar ) );
         res.OnComplete = () =>
         {
             if( this.SequencePos == SequencePos.End )
@@ -153,7 +154,7 @@ public class PlayerAttackAction : AttackAction
         };
 
         AttackHelper.DoAttackDamage( res );
-        if( targetActor.IsDead() )
+        if( targetActor.GfxActor != null && targetActor.GfxActor.Actor.IsDead() )
             OnKillTarget?.Invoke();
 
         RunAttack( res );
@@ -179,7 +180,7 @@ public class PlayerAttackAction : AttackAction
 
             UIManager.Instance.ShowSideAMechInfo( attackerAvatar.Actor, UIManager.MechInfoDisplayMode.Mini );
             UIManager.Instance.ShowSideBMechInfo( targetActor, UIManager.MechInfoDisplayMode.Mini );
-            AttackActionResult res = AttackHelper.CreateAttackActionResult( attackerAvatar, targetAvatar );
+            AttackActionResult res = AttackHelper.CreateAttackActionResult( attackerAvatar, new SmartPoint( targetAvatar ) );
             res.OnComplete = () =>
             {
                 UIManager.Instance.ShowSideAMechInfo( attackerAvatar.Actor, UIManager.MechInfoDisplayMode.Full );

@@ -10,13 +10,13 @@ public static class AttackHelper
         }
     }
 
-    public static AttackActionResult CreateAttackActionResult( GfxActor attackerAvatar, GfxActor targetAvatar )
+    public static AttackActionResult CreateAttackActionResult( GfxActor attackerAvatar, SmartPoint target )
     {
         var weapon = GetAttackWeapon( attackerAvatar.Actor );
         int count = GetAttackCount( weapon );
 
         //Start set up attack action result
-        AttackActionResult res = new AttackActionResult( targetAvatar.Actor.Position, attackerAvatar.transform )
+        AttackActionResult res = new AttackActionResult( )
         {
             Attacker = attackerAvatar,
             AttackerMechComponent = weapon.GetParent() as MechComponentData,
@@ -25,9 +25,7 @@ public static class AttackHelper
         };
 
         //End set up attack action result
-
-        res.MechData = targetAvatar.Actor.GetMechData();
-        res.TargetAvatar = targetAvatar;
+        res.Target = target;
         return res;
     }
 
@@ -61,8 +59,9 @@ public static class AttackHelper
         int shotCount = GetAttackCount( weapon );
         var damage = weapon.GetStatistic( StatisticType.Damage );
 
-        var targetActor = res.TargetAvatar.Actor;
-        var targetMechData = targetActor.GetMechData();
+        var targetAvatar = res.Target.GfxActor;
+        var targetActor = res.Target.GfxActor.Actor;
+        var targetMechData = targetAvatar.Actor.GetMechData();
 
         for( int i = 0; i < shotCount; i++ )
         {

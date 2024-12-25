@@ -40,7 +40,7 @@ public class Actor : SimpleEntity<ActorAsset>
     //Actor needs to be able to track it's statistics and have values be applied
     public Vector2Int Position { get; private set; }
     public bool IsPlayer { get; private set; } = true;
-    public Actor Target { get; set; }
+    public SmartPoint Target { get; set; } = null;
     public List<ActorAction> Sequence { get; set; }
     public ActorAction ActiveAction { get => ActionHandler?.ActiveAction; }
 

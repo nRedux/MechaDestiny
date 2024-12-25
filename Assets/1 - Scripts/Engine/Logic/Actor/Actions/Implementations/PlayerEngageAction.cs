@@ -153,7 +153,7 @@ public class PlayerEngageAction : AttackAction
             var targetAvatar = GameEngine.Instance.AvatarManager.GetAvatar( targetActor );
 
             UIManager.Instance.ShowSideBMechInfo( targetActor, UIManager.MechInfoDisplayMode.Full );
-            this._actor.Target = targetActor;
+            this._actor.Target = new SmartPoint( targetAvatar );
 
             TryPickSequence( attackerAvatar.Actor);
         };

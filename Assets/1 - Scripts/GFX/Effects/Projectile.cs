@@ -31,43 +31,14 @@ public class Projectile : ActionEffect, IGfxResult
 
     private IEnumerator CheckDeadTarget()
     {
-        if( SourceResult.MechData == null )
-            yield break;
 
-        if( SourceResult.MechData.Torso == null )
-            yield break;//TODO: Bad mech data setup. But need to validate that elsewhere. VALIDATE IT!!!
-
+        yield break;
 
     }
 
     private IEnumerator CheckDestroyedComponent()
     {
-        if( this._statisticChange.MechComponent == null )
-            yield break;
-
-        if( this._statisticChange.MechComponent.IsDead() )
-        {
-            if( this._statisticChange.MechComponent.Type == MechComponentType.Torso )
-            {
-                yield return SourceResult.TargetAvatar.DoDeathSequence();
-                yield break;
-            }
-            else
-            {
-
-            }
-
-        }
-
-        if( this._statisticChange.MechComponent == null )
-            yield break;//TODO: Bad mech data setup. But need to validate that elsewhere. VALIDATE IT!!!
-
-        if( SourceResult.MechData.IsTorsoDestroyed() )
-        {
-            //TODO: Should also be doing a fallback in the action itself if there are no graphic things like projectile to do this.
-            //Dead mech! Run death procedure.
-            yield return SourceResult.TargetAvatar.DoDeathSequence();
-        }
+        yield return GameEngine.Instance.AvatarManager.DoDestroySequenceAllDeadActors();
     }
 
 
@@ -104,7 +75,7 @@ public class Projectile : ActionEffect, IGfxResult
 
         this.SourceResult = actionResult;
 
-        var targetComponent = actionResult.TargetAvatar.FindComponent( _statisticChange.MechComponent );
+        GfxComponent targetComponent = null;// actionResult.Target.FindComponent( _statisticChange.MechComponent );
         Debug.Log( targetComponent.gameObject.name );
         InterpolateToTarget( targetComponent.transform );
     }

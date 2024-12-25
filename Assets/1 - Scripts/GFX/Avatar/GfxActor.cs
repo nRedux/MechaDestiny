@@ -227,9 +227,9 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _attackTurnDone = true;
     }
 
-    public void StartAttackTurn( Transform target )
+    public void StartAttackTurn( Vector3 target )
     {
-        Vector3 delta = target.position - transform.position;
+        Vector3 delta = target - transform.position;
         Vector3 forward = transform.forward;
         delta.y = 0f;
         forward.y = 0f;
@@ -270,7 +270,7 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if( result.SequencePosition == SequencePos.Start || result.SequencePosition == SequencePos.Unset )
         {
             _attackTurnDone = false;
-            StartAttackTurn( result.TargetAvatar.transform );
+            StartAttackTurn( result.Target.Position );
         }
 
         //TODO: Max time we will wait is one loop through the animation? Can we just wait that long at most?
@@ -356,8 +356,8 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     private Quaternion CalculateEndRotation( AttackActionResult result )
     {
-        Quaternion end = Quaternion.LookRotation( result.TargetAvatar.transform.position - result.Attacker.transform.position );
-        end = Quaternion.AngleAxis( -90, result.TargetAvatar.transform.position - result.Attacker.transform.position ) * end;
+        Quaternion end = Quaternion.LookRotation( result.Target.Position - result.Attacker.transform.position );
+        end = Quaternion.AngleAxis( -90, result.Target.Position - result.Attacker.transform.position ) * end;
         end = Quaternion.AngleAxis( 90, Vector3.up ) * end;
 
         return end;
