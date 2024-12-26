@@ -61,7 +61,7 @@ public class Game
     }
 
 
-    public Team GetTeam( int index )
+    public Team GetTeam( int index  )
     {
         return _teams[index];
     }

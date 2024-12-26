@@ -91,7 +91,7 @@ public class AIAttackAction : AttackAction
             End();
         };
 
-        AttackHelper.DoAttackDamage( res );
+        AttackHelper.CalculateAttackDamage( res );
 
         //TODO: This should be checked after the attack completes. Right now it's going to make the sequence look wrong. 
         AttackHelper.HandleDeadActor( targetActor );

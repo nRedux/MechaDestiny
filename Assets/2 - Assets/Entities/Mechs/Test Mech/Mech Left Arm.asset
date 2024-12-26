@@ -16,6 +16,7 @@ MonoBehaviour:
     AssetReference:
       m_AssetGUID: 0ba063b3a4219ae43953438ea5836988
       m_SubObjectName: 
+      m_SubObjectGUID: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     ID: 
@@ -24,9 +25,11 @@ MonoBehaviour:
       _serializedValues:
       - _value: 1
         _startValue: 0
+        Type: 0
     Model:
       m_AssetGUID: 
       m_SubObjectName: 
+      m_SubObjectGUID: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     Type: 2
@@ -35,17 +38,20 @@ MonoBehaviour:
     - SlotType:
         m_AssetGUID: 
         m_SubObjectName: 
+        m_SubObjectGUID: 
         m_SubObjectType: 
         m_EditorAssetChanged: 0
       DefaultComponent:
-        m_AssetGUID: 6d2c5b9d83c7de94fa4d28a262700c50
+        m_AssetGUID: 614974f294610f94fa377aed1069b369
         m_SubObjectName: 
+        m_SubObjectGUID: 
         m_SubObjectType: 
-        m_EditorAssetChanged: 0
+        m_EditorAssetChanged: 1
       Data:
         AssetReference:
           m_AssetGUID: 
           m_SubObjectName: 
+          m_SubObjectGUID: 
           m_SubObjectType: 
           m_EditorAssetChanged: 0
         ID: 
@@ -55,13 +61,16 @@ MonoBehaviour:
         Model:
           m_AssetGUID: 
           m_SubObjectName: 
+          m_SubObjectGUID: 
           m_SubObjectType: 
           m_EditorAssetChanged: 0
         Type: 0
         AttachmentType: {fileID: 0}
         Attachments: []
         Flags: 0
+        AOEShape: {fileID: 0}
     Flags: 0
+    AOEShape: {fileID: 0}
   DisplayName:
     m_TableReference:
       m_TableCollectionName: GUID:c9f6f54132f444c459cb15fcd0afa795

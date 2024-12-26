@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -318,6 +319,17 @@ public class BoolWindow : BoardWindow<bool>
     public override string CellToString( bool item )
     {
         return item == true ? "X" : "O";
+    }
+
+    internal void Fill( GridShape shape )
+    {
+        for( int x = 0; x < shape.Width; x++ )
+        {
+            for( int y = 0; y < shape.Height; y++ )
+            {
+                this[new Vector2Int( x, y )] = shape.Cells[x, y];
+            }
+        }
     }
 }
 

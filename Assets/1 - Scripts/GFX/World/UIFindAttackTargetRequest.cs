@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-using SuccessCallback = UIRequestSuccessCallback<Actor>;
+using SuccessCallback = UIRequestSuccessCallback<object>;
 using FailureCallback = UIRequestFailureCallback<bool>;
 using CancelCallback = UIRequestCancelResult;
 using UnityEditor.Localization.Plugins.XLIFF.V12;
 
-public class UIFindAttackTargetRequest : UIRequest<Actor, bool>
+public class UIFindAttackTargetRequest : UIRequest<object, bool>
 {
     public BoolWindow Cells;
     private int[] _ignoredTeamIDs;
@@ -31,7 +31,14 @@ public class UIFindAttackTargetRequest : UIRequest<Actor, bool>
 
     public override void Run()
     {
-        TryGetUserSelectedCell( );
+        if( _requestingActor.GetMechData().ActiveWeapon.IsAOE() )
+        {
+            TryGetUserSelectedCell_AOE();
+        }
+        else
+        {
+            TryGetUserSelectedCell( );
+        }
     }
 
 
@@ -66,6 +73,22 @@ public class UIFindAttackTargetRequest : UIRequest<Actor, bool>
                 var actor = UIManager.Instance.GetActorsAtCell( result ).Where( x => !ShouldIgnoreActor(x) ).FirstOrDefault();
                 if( actor != null )
                     Succeed( actor );
+            }
+        }
+    }
+
+    private void TryGetUserSelectedCell_AOE()
+    {
+        if( Input.GetMouseButtonDown( 1 ) )
+            this.Cancel();
+
+        if( Input.GetMouseButtonDown( 0 ) )
+        {
+            Vector2Int result = new Vector2Int();
+            var cellUnderMouse = UIManager.Instance.FindAttackableCellUnderMouse( ref result, Cells );
+            if( cellUnderMouse )
+            {
+                Succeed( result );
             }
         }
     }

@@ -48,8 +48,6 @@ public struct StatisticChange
 
 public abstract class ActionResult
 {
-
-    public MechData MechData;
     public SmartPoint Target;
     public System.Action OnComplete;
 
@@ -130,6 +128,11 @@ public abstract class ActionResult
         }
         else
             return null;
+    }
+
+    public StatisticChange[] TakeChanges()
+    {
+        return _recordedChanges.ToArray();
     }
 
 }

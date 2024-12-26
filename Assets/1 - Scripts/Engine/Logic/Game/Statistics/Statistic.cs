@@ -20,6 +20,7 @@ public enum StatisticType
     
     Damage = 0x0110,
     ShotCount = 0x0120,
+    FragmentCount = 0x0125,
 
     MinAccuracy = 0x0130,
     MaxAccuracy = 0x0131,

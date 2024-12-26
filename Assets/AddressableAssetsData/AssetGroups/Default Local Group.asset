@@ -74,6 +74,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 614974f294610f94fa377aed1069b369
+    m_Address: Assets/2 - Assets/Entities/Mechs/Test Mech/Grenade Launcher.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 634cf266f8eccec47a91d727f51dd717
     m_Address: Assets/2 - Assets/Entities/Map Objects/Caravan.asset
     m_ReadOnly: 0

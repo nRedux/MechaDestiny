@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 
@@ -41,6 +42,8 @@ public class MechComponentData : SimpleEntity<MechComponentAsset>
 
     public WeaponFlags Flags;
 
+    [HideInInspector]
+    [JsonIgnore]
     public GridShape AOEShape;
 
     public System.Action OnBroken;
@@ -91,6 +94,11 @@ public class MechComponentData : SimpleEntity<MechComponentAsset>
     {
         //Wrap in anonymous method so we can know the type in the callback
         Statistics.Do( x => x.Value.ValueChanged += OnStatisticChanged );
+    }
+
+    public bool IsAOE()
+    {
+        return HasFeatureFlag( (int) WeaponFlags.AOE );
     }
 
 

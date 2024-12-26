@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Security.Cryptography;
+using UnityEngine;
 
 public static class AttackHelper
 {
@@ -52,37 +55,89 @@ public static class AttackHelper
         return data.GetSubEntities().Random() as MechComponentData;
     }
 
-    public static void DoAttackDamage( AttackActionResult res )
+    public static void CalculateAttackDamage( AttackActionResult res )
     {
         var actor = res.Attacker.Actor;
-        var weapon = GetAttackWeapon( actor );
-        int shotCount = GetAttackCount( weapon );
-        var damage = weapon.GetStatistic( StatisticType.Damage );
+        var weaponEntity = GetAttackWeapon( actor );
+        int shotCount = GetAttackCount( weaponEntity );
+        var damage = weaponEntity.GetStatistic( StatisticType.Damage );
 
-        var targetAvatar = res.Target.GfxActor;
-        var targetActor = res.Target.GfxActor.Actor;
-        var targetMechData = targetAvatar.Actor.GetMechData();
-
-        for( int i = 0; i < shotCount; i++ )
+        if( res.AttackerWeapon.IsAOE() )
         {
-            var randomCompEntity = targetMechData.SelectComponentTarget();
-            var targetStats = randomCompEntity.GetStatistics();
-            var healthStat = targetStats.GetStatistic( StatisticType.Health );
-            bool isHit = CalculateHitOrMiss( actor, targetActor );
+            //Res should have target location in this case.
+            //Find all actors within area of effect
 
-            StatChangeTag tags = StatChangeTag.None;
-            if( !isHit )
-                tags |= StatChangeTag.Miss;
+            var weaponComponent = weaponEntity as MechComponentData;
+            var shape = weaponComponent.AOEShape;
+            if( shape == null )
+            {
+                Debug.LogError("Weapon doesn't have AOEShape.");
+                return;
+            }
 
-            ///TODO
-            //I dislike watching for the changes instead of just adding the changes.
-            res.WatchForStatChanges( randomCompEntity, healthStat );
+            BoolWindow shapeWin = new BoolWindow( shape.Width, GameEngine.Instance.Board );
+            shapeWin.Fill( shape );
+            shapeWin.MoveCenter( new Vector2Int( (int)res.Target.Position.x, (int)res.Target.Position.z ) );
 
-            ///TODO
-            //This could just return the change and we could add it to the result
-            healthStat.SetValue( isHit ? healthStat.Value - damage.Value : healthStat.Value, tags );
+            //TODO: must be turned into a method of the BoolWindow or it's base class
+            List<Actor> actors = new List<Actor>();
+            shapeWin.Do( x =>
+            {
+                if( x.value )
+                {
+                    var actor = UIManager.Instance.GetActorAtCell( x.world );
+                    if( actor != null )
+                        actors.Add( actor );
+                }
+            } );
+
+            Debug.Log( $"Found {actors.Count} actors" );
+
+            int fragmentCount = GetFragmentCount( weaponEntity );
+            actors.Do( target =>
+            {
+                for( int i = 0; i < fragmentCount; i++ )
+                {
+                    CalculateHitDamage( actor, target, res );
+                }
+            } );
+
+        }
+        else
+        {
+            for( int i = 0; i < shotCount; i++ )
+            {
+                CalculateHitDamage( actor, res.Target.GfxActor.Actor, res );
+            }
         }
     }
+
+
+    private static void CalculateHitDamage( Actor attacker, Actor target, AttackActionResult res )
+    {
+        var weaponEntity = GetAttackWeapon( attacker );
+        int shotCount = GetAttackCount( weaponEntity );
+        var damage = weaponEntity.GetStatistic( StatisticType.Damage );
+        var targetMechData = target.GetMechData();
+
+        var randomCompEntity = targetMechData.SelectComponentTarget();
+        var targetStats = randomCompEntity.GetStatistics();
+        var healthStat = targetStats.GetStatistic( StatisticType.Health );
+        bool isHit = CalculateHitOrMiss( attacker, target );
+
+        StatChangeTag tags = StatChangeTag.None;
+        if( !isHit )
+            tags |= StatChangeTag.Miss;
+
+        ///TODO
+        //I dislike watching for the changes instead of just adding the changes.
+        res.WatchForStatChanges( randomCompEntity, healthStat );
+
+        ///TODO
+        //This could just return the change and we could add it to the result
+        healthStat.SetValue( isHit ? healthStat.Value - damage.Value : healthStat.Value, tags );
+    }
+
 
     private static bool CalculateHitOrMiss( Actor attackActor, Actor targetActor )
     {
@@ -106,6 +161,14 @@ public static class AttackHelper
     {
         var weaponStats = weapon.GetStatistics();
         var shotCount = weaponStats.GetStatistic( StatisticType.ShotCount );
+        //TODO: What if there isn't a shotCount stat defined?
+        return shotCount.Value;
+    }
+
+    public static int GetFragmentCount( IEntity weapon )
+    {
+        var weaponStats = weapon.GetStatistics();
+        var shotCount = weaponStats.GetStatistic( StatisticType.FragmentCount );
         //TODO: What if there isn't a shotCount stat defined?
         return shotCount.Value;
     }

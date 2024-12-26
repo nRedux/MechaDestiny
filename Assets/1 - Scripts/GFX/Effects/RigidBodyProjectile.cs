@@ -15,7 +15,7 @@ public class RigidBodyProjectile : ActionEffect, IGfxResult
     public EffectSurfaceEvent OnHitSurface;
 
     private Rigidbody _rigidBody = null;
-    private StatisticChange _statisticChange;
+    private StatisticChange[] _statisticChanges;
 
     /// <summary>
     /// The location we're aiming to hit.
@@ -29,7 +29,7 @@ public class RigidBodyProjectile : ActionEffect, IGfxResult
     }
 
 
-    public override void Run( ActionResult actionResult, Transform firePoint )
+    public override void Run( AttackActionResult actionResult, Transform firePoint )
     {
         SetupRigidBody();
 
@@ -70,15 +70,17 @@ public class RigidBodyProjectile : ActionEffect, IGfxResult
     /// Take change from action result, get everything we need for engine state.
     /// </summary>
     /// <param name="actionResult">The action result we're visualizing for</param>
-    private void TakeChange( ActionResult actionResult )
+    private void TakeChange( AttackActionResult actionResult )
     {
-        var result = actionResult.TakeChange();
-        if( !result.HasValue )
+        if( actionResult.AttackerMechComponent.IsAOE() )
         {
-            throw new System.Exception( "Hey remember me? Bad thing happened, handle this better." );
+            this._statisticChanges = actionResult.TakeChanges();
         }
-
-        this._statisticChange = result.Value;
+        else
+        {
+            var change = actionResult.TakeChange();
+            this._statisticChanges = new StatisticChange[] { change.Value };
+        }
     }
 
 
@@ -91,7 +93,7 @@ public class RigidBodyProjectile : ActionEffect, IGfxResult
         Vector3 toTarget = Vector3.zero;
         if( ActionResult.Target.GfxActor != null )
         {
-            var targetComponent = ActionResult.Target.GfxActor.FindComponent( _statisticChange.MechComponent );
+            var targetComponent = ActionResult.Target.GfxActor.FindComponent( _statisticChanges[0].MechComponent );
             toTarget = targetComponent.transform.position - transform.position;
         }
         else
@@ -111,7 +113,10 @@ public class RigidBodyProjectile : ActionEffect, IGfxResult
         //UIDamageNumbers.Instance.CreatePop( this._statisticChange.Change, transform.position 
         CoroutineUtils.BeginCoroutine( CheckDeadTarget() );
 
-        UIDamageNumbers.Instance.CreatePop( this._statisticChange, transform.position );
+        _statisticChanges.Do( x =>
+        {
+            UIDamageNumbers.Instance.CreatePop( x, transform.position );
+        } );
 
         OnHitSurface.Invoke( EffectSurfaceType.Metal );
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
-[CreateAssetMenu( fileName = "New Room Grid", menuName = "Engine/Room Shape")]
+[CreateAssetMenu( fileName = "New Grid Shape", menuName = "Engine/Grid Shape")]
 public class GridShape: SerializedScriptableObject
 {
     [OnValueChanged("OnDimChanged")]

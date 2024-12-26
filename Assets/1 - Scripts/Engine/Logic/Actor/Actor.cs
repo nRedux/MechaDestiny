@@ -39,9 +39,13 @@ public class Actor : SimpleEntity<ActorAsset>
     //Actor needs to be able to perform actions such as moving, attacking, executing abilities, etc.
     //Actor needs to be able to track it's statistics and have values be applied
     public Vector2Int Position { get; private set; }
+    [JsonIgnore]
     public bool IsPlayer { get; private set; } = true;
+    [JsonIgnore]
     public SmartPoint Target { get; set; } = null;
+    [JsonIgnore]
     public List<ActorAction> Sequence { get; set; }
+    [JsonIgnore]
     public ActorAction ActiveAction { get => ActionHandler?.ActiveAction; }
 
     public bool NewSequence { get; set; }

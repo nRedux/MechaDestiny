@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6dd1cdde19a642459268335743dfcc5, type: 3}
+  m_Name: Grenade Launcher
+  m_EditorClassIdentifier: 
+  Data:
+    AssetReference:
+      m_AssetGUID: 614974f294610f94fa377aed1069b369
+      m_SubObjectName: 
+      m_SubObjectGUID: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    ID: 
+    Statistics:
+      _serializedKeys: 00010000100100002001000030010000310100000000000025010000
+      _serializedValues:
+      - _value: 4
+        _startValue: 0
+        Type: 0
+      - _value: 4
+        _startValue: 0
+        Type: 0
+      - _value: 1
+        _startValue: 0
+        Type: 0
+      - _value: 30
+        _startValue: 30
+        Type: 0
+      - _value: 80
+        _startValue: 80
+        Type: 0
+      - _value: 1
+        _startValue: 1
+        Type: 0
+      - _value: 8
+        _startValue: 8
+        Type: 0
+    Model:
+      m_AssetGUID: b7c7f0be105776540adcfb3b44a65ebe
+      m_SubObjectName: 
+      m_SubObjectGUID: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    Type: 4
+    AttachmentType: {fileID: 11400000, guid: a76bed771f181044dbef4e4b9338e7b9, type: 2}
+    Attachments: []
+    Flags: 4
+    AOEShape: {fileID: 0}
+  DisplayName:
+    m_TableReference:
+      m_TableCollectionName: GUID:c9f6f54132f444c459cb15fcd0afa795
+    m_TableEntryReference:
+      m_KeyId: 90921714664751104
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  AOEShape: {fileID: 11400000, guid: 69ab111253373a14299f0d32e0e66ec6, type: 2}
+  references:
+    version: 2
+    RefIds: []

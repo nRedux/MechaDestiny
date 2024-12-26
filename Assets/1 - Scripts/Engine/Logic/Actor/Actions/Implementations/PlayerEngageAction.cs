@@ -140,7 +140,7 @@ public class PlayerEngageAction : AttackAction
     private UIFindAttackTargetRequest CreateFindAttackTargetRequest( GfxActor attackerAvatar, BoolWindow attackOptions )
     {
 
-        UIRequestSuccessCallback<Actor> success = targetActor =>
+        UIRequestSuccessCallback<object> success = selectedTarget =>
         {
             UIManager.Instance.PlayerAttackUI.Opt()?.SetActive( false );
 
@@ -150,12 +150,26 @@ public class PlayerEngageAction : AttackAction
                 return;
             }
 
-            var targetAvatar = GameEngine.Instance.AvatarManager.GetAvatar( targetActor );
+            if( attackerAvatar.Actor.GetMechData().ActiveWeapon.IsAOE() )
+            {
+                var location = (Vector2Int) selectedTarget;
 
-            UIManager.Instance.ShowSideBMechInfo( targetActor, UIManager.MechInfoDisplayMode.Full );
-            this._actor.Target = new SmartPoint( targetAvatar );
+                this._actor.Target = new SmartPoint( new Vector3( location.x, 0, location.y ) );
 
-            TryPickSequence( attackerAvatar.Actor);
+                TryPickSequence( attackerAvatar.Actor );
+            }
+            else
+            { 
+                var actor = (Actor)selectedTarget;
+                var targetAvatar = GameEngine.Instance.AvatarManager.GetAvatar( actor );
+
+                UIManager.Instance.ShowSideBMechInfo( actor, UIManager.MechInfoDisplayMode.Full );
+                this._actor.Target = new SmartPoint( targetAvatar );
+
+                TryPickSequence( attackerAvatar.Actor );
+            }
+
+
         };
 
         UIRequestFailureCallback<bool> failure = moveTarget => { End(); _uiRequest = null; };

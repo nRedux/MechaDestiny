@@ -4,6 +4,6 @@ using UnityEngine;
 
 public abstract class ActionEffect : MonoBehaviour
 {
-    public abstract void Run( ActionResult source, Transform firePoint );
+    public abstract void Run( AttackActionResult source, Transform firePoint );
 
 }

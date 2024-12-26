@@ -134,14 +134,24 @@ public class PlayerAttackAction : AttackAction
 
     private void DoAttack( GfxActor attackerAvatar )
     {
-        var targetActor = attackerAvatar.Actor.Target;
-        var targetAvatar = targetActor.GfxActor;
+        var selectedTarget = attackerAvatar.Actor.Target;
+        var targetAvatar = selectedTarget.GfxActor;
         SpendAP( attackerAvatar.Actor );
         _state = ActorActionState.Executing;
 
-        //UIManager.Instance.ShowSideAMechInfo( attackerAvatar.Actor, UIManager.MechInfoDisplayMode.Mini );
-        //UIManager.Instance.ShowSideBMechInfo( targetActor, UIManager.MechInfoDisplayMode.Mini );
-        AttackActionResult res = AttackHelper.CreateAttackActionResult( attackerAvatar, new SmartPoint( targetAvatar ) );
+        SmartPoint finalTarget = null;
+        if( selectedTarget.GfxActor != null )
+        {
+            //Single target attack
+            finalTarget = new SmartPoint( targetAvatar );
+        }
+        else
+        {
+            //AOE attack
+            finalTarget = new SmartPoint( selectedTarget.Position );
+        }
+
+        AttackActionResult res = AttackHelper.CreateAttackActionResult( attackerAvatar, finalTarget );
         res.OnComplete = () =>
         {
             if( this.SequencePos == SequencePos.End )
@@ -153,53 +163,12 @@ public class PlayerAttackAction : AttackAction
             End();
         };
 
-        AttackHelper.DoAttackDamage( res );
-        if( targetActor.GfxActor != null && targetActor.GfxActor.Actor.IsDead() )
+        AttackHelper.CalculateAttackDamage( res );
+        if( selectedTarget.GfxActor != null && selectedTarget.GfxActor.Actor.IsDead() )
             OnKillTarget?.Invoke();
 
         RunAttack( res );
     }
-
-
-    private UIFindAttackTargetRequest CreateFindAttackTargetRequest( GfxActor attackerAvatar, BoolWindow attackOptions )
-    {
-
-        UIRequestSuccessCallback<Actor> success = targetActor =>
-        {
-            //UIManager.Instance.PlayerAttackUI.Opt()?.SetActive( false );
-
-            if( attackerAvatar == null )
-            {
-                Debug.LogError( "Avatar not found for actor." );
-                return;
-            }
-
-            var targetAvatar = GameEngine.Instance.AvatarManager.GetAvatar( targetActor );
-            SpendAP( attackerAvatar.Actor );
-            _state = ActorActionState.Executing;
-
-            UIManager.Instance.ShowSideAMechInfo( attackerAvatar.Actor, UIManager.MechInfoDisplayMode.Mini );
-            UIManager.Instance.ShowSideBMechInfo( targetActor, UIManager.MechInfoDisplayMode.Mini );
-            AttackActionResult res = AttackHelper.CreateAttackActionResult( attackerAvatar, new SmartPoint( targetAvatar ) );
-            res.OnComplete = () =>
-            {
-                UIManager.Instance.ShowSideAMechInfo( attackerAvatar.Actor, UIManager.MechInfoDisplayMode.Full );
-                UIManager.Instance.HideSideBMechInfo();
-                _uiRequest = null;
-                End();
-            };
-
-            AttackHelper.DoAttackDamage( res );
-
-            RunAttack( res );
-        };
-
-
-        UIRequestFailureCallback<bool> failure = moveTarget => { End(); _uiRequest = null; };
-        UIRequestCancelResult cancel = () => { End(); _uiRequest = null; };
-        return new UIFindAttackTargetRequest( attackerAvatar.Actor, attackOptions, success, failure, cancel );
-    }
-
 
     public async void RunAttack( AttackActionResult res )
     {

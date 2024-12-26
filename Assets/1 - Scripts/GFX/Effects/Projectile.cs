@@ -63,7 +63,7 @@ public class Projectile : ActionEffect, IGfxResult
         return _complete;
     }
 
-    public override void Run( ActionResult actionResult, Transform firePoint )
+    public override void Run( AttackActionResult actionResult, Transform firePoint )
     {
         var result = actionResult.TakeChange();
         if( !result.HasValue )

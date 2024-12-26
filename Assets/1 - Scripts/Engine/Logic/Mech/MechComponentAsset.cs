@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Localization;
 using System.Runtime.Serialization;
+using Sirenix.Reflection.Editor;
+using Sirenix.OdinInspector;
 
 
 
@@ -56,11 +58,20 @@ public class MechComponentAsset : DataProviderAsset<MechComponentAsset, MechComp
 {
 
     public LocalizedString DisplayName;
+    [ShowIf(nameof( Editor_ShowAOE ) )]
+    public GridShape AOEShape;
+
+
+    public bool Editor_ShowAOE()
+    {
+        return (this.Data.Flags & WeaponFlags.AOE) == WeaponFlags.AOE;
+    }
 
     public override void SetupNewData( MechComponentData newData )
     {
         newData.Initialize();
         newData.ID = DisplayName.TryGetLocalizedString();
+        newData.AOEShape = AOEShape;
     }
 
 }
