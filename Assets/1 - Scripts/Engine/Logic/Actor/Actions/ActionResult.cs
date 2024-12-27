@@ -112,6 +112,12 @@ public abstract class ActionResult
     }
 
 
+    public StatisticChange[] GetChanges()
+    {
+        var result = _recordedChanges.ToArray();
+        return result;
+    }
+
     /// <summary>
     /// Take a change which was recorded from a watched statistic
     /// </summary>
@@ -132,7 +138,10 @@ public abstract class ActionResult
 
     public StatisticChange[] TakeChanges()
     {
-        return _recordedChanges.ToArray();
+        var result = _recordedChanges.ToArray();
+        result.Do( x => x.EmitUIUpdateEvent() );
+        _recordedChanges.Clear();
+        return result;
     }
 
 }

@@ -72,7 +72,7 @@ public class RigidBodyProjectile : ActionEffect, IGfxResult
     /// <param name="actionResult">The action result we're visualizing for</param>
     private void TakeChange( AttackActionResult actionResult )
     {
-        if( actionResult.AttackerMechComponent.IsAOE() )
+        if( actionResult.AttackerWeapon.IsAOE() )
         {
             this._statisticChanges = actionResult.TakeChanges();
         }
@@ -93,7 +93,7 @@ public class RigidBodyProjectile : ActionEffect, IGfxResult
         Vector3 toTarget = Vector3.zero;
         if( ActionResult.Target.GfxActor != null )
         {
-            var targetComponent = ActionResult.Target.GfxActor.FindComponent( _statisticChanges[0].MechComponent );
+            var targetComponent = ActionResult.Target.GfxActor.FindComponent( _statisticChanges[0].Statistic.Entity as MechComponentData );
             toTarget = targetComponent.transform.position - transform.position;
         }
         else
@@ -115,7 +115,12 @@ public class RigidBodyProjectile : ActionEffect, IGfxResult
 
         _statisticChanges.Do( x =>
         {
-            UIDamageNumbers.Instance.CreatePop( x, transform.position );
+            var root = x.Statistic.Entity.GetRoot();
+            var actor = root as Actor;
+            var avatar = GameEngine.Instance.AvatarManager.GetAvatar( actor );
+
+            var targetComponent = avatar.FindComponent( x.Statistic.Entity ); 
+            UIDamageNumbers.Instance.CreatePop( x, targetComponent?.transform.position ?? transform.position );
         } );
 
         OnHitSurface.Invoke( EffectSurfaceType.Metal );

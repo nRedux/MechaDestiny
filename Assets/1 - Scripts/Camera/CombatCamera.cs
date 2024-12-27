@@ -43,7 +43,7 @@ public class CombatCamera : MonoBehaviour
 
     public void Update()
     {
-        if( !GameEngine.InstanceExists )
+        if( !GameEngine.InstanceExists || !GameEngine.Instance.Initialized )
             return;
 
         ExecuteLockToActor();

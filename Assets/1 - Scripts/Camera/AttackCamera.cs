@@ -14,7 +14,18 @@ public class AttackCamera : MonoBehaviour
     public Transform ViewPositionsRoot;
     public Transform[] ViewPositions;
 
-    public void SetTargets( Transform attacker, Transform target )
+    private List<GameObject> _tempTargets = new List<GameObject>();
+
+
+    private GameObject GetTempTarget( Vector3 position )
+    {
+        GameObject go = new GameObject( "TempCameraTarget" );
+        _tempTargets.Add( go );
+        go.transform.position = position;
+        return go;
+    }
+
+    public void SetTargets( Transform attacker, SmartPoint target )
     {
         transform.rotation = Quaternion.identity;
 
@@ -23,7 +34,7 @@ public class AttackCamera : MonoBehaviour
 
 
         //Debug.Log( attacker.name + "   " + target.name );
-        Vector3 attackDir = target.position - attacker.position;
+        Vector3 attackDir = target.Position - attacker.position;
         //Debug.Log( attackDir );
         attackDir.y = 0f;
         attackDir = Quaternion.AngleAxis( 25, Vector3.up ) * attackDir;
@@ -32,15 +43,17 @@ public class AttackCamera : MonoBehaviour
         euler.x = 20;
         Camera.transform.eulerAngles = euler;
 
+        var targetObj = target.Transform?.gameObject ?? GetTempTarget( target.Position);
+
         TargetGroup.Targets = new List<CinemachineTargetGroup.Target>() {
             new CinemachineTargetGroup.Target() { Object = attacker, Radius = 1f, Weight = 1f },
-            new CinemachineTargetGroup.Target() { Object = target, Radius = 1f, Weight = 1f }
+            new CinemachineTargetGroup.Target() { Object = targetObj.transform, Radius = 1f, Weight = 1f }
         };
 
 
         //We attempt to find a better view angle now.
         Vector3 goodViewVec;
-        if( FindGoodViewVector( target, attacker, out goodViewVec ) )
+        if( FindGoodViewVector( targetObj.transform, attacker, out goodViewVec ) )
         {
             Camera.transform.forward = goodViewVec;
             //Debug.Log( "Found good view angle!" );
@@ -122,5 +135,11 @@ public class AttackCamera : MonoBehaviour
         TargetGroup.Targets.Do( x => pos += x.Object.position );
         pos /= TargetGroup.Targets.Count;
         return pos;
+    }
+
+    internal void ClearTempTargets()
+    {
+        _tempTargets.Do( x => Destroy( x ) );
+        _tempTargets.Clear();
     }
 }

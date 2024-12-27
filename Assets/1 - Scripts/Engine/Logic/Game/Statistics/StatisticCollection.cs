@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 using System.Runtime.Serialization;
+using System;
 
 [System.Serializable]
 public class StatisticCollection: Dictionary<StatisticType, Statistic>, IStatisticSource, ISerializationCallbackReceiver
@@ -40,7 +41,6 @@ public class StatisticCollection: Dictionary<StatisticType, Statistic>, IStatist
     [OnDeserialized]
     public void OnJsonDeserialized( StreamingContext context )
     {
-
         this.Do( x => x.Value.Type = x.Key );
     }
 
@@ -64,5 +64,10 @@ public class StatisticCollection: Dictionary<StatisticType, Statistic>, IStatist
 
         for( int i = 0; i < _serializedKeys.Count; i++ )
             this.Add( _serializedKeys[i], _serializedValues[i] );
+    }
+
+    internal void SetEntity( IEntity simpleEntity )
+    {
+        this.Do( x => x.Value.Entity = simpleEntity );
     }
 }

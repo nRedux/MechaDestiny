@@ -136,7 +136,7 @@ public class GfxAvatarManager
             if( avatar == null )
                 continue;
             lastDead = avatar;
-            lastDead.DoDeathSequence();
+            CoroutineUtils.BeginCoroutine( lastDead.DoDeathSequence() );
             if( i == dead.Count - 1 )
             {
                 yield return lastDead.DoDeathSequence();

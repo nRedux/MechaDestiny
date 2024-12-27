@@ -12,7 +12,7 @@ public interface IEntity
     public IStatisticSource GetStatistics();
 
     public Statistic GetStatistic( StatisticType type );
-    
+
     public List<IEntity> GetSubEntities();
 
     public IEntity GetParent();
@@ -24,6 +24,9 @@ public interface IEntity
     public string GetDisplayName();
 
     public bool IsDead();
+
+    public IEntity GetRoot();
+
 }
 
 public class EntityCollection: List<IEntity>

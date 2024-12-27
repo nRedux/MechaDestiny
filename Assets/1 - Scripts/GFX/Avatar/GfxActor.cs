@@ -154,7 +154,7 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         transform.position = actor.GetWorldPosition();
     }
 
-    public GfxComponent FindComponent( MechComponentData data )
+    public GfxComponent FindComponent( IEntity data )
     {
         if( Torso.ComponentData == data )
             return Torso;
@@ -267,7 +267,7 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
         _attackTurnDone = true;
         LastAnimEvent = String.Empty;
-        if( result.SequencePosition == SequencePos.Start || result.SequencePosition == SequencePos.Unset )
+        if( result.SequencePosition == SequencePos.Start || result.SequencePosition == SequencePos.All )
         {
             _attackTurnDone = false;
             StartAttackTurn( result.Target.Position );
@@ -293,7 +293,7 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             while( !AnimationEventMatches( ANIM_FIRED ) )
                 await Task.Yield();
 
-            if( result.SequencePosition == SequencePos.End || result.SequencePosition == SequencePos.Unset )
+            if( result.SequencePosition == SequencePos.End || result.SequencePosition == SequencePos.All )
                 _animator.SetBool( attackParam, false );
             
             for( int i = 0; i < result.Count; i++ )
@@ -315,7 +315,7 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _animator.SetBool( fireParam, false );
 
 
-        if( result.SequencePosition == SequencePos.End || result.SequencePosition == SequencePos.Unset )
+        if( result.SequencePosition == SequencePos.End || result.SequencePosition == SequencePos.All )
         {
             _animator.SetBool( attackParam, false );
             await Task.Delay( 500 );
@@ -386,7 +386,7 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     #region CAMERA
 
     private System.Action _cameraBlendDone = null;
-    public void StartAttackCamera( System.Action cameraDone, GfxActor attacker, GfxActor target )
+    public void StartAttackCamera( System.Action cameraDone, GfxActor attacker, SmartPoint target )
     {
         if( !AttackCamera )
         {
@@ -394,7 +394,7 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             return;
         }
         _cameraBlendDone = cameraDone;
-        AttackCamera.SetTargets( attacker.transform, target.transform);
+        AttackCamera.SetTargets( attacker.transform, target);
         AttackCamera.SetActive( true );
     }
 
@@ -405,6 +405,7 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             return;
         }
         AttackCamera.SetActive( false );
+        AttackCamera.ClearTempTargets();
     }
 
     public void AttackCameraRunning( ICinemachineMixer mixer, ICinemachineCamera camera )

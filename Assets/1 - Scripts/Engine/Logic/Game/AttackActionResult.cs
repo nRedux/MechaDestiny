@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
+using System;
 
 public class AttackActionResult : ActionResult
 {
@@ -11,7 +12,7 @@ public class AttackActionResult : ActionResult
 
     public int Count = 1;
     public Transform _fireSource;
-    public SequencePos SequencePosition = SequencePos.Unset;
+    public SequencePos SequencePosition = SequencePos.All;
 
     ActionResultStatus _status = ActionResultStatus.Running;
 
@@ -49,7 +50,7 @@ public class AttackActionResult : ActionResult
          * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
         //PS!!!!!!!!: The below method (StartAttackCamera) doesn't work out if attack actions executed immediately after one another. There doesn't end up bring a transition to listen for!
 
-        if( this.SequencePosition == SequencePos.Start || this.SequencePosition == SequencePos.Unset )
+        if( this.SequencePosition == SequencePos.Start || this.SequencePosition == SequencePos.All )
         {
             Attacker.StartAttackCamera( () =>
             {
@@ -70,7 +71,7 @@ public class AttackActionResult : ActionResult
             GameEngine.Instance.Game.CheckGameOver();
         } );
 
-        if( this.SequencePosition == SequencePos.End || this.SequencePosition == SequencePos.Unset )
+        if( this.SequencePosition == SequencePos.End || this.SequencePosition == SequencePos.All )
             Attacker.StopAttackCamera();
     }
 
@@ -80,4 +81,8 @@ public class AttackActionResult : ActionResult
         return _status;
     }
 
+    internal bool IsAOE()
+    {
+        return AttackerWeapon.IsAOE();
+    }
 }

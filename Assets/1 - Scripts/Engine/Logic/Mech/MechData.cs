@@ -50,7 +50,6 @@ public class MechData: SimpleEntity<MechAsset>
         } 
     }
 
-
     /// <summary>
     /// First time initialization. Should be called after deserialized.
     /// </summary>

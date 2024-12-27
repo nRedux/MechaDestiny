@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Sirenix.Serialization;
 using Unity.VisualScripting;
+using System.Runtime.Serialization;
 
 public enum EntityFlags
 {
@@ -24,7 +24,6 @@ public class SimpleEntity<TData> : DataObject<TData>, IEntity
 
     public int StatusFlags => _statusFlags;
 
-
     private int _statusFlags = 0;
     private int _entityFlags = 0;
     private IEntity _parent;
@@ -33,6 +32,12 @@ public class SimpleEntity<TData> : DataObject<TData>, IEntity
     {
         _entityFlags = 0;
         _statusFlags = 0;
+    }
+
+    [OnDeserialized]
+    void OnDeserialized( StreamingContext c )
+    {
+        Statistics.SetEntity( this );
     }
 
     public void SetFeatureFlags( int flags )
@@ -121,6 +126,14 @@ public class SimpleEntity<TData> : DataObject<TData>, IEntity
     }
 
 
+    public IEntity GetRoot()
+    {
+        if( _parent == null )
+            return this;
+        return _parent.GetRoot();
+    }
+
+
     public bool CanAddSubEntity( IEntity entity )
     {
         return !this.SubEntities.Contains( entity );
@@ -133,6 +146,7 @@ public class SimpleEntity<TData> : DataObject<TData>, IEntity
         this.SubEntities.Add( entity );
     }
 
+    //TODO: Naming is bad. IsDead will return true even if Actor.Die() has yet to be called.
     public virtual bool IsDead()
     {
         var health = this.Statistics.GetStatistic( StatisticType.Health );

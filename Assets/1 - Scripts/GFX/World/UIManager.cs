@@ -390,7 +390,7 @@ public class UIManager : Singleton<UIManager>
         if( IsRequestEnding( req ) )
         {
             req.Cleanup();
-            _activeRequests.RemoveAt(0);
+            _activeRequests.Remove( req );
             DebugUIQueue();
         }
     }
@@ -426,7 +426,7 @@ public class UIManager : Singleton<UIManager>
         else if( _actionResults.Count > 0 )
         {
             _currentActionResult = _actionResults.Dequeue();
-            _currentActionResult.Start();
+              _currentActionResult.Start();
         }
     }
 

@@ -82,12 +82,12 @@ public class PlayerMoveAction : MoveAction
             int? cost = GameEngine.Instance.Board.GetDistance( actor.Position, moveTarget );
 
             //Spend the AP required to run this ability's action
-            SpendAP( actor, cost ?? 0);
+            SpendAP( actor, cost ?? 0); 
 
             ActionResult res = new MoveActionResult( actor, GameEngine.Instance.GfxBoard.GetPath( actor.Position, moveTarget ) );
             res.OnComplete = () => {
                 End();
-            };
+             };
             _state = ActorActionState.Executing;
             UIManager.Instance.ExecuteResult( res );
 

@@ -8,6 +8,7 @@ using System;
 using JetBrains.Annotations;
 using UnityEditor.PackageManager.Requests;
 using UnityEditor.Sprites;
+using System.Linq;
 
 [System.Serializable]
 public class PlayerAttackAction : AttackAction
@@ -119,7 +120,7 @@ public class PlayerAttackAction : AttackAction
         _state = ActorActionState.Started;
         GfxActor attackerAvatar = GameEngine.Instance.AvatarManager.GetAvatar( actor );
         DoAttack( attackerAvatar );
-        if( SequencePos == SequencePos.Start )
+        if( SequencePos == SequencePos.Start || SequencePos == SequencePos.All )
         {
             UIManager.Instance.ShowSideAMechInfo( actor, UIManager.MechInfoDisplayMode.Mini );
             if( actor.Target.GfxActor != null )
@@ -154,7 +155,7 @@ public class PlayerAttackAction : AttackAction
         AttackActionResult res = AttackHelper.CreateAttackActionResult( attackerAvatar, finalTarget );
         res.OnComplete = () =>
         {
-            if( this.SequencePos == SequencePos.End )
+            if( this.SequencePos == SequencePos.End || this.SequencePos == SequencePos.All )
             {
                 UIManager.Instance.ShowSideAMechInfo( attackerAvatar.Actor, UIManager.MechInfoDisplayMode.Full );
                 UIManager.Instance.HideSideBMechInfo();
@@ -164,10 +165,32 @@ public class PlayerAttackAction : AttackAction
         };
 
         AttackHelper.CalculateAttackDamage( res );
-        if( selectedTarget.GfxActor != null && selectedTarget.GfxActor.Actor.IsDead() )
+
+        int numKilled = 0;
+        int numHit = 0;
+        var changes = res.GetChanges();
+        var distinct = changes.Distinct( new StatisticChangeRootComp() ).Select( x => x.Statistic.Entity.GetRoot() as Actor );
+        numHit = distinct.Count();
+
+        distinct.Do( x => numKilled += AttackHelper.HandleDeadActor(x) ? 1 : 0 );
+
+        if( numKilled == numHit )
             OnKillTarget?.Invoke();
 
         RunAttack( res );
+    }
+
+    public class StatisticChangeRootComp : IEqualityComparer<StatisticChange>
+    {
+        public bool Equals( StatisticChange x, StatisticChange y )
+        {
+            return x.Statistic.Entity.GetRoot() == y.Statistic.Entity.GetRoot();
+        }
+
+        public int GetHashCode( StatisticChange obj )
+        {
+            return obj.GetHashCode();
+        }
     }
 
     public async void RunAttack( AttackActionResult res )

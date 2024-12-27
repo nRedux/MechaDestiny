@@ -5,12 +5,11 @@ using UnityEngine;
 public static class AttackHelper
 {
 
-    public static void HandleDeadActor( Actor actor )
+    public static bool HandleDeadActor( Actor actor )
     {
         if( actor.IsDead() )
-        {
-            actor.Die();
-        }
+            return actor.Die();
+        return false;
     }
 
     public static AttackActionResult CreateAttackActionResult( GfxActor attackerAvatar, SmartPoint target )

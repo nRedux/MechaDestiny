@@ -29,7 +29,6 @@ public class GameEngine : Singleton<GameEngine>
     public BoolWindow WalkableCells = new BoolWindow( DEFAULT_SIZE );
     public GameEventBase EndTurnButtonEvent;
 
-
     [HideInInspector]
     public GfxAvatarManager AvatarManager;
 
@@ -46,6 +45,13 @@ public class GameEngine : Singleton<GameEngine>
 
     private bool _initializationDone = false;
     private bool _doBlockerUpdate = false;
+
+
+    public bool Initialized
+    {
+        get => _initializationDone;
+    }
+
 
     public void UpdateBoardData()
     {

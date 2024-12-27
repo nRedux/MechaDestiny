@@ -11,7 +11,7 @@ using Debug = UnityEngine.Debug;
 
 public enum SequencePos
 {
-    Unset,
+    All,
     Start,
     Mid,
     End,
@@ -34,6 +34,7 @@ public class Actor : SimpleEntity<ActorAsset>
 
     private Team _team;
     private ActorActionHandler ActionHandler;
+    private bool _diePerformed = false;
 
 
     //Actor needs to be able to perform actions such as moving, attacking, executing abilities, etc.
@@ -48,9 +49,6 @@ public class Actor : SimpleEntity<ActorAsset>
     [JsonIgnore]
     public ActorAction ActiveAction { get => ActionHandler?.ActiveAction; }
 
-    public bool NewSequence { get; set; }
-
-    
 
     [JsonConstructor]
     public Actor() { }
@@ -140,14 +138,17 @@ public class Actor : SimpleEntity<ActorAsset>
         return this.ActionHandler.GetActionOptions( category );
     }
 
-    public void Die()
+    public bool Die()
     {
+        if( _diePerformed )
+            return false;
         if( OnKill != null )
             OnKill.Invoke();
 
         if( this._team == null )
-            return;
+            return true;
         this._team.RemoveMember( this );
+        return true;
     }
 
 

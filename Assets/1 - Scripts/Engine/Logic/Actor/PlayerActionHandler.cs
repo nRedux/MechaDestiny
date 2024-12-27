@@ -164,11 +164,14 @@ public class PlayerActionHandler : ActorActionHandler
                 var nextAction = _sequence[_sequenceIndex];
                 if( nextAction is PlayerAttackAction attack )
                 {
+
                     SequencePos seqPos = SequencePos.Start;
                     if( _sequenceIndex > 0 && _sequenceIndex < _sequence.Count - 1 )
                         seqPos = SequencePos.Mid;
                     else if( _sequenceIndex == _sequence.Count - 1 )
                         seqPos = SequencePos.End;
+                    if( _sequence.Count == 1 )
+                        seqPos = SequencePos.All;
                     attack.SequencePos = seqPos;
 
                     //If this kills the target, break out of the sequence so we don't fire on something dead.

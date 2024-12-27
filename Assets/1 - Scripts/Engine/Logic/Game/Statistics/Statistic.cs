@@ -57,6 +57,8 @@ public class Statistic
     [HideInInspector]
     public StatisticType Type;
 
+    public IEntity Entity; 
+
     [JsonIgnore]
     public int StartValue { get => _startValue; }
 
