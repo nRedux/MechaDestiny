@@ -129,7 +129,7 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     private void OnMechHealthChange( StatisticChange change )
     {
-        if( !_destroyed && change.Value < 0 )
+        if( !_destroyed && change.Value <= 0 )
         {
             _destroyed = true;
             OnActorKilled();
@@ -139,10 +139,10 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private void OnActorKilled()
     {
         //Actor died. Do death animation.
-        DoDeathAnimation();
+        StartCoroutine( DoDeathSequence() );
     } 
 
-    public void DoDeathAnimation()
+    public void PlayDeathAnimation()
     {
         Debug.Log("Do death animation");
         _animator.SetTrigger( TRIGGER_DEATH );
@@ -202,7 +202,8 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         }
         else
         {
-            DoDeathAnimation();
+            //Fallback
+            PlayDeathAnimation();
         }
 
         yield return new WaitForSeconds( .5f );

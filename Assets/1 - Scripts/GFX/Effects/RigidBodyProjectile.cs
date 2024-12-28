@@ -111,7 +111,7 @@ public class RigidBodyProjectile : ActionEffect, IGfxResult
     private void OnDestroy()
     {
         //UIDamageNumbers.Instance.CreatePop( this._statisticChange.Change, transform.position 
-        CoroutineUtils.BeginCoroutine( CheckDeadTarget() );
+        //CoroutineUtils.BeginCoroutine( CheckDeadTarget() );
 
         _statisticChanges.Do( x =>
         {
@@ -126,10 +126,5 @@ public class RigidBodyProjectile : ActionEffect, IGfxResult
         OnHitSurface.Invoke( EffectSurfaceType.Metal );
     }
 
-
-    private IEnumerator CheckDeadTarget()
-    {
-        yield return GameEngine.Instance.AvatarManager.DoDestroySequenceAllDeadActors();
-    }
 
 }

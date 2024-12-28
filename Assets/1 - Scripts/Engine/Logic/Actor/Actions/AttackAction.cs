@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography;
 using UnityEngine;
+using static PlayerAttackAction;
 
 public abstract class AttackAction : ActorAction
 {
@@ -72,6 +75,36 @@ public abstract class AttackAction : ActorAction
         return utility;
     }
 
+    protected void TestKilledTargets(AttackActionResult res)
+    {
+        int numKilled = 0;
+        int numHit = 0;
+        var changes = res.GetChanges();
+        var distinct = changes.Distinct( new StatisticChangeRootComp() ).Select( x => x.Statistic.Entity.GetRoot() as Actor );
+        numHit = distinct.Count();
+
+        distinct.Do( x => numKilled += AttackHelper.HandleDeadActor( x ) ? 1 : 0 );
+
+        if( numKilled == numHit )
+            OnKillTarget?.Invoke();
+    }
+
+    public System.Action OnKillTarget;
+
 
 
 }
+
+public class StatisticChangeRootComp : IEqualityComparer<StatisticChange>
+{
+    public bool Equals( StatisticChange x, StatisticChange y )
+    {
+        return x.Statistic.Entity.GetRoot() == y.Statistic.Entity.GetRoot();
+    }
+
+    public int GetHashCode( StatisticChange obj )
+    {
+        return obj.GetHashCode();
+    }
+}
+

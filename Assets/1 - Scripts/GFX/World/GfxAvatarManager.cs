@@ -115,6 +115,7 @@ public class GfxAvatarManager
         return _actors[actor];
     }
 
+    /*
     public IEnumerator DoDestroySequenceAllDeadActors()
     {
         yield return CoroutineUtils.Instance.StartCoroutine( DestroySequenceAllDeadActors() );
@@ -136,11 +137,15 @@ public class GfxAvatarManager
             if( avatar == null )
                 continue;
             lastDead = avatar;
-            CoroutineUtils.BeginCoroutine( lastDead.DoDeathSequence() );
+            
             if( i == dead.Count - 1 )
             {
                 yield return lastDead.DoDeathSequence();
             }
+            else
+            {
+                CoroutineUtils.BeginCoroutine( lastDead.DoDeathSequence() );
+            }
         }
-    }
+    }*/
 }

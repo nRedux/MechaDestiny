@@ -111,9 +111,6 @@ public class PlayerAttackAction : AttackAction
         BeginBehavior(game, actor);
     }
 
-    public System.Action OnKillTarget;
-
-
     public void BeginBehavior( Game game, Actor actor )
     {
         //Get valid move locations. Notify the UI we need to display a collection of move locations. Wait for UI to return a result. Execute move.
@@ -166,16 +163,7 @@ public class PlayerAttackAction : AttackAction
 
         AttackHelper.CalculateAttackDamage( res );
 
-        int numKilled = 0;
-        int numHit = 0;
-        var changes = res.GetChanges();
-        var distinct = changes.Distinct( new StatisticChangeRootComp() ).Select( x => x.Statistic.Entity.GetRoot() as Actor );
-        numHit = distinct.Count();
-
-        distinct.Do( x => numKilled += AttackHelper.HandleDeadActor(x) ? 1 : 0 );
-
-        if( numKilled == numHit )
-            OnKillTarget?.Invoke();
+        TestKilledTargets( res );
 
         RunAttack( res );
     }

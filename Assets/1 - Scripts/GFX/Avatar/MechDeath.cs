@@ -32,7 +32,7 @@ public class MechDeath : AwaitableBehavior
         yield return new WaitForSeconds( AfterExplosionsDelay );
 
         Debug.LogError("Death Anim!");
-        _actor.DoDeathAnimation();
+        _actor.PlayDeathAnimation();
         yield return new WaitForSeconds( AfterDeathAnimDelay );
     }
 
