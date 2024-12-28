@@ -3726,10 +3726,12 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  _moveOverlay:
+  _generalOverlay:
     CellPrefab: {fileID: 5566859940880004392, guid: 1715e59f6506bc94c8cf78d56886d017, type: 3}
     NumCells: 200
-  HighlightMaterial: {fileID: 2100000, guid: 66f2d739f2995b54dac2c92948de710a, type: 2}
+  _AOEOverlay:
+    CellPrefab: {fileID: 5566859940880004392, guid: 1715e59f6506bc94c8cf78d56886d017, type: 3}
+    NumCells: 200
   AttackCellColor: {r: 0.9490197, g: 0.5529412, b: 0.54509807, a: 1}
   MoveCellColor: {r: 0.41037738, g: 0.6381402, b: 1, a: 1}
 --- !u!4 &1293984247

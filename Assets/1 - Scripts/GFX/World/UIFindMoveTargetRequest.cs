@@ -26,8 +26,8 @@ public class UIFindMoveTargetRequest : UIRequest<Vector2Int, bool>
 
     public override void Cleanup()
     {
-        GameEngine.Instance.GfxBoard.UnHighlightCell( _hoveredCell );
-        GameEngine.Instance.GfxBoard.ClearMoveOverlay();
+        GameEngine.Instance.GfxBoard.GeneralOverlay.UnHighlightCell( _hoveredCell );
+        GameEngine.Instance.GfxBoard.GeneralOverlay.Clear();
         _goodHover = false;
         //Send callback for "hover ended"
         InvokeCellHoverEnd();
@@ -51,8 +51,8 @@ public class UIFindMoveTargetRequest : UIRequest<Vector2Int, bool>
     {
         base.Start();
 
-        GameEngine.Instance.GfxBoard.SetCellColor( GfxCellMode.Move );
-        GameEngine.Instance.GfxBoard.RenderCells( Cells, true );
+        GameEngine.Instance.GfxBoard.GeneralOverlay.SetCellColor( GfxCellMode.Move );
+        GameEngine.Instance.GfxBoard.GeneralOverlay.RenderCells( Cells, true );
     }
 
 
@@ -67,7 +67,7 @@ public class UIFindMoveTargetRequest : UIRequest<Vector2Int, bool>
         OnCellHover?.Invoke( (hover: true, cost: distance ?? 0, location: cell) );
         _goodHover = true;
         _hoveredCell = cell;
-        GameEngine.Instance.GfxBoard.HighlightCell( cell );
+        GameEngine.Instance.GfxBoard.GeneralOverlay.HighlightCell( cell );
     }
 
     
@@ -76,7 +76,7 @@ public class UIFindMoveTargetRequest : UIRequest<Vector2Int, bool>
     {
         InvokeCellHoverEnd();
         _goodHover = false;
-        GameEngine.Instance.GfxBoard.UnHighlightCell( cell );
+        GameEngine.Instance.GfxBoard.GeneralOverlay.UnHighlightCell( cell );
     }
 
 

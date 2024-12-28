@@ -113,7 +113,7 @@ public class PlayerEngageAction : AttackAction
     public void BeginBehavior( Game game, Actor actor )
     {
         //Get valid move locations. Notify the UI we need to display a collection of move locations. Wait for UI to return a result. Execute move.
-        _state = ActorActionState.Started;
+        _state = ActorActionState.Executing;
 
         var attackerMechEntity = actor.GetSubEntities()[0];
         var attackerMechData = attackerMechEntity as MechData;

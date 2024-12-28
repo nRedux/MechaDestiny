@@ -90,7 +90,7 @@ public class GridOverlay
     private Dictionary<Vector2, GridCell> _usedCells = new Dictionary<Vector2, GridCell>();
 
 
-    public void Initialize( Material highlightMaterial )
+    public void Initialize( )
     {
         for( int i = 0; i < NumCells; i++ )
         {
@@ -101,6 +101,18 @@ public class GridOverlay
         }
     }
 
+    public void SetCellColor( GfxCellMode mode )
+    {
+        switch( mode )
+        {
+            case GfxCellMode.Move:
+                SetGridColor( GameEngine.Instance.GfxBoard.MoveCellColor );
+                break;
+            case GfxCellMode.Attack:
+                SetGridColor( GameEngine.Instance.GfxBoard.AttackCellColor );
+                break;
+        }
+    }
 
     public void SetGridColor(Color color)
     {
@@ -117,7 +129,7 @@ public class GridOverlay
         GridCell taken = _available[_available.Count - 1];
         _available.RemoveAt( _available.Count - 1 );
         taken.GameObject.transform.position = position;
-        _usedCells.Add( new Vector2Int((int)position.x, (int) position.z), taken );
+        _usedCells.Add( new Vector2Int(Mathf.FloorToInt(position.x), Mathf.FloorToInt(position.z)), taken );
         return taken;
     }
 
@@ -130,7 +142,23 @@ public class GridOverlay
     }
 
 
-    public void ReturnAllCells()
+    public void HighlightCell( Vector2 location )
+    {
+        var cell = GetCellAtLocation( location );
+        if( cell == null ) return;
+        cell.Highlight = true;
+    }
+
+
+    public void UnHighlightCell( Vector2 location )
+    {
+        var cell = GetCellAtLocation( location );
+        if( cell == null ) return;
+        cell.Highlight = false;
+    }
+
+
+    public void Clear()
     {
         foreach( var cellEntry in _usedCells )
         {
@@ -140,5 +168,27 @@ public class GridOverlay
             _available.Add( cell );
         }
         _usedCells.Clear();
+    }
+
+    public void RenderCells( BoolWindow cells, bool highlightCenter = false, float tintShift = 0f )
+    {
+        Clear();
+        cells.Do( iter => {
+            if( iter.value == false )
+                return;
+
+            Vector2Int offs = cells.Center - iter.world;
+            float maxDist = ( cells.Width * .5f ) + ( cells.Height * .5f );
+            float manDist = Mathf.Abs( offs.x ) + Mathf.Abs( offs.y );
+
+            var renderCell = GetCell( cells.GetWorldPosition( iter.local.x, iter.local.y ) );
+            renderCell.Tint = Mathf.Max( (1f - manDist / maxDist ) + tintShift, 0f );
+            if( highlightCenter && iter.world == cells.Center )
+            {
+                renderCell.Color = Color.magenta;
+            }
+
+            renderCell.SetActive( true );
+        } );
     }
 }
