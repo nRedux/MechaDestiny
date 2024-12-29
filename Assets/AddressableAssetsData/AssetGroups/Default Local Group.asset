@@ -96,6 +96,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7e6659fff24d67543a0caa88c7bef944
+    m_Address: Assets/3 - Prefabs/Mech Components/Grenade Launcher.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8088efe2bbee2d34d88d319711641d90
     m_Address: Assets/2 - Assets/Data/Player Actor.asset
     m_ReadOnly: 0

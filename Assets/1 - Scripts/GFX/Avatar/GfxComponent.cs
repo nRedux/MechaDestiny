@@ -29,6 +29,11 @@ public class GfxComponent : MonoBehaviour
     /// </summary>
     public GameObjectReference ActionEffect;
 
+    /// <summary>
+    /// Graphics for aoe effect on cells
+    /// </summary>
+    public GameObject AOEGraphics;
+
     public ComponentDestroyEffect DestroyEffect;
 
     public Transform Root;
@@ -212,8 +217,11 @@ public class GfxComponent : MonoBehaviour
             return;
         }
 
+        result.AOEGraphics = AOEGraphics;
+
         effectInstance.transform.position = GetFirePosition();
         effectInstance.transform.forward = GetFireForward();
         effectInstance.Run( result, FirePoint );
     }
+
 }

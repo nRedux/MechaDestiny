@@ -45,11 +45,11 @@ MonoBehaviour:
         _startValue: 8
         Type: 0
     Model:
-      m_AssetGUID: b7c7f0be105776540adcfb3b44a65ebe
+      m_AssetGUID: 7e6659fff24d67543a0caa88c7bef944
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 
-      m_EditorAssetChanged: 0
+      m_EditorAssetChanged: 1
     Type: 4
     AttachmentType: {fileID: 11400000, guid: a76bed771f181044dbef4e4b9338e7b9, type: 2}
     Attachments: []

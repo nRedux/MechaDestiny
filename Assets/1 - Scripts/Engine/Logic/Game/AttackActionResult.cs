@@ -14,7 +14,10 @@ public class AttackActionResult : ActionResult
     public Transform _fireSource;
     public SequencePos SequencePosition = SequencePos.All;
 
-    ActionResultStatus _status = ActionResultStatus.Running;
+    public List<Vector2Int> AffectedAOECells = new List<Vector2Int>();
+    public GameObject AOEGraphics = null;
+
+    private ActionResultStatus _status = ActionResultStatus.Running;
 
 
     public AttackActionResult()
@@ -44,12 +47,6 @@ public class AttackActionResult : ActionResult
     public override async void Start()
     {
         bool camDone = false;
-
-        /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-         * TODO: Must make camera work with new system!!!
-         * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
-        //PS!!!!!!!!: The below method (StartAttackCamera) doesn't work out if attack actions executed immediately after one another. There doesn't end up bring a transition to listen for!
-
         if( this.SequencePosition == SequencePos.Start || this.SequencePosition == SequencePos.All )
         {
             Attacker.StartAttackCamera( () =>

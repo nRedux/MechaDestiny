@@ -113,6 +113,8 @@ public class RigidBodyProjectile : ActionEffect, IGfxResult
         //UIDamageNumbers.Instance.CreatePop( this._statisticChange.Change, transform.position 
         //CoroutineUtils.BeginCoroutine( CheckDeadTarget() );
 
+        CreateAOEGraphics();
+
         _statisticChanges.Do( x =>
         {
             var root = x.Statistic.Entity.GetRoot();
@@ -126,5 +128,30 @@ public class RigidBodyProjectile : ActionEffect, IGfxResult
         OnHitSurface.Invoke( EffectSurfaceType.Metal );
     }
 
+
+    private void CreateAOEGraphics()
+    {
+        if( ActionResult is AttackActionResult atkResult )
+        {
+            var cells = atkResult.AffectedAOECells;
+            for( int i = 0; i < cells.Count; ++i )
+            {
+                SpawnAOEEffect( cells[i], atkResult.AOEGraphics );
+            }
+        }
+    }
+
+    private void SpawnAOEEffect( Vector2Int position, GameObject effect )
+    {
+        if( effect == null )
+            return;
+        Vector3 cellLocation = new Vector3( position.x + .5f, 0, position.y + .5f );
+        RaycastHit hit;
+        if( GameUtils.RaycastGround( cellLocation, out hit ) ) 
+        {
+            var instance = Instantiate<GameObject>( effect );
+            instance.transform.position = hit.point;
+        }
+    }
 
 }

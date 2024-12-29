@@ -82,12 +82,12 @@ public static class AttackHelper
             List<Actor> actors = new List<Actor>();
             shapeWin.Do( x =>
             {
-                if( x.value )
-                {
-                    var actor = UIManager.Instance.GetActorAtCell( x.world );
-                    if( actor != null )
-                        actors.Add( actor );
-                }
+                if( !x.value )
+                    return;
+                var actor = UIManager.Instance.GetActorAtCell( x.world );
+                if( actor != null )
+                    actors.Add( actor );
+                res.AffectedAOECells.Add( x.world );
             } );
 
             Debug.Log( $"Found {actors.Count} actors" );

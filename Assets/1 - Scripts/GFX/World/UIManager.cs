@@ -265,15 +265,6 @@ public class UIManager : Singleton<UIManager>
     }
 
 
-    private void OnActorHoverStart( GfxActor obj )
-    {
-        var mech = obj.Actor.GetSubEntities()[0];
-        MechInfoPopup.AssignEntity( mech );
-        MechInfoPopup.PositionOver( obj.transform );
-        MechInfoPopup.Show();
-    }
-
-
     public bool ShowWeaponPicker( System.Action onPicked )
     {
         if( _activeActor == null )
@@ -311,6 +302,14 @@ public class UIManager : Singleton<UIManager>
     internal void HideActionPicker()
     {
         ActionPicker.Opt()?.Hide();
+    }
+
+
+    private void OnActorHoverStart( GfxActor obj )
+    {
+        MechInfoPopup.AssignEntity( obj.Actor );
+        MechInfoPopup.PositionOver( obj.transform );
+        MechInfoPopup.Show();
     }
 
 
