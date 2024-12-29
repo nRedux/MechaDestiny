@@ -104,7 +104,7 @@ public class GfxComponent : MonoBehaviour
         if( SkinnedMeshRenderer != null )
         {
             _materials = SkinnedMeshRenderer.materials;
-            _materialColors = _materials.Select( x => x.color ).ToArray();
+            _materialColors = _materials.Select( x => x.GetColor("_BaseColor") ).ToArray();
         }
     }
 
