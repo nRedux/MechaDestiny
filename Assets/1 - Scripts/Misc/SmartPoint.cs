@@ -51,7 +51,10 @@ public class SmartPoint
         get
         {
             if( HasTransform )
-                return Transform.position;
+            {
+                
+                return Coordinate = Transform.position;
+            }
             else
                 return Coordinate;
         }
@@ -77,12 +80,17 @@ public class SmartPoint
     public SmartPoint( Transform target )
     {
         this.Transform = target;
+        if( target != null )
+            this.Coordinate = target.position;
     }
 
     public SmartPoint( GfxActor target )
     {
+        if( target == null )
+            return;
         this.GfxActor = target;
         this.Transform = target.transform;
+        this.Coordinate = target.transform.position;
     }
 
 

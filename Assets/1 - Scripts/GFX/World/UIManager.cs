@@ -42,6 +42,8 @@ public class UIManager : Singleton<UIManager>
     public UIActionSequence ActionSequence;
     public UIActionSequenceItemHover ActionSequenceHover;
 
+    public UISimpleHealthbar SimpleHealthbar;
+
     public GameObject PlayerAttackUI;
 
     public CombatCamera CombatCamera;
@@ -55,8 +57,6 @@ public class UIManager : Singleton<UIManager>
     private List<IUIRequest> _pendingRequests = new List<IUIRequest>();
 
     private List<IUIRequest> _activeRequests = new List<IUIRequest>();
-
-
 
     private Queue<ActionResult> _actionResults = new Queue<ActionResult>();
     private ActionResult _currentActionResult = null;
@@ -97,6 +97,21 @@ public class UIManager : Singleton<UIManager>
         MoveHoverInfo.Opt()?.gameObject.SetActive( false );
         AttackHoverInfo.Opt()?.gameObject.SetActive( false );
     }
+
+    public void CreateSimpleHealthbar( Actor actor )
+    {
+        if( actor == null )
+            return;
+        if( SimpleHealthbar == null )
+            return;
+
+        var avatar = GameEngine.Instance.AvatarManager.GetAvatar( actor );
+        var shb = Instantiate( SimpleHealthbar );
+        shb.transform.SetParent( transform, false );
+        shb.Initialize();
+        shb.AssignEntity( actor, avatar.transform );
+    }
+
 
     public enum MechInfoDisplayMode
     {
@@ -262,6 +277,7 @@ public class UIManager : Singleton<UIManager>
     {
         //gfxActor.HoverStarted += OnActorHoverStart;
         //gfxActor.HoverEnded += OnActorHoverEnd;
+        CreateSimpleHealthbar( gfxActor.Actor );
     }
 
 

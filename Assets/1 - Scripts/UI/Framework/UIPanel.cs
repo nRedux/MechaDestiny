@@ -32,12 +32,22 @@ public class UIPanel : UIShowable
     
     protected virtual void Awake()
     {
+        Initialize();
+    }
+
+
+    /// <summary>
+    /// Must be called once it is a child of a canvas.
+    /// </summary>
+    public void Initialize()
+    {
         _canvas = GetComponentInParent<Canvas>();
+        if( _canvas == null )
+            return;
         _canvasRectTransform = _canvas.GetComponent<RectTransform>();
         _rectTransform = this.GetComponent<RectTransform>();
         _locStringRef = new LocalizedStringsRefresher( gameObject );
     }
-
 
     protected void RefreshLocalizedStrings()
     {

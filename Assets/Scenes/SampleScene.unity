@@ -503,6 +503,7 @@ MonoBehaviour:
   AttackHoverInfo: {fileID: 2212363}
   ActionSequence: {fileID: 1942094832182059317}
   ActionSequenceHover: {fileID: 1864104057}
+  SimpleHealthbar: {fileID: 2659035809440143372, guid: a722a52fb8602b44ab5de54724b6b9d1, type: 3}
   PlayerAttackUI: {fileID: 623591486}
   CombatCamera: {fileID: 0}
   SwitchWeaponInput: 
@@ -1948,8 +1949,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TeamColors:
-  - {r: 1, g: 0, b: 0, a: 1}
   - {r: 0, g: 0, b: 1, a: 1}
+  - {r: 1, g: 0, b: 0, a: 1}
   TestActor1:
     m_AssetGUID: 8088efe2bbee2d34d88d319711641d90
     m_SubObjectName: 
