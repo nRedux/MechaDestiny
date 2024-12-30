@@ -15,14 +15,6 @@ public enum ResultType
 }
 
 
-public enum ActionType
-{
-    Move = 0,
-    Attack = 100,
-    CounterAttack = 200,
-    End = 300
-}
-
 public enum CanStartActionResult
 {
     Success,
@@ -30,12 +22,14 @@ public enum CanStartActionResult
     NoWeapon
 }
 
+
 public enum ActorActionState
 {
     Started,
     Executing,
     Finished
 }
+
 
 public enum ActionCategory
 {
@@ -53,7 +47,6 @@ public abstract class ActorAction
     public LocalizedString DisplayName;
     public LocalizedString Description;
 
-    public virtual ActionType ActionPhase { get; }
     public virtual int BoardRange { get; }
     public virtual void Start( Game game, Actor actor ) { }
     public virtual void Tick() { }

@@ -25,8 +25,6 @@ public class AIAttackAction : AttackAction
     public override int BoardRange => Range;
 
 
-    public override ActionType ActionPhase => ActionType.Attack;
-
 
     [OnDeserialized]
     public void OnDeserialize( StreamingContext context )

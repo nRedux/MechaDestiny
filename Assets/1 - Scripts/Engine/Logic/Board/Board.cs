@@ -115,16 +115,13 @@ public class Board
             {
                 _scratchBoard.Do( cell =>
                 {
-                    var attacks = member.GetActionsNotOfType( ActionType.Move );
+                    var attacks = member.GetActionsOfType<AttackAction>();
 
                     attacks.Do( action =>
                     {
-                        if( action is AttackAction attack )
-                        {
-                            var enemyAttacksHere = attack.GetEffectUtility( game, member, cell.world );
+                        var enemyAttacksHere = action.GetEffectUtility( game, member, cell.world );
 
-                            _scratchBoard[cell.local] -= enemyAttacksHere;
-                        }
+                        _scratchBoard[cell.local] -= enemyAttacksHere;   
                     } );
                 } );
             } );

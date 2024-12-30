@@ -8,6 +8,9 @@ using System;
 using FMOD;
 
 using Debug = UnityEngine.Debug;
+using static MoonSharp.Interpreter.Debugging.DebuggerAction;
+using Unity.VisualScripting;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 
 public enum SequencePos
 {
@@ -89,15 +92,15 @@ public class Actor : SimpleEntity<ActorAsset>
     }
 
 
-    public List<ActorAction> GetActionsOfType( ActionType type )
+    public List<ActionType> GetActionsOfType<ActionType>() where ActionType : ActorAction
     {
-        return Actions.Where( x => x.ActionPhase == type ).ToList();
+        return Actions.Where( x => typeof(ActionType).IsAssignableFrom( x.GetType() ) ).Select( x => x as ActionType ).ToList();
     }
 
 
-    public List<ActorAction> GetActionsNotOfType( ActionType type )
+    public List<ActionType> GetAIActionsNotOfType<ActionType>() where ActionType : ActorAction
     {
-        return Actions.Where( x => x.ActionPhase != type ).ToList();
+        return Actions.Where( x => !typeof( ActionType ).IsAssignableFrom( x.GetType() ) ).Select( x => x as ActionType ).ToList();
     }
 
 

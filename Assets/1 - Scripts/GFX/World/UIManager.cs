@@ -48,6 +48,8 @@ public class UIManager : Singleton<UIManager>
 
     public CombatCamera CombatCamera;
 
+    public GameObject SpawnedObjectsRoot;
+
     public string SwitchWeaponInput = KeyCode.Q.ToString();
 
     //public UIMechInfo 
@@ -107,7 +109,7 @@ public class UIManager : Singleton<UIManager>
 
         var avatar = GameEngine.Instance.AvatarManager.GetAvatar( actor );
         var shb = Instantiate( SimpleHealthbar );
-        shb.transform.SetParent( transform, false );
+        shb.transform.SetParent( SpawnedObjectsRoot.transform ?? transform, false );
         shb.Initialize();
         shb.AssignEntity( actor, avatar.transform );
     }

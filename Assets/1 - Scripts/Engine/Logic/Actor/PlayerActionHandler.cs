@@ -33,7 +33,7 @@ public class PlayerActionHandler : ActorActionHandler
     {
         _forceEndActorTurn = false;
         _activeAction = null;
-        _moveAction = _actor.GetActionsOfType( ActionType.Move ).FirstOrDefault() as MoveAction;
+        _moveAction = _actor.GetActionsOfType<MoveAction>().FirstOrDefault();
     }
 
 

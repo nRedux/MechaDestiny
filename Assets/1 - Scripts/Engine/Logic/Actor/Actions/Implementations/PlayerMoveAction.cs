@@ -31,8 +31,6 @@ public class PlayerMoveAction : MoveAction
 
     public override int BoardRange => Range;
 
-    public override ActionType ActionPhase => ActionType.Move;
-
 
     [OnDeserialized]
     public void OnDeserialize( StreamingContext context )

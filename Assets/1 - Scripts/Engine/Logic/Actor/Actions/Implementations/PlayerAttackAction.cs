@@ -24,7 +24,6 @@ public class PlayerAttackAction : AttackAction
     private UIPickWeaponRequest _weaponPickRequest = null;
 
     public override int BoardRange => Range;
-    public override ActionType ActionPhase => ActionType.Attack;
 
 
     public override ActorActionState State()

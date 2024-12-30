@@ -34,7 +34,7 @@ public class AIMoveAction : MoveAction
 
     public override int BoardRange => Range;
 
-    public override ActionType ActionPhase => ActionType.Move;
+
 
     private ActorActionState _state;
 
@@ -56,7 +56,7 @@ public class AIMoveAction : MoveAction
 
     private void CalculateAttackValue( Game game, Actor actor, FloatWindow utility )
     {
-        var actions = actor.GetActionsNotOfType( ActionType.Move );
+        var actions = actor.GetActionsOfType<AttackAction>();
         if( actions.Count == 0 )
             return;
 

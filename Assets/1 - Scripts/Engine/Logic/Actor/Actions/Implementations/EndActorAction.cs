@@ -14,9 +14,6 @@ public class EndActorAction : ActorAction
     private ActorActionState _state;
 
 
-    public override ActionType ActionPhase => ActionType.End;
-
-
     [OnDeserialized]
     public void OnDeserialize( StreamingContext context )
     {
