@@ -34,7 +34,7 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
 
     public override void Run()
     {
-        if( _requestingActor.GetMechData().ActiveWeapon.IsAOE() )
+        if( _requestingActor.ActiveWeapon.IsAOE() )
         {
             TryGetUserSelectedCell_AOE();
         }
@@ -137,10 +137,10 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
 
     private void RenderAOE( Vector2Int cell ) 
     {
-        if( !_requestingActor.GetMechData().ActiveWeapon.IsAOE() )
+        if( !_requestingActor.ActiveWeapon.IsAOE() )
             return;
 
-        var shape = _requestingActor.GetMechData().ActiveWeapon.AOEShape;
+        var shape = _requestingActor.ActiveWeapon.AOEShape;
         BoolWindow win = shape.NewBoolWindow();
         win.MoveCenter( cell );
         GameEngine.Instance.GfxBoard.AOEOverlay.RenderCells( win, false, tintShift: .2f );

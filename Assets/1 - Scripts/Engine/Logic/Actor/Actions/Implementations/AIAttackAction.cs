@@ -43,7 +43,7 @@ public class AIAttackAction : AttackAction
 
     private Vector2Int GetAOETarget( Game game, Actor actor, int range )
     {
-        var activeWeapon = actor.GetMechData().ActiveWeapon;
+        var activeWeapon = actor.ActiveWeapon;
         if( activeWeapon == null || !activeWeapon.IsAOE() )
             return new Vector2Int();
 
@@ -103,7 +103,7 @@ public class AIAttackAction : AttackAction
     {
         base.Start( game, actor );
 
-        var activeWep = actor.GetMechData().ActiveWeapon;
+        var activeWep = actor.ActiveWeapon;
         var range = activeWep.GetStatistic( StatisticType.Range ).Value;
 
 

@@ -37,9 +37,14 @@ public abstract class AttackAction : ActorAction
     }
 
 
+
     public virtual float GetEffectUtility( Game game, Actor actor, Vector2Int coord, int range )
     {
-        FloatWindow rangeWindow = new FloatWindow( range * 2 );
+        var mech = actor.GetMechData();
+        var wep = mech.ActiveWeapon;
+        var wepRange = actor.ActiveWeapon.GetStatisticValue( StatisticType.Range );
+
+        FloatWindow rangeWindow = new FloatWindow( wepRange * 2 );
         rangeWindow.MoveCenter( coord );
         float utility = 0f;
 
@@ -48,25 +53,29 @@ public abstract class AttackAction : ActorAction
         if( !game.Board.IsCoordInBoard( coord ) )
             return 0f;
 
-        //TODO: This looks weird. I don't know if I'm doing early outs at the right time. Reevaluate.
+        //Loop over every cell
         rangeWindow.Do( iter =>
         {
+            //The cell on the board? If not bail
+            if( !game.Board.IsCoordInBoard( iter.world ) )
+                return;
+
+            //loop over other teams
             otherTeams.Do( team =>
             {
+                //Loop over each member of team
                 team.GetMembers().Do( member =>
                 {
-                    //The cell on the board?
-                    if( !game.Board.IsCoordInBoard( iter.world ) )
-                        return;
-
-                    int manhattanDistance = Board.GetManhattanDistance( coord, member.Position );
-                    if( member.Position == iter.world && manhattanDistance <= range )
+                    int manhattanDistance = Board.GetManhattanDistance( iter.world, member.Position );
+                    if( member.Position == iter.world && manhattanDistance <= wepRange )
                     {
+                        var path = game.Board.GetPath( iter.world, coord );
+                        if( path == null || path.Count > wepRange )
+                            return;
+
+                        float losBoost = Board.LOS_CanSeeTo( iter.world, member.Position ) ? 1.1f : 0;
                         //Can we see the enemy from the cell?
-                        if( Board.LOS_CanSeeTo( iter.world, member.Position ) )
-                            utility += manhattanDistance * 1.1f;
-                        else
-                            utility += manhattanDistance;
+                        utility += ( 1f - ( path.Count / wepRange ) ) * losBoost;
                     }
                 } );
             } );

@@ -46,7 +46,7 @@ public class AIMoveAction : MoveAction
         utility.MoveCenter( actor.Position );
 
         CalculateAttackValue( game, actor, utility );
-        CalculatePursueValue( game, actor, utility );
+        //CalculatePursueValue( game, actor, utility );
         //Not clear on what would be good threat values.
         //CalculateThreatValue( game, actor, utility );
 
@@ -67,7 +67,6 @@ public class AIMoveAction : MoveAction
                 //Get all cells the action can effect
                 if( action is AttackAction aiAction )
                 {
-                    float distance = actor.Position.ManhattanDistance( iter.world );
                     utility[iter.local] += aiAction.GetEffectUtility( game, actor, iter.world, Range );
                 }
             }

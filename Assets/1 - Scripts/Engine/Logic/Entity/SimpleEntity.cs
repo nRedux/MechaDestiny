@@ -207,6 +207,14 @@ public class SimpleEntity<TData> : DataObject<TData>, IEntity
         return Statistics.GetStatistic( type );
     }
 
+    public int GetStatisticValue( StatisticType type )
+    {
+        var stat = Statistics.GetStatistic( type );
+        if( stat == null )
+            return 0;
+        return stat.Value;
+    }
+
     public virtual void OnStatisticChanged( StatisticType type, Statistic statistic )
     {
 

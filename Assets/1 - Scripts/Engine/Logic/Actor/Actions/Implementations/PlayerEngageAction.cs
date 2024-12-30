@@ -148,7 +148,7 @@ public class PlayerEngageAction : AttackAction
                 return;
             }
 
-            if( attackerAvatar.Actor.GetMechData().ActiveWeapon.IsAOE() )
+            if( attackerAvatar.Actor.ActiveWeapon.IsAOE() )
             {
                 var location = (Vector2Int) selectedTarget;
 

@@ -506,6 +506,7 @@ MonoBehaviour:
   SimpleHealthbar: {fileID: 2659035809440143372, guid: a722a52fb8602b44ab5de54724b6b9d1, type: 3}
   PlayerAttackUI: {fileID: 623591486}
   CombatCamera: {fileID: 0}
+  SpawnedObjectsRoot: {fileID: 0}
   SwitchWeaponInput: 
 --- !u!1 &75894870
 GameObject:

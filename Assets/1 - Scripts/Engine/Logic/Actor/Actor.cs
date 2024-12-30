@@ -75,6 +75,14 @@ public class Actor : SimpleEntity<ActorAsset>
         ActionHandler = isPlayer ? new PlayerActionHandler( this ) : new AIActionHandler( this );
     }
 
+    [JsonIgnore]
+    public MechComponentData ActiveWeapon
+    {
+        get
+        {
+            return GetMechData().ActiveWeapon;
+        }
+    }
 
     public MechData GetMechData()
     {
