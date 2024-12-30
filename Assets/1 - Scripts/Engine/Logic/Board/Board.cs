@@ -107,19 +107,24 @@ public class Board
         var otherTeams = game.GetOtherTeams( actor.GetTeamID() );
         ClearScratchBoard();
 
-
         //Ugly deep nesting. Break up into multiple passes.
         otherTeams.Do( team =>
         {
             team.GetMembers().Do( member =>
             {
+                //TODO: This is UGLY and we don't know for sure if there is an active weapon - really need a more defined process for knowing there will be
+                var mech = member.GetMechData();
+                if( mech.ActiveWeapon == null )
+                    return;
+                var range = mech.ActiveWeapon.GetStatistic( StatisticType.Range );
+
                 _scratchBoard.Do( cell =>
                 {
                     var attacks = member.GetActionsOfType<AttackAction>();
 
                     attacks.Do( action =>
                     {
-                        var enemyAttacksHere = action.GetEffectUtility( game, member, cell.world );
+                        var enemyAttacksHere = action.GetEffectUtility( game, member, cell.world, range.Value );
 
                         _scratchBoard[cell.local] -= enemyAttacksHere;   
                     } );

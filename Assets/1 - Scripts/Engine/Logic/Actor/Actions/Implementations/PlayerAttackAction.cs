@@ -164,7 +164,8 @@ public class PlayerAttackAction : AttackAction
 
         TestKilledTargets( res );
 
-        RunAttack( res );
+        res.SequencePosition = this.SequencePos;
+        UIManager.Instance.ExecuteResult( res );
     }
 
     public class StatisticChangeRootComp : IEqualityComparer<StatisticChange>
@@ -182,8 +183,7 @@ public class PlayerAttackAction : AttackAction
 
     public async void RunAttack( AttackActionResult res )
     {
-        res.SequencePosition = this.SequencePos;
-        UIManager.Instance.ExecuteResult( res );
+
     }
 
 

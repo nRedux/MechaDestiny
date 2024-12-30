@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using UnityEngine;
 using Newtonsoft.Json;
+using System.Drawing;
+using System.Linq;
 
 [System.Serializable]
 public class AIAttackAction : AttackAction
 {
-    public int Range = 3;
     public int Damage = 1;
 
     private Game _game;
@@ -22,14 +23,9 @@ public class AIAttackAction : AttackAction
     private ActorActionState _state;
 
 
-    public override int BoardRange => Range;
-
-
-
     [OnDeserialized]
     public void OnDeserialize( StreamingContext context )
     {
-        _attackOptions = new BoolWindow( Range * 2 );
     }
 
 
@@ -45,16 +41,80 @@ public class AIAttackAction : AttackAction
     }
 
 
+    private Vector2Int GetAOETarget( Game game, Actor actor, int range )
+    {
+        var activeWeapon = actor.GetMechData().ActiveWeapon;
+        if( activeWeapon == null || !activeWeapon.IsAOE() )
+            return new Vector2Int();
+
+        FloatWindow rangeWindow = new FloatWindow( range * 2 );
+        rangeWindow.MoveCenter( actor.Position );
+
+        var others = game.GetOtherTeams( actor.GetTeamID() );
+
+        FloatWindow countsWindow = new FloatWindow( game.Board.Width, game.Board.Height );
+
+        BoolWindow AOEWin = activeWeapon.AOEShape.NewBoolWindow();
+        //Find cell targets
+        rangeWindow.Do( iter =>
+        {
+
+            AOEWin.MoveCenter( iter.world );
+
+            //At each location we want any enemies on that cell
+            others.Do( team =>
+            {
+                var members = team.GetMembers();
+                AOEWin.Do( aoeIter =>
+                {
+
+                    members.Do( member =>
+                    {
+                        if( !game.Board.IsCoordInBoard( aoeIter.world ) )
+                            return;
+                        if( member.Position == aoeIter.world )
+                        {
+                            countsWindow[aoeIter.world] += 1;
+                        }
+                    } );
+
+                } );
+
+            } );
+
+        }, range );
+
+        float highest = -1;
+        Vector2Int cell = new Vector2Int();
+        countsWindow.Do( x =>
+        {
+            if( x.value > highest )
+            {
+                highest = x.value;
+                cell = x.world;
+            }
+        } );
+
+        return cell;
+    }
+
+
     public override void Start( Game game, Actor actor )
     {
         base.Start( game, actor );
-        //Get valid move locations. Notify the UI we need to display a collection of move locations. Wait for UI to return a result. Execute move.
+
+        var activeWep = actor.GetMechData().ActiveWeapon;
+        var range = activeWep.GetStatistic( StatisticType.Range ).Value;
+
+
         _game = game;
         _actor = actor;
         _state = ActorActionState.Started;
 
+        _attackOptions = new BoolWindow( range * 2 );
+
         _attackOptions.MoveCenter( actor.Position );
-        _game.Board.GetCellsManhattan( Range, _attackOptions );
+        _game.Board.GetCellsManhattan( range, _attackOptions );
         Board.LOS_PruneBoolWindow( _attackOptions, actor.Position );
 
         GfxActor attackerAvatar = GameEngine.Instance.AvatarManager.GetAvatar( actor );
@@ -66,37 +126,54 @@ public class AIAttackAction : AttackAction
             return;
         }
 
-        var targetActor = game.GetRandomMemberFromOtherTeams( thisTeamID: actor.GetTeamID(), validLocations: _attackOptions );
-        //Early out? No target.
-        if( targetActor == null )
+        //Final target location
+        SmartPoint targetLocation = null;
+
+        //The actor targeted. Will have a value below if weapon is not AOE
+        Actor targetActor = null;
+        GfxActor targetAvatar = null;
+        if( activeWep.IsAOE() )
         {
-            End();
-            Debug.Log( "No target for AI to attack" );
-            return;
+            Vector2Int cellTarget = GetAOETarget( game, actor, range );
+            Vector3 worldTarget = new Vector3( cellTarget.x, 0f, cellTarget.y );
+            targetLocation = new SmartPoint( worldTarget );
+        }
+        else
+        {
+            targetActor = game.GetRandomMemberFromOtherTeams( thisTeamID: actor.GetTeamID(), validLocations: _attackOptions );
+            //Early out? No target.
+            if( targetActor == null )
+            {
+                End();
+                Debug.Log( "No target for AI to attack" );
+                return;
+            }
+
+            targetAvatar = GameEngine.Instance.AvatarManager.GetAvatar( targetActor );
+            targetLocation = new SmartPoint( targetAvatar );
         }
 
-        var targetAvatar = GameEngine.Instance.AvatarManager.GetAvatar( targetActor );
 
-        
         _state = ActorActionState.Executing;
-        AttackActionResult res = AttackHelper.CreateAttackActionResult( attackerAvatar, new SmartPoint( targetAvatar ) );
+        AttackActionResult res = AttackHelper.CreateAttackActionResult( attackerAvatar, targetLocation );
 
         UIManager.Instance.ShowSideAMechInfo( actor, UIManager.MechInfoDisplayMode.Mini );
-        UIManager.Instance.ShowSideBMechInfo( targetActor, UIManager.MechInfoDisplayMode.Mini );
+        if( !activeWep.IsAOE() )
+            UIManager.Instance.ShowSideBMechInfo( targetActor, UIManager.MechInfoDisplayMode.Mini );
+
         res.OnComplete = () => {
             UIManager.Instance.HideSideBMechInfo();
-            UIManager.Instance.ShowSideAMechInfo( actor, UIManager.MechInfoDisplayMode.Full );
+            if( !activeWep.IsAOE() )
+                UIManager.Instance.ShowSideAMechInfo( actor, UIManager.MechInfoDisplayMode.Full );
             End();
         };
 
         AttackHelper.CalculateAttackDamage( res );
 
-        //TODO: This should be checked after the attack completes. Right now it's going to make the sequence look wrong. 
-        AttackHelper.HandleDeadActor( targetActor );
+        TestKilledTargets( res );
 
         UIManager.Instance.ExecuteResult( res );
     }
-
 
 
     public override void TurnEnded()
@@ -105,9 +182,9 @@ public class AIAttackAction : AttackAction
     }
 
 
-    public override float GetEffectUtility( Game game, Actor actor, Vector2Int coord )
+    public override float GetEffectUtility( Game game, Actor actor, Vector2Int coord, int range )
     {
-        FloatWindow rangeWindow = new FloatWindow( Range * 2 );
+        FloatWindow rangeWindow = new FloatWindow( range * 2 );
         rangeWindow.MoveCenter( coord );
         float utility = 0f;
 
@@ -125,13 +202,13 @@ public class AIAttackAction : AttackAction
                         if( !game.Board.IsCoordInBoard( coord ) )
                             return;
                         int manhattanDistance = Board.GetManhattanDistance( coord, member.Position );
-                        if( member.Position == iter.world && manhattanDistance <= Range )
+                        if( member.Position == iter.world && manhattanDistance <= range )
                         {
                             utility += manhattanDistance;
                         }
                     } );
                 } );
-            }, Range );
+            }, range );
         }
         else
         {
@@ -142,7 +219,7 @@ public class AIAttackAction : AttackAction
                     if( !game.Board.IsCoordInBoard( coord ) )
                         return;
                     int manhattanDistance = Board.GetManhattanDistance( coord, member.Position );
-                    if( manhattanDistance <= Range )
+                    if( manhattanDistance <= range )
                     {
                         utility += 1f;
                     }

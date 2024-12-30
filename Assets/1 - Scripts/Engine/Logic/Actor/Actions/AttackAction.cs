@@ -37,9 +37,9 @@ public abstract class AttackAction : ActorAction
     }
 
 
-    public virtual float GetEffectUtility( Game game, Actor actor, Vector2Int coord )
+    public virtual float GetEffectUtility( Game game, Actor actor, Vector2Int coord, int range )
     {
-        FloatWindow rangeWindow = new FloatWindow( BoardRange * 2 );
+        FloatWindow rangeWindow = new FloatWindow( range * 2 );
         rangeWindow.MoveCenter( coord );
         float utility = 0f;
 
@@ -60,7 +60,7 @@ public abstract class AttackAction : ActorAction
                         return;
 
                     int manhattanDistance = Board.GetManhattanDistance( coord, member.Position );
-                    if( member.Position == iter.world && manhattanDistance <= BoardRange )
+                    if( member.Position == iter.world && manhattanDistance <= range )
                     {
                         //Can we see the enemy from the cell?
                         if( Board.LOS_CanSeeTo( iter.world, member.Position ) )
@@ -70,7 +70,7 @@ public abstract class AttackAction : ActorAction
                     }
                 } );
             } );
-        }, BoardRange );
+        }, range );
        
         return utility;
     }

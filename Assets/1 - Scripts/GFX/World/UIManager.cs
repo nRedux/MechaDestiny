@@ -87,6 +87,7 @@ public class UIManager : Singleton<UIManager>
             CombatCamera = FindFirstObjectByType<CombatCamera>( FindObjectsInactive.Include );
     }
 
+
     private void Start()
     {
         MechInfoPopup.Opt()?.Hide();
@@ -100,6 +101,7 @@ public class UIManager : Singleton<UIManager>
         AttackHoverInfo.Opt()?.gameObject.SetActive( false );
     }
 
+
     public void CreateSimpleHealthbar( Actor actor )
     {
         if( actor == null )
@@ -109,7 +111,7 @@ public class UIManager : Singleton<UIManager>
 
         var avatar = GameEngine.Instance.AvatarManager.GetAvatar( actor );
         var shb = Instantiate( SimpleHealthbar );
-        shb.transform.SetParent( SpawnedObjectsRoot.transform ?? transform, false );
+        shb.transform.SetParent( SpawnedObjectsRoot.Opt()?.transform ?? transform, false );
         shb.Initialize();
         shb.AssignEntity( actor, avatar.transform );
     }
@@ -120,6 +122,7 @@ public class UIManager : Singleton<UIManager>
         Mini,
         Full
     }
+
 
     public void ShowSideAMechInfo( Actor actor, MechInfoDisplayMode mode)
     {
@@ -158,6 +161,7 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
+
     public void HideSideAMechInfo()
     {
         SideA_FocusMechInfo.Opt()?.Hide();
@@ -171,11 +175,13 @@ public class UIManager : Singleton<UIManager>
         SideB_FocusMechInfoFull.Opt()?.Hide();
     }
 
+
     public void HideMechInfos()
     {
         HideSideAMechInfo();
         HideSideBMechInfo();
     }
+
 
     public void ShowActionSequence( Actor actor, System.Action onClick = null )
     {
@@ -184,6 +190,7 @@ public class UIManager : Singleton<UIManager>
         ActionSequence.OnUIFire += onClick;
         ActionSequence.Show( actor );
     }
+
 
     public void HideActionSequence() 
     {
@@ -197,12 +204,14 @@ public class UIManager : Singleton<UIManager>
         TeardownListeners();
     }
 
+
     private void SetupListeners()
     {
         Events.Instance.AddListener<GameOverEvent>( OnGameOverEvent );
         Events.Instance.AddListener<CurrentActorEvent>( OnCurrentActorEvent );
         Events.Instance.AddListener<GameTurnChangeEvent>( OnGameTurnChange );
     }
+
 
     private void TeardownListeners()
     {
@@ -247,12 +256,14 @@ public class UIManager : Singleton<UIManager>
         CoroutineUtils.BeginCoroutine( DoCombatEndShow(e) );
     }
 
+
     public IEnumerator DoCombatEndShow( GameOverEvent e )
     {
         yield return new WaitUntil( ResultQueueEmpty );
         CombatEndUI.Opt()?.PrepareForShow( e.Winner );
         CombatEndUI.Opt()?.Show();
     }
+
 
     private void Update()
     {
@@ -263,6 +274,7 @@ public class UIManager : Singleton<UIManager>
         DebugRequests();
 #endif
     }
+
 
     private void DebugRequests()
     {

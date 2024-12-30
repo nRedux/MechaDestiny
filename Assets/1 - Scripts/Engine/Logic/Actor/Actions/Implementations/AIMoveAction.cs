@@ -68,7 +68,7 @@ public class AIMoveAction : MoveAction
                 if( action is AttackAction aiAction )
                 {
                     float distance = actor.Position.ManhattanDistance( iter.world );
-                    utility[iter.local] += aiAction.GetEffectUtility( game, actor, iter.world );
+                    utility[iter.local] += aiAction.GetEffectUtility( game, actor, iter.world, Range );
                 }
             }
         },
