@@ -64,7 +64,7 @@ public class UIFindMoveTargetRequest : UIRequest<Vector2Int, bool>
     public override void CellHoverStart( Vector2Int cell )
     {
         int? distance = GameEngine.Instance.Board.GetDistance( _actor.Position, cell );
-        OnCellHover?.Invoke( (hover: true, cost: distance ?? 0, location: cell) );
+        OnCellHover?.Invoke( (hover: true, cost: distance ?? -1, location: cell) );
         _goodHover = true;
         _hoveredCell = cell;
         GameEngine.Instance.GfxBoard.GeneralOverlay.HighlightCell( cell );

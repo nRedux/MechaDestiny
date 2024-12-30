@@ -98,6 +98,8 @@ public class PlayerMoveAction : MoveAction
         _uiRequest = new UIFindMoveTargetRequest( actor, _moveOptionsWindow, success, failure, cancel );
         _uiRequest.OnCellHover += ( x ) =>
         {
+            if( x.cost > _range || x.cost < 0 )
+                return;
             if( x.hover )
                 UIManager.Instance.MoveHoverInfo?.Show( x.location, x.cost, actor.GetStatistic( StatisticType.AbilityPoints )?.Value ?? 0 );
             else
