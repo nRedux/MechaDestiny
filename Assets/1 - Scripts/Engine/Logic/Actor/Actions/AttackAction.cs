@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using Unity.VisualScripting;
 using UnityEngine;
 using static PlayerAttackAction;
 
@@ -37,8 +38,8 @@ public abstract class AttackAction : ActorAction
     }
 
 
-
-    public virtual float GetEffectUtility( Game game, Actor actor, Vector2Int coord, int range )
+    //Gets how much the AI thinks being at a given coordinate will be good for attacking.
+    public virtual float GetUtilityAtLocation( Game game, Actor actor, Vector2Int coord, int range )
     {
         var mech = actor.GetMechData();
         var wep = mech.ActiveWeapon;
@@ -53,32 +54,35 @@ public abstract class AttackAction : ActorAction
         if( !game.Board.IsCoordInBoard( coord ) )
             return 0f;
 
-        //Loop over every cell
+        //Loop over every cell in attack window
         rangeWindow.Do( iter =>
         {
             //The cell on the board? If not bail
             if( !game.Board.IsCoordInBoard( iter.world ) )
                 return;
 
-            //loop over other teams
-            otherTeams.Do( team =>
-            {
-                //Loop over each member of team
-                team.GetMembers().Do( member =>
-                {
-                    int manhattanDistance = Board.GetManhattanDistance( iter.world, member.Position );
-                    if( member.Position == iter.world && manhattanDistance <= wepRange )
-                    {
-                        var path = game.Board.GetPath( iter.world, coord );
-                        if( path == null || path.Count > wepRange )
-                            return;
+            var actorAtCell = UIManager.Instance.GetActorAtCell( iter.world );
+            if( actorAtCell == null || actorAtCell.GetTeamID() == actor.GetTeamID() )
+                return;
 
-                        float losBoost = Board.LOS_CanSeeTo( iter.world, member.Position ) ? 1.1f : 0;
-                        //Can we see the enemy from the cell?
-                        utility += ( 1f - ( path.Count / wepRange ) ) * losBoost;
-                    }
-                } );
-            } );
+            int manhattanDistance = Board.GetManhattanDistance( iter.world, actorAtCell.Position );
+
+            //If in range to attack
+            if( manhattanDistance <= wepRange )
+            {
+                //Can we attack from this location?
+                if( Board.LOS_CanSeeTo( iter.world, actor.Position ) )
+                {
+                    //Can see to attack
+                    utility += 1f;
+                }
+                else
+                {
+                    //Can't see to attack
+                    utility += .5f;
+                }
+            }
+
         }, range );
        
         return utility;

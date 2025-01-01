@@ -37,9 +37,9 @@ public class MechData: SimpleEntity<MechAsset>
     { 
         get
         {
-            if( _activeWeapon != null && _activeWeapon.IsBroken() )
+            if( _activeWeapon == null || _activeWeapon.IsBroken() )
             {
-                List<IEntity> weps = FindWeaponEntities( this );
+                List<IEntity> weps = FindWeaponEntities();
                 ActiveWeapon = weps.FirstOrDefault() as MechComponentData;
             }
             return _activeWeapon;
@@ -73,7 +73,7 @@ public class MechData: SimpleEntity<MechAsset>
 
         ComponentData = data.NonNull().ToList();
 
-        ActiveWeapon = FindWeaponEntities( this ).FirstOrDefault() as MechComponentData;
+        ActiveWeapon = FindWeaponEntities().FirstOrDefault() as MechComponentData;
         _initialized = true;
     }
 

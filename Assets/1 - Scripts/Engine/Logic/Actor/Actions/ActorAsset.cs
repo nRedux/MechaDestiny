@@ -17,12 +17,14 @@ public class ActorAsset : DataProviderAsset<ActorAsset, Actor>
     public MechAssetReference MechReference;
     public ActorActionAsset[] Actions;
 
+    public AIPersonality AI_Personality;
+
     public override void SetupNewData( Actor newData )
     {
         newData.ID = this.name;
         newData.Actions = new ActorAction[Actions.Length];
         newData.AddSubEntity( GetMechData() );
-        
+        newData.InitializeAIPersonality( AI_Personality );
         for( int i = 0; i < Actions.Length; i++ )
         {
             if( Actions[i] == null )

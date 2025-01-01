@@ -29,7 +29,7 @@ public class PlayerActionHandler : ActorActionHandler
         return _forceEndActorTurn;
     }
 
-    public override void SetupForPhase()
+    public override void SetupForTurn()
     {
         _forceEndActorTurn = false;
         _activeAction = null;

@@ -72,6 +72,11 @@ public class UIManager : Singleton<UIManager>
     private Actor _hoveredActor = null;
 
 
+    /// <summary>
+    /// Raycast performed once per frame for testing cell interactions: Hovered actor and hovered cell tests.
+    /// </summary>
+    private RaycastHit? _frameRaycast;
+
     public void Initialize( GameEngine gameEngine )
     {
         _gameEngine = gameEngine;
@@ -520,12 +525,12 @@ public class UIManager : Singleton<UIManager>
         return true;
     }
 
-    private RaycastHit? _frameRaycast;
 
     private void DoFrameRaycast()
     {
         _frameRaycast = _gameEngine.Camera.Raycast();
     }
+
 
     public Actor GetHoveredActor( )
     {
@@ -549,6 +554,7 @@ public class UIManager : Singleton<UIManager>
         _hoveredActor = hoveredActor;
         return hoveredActor;
     }
+
 
     public Vector2Int? GetHoveredCell( )
     {
@@ -655,6 +661,7 @@ public class UIManager : Singleton<UIManager>
         var req = _activeRequests[0];
         req.ActorClicked( actor );
     }
+
 
     private void UpdateRequestCellClick( Vector2Int cell )
     {

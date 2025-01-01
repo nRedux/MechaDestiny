@@ -8,16 +8,12 @@ public enum WeaponFlags
 {
     NONE = 0,
     ShotgunFireMode = 1 << 1,
-    AOE = 1 << 2
-    /*
-    FLAG2 = 0x00000002,
-    FLAG3 = 0x00000004,
-    FLAG4 = 0x00000008,
-    FLAG5 = 0x00000010,
-    FLAG6 = 0x00000020,
-    FLAG7 = 0x00000040,
-    FLAG8 = 0x00000080,
-    */
+    AOE = 1 << 2,
+    Melee = 1 << 10,
+    ShortRange = 1 << 11,
+    MidRange = 1 << 12,
+    LongRange = 1 << 13
+
 }
 
 [System.Flags]

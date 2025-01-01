@@ -22,11 +22,12 @@ public class AIActionHandler : ActorActionHandler
         return false;
     }
 
-    public override void SetupForPhase()
+    public override void SetupForTurn()
     {
+        //AI personalit
+
         _phaseActions = new List<ActorAction>();
         int numActions = _actor.Actions.Length;
-
         
         int numTypes = ActionOrder.Length;
         for( int i = 0; i < numActions; i++ )

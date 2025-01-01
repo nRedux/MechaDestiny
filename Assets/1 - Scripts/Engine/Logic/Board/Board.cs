@@ -124,7 +124,7 @@ public class Board
 
                     attacks.Do( action =>
                     {
-                        var enemyAttacksHere = action.GetEffectUtility( game, member, cell.world, range.Value );
+                        var enemyAttacksHere = action.GetUtilityAtLocation( game, member, cell.world, range.Value );
 
                         _scratchBoard[cell.local] -= enemyAttacksHere;   
                     } );

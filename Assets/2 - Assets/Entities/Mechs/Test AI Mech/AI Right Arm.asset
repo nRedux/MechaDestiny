@@ -34,7 +34,41 @@ MonoBehaviour:
       m_EditorAssetChanged: 0
     Type: 3
     AttachmentType: {fileID: 0}
-    Attachments: []
+    Attachments:
+    - SlotType:
+        m_AssetGUID: 
+        m_SubObjectName: 
+        m_SubObjectGUID: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+      DefaultComponent:
+        m_AssetGUID: 654450a8e45214f4c957879c2796dd17
+        m_SubObjectName: 
+        m_SubObjectGUID: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 1
+      Data:
+        AssetReference:
+          m_AssetGUID: 
+          m_SubObjectName: 
+          m_SubObjectGUID: 
+          m_SubObjectType: 
+          m_EditorAssetChanged: 0
+        ID: 
+        Statistics:
+          _serializedKeys: 
+          _serializedValues: []
+        Model:
+          m_AssetGUID: 
+          m_SubObjectName: 
+          m_SubObjectGUID: 
+          m_SubObjectType: 
+          m_EditorAssetChanged: 0
+        Type: 0
+        AttachmentType: {fileID: 0}
+        Attachments: []
+        Flags: 0
+        AOEShape: {fileID: 0}
     Flags: 0
     AOEShape: {fileID: 0}
   DisplayName:

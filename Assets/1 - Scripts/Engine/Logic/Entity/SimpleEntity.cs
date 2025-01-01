@@ -9,6 +9,7 @@ public enum EntityFlags
     Damagable
 }
 
+
 [System.Serializable]
 public class SimpleEntity<TData> : DataObject<TData>, IEntity
 {
@@ -189,16 +190,16 @@ public class SimpleEntity<TData> : DataObject<TData>, IEntity
         }
     }
 
-    public List<IEntity> FindWeaponEntities( IEntity entity, System.Func<MechComponentData, bool> predicate = null )
+    public List<IEntity> FindWeaponEntities( System.Func<MechComponentData, bool> predicate = null )
     {
         List<IEntity> results = new List<IEntity>();
-        FindWeaponEntities( entity, ref results, predicate );
+        FindWeaponEntities( this, ref results, predicate );
         return results;
     }
 
     public bool HasUsableWeapons( )
     {
-        List<IEntity> weapons = FindWeaponEntities( this, c => !c.IsBroken() );
+        List<IEntity> weapons = FindWeaponEntities( c => !c.IsBroken() );
         return weapons.Count > 0;
     }
 

@@ -53,6 +53,27 @@ public class Actor : SimpleEntity<ActorAsset>
     public ActorAction ActiveAction { get => ActionHandler?.ActiveAction; }
 
 
+    private AIPersonality _personalityInstance;
+
+    [JsonIgnore]
+    public AIPersonality AIPersonality
+    {
+        get
+        {
+            return _personalityInstance;
+        }
+        private set
+        {
+            _personalityInstance = value;
+        }
+    }
+
+    public void InitializeAIPersonality( AIPersonality source )
+    {
+        if( source == null ) return;
+        AIPersonality = source.Clone();
+    }
+
     [JsonConstructor]
     public Actor() { }
 
@@ -81,6 +102,10 @@ public class Actor : SimpleEntity<ActorAsset>
         get
         {
             return GetMechData().ActiveWeapon;
+        }
+        set
+        {
+            GetMechData().ActiveWeapon = value;
         }
     }
 
@@ -118,7 +143,7 @@ public class Actor : SimpleEntity<ActorAsset>
 
     public void PrepareForPhase()
     {
-        ActionHandler.SetupForPhase();
+        ActionHandler.SetupForTurn();
     }
 
 

@@ -102,7 +102,11 @@ public class AIAttackAction : AttackAction
     public override void Start( Game game, Actor actor )
     {
         base.Start( game, actor );
-
+        
+        //Select ideal weapon based on range.
+        if( actor.AIPersonality != null )
+            actor.AIPersonality.SelectWeapon( game, actor, this );
+        
         var activeWep = actor.ActiveWeapon;
         var range = activeWep.GetStatistic( StatisticType.Range ).Value;
 
@@ -180,55 +184,6 @@ public class AIAttackAction : AttackAction
     {
 
     }
-
-
-    public override float GetEffectUtility( Game game, Actor actor, Vector2Int coord, int range )
-    {
-        FloatWindow rangeWindow = new FloatWindow( range * 2 );
-        rangeWindow.MoveCenter( coord );
-        float utility = 0f;
-
-        var others = game.GetOtherTeams( actor.GetTeamID() );
-
-        bool method = true;
-        if( method )
-        {
-            rangeWindow.Do( iter =>
-            {
-                others.Do( team =>
-                {
-                    team.GetMembers().Do( member =>
-                    {
-                        if( !game.Board.IsCoordInBoard( coord ) )
-                            return;
-                        int manhattanDistance = Board.GetManhattanDistance( coord, member.Position );
-                        if( member.Position == iter.world && manhattanDistance <= range )
-                        {
-                            utility += manhattanDistance;
-                        }
-                    } );
-                } );
-            }, range );
-        }
-        else
-        {
-            others.Do( team =>
-            {
-                team.GetMembers().Do( member =>
-                {
-                    if( !game.Board.IsCoordInBoard( coord ) )
-                        return;
-                    int manhattanDistance = Board.GetManhattanDistance( coord, member.Position );
-                    if( manhattanDistance <= range )
-                    {
-                        utility += 1f;
-                    }
-                } );
-            } );
-        }
-        return utility;
-    }
-
 
     public override void End()
     {

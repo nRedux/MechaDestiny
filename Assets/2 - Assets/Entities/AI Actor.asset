@@ -16,6 +16,7 @@ MonoBehaviour:
     AssetReference:
       m_AssetGUID: d34a77c62755a894da481947f1126ca5
       m_SubObjectName: 
+      m_SubObjectGUID: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     ID: 
@@ -24,11 +25,14 @@ MonoBehaviour:
       _serializedValues:
       - _value: 6
         _startValue: 6
+        Type: 0
       - _value: 6
         _startValue: 6
+        Type: 0
     Avatar:
       m_AssetGUID: eb4c868af97a1aa40b03688adf15e685
       m_SubObjectName: 
+      m_SubObjectGUID: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     RunActionsAutomatically: 0
@@ -45,11 +49,13 @@ MonoBehaviour:
   MechReference:
     m_AssetGUID: 82c5ea2312c1e0746a24a45d170d3354
     m_SubObjectName: 
+    m_SubObjectGUID: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
   Actions:
   - {fileID: 11400000, guid: 7acf73b2235ae4b4f8ec6e563cfc1436, type: 2}
   - {fileID: 11400000, guid: b257d5c48c169664999537ef5e240b5d, type: 2}
+  AI_Personality: {fileID: 11400000, guid: d457354f6b181034a84dec458904be32, type: 2}
   references:
     version: 2
     RefIds: []

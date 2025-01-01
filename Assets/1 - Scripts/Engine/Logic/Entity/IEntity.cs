@@ -13,6 +13,8 @@ public interface IEntity
 
     public Statistic GetStatistic( StatisticType type );
 
+    public int GetStatisticValue( StatisticType type );
+
     public List<IEntity> GetSubEntities();
 
     public IEntity GetParent();

@@ -84,6 +84,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 654450a8e45214f4c957879c2796dd17
+    m_Address: Assets/2 - Assets/Entities/Mechs/Test Mech/Fist.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6d2c5b9d83c7de94fa4d28a262700c50
     m_Address: Assets/2 - Assets/Data/Mechs/Test Mech/Shotgun.asset
     m_ReadOnly: 0

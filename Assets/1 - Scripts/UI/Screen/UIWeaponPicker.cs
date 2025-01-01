@@ -74,7 +74,7 @@ public class UIWeaponPicker : UIPanel
     private void Refresh( MechData MechData )
     {
         OptionsRoot.DestroyChildren();
-        List<IEntity> weapons = MechData.FindWeaponEntities( MechData, ( c ) => !c.IsBroken() );
+        List<IEntity> weapons = MechData.FindWeaponEntities( ( c ) => !c.IsBroken() );
         weapons.Do( x => CreateOption( x, MechData.ActiveWeapon ) );
     }
 }

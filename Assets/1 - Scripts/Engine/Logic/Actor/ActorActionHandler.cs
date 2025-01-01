@@ -13,7 +13,7 @@ public abstract class ActorActionHandler
 
     public abstract bool HasActionsAvailable();
     public abstract void Tick( Game game );
-    public abstract void SetupForPhase();
+    public abstract void SetupForTurn();
     public abstract bool ShouldForceEndActor();
     public abstract ActorAction ActiveAction { get; }
     public abstract void TurnEnded();
