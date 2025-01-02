@@ -191,4 +191,26 @@ public class GridOverlay
             renderCell.SetActive( true );
         } );
     }
+
+    public void RenderCells( FloatWindow cells, bool highlightCenter = false, float tintShift = 0f )
+    {
+        Clear();
+        cells.Do( iter => {
+            if( iter.value > 0.0f )
+                return;
+
+            Vector2Int offs = cells.Center - iter.world;
+            float maxDist = ( cells.Width * .5f ) + ( cells.Height * .5f );
+            float manDist = Mathf.Abs( offs.x ) + Mathf.Abs( offs.y );
+
+            var renderCell = GetCell( cells.GetWorldPosition( iter.local.x, iter.local.y ) );
+            renderCell.Tint = Mathf.Max( ( 1f - manDist / maxDist ) + tintShift, 0f );
+            if( highlightCenter && iter.world == cells.Center )
+            {
+                renderCell.Color = Color.magenta;
+            }
+
+            renderCell.SetActive( true );
+        } );
+    }
 }

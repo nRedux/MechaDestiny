@@ -43,12 +43,17 @@ public class AIMoveAction : MoveAction
     {
 
         FloatWindow utility = new FloatWindow( Range * 2, game.Board );
+        utility.Clamping = BoardWindowClamping.Positive;
         utility.MoveCenter( actor.Position );
 
         GenerateAttackHeatmap( game, actor, utility );
         //CalculatePursueValue( game, actor, utility );
         //Not clear on what would be good threat values.
         //CalculateThreatValue( game, actor, utility );
+
+        var record = AITools.Instance.Opt()?.RecordWindow( utility, "Movement", "Attack Potentials" );
+        if( record != null )
+            record.Note( $"Active Weapon: {actor.ActiveWeapon.GetAssetSync().name}" );
 
         return utility;
     }
@@ -138,9 +143,12 @@ public class AIMoveAction : MoveAction
         } );
 
 
-        if( targets.Count > 0 )
+        var best = targets.Last().Value;
+        var bestOptions = targets.Where( x => x.Value == best );
+
+        if( bestOptions.Count() > 0 )
         {
-            Target = targets.Last().Value;
+            Target = bestOptions.Random().Value;
 
             //No target, we bail
             if( Target == null )

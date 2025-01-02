@@ -1,8 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
+public enum BoardWindowClamping
+{
+    None,
+    Positive,
+    Negative
+}
 
 /// <summary>
 /// Class which should help with performing operations on grids.
@@ -27,6 +34,22 @@ public class BoardWindow<TCellType>
     public Board Board;
     [SerializeField]
     public TCellType[] Cells;
+    [SerializeField]
+    public BoardWindowClamping Clamping = BoardWindowClamping.None;
+
+    public BoardWindow( BoardWindow<TCellType> other )
+    {
+        _x = other._x;
+        _y = other._y;
+        _center = other._center;
+        Width = other.Width;
+        Height = other.Height;
+        Size = other.Size;
+        Board = other.Board;
+        Cells = other.Cells.ToArray();
+
+        this.Do( x => this[x.local] = Clamp( this[x.local] ) );
+    }
 
     public int X {
         get { return _x; }
@@ -42,19 +65,19 @@ public class BoardWindow<TCellType>
     public TCellType this[int x, int y]
     {
         get => Cells[GetIndex( x, y )];
-        set => Cells[GetIndex( x, y )] = value;
+        set => Cells[GetIndex( x, y )] = Clamp( value );
     }
 
     public TCellType this[Vector2Int coord]
     {
         get => Cells[GetIndex( coord.x, coord.y )];
-        set => Cells[GetIndex( coord.x, coord.y )] = value;
+        set => Cells[GetIndex( coord.x, coord.y )] = Clamp( value );
     }
 
     public TCellType this[int index]
     {
         get => Cells[index];
-        set => Cells[index] = value;
+        set => Cells[index] = Clamp( value );
     }
 
     public Vector2Int Center => _center;
@@ -73,6 +96,7 @@ public class BoardWindow<TCellType>
         RecalculateCenter();
     }
 
+
     public BoardWindow( int sideSize )
     {
         if( sideSize % 2 == 0 )
@@ -84,6 +108,11 @@ public class BoardWindow<TCellType>
         RecalculateCenter();
     }
 
+
+    public virtual TCellType Clamp( TCellType value )
+    {
+        return value;
+    }
 
     public BoardWindow( TCellType[] cells, int width, int height )
     {
@@ -235,7 +264,7 @@ public class BoardWindow<TCellType>
             for( int y = _y; y < yBound; y++ )
             {
                 TDestType sourceCell = source[x, y];
-                this.Cells[GetIndex( x-_x, y-_y )] = selector( new Vector2Int(x, y), sourceCell );
+                this.Cells[GetIndex( x-_x, y-_y )] = Clamp( selector( new Vector2Int(x, y), sourceCell ) );
             }
         }
     }
@@ -258,7 +287,7 @@ public class BoardWindow<TCellType>
             for( int y = _y; y < yBound; y++ )
             {
                 TDestType sourceCell = source[ GetIndex( x, y, sourceWidth ) ];
-                this.Cells[GetIndex( x-_x, y-_y )] = selector( new Vector2Int(x,y), sourceCell );
+                this.Cells[GetIndex( x-_x, y-_y )] = Clamp( selector( new Vector2Int(x,y), sourceCell ) );
             }
         }
     }
@@ -300,7 +329,7 @@ public class BoardWindow<TCellType>
         }
         for( int i = 0; i < Size; i++ )
         {
-            Cells[i] = action.Invoke( GetLocalCoordinate( i ), GetWorldCoordinate( i ), this );
+            Cells[i] = Clamp( action.Invoke( GetLocalCoordinate( i ), GetWorldCoordinate( i ), this ) );
         }
     }
 
@@ -316,10 +345,13 @@ public class BoolWindow : BoardWindow<bool>
 
     public BoolWindow( int sideSize, Board board ) : base( sideSize ) { this.Board = board; }
 
+    public BoolWindow( BoolWindow other ) : base( other ) { }
+
     public override string CellToString( bool item )
     {
         return item == true ? "X" : "O";
     }
+
 
     internal void Fill( GridShape shape )
     {
@@ -345,9 +377,23 @@ public class FloatWindow : BoardWindow<float>
 
     public FloatWindow( int sideSize, Board board ) : base( sideSize ) { this.Board = board; }
 
+    public FloatWindow( FloatWindow other ) : base( other ) { }
 
     public override string CellToString( float item )
     {
         return item.ToString( FormatString );
+    }
+
+    public override float Clamp( float value )
+    {
+        switch( Clamping )
+        {
+            case BoardWindowClamping.Positive:
+                return Mathf.Clamp( value, 0, float.MaxValue );
+            case BoardWindowClamping.Negative:
+                return Mathf.Clamp( value, float.MinValue, 0f );
+            default:
+                return value;
+        }
     }
 }

@@ -42,6 +42,10 @@ public class UIManager : Singleton<UIManager>
     public UIActionSequence ActionSequence;
     public UIActionSequenceItemHover ActionSequenceHover;
 
+    public UITextOverlay DebugTextOverlay;
+
+    public UIAITools AITools;
+
     public UISimpleHealthbar SimpleHealthbar;
 
     public GameObject PlayerAttackUI;
@@ -66,6 +70,8 @@ public class UIManager : Singleton<UIManager>
     private Actor _activeActor;
 
     private GameTurnChangeEvent _changeEvent;
+    private List<UITextOverlay> _debugOverlays = new List<UITextOverlay>();
+
 
     //Generalized hovered detecting
     private Vector2Int? _hoveredCell = new Vector2Int( int.MinValue, int.MinValue );
@@ -104,6 +110,7 @@ public class UIManager : Singleton<UIManager>
         PlayerAttackUI.Opt()?.SetActive( false );
         MoveHoverInfo.Opt()?.gameObject.SetActive( false );
         AttackHoverInfo.Opt()?.gameObject.SetActive( false );
+        AITools.Opt()?.Hide();
     }
 
 
@@ -121,6 +128,23 @@ public class UIManager : Singleton<UIManager>
         shb.AssignEntity( actor, avatar.transform );
     }
 
+
+    public void ClearDebugTextOverlays()
+    {
+        _debugOverlays.Do( x => Destroy( x.gameObject ) );
+        _debugOverlays.Clear();
+    }
+
+
+    public void CreateDebugOverlay( Vector2Int cell, string text )
+    {
+        if( DebugTextOverlay == null ) return;
+        var instance = DebugTextOverlay.Duplicate();
+        instance.transform.SetParent( SpawnedObjectsRoot.transform, false );
+        instance.Initialize();
+        instance.Show( cell, text );
+        _debugOverlays.Add( instance );
+    }
 
     public enum MechInfoDisplayMode
     {
@@ -275,9 +299,24 @@ public class UIManager : Singleton<UIManager>
         DoFrameRaycast();
         RunRequests();
         RunResultQueue();
+        AIToolsInput();
 #if !DISABLE_DEBUG
         DebugRequests();
 #endif
+    }
+
+    private void AIToolsInput()
+    {
+        if( Input.GetKeyDown( KeyCode.F1 ) )
+        {
+            if( AITools != null )
+            {
+                if( this.AITools.gameObject.activeSelf )
+                    this.AITools.Hide();
+                else
+                    this.AITools.Show();
+            }
+        }
     }
 
 
