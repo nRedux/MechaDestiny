@@ -10,80 +10,130 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e9f80112c6378e408ab46af9c7034ec, type: 3}
-  m_Name: AI Mech
+  m_Name: AI Brawler Mech
   m_EditorClassIdentifier: 
   Data:
     AssetReference:
-      m_AssetGUID: 
+      m_AssetGUID: 4ab53253b1f2d7b439a3198f626f988b
       m_SubObjectName: 
+      m_SubObjectGUID: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     ID: 
     Statistics:
       _serializedKeys: 
       _serializedValues: []
+    MechColor: {r: 0.38628775, g: 0.6603774, b: 0.07164473, a: 1}
     TorsoAsset:
-      m_AssetGUID: cb2db94eff8bf564f8f5dfde0c7d585a
+      m_AssetGUID: d86ff5662c57c5d4fad4c8fb68981ce5
       m_SubObjectName: 
+      m_SubObjectGUID: 
       m_SubObjectType: 
-      m_EditorAssetChanged: 0
+      m_EditorAssetChanged: 1
     LegsAsset:
-      m_AssetGUID: 0a6968b25d9dee54b808f5d9c1157495
+      m_AssetGUID: 418313ffb0bede4409ee32f285afb699
       m_SubObjectName: 
+      m_SubObjectGUID: 
       m_SubObjectType: 
-      m_EditorAssetChanged: 0
+      m_EditorAssetChanged: 1
     LeftArmAsset:
-      m_AssetGUID: a60ee5734704dc543b6f959a7fa7e5a3
+      m_AssetGUID: a3d88fa4fffc6b74188e71771febbb8a
       m_SubObjectName: 
+      m_SubObjectGUID: 
       m_SubObjectType: 
-      m_EditorAssetChanged: 0
+      m_EditorAssetChanged: 1
     RightArmAsset:
-      m_AssetGUID: 370b5f5514c2bbc40a3e7c7cc1c658ff
+      m_AssetGUID: 0e24865c377a1f147ab8a3926cba42e6
       m_SubObjectName: 
+      m_SubObjectGUID: 
       m_SubObjectType: 
-      m_EditorAssetChanged: 0
+      m_EditorAssetChanged: 1
     ComponentData: []
     Torso:
       AssetReference:
         m_AssetGUID: 
         m_SubObjectName: 
+        m_SubObjectGUID: 
         m_SubObjectType: 
         m_EditorAssetChanged: 0
       ID: 
       Statistics:
         _serializedKeys: 
         _serializedValues: []
-      MechPart: 0
+      Model:
+        m_AssetGUID: 
+        m_SubObjectName: 
+        m_SubObjectGUID: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+      Type: 0
+      AttachmentType: {fileID: 0}
+      Attachments: []
+      Flags: 0
+      AOEShape: {fileID: 0}
     Legs:
       AssetReference:
         m_AssetGUID: 
         m_SubObjectName: 
+        m_SubObjectGUID: 
         m_SubObjectType: 
         m_EditorAssetChanged: 0
       ID: 
       Statistics:
         _serializedKeys: 
         _serializedValues: []
-      MechPart: 0
+      Model:
+        m_AssetGUID: 
+        m_SubObjectName: 
+        m_SubObjectGUID: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+      Type: 0
+      AttachmentType: {fileID: 0}
+      Attachments: []
+      Flags: 0
+      AOEShape: {fileID: 0}
     LeftArm:
       AssetReference:
         m_AssetGUID: 
         m_SubObjectName: 
+        m_SubObjectGUID: 
         m_SubObjectType: 
         m_EditorAssetChanged: 0
       ID: 
       Statistics:
         _serializedKeys: 
         _serializedValues: []
-      MechPart: 0
+      Model:
+        m_AssetGUID: 
+        m_SubObjectName: 
+        m_SubObjectGUID: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+      Type: 0
+      AttachmentType: {fileID: 0}
+      Attachments: []
+      Flags: 0
+      AOEShape: {fileID: 0}
     RightArm:
       AssetReference:
         m_AssetGUID: 
         m_SubObjectName: 
+        m_SubObjectGUID: 
         m_SubObjectType: 
         m_EditorAssetChanged: 0
       ID: 
       Statistics:
         _serializedKeys: 
         _serializedValues: []
-      MechPart: 0
+      Model:
+        m_AssetGUID: 
+        m_SubObjectName: 
+        m_SubObjectGUID: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+      Type: 0
+      AttachmentType: {fileID: 0}
+      Attachments: []
+      Flags: 0
+      AOEShape: {fileID: 0}

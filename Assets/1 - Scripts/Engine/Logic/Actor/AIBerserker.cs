@@ -31,7 +31,7 @@ public class AIBerserker: AIPersonality
     /// <param name="game">Game instance</param>
     /// <param name="actor">The AI actor</param>
     /// <param name="action">The AI actors attack action</param>
-    public override void SelectWeapon( Game game, Actor actor, AIAttackAction action )
+    public override void SelectForAttack( Game game, Actor actor, AIAttackAction action )
     {
         
         var prefWep = CheckPreferredWeapon( actor );

@@ -9,6 +9,8 @@ using Newtonsoft.Json;
 public class MechData: SimpleEntity<MechAsset>
 {
 
+    public Color MechColor;
+
     public MechComponentReference TorsoAsset;
     public MechComponentReference LegsAsset;
     public MechComponentReference LeftArmAsset;

@@ -170,7 +170,7 @@ public class GridOverlay
         _usedCells.Clear();
     }
 
-    public void RenderCells( BoolWindow cells, bool highlightCenter = false, float tintShift = 0f )
+    public void RenderCells( BoolWindow cells, bool highlightCenter = false, float tintShift = 0f, int maxDistance = int.MaxValue )
     {
         Clear();
         cells.Do( iter => {
@@ -189,16 +189,14 @@ public class GridOverlay
             }
 
             renderCell.SetActive( true );
-        } );
+        },
+        maxDistance );
     }
 
-    public void RenderCells( FloatWindow cells, bool highlightCenter = false, float tintShift = 0f )
+    public void RenderCells( FloatWindow cells, bool highlightCenter = false, float tintShift = 0f, int maxDistance = int.MaxValue )
     {
         Clear();
         cells.Do( iter => {
-            if( iter.value > 0.0f )
-                return;
-
             Vector2Int offs = cells.Center - iter.world;
             float maxDist = ( cells.Width * .5f ) + ( cells.Height * .5f );
             float manDist = Mathf.Abs( offs.x ) + Mathf.Abs( offs.y );
@@ -211,6 +209,7 @@ public class GridOverlay
             }
 
             renderCell.SetActive( true );
-        } );
+        }, 
+        maxDistance );//cells.size always larger than the manhattan distance
     }
 }

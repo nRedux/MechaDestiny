@@ -32,8 +32,9 @@ public class AIBrawler : AIPersonality
     /// <param name="game">Game instance</param>
     /// <param name="actor">The AI actor</param>
     /// <param name="action">The AI actors attack action</param>
-    public override void SelectWeapon( Game game, Actor actor, AIAttackAction action )
+    public override void SelectForAttack( Game game, Actor actor, AIAttackAction action )
     {
+        //Get weapon entities with any utility
         var prefWep = actor.FindWeaponEntities( x =>
         {
             var range = actor.ActiveWeapon.GetStatisticValue( StatisticType.Range );
@@ -42,6 +43,7 @@ public class AIBrawler : AIPersonality
             return utility > 0;
         } );
 
+        //Randomly select one of the options.
         actor.ActiveWeapon = prefWep.Random( 1 ).FirstOrDefault() as MechComponentData;
     }
 

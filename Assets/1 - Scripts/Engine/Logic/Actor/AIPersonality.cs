@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class AIPersonality: ScriptableObject
 {
-    public virtual void SelectWeapon( Game game, Actor actor, AIAttackAction action )
+    public virtual void SelectForAttack( Game game, Actor actor, AIAttackAction action )
     {
         
     }

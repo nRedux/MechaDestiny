@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e9f80112c6378e408ab46af9c7034ec, type: 3}
-  m_Name: Mech Asset
+  m_Name: AI Berserker Mech
   m_EditorClassIdentifier: 
   Data:
     AssetReference:
-      m_AssetGUID: 19f517940b291084caac4da5afe38bf6
+      m_AssetGUID: 
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 
@@ -23,27 +23,27 @@ MonoBehaviour:
     Statistics:
       _serializedKeys: 
       _serializedValues: []
-    MechColor: {r: 0.29369885, g: 0.5360936, b: 0.8301887, a: 1}
+    MechColor: {r: 0.6509434, g: 0.30397826, b: 0.30397826, a: 1}
     TorsoAsset:
-      m_AssetGUID: 8a289ba85b3167b429167d1e9e952c22
+      m_AssetGUID: cb2db94eff8bf564f8f5dfde0c7d585a
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     LegsAsset:
-      m_AssetGUID: 1b94ecdd1d930fc408545dde50568766
+      m_AssetGUID: 0a6968b25d9dee54b808f5d9c1157495
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     LeftArmAsset:
-      m_AssetGUID: 0ba063b3a4219ae43953438ea5836988
+      m_AssetGUID: a60ee5734704dc543b6f959a7fa7e5a3
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     RightArmAsset:
-      m_AssetGUID: f0cc40bbd6ea05e479eab6b5a084f791
+      m_AssetGUID: 370b5f5514c2bbc40a3e7c7cc1c658ff
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 

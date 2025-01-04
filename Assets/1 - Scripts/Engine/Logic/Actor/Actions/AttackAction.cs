@@ -65,7 +65,7 @@ public abstract class AttackAction : ActorAction
             if( actorAtCell == null || actorAtCell.GetTeamID() == actor.GetTeamID() )
                 return;
 
-            int manhattanDistance = Board.GetManhattanDistance( iter.world, actorAtCell.Position );
+            int manhattanDistance = Board.GetManhattanDistance( coord, actorAtCell.Position );
 
             //If in range to attack
             if( manhattanDistance <= wepRange )

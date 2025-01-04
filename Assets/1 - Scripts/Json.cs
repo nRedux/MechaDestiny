@@ -13,7 +13,7 @@ public static class Json
         DefaultValueHandling = DefaultValueHandling.Ignore,
         Formatting = Formatting.None,
         NullValueHandling = NullValueHandling.Ignore,
-        Converters = new List<JsonConverter>() { new AssetReferenceConverter(), new LocalizedStringConverter() }
+        Converters = new List<JsonConverter>() { new AssetReferenceConverter(), new LocalizedStringConverter(), new ColorConverter() }
     };
 
     public static string SerializeObject( object obj )

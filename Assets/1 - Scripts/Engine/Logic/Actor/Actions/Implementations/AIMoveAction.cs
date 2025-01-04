@@ -3,6 +3,8 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using NUnit.Framework;
+using UnityEditor.Experimental.GraphView;
 
 
 /*
@@ -42,28 +44,37 @@ public class AIMoveAction : MoveAction
     private FloatWindow GenerateMoveHeatmap( Game game, Actor actor )
     {
 
-        FloatWindow utility = new FloatWindow( Range * 2, game.Board );
+        var mechData = actor.GetMechData();
+        var moveRange = mechData.Legs.GetStatisticValue( StatisticType.Range );
+
+        FloatWindow utility = new FloatWindow( moveRange * 2, game.Board );
         utility.Clamping = BoardWindowClamping.Positive;
         utility.MoveCenter( actor.Position );
 
-        GenerateAttackHeatmap( game, actor, utility );
+        FillAttackHeatmap( game, actor, utility );
         //CalculatePursueValue( game, actor, utility );
         //Not clear on what would be good threat values.
         //CalculateThreatValue( game, actor, utility );
 
         var record = AITools.Instance.Opt()?.RecordWindow( utility, "Movement", "Attack Potentials" );
         if( record != null )
+        {
+            Debug.Log( actor.ActiveWeapon.GetAssetSync().name );
             record.Note( $"Active Weapon: {actor.ActiveWeapon.GetAssetSync().name}" );
-
+        }
         return utility;
     }
 
 
-    private void GenerateAttackHeatmap( Game game, Actor actor, FloatWindow utility )
+    private void FillAttackHeatmap( Game game, Actor actor, FloatWindow utility )
     {
         var actions = actor.GetActionsOfType<AttackAction>();
         if( actions.Count == 0 )
             return;
+
+
+        var mechData = actor.GetMechData();
+        var moveRange = mechData.Legs.GetStatisticValue( StatisticType.Range );
 
         if( actor.AIPersonality != null )
             actor.ActiveWeapon = actor.AIPersonality?.CheckPreferredWeapon( actor );
@@ -80,16 +91,24 @@ public class AIMoveAction : MoveAction
                 //Get all cells the action can effect
                 if( action is AttackAction aiAction )
                 {
-                    utility[iter.local] += aiAction.GetUtilityAtLocation( game, actor, iter.world, Range );
+                    utility[iter.local] += aiAction.GetUtilityAtLocation( game, actor, iter.world, moveRange );
                 }
             }
-
-            //Prefer closer options.
-            var dist = Board.GetManhattanDistance( actor.Position, iter.world );
-            var maxRange = actor.GetMechData().Legs.GetStatisticValue( StatisticType.Range );
-            utility[iter.local] -= dist / (float)maxRange;
         },
         Range );
+
+        
+        //Move cost adjustments - too far, no utility. Further, reduced utility.
+        utility.Do( iter =>
+        {
+            //Prefer closer options.
+            var path = game.Board.GetPath( actor.Position, iter.world );
+            if( path == null || path.Count > moveRange )
+                utility[iter.local] = 0;
+            else
+                utility[iter.local] -= ( path.Count / (float) moveRange ) * .5f;
+        } );
+        
     }
 
 

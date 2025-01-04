@@ -18,6 +18,8 @@ public class AITools : SingletonScriptableObject<AITools>
         public FloatWindow FloatWindow;
         public string NoteContent;
 
+        public List<GridStarNode> Path { get; internal set; }
+
         public string GetDescription()
         {
             return $"{Turn}::{ID} - {Context} | {Description}";
@@ -36,6 +38,10 @@ public class AITools : SingletonScriptableObject<AITools>
         }
     }
 
+
+    public System.Action RecordsUpdated;
+    
+    
     private int _nextRecordID = 0;
     private List<Record> _records = new List<Record>();
 
@@ -85,6 +91,29 @@ public class AITools : SingletonScriptableObject<AITools>
 
         _records.Add( r );
         return r;
+    }
+
+    public Record RecordPath( List<GridStarNode> path, string context, string description )
+    {
+        int turn = GameEngine.Instance.Game.TurnManager.TurnNumber;
+
+        Record r = new Record()
+        {
+            Turn = turn,
+            ID = _nextRecordID++,
+            Context = context,
+            Description = description,
+            Path = path
+        };
+
+        _records.Add( r );
+        return r;
+    }
+
+    private void AddRecord( Record r )
+    {
+        _records.Add( r );
+        RecordsUpdated?.Invoke();
     }
 
     public int GetTurnMax()

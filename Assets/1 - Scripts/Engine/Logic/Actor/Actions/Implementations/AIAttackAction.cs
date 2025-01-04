@@ -105,7 +105,7 @@ public class AIAttackAction : AttackAction
         
         //Select ideal weapon based on range.
         if( actor.AIPersonality != null )
-            actor.AIPersonality.SelectWeapon( game, actor, this );
+            actor.AIPersonality.SelectForAttack( game, actor, this );
         
         var activeWep = actor.ActiveWeapon;
         var range = activeWep.GetStatistic( StatisticType.Range ).Value;

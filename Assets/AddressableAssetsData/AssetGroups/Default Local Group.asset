@@ -39,6 +39,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0e24865c377a1f147ab8a3926cba42e6
+    m_Address: Assets/2 - Assets/Entities/Mechs/Test AI Brawler/AI Right Arm.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 19f517940b291084caac4da5afe38bf6
     m_Address: Assets/2 - Assets/Data/Mech Asset.asset
     m_ReadOnly: 0
@@ -54,7 +59,8 @@ MonoBehaviour:
   - m_GUID: 1ecdf63da3b259141b43cad5da1018cf
     m_Address: Assets/2 - Assets/Entities/Map Objects/Harvest Patch.asset
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 25cf1dd3425cc0843a00500cc80c4a4a
     m_Address: Assets/3 - Prefabs/Meta/Caravan.prefab
@@ -68,6 +74,16 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 418313ffb0bede4409ee32f285afb699
+    m_Address: Assets/2 - Assets/Entities/Mechs/Test AI Brawler/AI Legs.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4ab53253b1f2d7b439a3198f626f988b
+    m_Address: Assets/2 - Assets/Entities/Mechs/Test AI Brawler/AI Brawler Mech.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5ae462e3049984b409f5c980e78005ee
     m_Address: Assets/2 - Assets/Encounter Graphs/Test Graph.asset
     m_ReadOnly: 0
@@ -77,17 +93,20 @@ MonoBehaviour:
   - m_GUID: 614974f294610f94fa377aed1069b369
     m_Address: Assets/2 - Assets/Entities/Mechs/Test Mech/Grenade Launcher.asset
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 634cf266f8eccec47a91d727f51dd717
     m_Address: Assets/2 - Assets/Entities/Map Objects/Caravan.asset
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 654450a8e45214f4c957879c2796dd17
     m_Address: Assets/2 - Assets/Entities/Mechs/Test Mech/Fist.asset
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6d2c5b9d83c7de94fa4d28a262700c50
     m_Address: Assets/2 - Assets/Data/Mechs/Test Mech/Shotgun.asset
@@ -104,7 +123,8 @@ MonoBehaviour:
   - m_GUID: 7e6659fff24d67543a0caa88c7bef944
     m_Address: Assets/3 - Prefabs/Mech Components/Grenade Launcher.prefab
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8088efe2bbee2d34d88d319711641d90
     m_Address: Assets/2 - Assets/Data/Player Actor.asset
@@ -154,6 +174,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a3d88fa4fffc6b74188e71771febbb8a
+    m_Address: Assets/2 - Assets/Entities/Mechs/Test AI Brawler/AI Left Arm.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a5d0d91ec7cdce24d895c603bf1fcff1
     m_Address: Assets/3 - Prefabs/Projectiles/Bullet_Small_Goldfire_Template/Bullet_GoldFire_Small_Projectile_Template.prefab
     m_ReadOnly: 0
@@ -196,6 +221,17 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d86ff5662c57c5d4fad4c8fb68981ce5
+    m_Address: Assets/2 - Assets/Entities/Mechs/Test AI Brawler/AI Torso.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dace928b0ce9dad4fa18643bbc49203c
+    m_Address: Assets/2 - Assets/Entities/AI Brawler.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - default
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: eb4c868af97a1aa40b03688adf15e685
     m_Address: Assets/3 - Prefabs/Thorin Variant.prefab
     m_ReadOnly: 0
@@ -211,7 +247,8 @@ MonoBehaviour:
   - m_GUID: f8808b9b1df17634d9ab5bb706e8984a
     m_Address: Assets/2 - Assets/Encounter Graphs/Harvest Patch Test Graph.asset
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 3a8d356ceb2f93143b324ebf12aae8aa, type: 2}

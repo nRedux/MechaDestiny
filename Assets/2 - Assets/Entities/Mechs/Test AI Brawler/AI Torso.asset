@@ -10,50 +10,34 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e6dd1cdde19a642459268335743dfcc5, type: 3}
-  m_Name: Shotgun
+  m_Name: AI Torso
   m_EditorClassIdentifier: 
   Data:
     AssetReference:
-      m_AssetGUID: 6d2c5b9d83c7de94fa4d28a262700c50
+      m_AssetGUID: cb2db94eff8bf564f8f5dfde0c7d585a
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     ID: 
     Statistics:
-      _serializedKeys: 000100001001000020010000300100003101000000000000
+      _serializedKeys: 00000000
       _serializedValues:
-      - _value: 4
+      - _value: 20
         _startValue: 0
-        Type: 0
-      - _value: 4
-        _startValue: 0
-        Type: 0
-      - _value: 3
-        _startValue: 0
-        Type: 0
-      - _value: 30
-        _startValue: 30
-        Type: 0
-      - _value: 80
-        _startValue: 80
-        Type: 0
-      - _value: 1
-        _startValue: 1
-        Type: 0
     Model:
-      m_AssetGUID: b7c7f0be105776540adcfb3b44a65ebe
+      m_AssetGUID: 
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Type: 4
-    AttachmentType: {fileID: 11400000, guid: a76bed771f181044dbef4e4b9338e7b9, type: 2}
+    Type: 0
+    AttachmentType: {fileID: 0}
     Attachments: []
-    Flags: 1
+    Flags: 0
   DisplayName:
     m_TableReference:
-      m_TableCollectionName: GUID:c9f6f54132f444c459cb15fcd0afa795
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 1717553943953408
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0

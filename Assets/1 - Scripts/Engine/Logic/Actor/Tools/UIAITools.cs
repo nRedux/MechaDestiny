@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using Sirenix.Utilities;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization.SmartFormat.Core.Parsing;
@@ -19,6 +22,7 @@ public class UIAITools : UIPanel
     private int _turn = 0;
     private List<AITools.Record> _records = null;
     private int _selectedRecord = 0;
+    private AITools.Record _activeRecord;
 
     public int Turn
     {
@@ -30,7 +34,7 @@ public class UIAITools : UIPanel
         get => _turn;
     }
 
-
+     
     protected override void Awake()
     {
         base.Awake();
@@ -41,32 +45,55 @@ public class UIAITools : UIPanel
         RecordsDropdown.Opt()?.onValueChanged.AddListener( OnRecordChanged );
         NotesRegionRoot.Opt()?.gameObject.SetActive( false );
         RecordDisplay.Initialize();
+
+        if( AITools.Instance != null )
+        {
+            AITools.Instance.RecordsUpdated = NewRecordsAvailable;
+        }
+        
     }
 
+    private void NewRecordsAvailable()
+    {
+        RebuildOptions();
+    }
 
     private void OnRecordChanged( int index )
     {
-        _selectedRecord = index;
-        UpdateGridRender( _selectedRecord );
+        SelectRecord( index );
+        if( _activeRecord == null )
+            return;
+        PresentRecordContent();
         //Do record display things.
     }
 
-    private void UpdateGridRender( int recordIndex )
+
+    private void UpdateGridRender()
     {
-        if( _records == null ) return;
-        if( recordIndex < 0 || recordIndex >= _records.Count ) return;
-        var selected = _records[recordIndex];
+        if( _activeRecord == null ) return;
         UIManager.Instance.ClearDebugTextOverlays();
         RecordDisplay.Clear();
-        if( selected.BoolWindow != null )
+        int range = 0;
+        if( _activeRecord.BoolWindow != null )
         {
-            RecordDisplay.RenderCells( selected.BoolWindow );
+            //Display cells
+            range = _activeRecord.FloatWindow.Width / 2;
+            RecordDisplay.RenderCells( _activeRecord.BoolWindow, maxDistance: range );
         }
-        if( selected.FloatWindow != null )
+        if( _activeRecord.FloatWindow != null )
         {
-            selected.FloatWindow.Do( x => UIManager.Instance.CreateDebugOverlay( x.world, x.value.ToString() ) );
-            RecordDisplay.RenderCells( selected.FloatWindow );
+            range = _activeRecord.FloatWindow.Width / 2;
+            //display values of all cells
+            _activeRecord.FloatWindow.Do( x => UIManager.Instance.CreateDebugOverlay( x.world, x.value.ToString() ), range );
+            //Display cells
+            RecordDisplay.RenderCells( _activeRecord.FloatWindow, maxDistance: range );
         }
+    }
+
+
+    private void UpdatePathRender( )
+    {
+
     }
 
 
@@ -77,13 +104,14 @@ public class UIAITools : UIPanel
         base.OnHide();
     }
 
+
     private void OnTurnChange( string input )
     {
         int res = 0;
         if( Int32.TryParse( input, out res ) )
             Turn = res;
 
-        _selectedRecord = 0;
+        SelectFirstRecord();
 
         if( TurnInput )
             TurnInput.text = Turn.ToString();
@@ -92,10 +120,34 @@ public class UIAITools : UIPanel
     }
 
 
+    private void SelectFirstRecord()
+    {
+        if( _records == null )
+        {
+            _activeRecord = null;
+            return;
+        }
+
+        _activeRecord = _records.FirstOrDefault();
+    }
+
+
+    private void SelectRecord( int index )
+    {
+        if( index >= _records.Count )
+        {
+            _activeRecord = null;
+            return;
+        }
+
+        _activeRecord = _records[index];
+    }
+
+
     private void OnPrevTurnClick()
     {
         Turn--;
-        _selectedRecord = 0;
+        SelectFirstRecord();
         if( TurnInput )
             TurnInput.text = Turn.ToString();
         Refresh();
@@ -105,7 +157,7 @@ public class UIAITools : UIPanel
     private void OnNextTurnClick()
     {
         Turn++;
-        _selectedRecord = 0;
+        SelectFirstRecord();
         if( TurnInput )
             TurnInput.text = Turn.ToString();
         Refresh();
@@ -122,19 +174,26 @@ public class UIAITools : UIPanel
 
     public void Refresh()
     {
-        UpdateGridRender(0);
         RebuildOptions();
-        UpdateNotesDisplay();
+
+        if( _activeRecord == null ) return;
+        PresentRecordContent();
     }
+
+    private void PresentRecordContent()
+    {
+        UpdateNotesDisplay();
+        UpdateGridRender();
+        UpdatePathRender();
+    }
+
 
     private void UpdateNotesDisplay()
     {
-        var selected = _records[_selectedRecord];
-
-        if( !string.IsNullOrEmpty( selected.NoteContent ) )
+        if( !string.IsNullOrEmpty( _activeRecord.NoteContent ) )
         {
             NotesRegionRoot.Opt()?.gameObject.SetActive( true );
-            NotesTextArea.SetText( selected.NoteContent );
+            NotesTextArea.SetText( _activeRecord.NoteContent );
         }
         else
         {
@@ -157,7 +216,6 @@ public class UIAITools : UIPanel
         } );
         RecordsDropdown.Opt()?.AddOptions( opDatum );
     }
-
 
 
 }
