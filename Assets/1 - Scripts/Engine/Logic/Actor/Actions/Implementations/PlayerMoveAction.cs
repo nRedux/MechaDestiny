@@ -58,7 +58,7 @@ public class PlayerMoveAction : MoveAction
         var mainEntity = actor.GetSubEntities().Where( x => x is MechData ).FirstOrDefault();
         var mechData = mainEntity as MechData;
         _range = mechData.Legs.Statistics.GetStatistic( StatisticType.Range ).Value;
-        _moveOptionsWindow = new BoolWindow( _range * 2 );
+        _moveOptionsWindow = new BoolWindow( _range * 2, game.Board );
 
         _state = ActorActionState.Started;
         _moveOptionsWindow.MoveCenter( actor.Position );

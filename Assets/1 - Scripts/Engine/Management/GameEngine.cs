@@ -28,7 +28,7 @@ public class GameEngine : Singleton<GameEngine>
     public GfxCamera Camera;
     public GfxBoard GfxBoard;
     public UIManager UIManager;
-    public BoolWindow WalkableCells = new BoolWindow( DEFAULT_SIZE );
+    public BoolWindow WalkableCells = new BoolWindow( DEFAULT_SIZE, null );
     public GameEventBase EndTurnButtonEvent;
 
     [HideInInspector]
@@ -195,16 +195,10 @@ public class GameEngine : Singleton<GameEngine>
     }
 
 
-    public void SizeChanged()
-    {
-        WalkableCells = new BoolWindow( BoardSize, BoardSize );
-        WalkableCells.MoveCenter( new Vector2Int( WalkableCells.Width / 2, WalkableCells.Height / 2 ) );
-    }
-
-
     private void InitializeGameState()
     {
         _game = new Game( WalkableCells.Width, WalkableCells.Height );
+        WalkableCells.Board = Board;
         _game.SetWalkability( WalkableCells );
         GfxBoard.SetBoard( _game.Board );
         CreateTeams();

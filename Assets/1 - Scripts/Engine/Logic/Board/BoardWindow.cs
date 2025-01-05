@@ -35,21 +35,10 @@ public class BoardWindow<TCellType>
     [SerializeField]
     public TCellType[] Cells;
     [SerializeField]
+    public int maxIterDistance = int.MaxValue;
+    [SerializeField]
     public BoardWindowClamping Clamping = BoardWindowClamping.None;
 
-    public BoardWindow( BoardWindow<TCellType> other )
-    {
-        _x = other._x;
-        _y = other._y;
-        _center = other._center;
-        Width = other.Width;
-        Height = other.Height;
-        Size = other.Size;
-        Board = other.Board;
-        Cells = other.Cells.ToArray();
-
-        this.Do( x => this[x.local] = Clamp( this[x.local] ) );
-    }
 
     public int X {
         get { return _x; }
@@ -82,13 +71,30 @@ public class BoardWindow<TCellType>
 
     public Vector2Int Center => _center;
 
-    public BoardWindow( int width, int height )
+
+    public BoardWindow( BoardWindow<TCellType> other )
+    {
+        _x = other._x;
+        _y = other._y;
+        _center = other._center;
+        Width = other.Width;
+        Height = other.Height;
+        Size = other.Size;
+        Board = other.Board;
+        Cells = other.Cells.ToArray();
+
+        this.Do( x => this[x.local] = Clamp( this[x.local] ) );
+    }
+
+
+    public BoardWindow( int width, int height, Board board )
     {
         if( width % 2 == 0 )
             width += 1;
         if( height % 2 == 0 )
             height += 1;
 
+        this.Board = board;
         this.Width = width;
         this.Height = height;
         this.Size = width * height;
@@ -97,10 +103,12 @@ public class BoardWindow<TCellType>
     }
 
 
-    public BoardWindow( int sideSize )
+    public BoardWindow( int sideSize, Board board )
     {
         if( sideSize % 2 == 0 )
             sideSize += 1;
+
+        this.Board = board;
         this.Width = sideSize;
         this.Height = sideSize;
         this.Size = sideSize * sideSize;
@@ -339,11 +347,9 @@ public class BoardWindow<TCellType>
 [System.Serializable]
 public class BoolWindow : BoardWindow<bool>
 {
-    public BoolWindow( int width, int height ) : base( width, height ) { }
+    public BoolWindow( int width, int height, Board board ) : base( width, height, board ) {}
 
-    public BoolWindow( int sideSize ) : base( sideSize ) { }
-
-    public BoolWindow( int sideSize, Board board ) : base( sideSize ) { this.Board = board; }
+    public BoolWindow( int sideSize, Board board ) : base( sideSize, board ) {}
 
     public BoolWindow( BoolWindow other ) : base( other ) { }
 
@@ -371,11 +377,9 @@ public class FloatWindow : BoardWindow<float>
     public string FormatString = "0.0";
 
 
-    public FloatWindow( int width, int height ) : base( width, height ) { }
+    public FloatWindow( int width, int height, Board board ) : base( width, height, board ) { this.Board = board; }
 
-    public FloatWindow( int sideSize ) : base( sideSize ) { }
-
-    public FloatWindow( int sideSize, Board board ) : base( sideSize ) { this.Board = board; }
+    public FloatWindow( int sideSize, Board board ) : base( sideSize, board ) { this.Board = board; }
 
     public FloatWindow( FloatWindow other ) : base( other ) { }
 

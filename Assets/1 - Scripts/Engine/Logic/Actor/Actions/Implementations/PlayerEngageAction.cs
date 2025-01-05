@@ -120,7 +120,7 @@ public class PlayerEngageAction : AttackAction
         //TODO: will have to validate that the assets which define these are correct. Make finding these problems easy!
         var range = weapon.GetStatistic( StatisticType.Range );
 
-        var attackOptions = new BoolWindow( range.Value * 2 );
+        var attackOptions = new BoolWindow( range.Value * 2, game.Board );
         attackOptions.MoveCenter( actor.Position );
         _game.Board.GetCellsManhattan( range.Value, attackOptions );
         Board.LOS_PruneBoolWindow( attackOptions, actor.Position );

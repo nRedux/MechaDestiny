@@ -40,7 +40,7 @@ public class UIAITools : UIPanel
         base.Awake();
         NextTurnBtn.Opt()?.onClick.AddListener( OnNextTurnClick );
         PrevTurnBtn.Opt()?.onClick.AddListener( OnPrevTurnClick );
-        TurnInput.Opt()?.onValueChanged.AddListener( OnTurnChange );
+        TurnInput.Opt()?.onValueChanged.AddListener( OnUserTurnInputChange );
 
         RecordsDropdown.Opt()?.onValueChanged.AddListener( OnRecordChanged );
         NotesRegionRoot.Opt()?.gameObject.SetActive( false );
@@ -53,10 +53,12 @@ public class UIAITools : UIPanel
         
     }
 
+
     private void NewRecordsAvailable()
     {
         RebuildOptions();
     }
+
 
     private void OnRecordChanged( int index )
     {
@@ -71,6 +73,7 @@ public class UIAITools : UIPanel
     private void UpdateGridRender()
     {
         if( _activeRecord == null ) return;
+
         UIManager.Instance.ClearDebugTextOverlays();
         RecordDisplay.Clear();
         int range = 0;
@@ -105,7 +108,7 @@ public class UIAITools : UIPanel
     }
 
 
-    private void OnTurnChange( string input )
+    private void OnUserTurnInputChange( string input )
     {
         int res = 0;
         if( Int32.TryParse( input, out res ) )
@@ -131,6 +134,17 @@ public class UIAITools : UIPanel
         _activeRecord = _records.FirstOrDefault();
     }
 
+    private void SelectLatestRecord()
+    {
+        if( _records == null )
+        {
+            _activeRecord = null;
+            return;
+        }
+
+        _activeRecord = _records.LastOrDefault();
+    }
+
 
     private void SelectRecord( int index )
     {
@@ -147,6 +161,7 @@ public class UIAITools : UIPanel
     private void OnPrevTurnClick()
     {
         Turn--;
+        RebuildOptions();
         SelectFirstRecord();
         if( TurnInput )
             TurnInput.text = Turn.ToString();
@@ -157,6 +172,7 @@ public class UIAITools : UIPanel
     private void OnNextTurnClick()
     {
         Turn++;
+        RebuildOptions();
         SelectFirstRecord();
         if( TurnInput )
             TurnInput.text = Turn.ToString();

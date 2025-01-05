@@ -43,7 +43,6 @@ public class AIMoveAction : MoveAction
 
     private FloatWindow GenerateMoveHeatmap( Game game, Actor actor )
     {
-
         var mechData = actor.GetMechData();
         var moveRange = mechData.Legs.GetStatisticValue( StatisticType.Range );
 
@@ -159,7 +158,7 @@ public class AIMoveAction : MoveAction
             {
                 targets.Add( iter.value, iter.world );
             }
-        } );
+        });
 
 
         var best = targets.Last().Value;

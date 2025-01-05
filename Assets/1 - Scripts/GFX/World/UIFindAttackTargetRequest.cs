@@ -141,7 +141,7 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
             return;
 
         var shape = _requestingActor.ActiveWeapon.AOEShape;
-        BoolWindow win = shape.NewBoolWindow();
+        BoolWindow win = shape.NewBoolWindow( GameEngine.Instance.Game.Board );
         win.MoveCenter( cell );
         GameEngine.Instance.GfxBoard.AOEOverlay.RenderCells( win, false, tintShift: .2f );
     }

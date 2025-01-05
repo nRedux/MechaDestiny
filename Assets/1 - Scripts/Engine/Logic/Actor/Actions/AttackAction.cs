@@ -45,7 +45,7 @@ public abstract class AttackAction : ActorAction
         var wep = mech.ActiveWeapon;
         var wepRange = actor.ActiveWeapon.GetStatisticValue( StatisticType.Range );
 
-        FloatWindow rangeWindow = new FloatWindow( wepRange * 2 );
+        FloatWindow rangeWindow = new FloatWindow( wepRange * 2, game.Board );
         rangeWindow.MoveCenter( coord );
         float utility = 0f;
 

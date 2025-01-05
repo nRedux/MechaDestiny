@@ -47,14 +47,14 @@ public class AIAttackAction : AttackAction
         if( activeWeapon == null || !activeWeapon.IsAOE() )
             return new Vector2Int();
 
-        FloatWindow rangeWindow = new FloatWindow( range * 2 );
+        FloatWindow rangeWindow = new FloatWindow( range * 2, game.Board );
         rangeWindow.MoveCenter( actor.Position );
 
         var others = game.GetOtherTeams( actor.GetTeamID() );
 
-        FloatWindow countsWindow = new FloatWindow( game.Board.Width, game.Board.Height );
+        FloatWindow countsWindow = new FloatWindow( game.Board.Width, game.Board.Height, game.Board );
 
-        BoolWindow AOEWin = activeWeapon.AOEShape.NewBoolWindow();
+        BoolWindow AOEWin = activeWeapon.AOEShape.NewBoolWindow( game.Board );
         //Find cell targets
         rangeWindow.Do( iter =>
         {
@@ -115,7 +115,7 @@ public class AIAttackAction : AttackAction
         _actor = actor;
         _state = ActorActionState.Started;
 
-        _attackOptions = new BoolWindow( range * 2 );
+        _attackOptions = new BoolWindow( range * 2, game.Board );
 
         _attackOptions.MoveCenter( actor.Position );
         _game.Board.GetCellsManhattan( range, _attackOptions );

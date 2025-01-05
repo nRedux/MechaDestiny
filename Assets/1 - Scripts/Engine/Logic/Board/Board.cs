@@ -19,14 +19,14 @@ public class Board
     public Board( Board other )
     {
         this.Map = new GridStar( other.Map );
-        _scratchBoard = new FloatWindow( other.Width, other.Height );
+        _scratchBoard = new FloatWindow( other.Width, other.Height, this );
     }
 
 
     public Board( int width, int height )
     {
         Map = new GridStar( width, height );
-        _scratchBoard = new FloatWindow( width, height );
+        _scratchBoard = new FloatWindow( width, height, this );
     }
 
 
@@ -201,7 +201,7 @@ public class Board
 
     public BoolWindow GetCellsManhattan( int originX, int originY, int range )
     {
-        BoolWindow result = new BoolWindow( range * 2 );
+        BoolWindow result = new BoolWindow( range * 2, this );
         result.X = originX - range;
         result.Y = originY - range;
 

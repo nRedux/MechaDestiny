@@ -72,7 +72,7 @@ public class AITools : SingletonScriptableObject<AITools>
             BoolWindow = boolWindow
         };
 
-        _records.Add( r );
+        AddRecord( r );
         return r;
     }
 
@@ -89,7 +89,7 @@ public class AITools : SingletonScriptableObject<AITools>
             FloatWindow = floatWindow
         };
 
-        _records.Add( r );
+        AddRecord( r );
         return r;
     }
 
@@ -106,7 +106,7 @@ public class AITools : SingletonScriptableObject<AITools>
             Path = path
         };
 
-        _records.Add( r );
+        AddRecord( r );
         return r;
     }
 

@@ -34,9 +34,9 @@ public class GridShape: SerializedScriptableObject
         Cells = new bool[Width, Height];
     }
 
-    public BoolWindow NewBoolWindow()
+    public BoolWindow NewBoolWindow( Board board )
     {
-        var res = new BoolWindow( this.Width, this.Height );
+        var res = new BoolWindow( this.Width, this.Height, board );
         res.Fill( this );
         return res;
     }
