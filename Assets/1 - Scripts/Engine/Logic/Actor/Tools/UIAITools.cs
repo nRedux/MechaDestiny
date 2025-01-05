@@ -87,7 +87,7 @@ public class UIAITools : UIPanel
         {
             range = _activeRecord.FloatWindow.Width / 2;
             //display values of all cells
-            _activeRecord.FloatWindow.Do( x => UIManager.Instance.CreateDebugOverlay( x.world, x.value.ToString() ), range );
+            _activeRecord.FloatWindow.Do( x => UIManager.Instance.CreateDebugOverlay( x.world, x.value.ToString( "0.00" ) ), range );
             //Display cells
             RecordDisplay.RenderCells( _activeRecord.FloatWindow, maxDistance: range );
         }

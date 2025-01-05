@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Localization.Pseudo;
 
 public enum BoardWindowClamping
 {
@@ -35,7 +36,7 @@ public class BoardWindow<TCellType>
     [SerializeField]
     public TCellType[] Cells;
     [SerializeField]
-    public int maxIterDistance = int.MaxValue;
+    public int MaxIterDistance = int.MaxValue;
     [SerializeField]
     public BoardWindowClamping Clamping = BoardWindowClamping.None;
 
@@ -102,12 +103,42 @@ public class BoardWindow<TCellType>
         RecalculateCenter();
     }
 
+    public BoardWindow( int width, int height, Board board, int maxIterDistance )
+    {
+        if( width % 2 == 0 )
+            width += 1;
+        if( height % 2 == 0 )
+            height += 1;
+
+        this.MaxIterDistance = maxIterDistance;
+        this.Board = board;
+        this.Width = width;
+        this.Height = height;
+        this.Size = width * height;
+        this.Cells = new TCellType[Size];
+        RecalculateCenter();
+    }
+
 
     public BoardWindow( int sideSize, Board board )
     {
         if( sideSize % 2 == 0 )
             sideSize += 1;
 
+        this.Board = board;
+        this.Width = sideSize;
+        this.Height = sideSize;
+        this.Size = sideSize * sideSize;
+        this.Cells = new TCellType[Size];
+        RecalculateCenter();
+    }
+
+    public BoardWindow( int sideSize, Board board, int maxIterDistance )
+    {
+        if( sideSize % 2 == 0 )
+            sideSize += 1;
+
+        this.MaxIterDistance = maxIterDistance;
         this.Board = board;
         this.Width = sideSize;
         this.Height = sideSize;
@@ -306,7 +337,10 @@ public class BoardWindow<TCellType>
         for( int i = 0; i < Size; i++ )
         {
             Vector2Int world = GetWorldCoordinate( i );
+            Vector2Int toCenter = Center - world;
             if( Board != null && !Board.IsCoordInBoard( world ) )
+                continue;
+            if( toCenter.ManhattanDistance() > MaxIterDistance )
                 continue;
             action?.Invoke( (local: GetLocalCoordinate(i), world: GetWorldCoordinate(i), value: Cells[i], window: this) );
         }
@@ -319,7 +353,8 @@ public class BoardWindow<TCellType>
         {
             Vector2Int world = GetWorldCoordinate( i );
             Vector2Int toCenter = Center - world;
-            if( toCenter.ManhattanDistance() > range )
+            int toCenterDist = toCenter.ManhattanDistance();
+            if( toCenterDist > range || toCenterDist > MaxIterDistance )
                 continue;
             if( Board != null && !Board.IsCoordInBoard( world ) )
                 continue;

@@ -47,32 +47,6 @@ public class AIBrawler : AIPersonality
         actor.ActiveWeapon = prefWep.Random( 1 ).FirstOrDefault() as MechComponentData;
     }
 
-    /// <summary>
-    /// How close to enemies does this AI like to be at the moment?
-    /// </summary>
-    /// <param name="actor">The AI actor</param>
-    /// <returns>The range the AI would like to be at based on current weapon.</returns>
-    public override int GetIdealAttackRange( Actor actor )
-    {
-        int preferredRange = Random.Range( 2, 3 );
-
-        if( actor.ActiveWeapon != null ) 
-        {
-            if( actor.ActiveWeapon.HasFeatureFlag( (int) WeaponFlags.Melee ) )
-            {
-                preferredRange = 1;
-            }
-            else
-            {
-                preferredRange = actor.ActiveWeapon.GetStatisticValue( StatisticType.Range );
-            }
-
-            preferredRange = Mathf.Max( 1, Random.Range( 0, RandomDistReduce + 1 ) );
-        }
-
-        return preferredRange;
-    }
-
     private List<IEntity> GetRangeOrderedWeapons( Actor actor )
     {
         bool SelectWep( MechComponentData data )

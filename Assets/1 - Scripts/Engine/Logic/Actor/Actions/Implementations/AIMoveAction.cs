@@ -1,10 +1,8 @@
-using System.Collections;
+
 using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
-using NUnit.Framework;
-using UnityEditor.Experimental.GraphView;
 
 
 /*
@@ -37,7 +35,6 @@ public class AIMoveAction : MoveAction
     public override int BoardRange => Range;
 
 
-
     private ActorActionState _state;
 
 
@@ -46,7 +43,7 @@ public class AIMoveAction : MoveAction
         var mechData = actor.GetMechData();
         var moveRange = mechData.Legs.GetStatisticValue( StatisticType.Range );
 
-        FloatWindow utility = new FloatWindow( moveRange * 2, game.Board );
+        FloatWindow utility = new FloatWindow( moveRange * 2, game.Board ) { MaxIterDistance = moveRange };
         utility.Clamping = BoardWindowClamping.Positive;
         utility.MoveCenter( actor.Position );
 
@@ -70,7 +67,6 @@ public class AIMoveAction : MoveAction
         var actions = actor.GetActionsOfType<AttackAction>();
         if( actions.Count == 0 )
             return;
-
 
         var mechData = actor.GetMechData();
         var moveRange = mechData.Legs.GetStatisticValue( StatisticType.Range );
@@ -107,7 +103,46 @@ public class AIMoveAction : MoveAction
             else
                 utility[iter.local] -= ( path.Count / (float) moveRange ) * .5f;
         } );
-        
+
+
+        var nonZeroOptions = utility.Cells.Where( x => x > 0f ).Count() > 0;
+        if( !nonZeroOptions )
+        {
+            utility.Do( iter =>
+            {
+                utility[iter.local] = GetDistanceToActorUtility( actor, utility, iter.world );
+            } );
+        }
+    }
+
+
+    private float GetDistanceToActorUtility( Actor requester, FloatWindow moveWindow,  Vector2Int coordinate )
+    {
+
+        float desiredRange = UnityEngine.Random.Range( 3, 6 );
+        if( requester.AIPersonality != null )
+            desiredRange = requester.AIPersonality.GetIdealAttackRange( requester );
+
+        Debug.Log( desiredRange );
+        int maxDistance = GameEngine.Instance.Board.Width * GameEngine.Instance.Board.Height;
+        float cellScore = 0f;
+        GameEngine.Instance.Game.Teams.Do( team =>
+        {
+            if( team.Id == requester.GetTeamID() )
+                return;
+
+            var members = team.GetMembers();
+            members.Do( member =>
+            {
+                
+                Vector2Int coordToActor = member.Position - coordinate;
+                float relativeIdeal =  1f - ( Mathf.Abs( desiredRange - coordToActor.magnitude ) / 10f );
+
+                cellScore += relativeIdeal;
+            } );
+        } );
+
+        return cellScore;
     }
 
 
