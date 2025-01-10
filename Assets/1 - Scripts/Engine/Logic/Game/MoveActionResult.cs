@@ -2,30 +2,34 @@ using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
 public class MoveActionResult : ActionResult
 {
     public Actor Actor;
-    public Stack<GridStarNode> Path;
+    public ABPath ABPath = null;
     
     private GfxActor _avatar;
     private float _nodeSatisfiedDistance = .5f;
 
+    private int _curNodeIndex = 0;
 
-    public MoveActionResult( Actor actor, Stack<GridStarNode> path )
+
+    public MoveActionResult( Actor actor, ABPath path )
     {
         this.Actor = actor;
-        this.Path = path;
+        this.ABPath = path;
     }
 
-    private bool PathInvalid(Stack<GridStarNode> path)
+
+    private bool PathInvalid()
     {
-        return Path == null || Path.Count == 0;
+        return ABPath == null || ABPath.CompleteState == PathCompleteState.Error || ABPath.CompleteState == PathCompleteState.Partial;
     }
 
     public override void Start()
     {
-        if( PathInvalid( Path ) )
+        if( PathInvalid() )
             return;
 
         _avatar = GameEngine.Instance.AvatarManager.GetAvatar( Actor );
@@ -40,8 +44,8 @@ public class MoveActionResult : ActionResult
 
     Vector3 ToTargetNode()
     {
-        GridStarNode targetNode = this.Path.Peek();
-        Vector3 targetWorldPos = targetNode.WorldPosition();
+        var targNode = this.ABPath.path[_curNodeIndex];
+        Vector3 targetWorldPos = (Vector3) targNode.position;
         Vector3 delta = targetWorldPos - _avatar.transform.position;
         return delta;
     }
@@ -49,7 +53,7 @@ public class MoveActionResult : ActionResult
     public override ActionResultStatus Update()
     {
         //Empty path, we're done here
-        if( PathInvalid( Path ) )
+        if( PathInvalid() )
             return ActionResultStatus.Finished;
 
         Vector3 delta = ToTargetNode();
@@ -63,7 +67,7 @@ public class MoveActionResult : ActionResult
 
         _avatar.transform.rotation = Quaternion.RotateTowards( _avatar.transform.rotation, Quaternion.LookRotation( delta ), turnSpeed );// _avatar.TurnSpeed * Time.deltaTime );
 
-        if( (this.Path.Count > 1 && delta.magnitude < _nodeSatisfiedDistance ) || ( this.Path.Count == 1 && delta.magnitude < .02 ) )
+        if( (_curNodeIndex < this.ABPath.path.Count && delta.magnitude < _nodeSatisfiedDistance ) || (_curNodeIndex == this.ABPath.path.Count - 1 && delta.magnitude < .02f ) )
         {
             //Next node!
             if( PathComplete() )
@@ -73,10 +77,15 @@ public class MoveActionResult : ActionResult
             }
             else
             {
-                //Pop, so we move toward next node.
-                this.Path.Pop();
+                _curNodeIndex++;
             }
         }
+
+        for( int i = 0; i < ABPath.path.Count - 1; i++ )
+        {
+            Debug.DrawLine( (Vector3) ABPath.path[i].position, (Vector3) ABPath.path[i + 1].position );
+        }
+
         return ActionResultStatus.Running;
     }
 
@@ -87,7 +96,8 @@ public class MoveActionResult : ActionResult
     /// <returns>True if path complete, otherwise false.</returns>
     private bool PathComplete()
     {
+        Vector3 delta = ToTargetNode();
         //Moving toward last node
-        return Path.Count == 1;
+        return _curNodeIndex == ABPath.path.Count - 1 && delta.magnitude < .02f;
     }
 }

@@ -45,9 +45,4 @@ public class GfxBoard : SerializedMonoBehaviour
         _AOEOverlay.Initialize();
     }
 
-    internal Stack<GridStarNode> GetPath( Vector2Int start, Vector2Int end )
-    {
-        return _board.Map.GetPath( start, end );
-    }
-
 }

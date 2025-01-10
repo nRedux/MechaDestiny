@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
 
 /*
@@ -97,11 +98,11 @@ public class AIMoveAction : MoveAction
         utility.Do( iter =>
         {
             //Prefer closer options.
-            var path = game.Board.GetPath( actor.Position, iter.world );
-            if( path == null || path.Count > moveRange )
+            var abPath = game.Board.GetNewPath( actor.Position, iter.world );
+            if( abPath == null || abPath.path.Count > moveRange )
                 utility[iter.local] = 0;
             else
-                utility[iter.local] -= ( path.Count / (float) moveRange ) * .5f;
+                utility[iter.local] -= ( abPath.path.Count / (float) moveRange ) * .5f;
         } );
 
 
@@ -188,8 +189,8 @@ public class AIMoveAction : MoveAction
         FloatWindow utility = GenerateMoveHeatmap( game, actor );
         utility.Do( iter =>
         {
-            var path = gfxBoard.GetPath( actor.Position, iter.world );
-            if( path!= null && path.Count > 0 )
+            var abPath = game.Board.GetNewPath( actor.Position, iter.world );
+            if( abPath!= null && abPath.path.Count > 0 )
             {
                 targets.Add( iter.value, iter.world );
             }
@@ -216,7 +217,8 @@ public class AIMoveAction : MoveAction
             return;
         }
 
-        ActionResult res = new MoveActionResult( actor, GameEngine.Instance.Board.GetPath( actor.Position, Target ) );
+
+        ActionResult res = new MoveActionResult( actor, GameEngine.Instance.Board.GetNewPath( actor.Position, Target ) );
         actor.SetPosition( Target, game );
 
         _state = ActorActionState.Executing;

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 using UnityEngine.SocialPlatforms;
+using Pathfinding;
 
 public class Board
 {
@@ -279,9 +280,13 @@ public class Board
         return Map.CellWalkable( cell );
     }
 
-    public Stack<GridStarNode> GetPath(Vector2Int start, Vector2Int end )
+    public ABPath GetNewPath( Vector2Int start, Vector2Int end )
     {
-        return Map.GetPath( start, end );
+        var path = ABPath.Construct( start.WorldPosition(), end.WorldPosition() );
+        AstarPath.StartPath( path );
+        path.BlockUntilCalculated();
+
+        return path;
     }
 
 }

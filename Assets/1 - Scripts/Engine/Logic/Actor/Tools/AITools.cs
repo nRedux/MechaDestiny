@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
+using Pathfinding;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Engine/Tools/AITools")]
@@ -18,7 +18,7 @@ public class AITools : SingletonScriptableObject<AITools>
         public FloatWindow FloatWindow;
         public string NoteContent;
 
-        public List<GridStarNode> Path { get; internal set; }
+        public ABPath Path { get; internal set; }
 
         public string GetDescription()
         {
@@ -93,7 +93,7 @@ public class AITools : SingletonScriptableObject<AITools>
         return r;
     }
 
-    public Record RecordPath( List<GridStarNode> path, string context, string description )
+    public Record RecordPath( ABPath path, string context, string description )
     {
         int turn = GameEngine.Instance.Game.TurnManager.TurnNumber;
 
