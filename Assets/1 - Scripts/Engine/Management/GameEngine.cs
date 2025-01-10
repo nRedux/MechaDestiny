@@ -71,6 +71,11 @@ public class GameEngine : Singleton<GameEngine>
         _doBlockerUpdate = true;
     }
 
+    public void SizeChanged()
+    {
+        WalkableCells = new BoolWindow( BoardSize, BoardSize, null );
+        WalkableCells.MoveCenter( new Vector2Int( WalkableCells.Width / 2, WalkableCells.Height / 2 ) );
+    }
 
 #if UNITY_EDITOR
     private void EditorUpdate()

@@ -5,7 +5,51 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-public class GridStarNode
+public class QuickSort
+{
+    public static void Sort<T>( List<T> list ) where T : IComparable<T>
+    {
+        QuickSortRecursion( list, 0, list.Count - 1 );
+    }
+
+    private static void QuickSortRecursion<T>( List<T> list, int low, int high ) where T : IComparable<T>
+    {
+        if( low < high )
+        {
+            int pivotIndex = Partition( list, low, high );
+            QuickSortRecursion( list, low, pivotIndex - 1 );
+            QuickSortRecursion( list, pivotIndex + 1, high );
+        }
+    }
+
+    private static int Partition<T>( List<T> list, int low, int high ) where T : IComparable<T>
+    {
+        T pivot = list[high];
+        int i = low - 1;
+
+        for( int j = low; j < high; j++ )
+        {
+            if( list[j].CompareTo( pivot ) <= 0 )
+            {
+                i++;
+                Swap( list, i, j );
+            }
+        }
+
+        Swap( list, i + 1, high );
+        return i + 1;
+    }
+
+    private static void Swap<T>( List<T> list, int index1, int index2 )
+    {
+        T temp = list[index1];
+        list[index1] = list[index2];
+        list[index2] = temp;
+    }
+}
+
+
+public class GridStarNode: IComparable<GridStarNode>
 {
     // Change this depending on what the desired size is for each element in the grid
     public static int NODE_SIZE = 32;
@@ -56,6 +100,11 @@ public class GridStarNode
     public Vector3 WorldPosition()
     {
         return new Vector3( XPos + .5f, 0f, YPos + .5f );
+    }
+
+    public int CompareTo( GridStarNode other )
+    {
+        return this.F.CompareTo( other.F );
     }
 }
 
@@ -118,10 +167,15 @@ public class GridStar
         // add start node to Open List
         OpenList.Add(start);
 
-        while (OpenList.Count != 0 && !ClosedList.Exists(x => x.Equals( end ) ) )
+        bool goalFound = false;
+        while (OpenList.Count != 0 && !goalFound )
         {
             current = OpenList[0];
             OpenList.Remove(current);
+
+            if( current == end )
+                goalFound = true;
+
             ClosedList.Add(current);
             GetAdjacentNodes(current, adjacencies);
 
@@ -137,7 +191,8 @@ public class GridStar
                         n.DistanceToTarget = (n.WorldPosition() - end.WorldPosition()).magnitude;
                         n.Cost = n.Weight + n.Parent.Cost;
                         OpenList.Add(n);
-                        OpenList = OpenList.OrderBy(node => node.F).ToList<GridStarNode>();
+                        QuickSort.Sort( OpenList );
+                        //////OpenList = OpenList.OrderBy(node => node.F).ToList<GridStarNode>();
                     }
                 }
             }
