@@ -1141,7 +1141,7 @@ Transform:
   m_GameObject: {fileID: 517843592}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.5, y: 0, z: 8.5}
+  m_LocalPosition: {x: 7.5, y: 0, z: 17.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1497,6 +1497,7 @@ GameObject:
   m_Component:
   - component: {fileID: 704293112}
   - component: {fileID: 704293111}
+  - component: {fileID: 704293113}
   m_Layer: 0
   m_Name: Engine
   m_TagString: Untagged
@@ -1566,6 +1567,60 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &704293113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 704293110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78396926cbbfc4ac3b48fc5fc34a87d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  version: 1073741824
+  data:
+    dataString: UEsDBBQAAAgIAACAn+u+4KbzuAIAAPoFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFlVE1vGjEQ/SvI5yZaSCCltxYS0kMSVFLlUHIw61nWwtgrfwRIlP/eGa+XXQhCWuvNm5k3H/YHk9pVkHtjZ1aKByOA/egxOrNvvdZ4D3u+Nnoh36HhvEjhSyLxyPnDvTSI98nNmS14K/Ofeq2InCEYtCyM3d6KNUyM8w7hgisHaLLGk7dG6KPH9snhkL7v9O194ikH7cG2rPHlOP7OyA0cfYLOFd9WIEh76zpoMgzq0BqrSgyqIDdKSZckMX+oYskTXrmABSFBSI4lRjHEL0GuS0/hus5PReHAJ2WWH6bSYqfqqOyXqdu35W5T63rjKlCe62w8iqLqqA9fCBf9aC6s2d43ifsZJfGlzDd/+CHnznca3IWnp8qD3nG14SsFLyXoRzOzJmiBRm8DuQYHg2kn1LG4SQn5puXVWs/AUH0dab8d6Wcsf7/wUB3ryC6vW/SvA7dQJnY/hSRLQsYUEixO7jfWEzfIpUSIkkb0f+br7qolw520zqMp6Ukocec4IhCgc0h9vyCCJnkrEyzFYnd4oNHlwU+M1RDRpK8CzZU/zDGgP1+BM1tH1pnljtOlS+KSrblLZy4RbvlZdmaam91x1haX18WNbk7/XmkGrjS7B3DlU/BK6k6zyfCI/Z0YrevN7faycVsEW/C84+Zh74OFKfc8ZkM5uF+i64odjB46KEWrHAuIirAA+r9Sf0uOeVWE2aPR8eadfKP8dZDi9ILgS7Eafs8H1zerYnQFWXYxhJtsvCquRqvB8Go0GLJ4g6TGdnM1r/uVpoTLpdtaNN6W5knszSyv4qUVlu9m8n1rOpOXujCL3ALopzrCsViwmAQfF3ErJJa5AO+ljmvJPpZMmXwDYnkMtIyNvd17y5dtlCWr5JvxhCzZJD6ES0bw8ULi5r5J2FHyk2CgcHQgnqWCLa/IlH2yz/9QSwMEFAAACAgAAICf61Nn9N9sAAAAdwAAAAkAJABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQGrVipLLSrOzM9TslIw1TPWM9BRUEovSizIKAYKGII4pZkpIHa0UnJqkqlFspGJeVKamXGqgYGuaaq5gWVSmrFZkpGpsZmRqVIsUH1JZUGqX2JuKkRPQGJJRlpmXkpmXrqee1FmijvIaKXYWgBQSwECLQAUAAAICAAAgJ/rvuCm87gCAAD6BQAACwAkAAAAAAAAAAAAAAAAAAAAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFQSwECLQAUAAAICAAAgJ/rU2f032wAAAB3AAAACQAkAAAAAAAAAAAAAAAFAwAAbWV0YS5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0BUEsFBgAAAAACAAIAuAAAALwDAAAAAA==
+    file_cachedStartup: {fileID: 0}
+    cacheStartup: 0
+  showNavGraphs: 1
+  showUnwalkableNodes: 1
+  debugMode: 0
+  debugFloor: 0
+  debugRoof: 1
+  manualDebugFloorRoof: 0
+  showSearchTree: 0
+  unwalkableNodeDebugSize: 0.3
+  logPathResults: 1
+  maxNearestNodeDistance: 100
+  scanOnStartup: 1
+  fullGetNearestSearch: 0
+  prioritizeGraphs: 0
+  prioritizeGraphsLimit: 1
+  colorSettings:
+    _SolidColor: {r: 0.11764706, g: 0.4, b: 0.7882353, a: 0.9}
+    _UnwalkableNode: {r: 1, g: 0, b: 0, a: 0.5}
+    _BoundsHandles: {r: 0.29, g: 0.454, b: 0.741, a: 0.9}
+    _ConnectionLowLerp: {r: 0, g: 1, b: 0, a: 0.5}
+    _ConnectionHighLerp: {r: 1, g: 0, b: 0, a: 0.5}
+    _MeshEdgeColor: {r: 0, g: 0, b: 0, a: 0.5}
+    _AreaColors: []
+  tagNames: []
+  heuristic: 2
+  heuristicScale: 1
+  threadCount: 1
+  maxFrameTime: 1
+  batchGraphUpdates: 0
+  graphUpdateBatchingInterval: 0.2
+  navmeshUpdates:
+    updateInterval: 0
+  euclideanEmbedding:
+    mode: 0
+    seed: 0
+    pivotPointRoot: {fileID: 0}
+    spreadOutCount: 1
+  showGraphs: 1
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1997,7 +2052,7 @@ Transform:
   m_GameObject: {fileID: 829740405}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.5, y: 0, z: 7.5}
+  m_LocalPosition: {x: 11.5, y: 0, z: 15.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3105,7 +3160,7 @@ Transform:
   m_GameObject: {fileID: 1249534959}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.5, y: 0, z: 8.5}
+  m_LocalPosition: {x: 15.5, y: 0, z: 17.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
