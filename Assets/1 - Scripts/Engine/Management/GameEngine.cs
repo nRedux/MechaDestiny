@@ -28,7 +28,6 @@ public class GameEngine : Singleton<GameEngine>
     public GfxCamera Camera;
     public GfxBoard GfxBoard;
     public UIManager UIManager;
-    public BoolWindow WalkableCells = new BoolWindow( DEFAULT_SIZE, null );
     public GameEventBase EndTurnButtonEvent;
 
     [HideInInspector]
@@ -40,11 +39,6 @@ public class GameEngine : Singleton<GameEngine>
     public Game Game => _game;
     public Board Board => _game.Board;
 
-
-    [OnValueChanged( "SizeChanged" )]
-    public int BoardSize = DEFAULT_SIZE;
-
-
     private bool _initializationDone = false;
     private bool _doBlockerUpdate = false;
     private List<SpawnLocation> _spawnLocations;
@@ -53,56 +47,6 @@ public class GameEngine : Singleton<GameEngine>
     public bool Initialized
     {
         get => _initializationDone;
-    }
-
-
-    public void UpdateBoardData()
-    {
-        if( Application.isPlaying )
-            return;
-
-        Debug.Log("Update blockers");
-
-#if UNITY_EDITOR
-        if( EditorApplication.update != EditorUpdate )
-            EditorApplication.update = EditorUpdate;
-#endif
-
-        _doBlockerUpdate = true;
-    }
-
-    public void SizeChanged()
-    {
-        WalkableCells = new BoolWindow( BoardSize, BoardSize, null );
-        WalkableCells.MoveCenter( new Vector2Int( WalkableCells.Width / 2, WalkableCells.Height / 2 ) );
-    }
-
-#if UNITY_EDITOR
-    private void EditorUpdate()
-    {
-        if( Application.isPlaying )
-            return;
-        if( _doBlockerUpdate )
-        {
-            UpdateBlockerData();
-            _doBlockerUpdate = false;
-        }
-    }
-#endif
-
-    [Button]
-    private void UpdateBlockerData()
-    {
-        WalkableCells.Do( iter =>
-        {
-            iter.window[iter.local] = true;
-        } );
-
-        BoardBlocker[] blockers = FindObjectsOfType<BoardBlocker>();
-        foreach( var blocker in blockers )
-        {
-            blocker.ApplyToBoard( WalkableCells );
-        }
     }
 
 
@@ -136,7 +80,6 @@ public class GameEngine : Singleton<GameEngine>
 
     private void Start()
     {
-        UpdateBlockerData();
         Initialize();
     }
 
@@ -153,25 +96,6 @@ public class GameEngine : Singleton<GameEngine>
     {
         base.OnDestroy();
         _game.Cleanup();
-    }
-
-    public void OnDrawGizmos()
-    {
-        Color oldGizmosColor = Gizmos.color;
-
-        Color walkableColor = Color.green;
-        walkableColor.a = .1f;
-        
-        Color unwalkableColor = Color.red;
-        unwalkableColor.a = .1f;
-
-        WalkableCells.Do( iter =>
-        {
-            Gizmos.color = iter.value ? walkableColor : unwalkableColor;
-            Gizmos.DrawCube( new Vector3( iter.world.x + .5f, 0, iter.world.y + .5f ), new Vector3( 1f, .02f, 1f ) * .97f );
-        } );
-
-        Gizmos.color = oldGizmosColor;
     }
 
     public async Task CreateAvatars( )
@@ -202,9 +126,7 @@ public class GameEngine : Singleton<GameEngine>
 
     private void InitializeGameState()
     {
-        _game = new Game( WalkableCells.Width, WalkableCells.Height );
-        WalkableCells.Board = Board;
-        _game.SetWalkability( WalkableCells );
+        _game = new Game();
         GfxBoard.SetBoard( _game.Board );
         CreateTeams();
     }

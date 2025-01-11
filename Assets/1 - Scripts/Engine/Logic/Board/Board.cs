@@ -1,13 +1,11 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
-using UnityEngine.SocialPlatforms;
 using Pathfinding;
+using Newtonsoft.Json;
 
 public class Board
 {
+
+    public AstarPath Pathing = null;
     public GridStar Map = new GridStar( 10, 10 );
 
     public int Width => Map.Width;
@@ -16,18 +14,31 @@ public class Board
 
     private FloatWindow _scratchBoard;
 
+    [JsonConstructor]
+    public Board()
+    {
+
+    }
 
     public Board( Board other )
     {
         this.Map = new GridStar( other.Map );
+        Pathing = Object.FindFirstObjectByType<AstarPath>( FindObjectsInactive.Exclude );
         _scratchBoard = new FloatWindow( other.Width, other.Height, this );
     }
 
 
-    public Board( int width, int height )
+    public Board( AstarPath astarPath )
     {
-        Map = new GridStar( width, height );
-        _scratchBoard = new FloatWindow( width, height, this );
+        this.Pathing = astarPath;
+        if( astarPath == null )
+            throw new System.Exception( "You must have a GridGraph in the scene!" );
+
+        if( astarPath.graphs.Length == 0 )
+            throw new System.Exception( "You must have a Grid graph in scene AstarPath" );
+
+        var graph = Pathing.graphs[0] as GridGraph;
+        _scratchBoard = new FloatWindow( graph.width, graph.depth, this );
     }
 
 
@@ -142,14 +153,6 @@ public class Board
         _scratchBoard.Do( iter =>
         {
             _scratchBoard[iter.local] = 0f;
-        } );
-    }
-
-    internal void SetWalkability( BoolWindow walkableCells )
-    {
-        walkableCells.Do( iter =>
-        {
-            Map.Grid[iter.local.x, iter.local.y].Walkable = iter.value;
         } );
     }
 
@@ -277,7 +280,7 @@ public class Board
 
     public bool CanActorOccupyCell( Vector2Int cell )
     {
-        return Map.CellWalkable( cell );
+        return true;
     }
 
     public ABPath GetNewPath( Vector2Int start, Vector2Int end )

@@ -2,7 +2,6 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class Game
 {
@@ -21,9 +20,14 @@ public class Game
     public TurnManager TurnManager{ get; private set; }
 
 
-    public Game( int boardWidth, int boardHeight )
+    public Game()
     {
-        this.Board = new Board( boardWidth, boardHeight );
+        var pathing = Object.FindFirstObjectByType<AstarPath>();
+
+        if( pathing == null )
+            throw new System.Exception( "AStarPath must exist in the scene" );
+
+        this.Board = new Board( pathing );
         this.TurnManager = new TurnManager( this );
     }
 
@@ -140,38 +144,5 @@ public class Game
         }
         return gameOverResult;
     }
-
-    internal void SetWalkability( BoolWindow walkableCells )
-    {
-        Board.SetWalkability( walkableCells );
-    }
-
-
-    /*
-    public List<Actor> GetActorsInRange( int originX, int originY, int range, int teamID )
-    {
-        var team = Teams[teamID];
-        var teamMembers = team.GetMembers();
-        bool[,] cellsInRange = new bool[range * 2, range * 2];
-        Board.GetCellsManhattan( originX, originY, range, cellsInRange );
-        List<Actor> results = new List<Actor>();
-
-        for( int x = 0; x < range * 2; x++ )
-        {
-            for( int y = 0; y < range * 2; y++ )
-            {
-                Vector2Int cell = new Vector2Int( x - range, y - range );
-                if( cellsInRange[cell.x, cell.y] )
-                {
-                    var foundActor = teamMembers.Where( x => x.GetBoardPosition() == cell ).FirstOrDefault();
-                    if( foundActor != null )
-                        results.Add( foundActor );
-                }
-            }
-        }
-
-        return results;
-    }
-    */
 
 }
