@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Pathfinding;
 using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 using UnityEngine.AI;
@@ -33,11 +34,12 @@ public class MxSelection
     public System.Action OnSelectionClear;
     public MapObjectCollectionDelegate OnSelectionChanged;
 
-
     private GfxMapObject _lastHovered;
 
 
     public bool DoNormalSelection { get; set; } = true;
+
+
 
 
     private bool HasSelectionInput()
@@ -327,6 +329,7 @@ public class GameManager : Singleton<GameManager>
     public EncounterData TestEncounter;
     public MxSelection Selection;
     public MxSelectionProcessor SelectionProcessor;
+    public BlockManager BlockManager;
     
     
     private MapObjectData _playerHarvester;
@@ -339,6 +342,8 @@ public class GameManager : Singleton<GameManager>
         var inst = SUIManager.Instance;
 
         InitializeCaravan();
+
+        BlockManager = FindFirstObjectByType<BlockManager>();
 
         Selection = new MxSelection();
         Selection.OnSelectionAdd += SelectionAdd;

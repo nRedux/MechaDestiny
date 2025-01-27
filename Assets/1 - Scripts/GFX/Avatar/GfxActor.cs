@@ -23,10 +23,11 @@ public class AnimatorFloat
 
     public string Name;
     public float Value;
+    public Animator Animator;
+
 
     private int _hash;
     private AnimationCurve _curve = null;
-    private Animator _animator;
     private Coroutine _coroutine;
 
     public AnimatorFloat(Animator animator)
@@ -42,19 +43,19 @@ public class AnimatorFloat
     public void Initialize( Animator animator )
     {
         _hash = Animator.StringToHash( Name );
-        _animator = animator;
+        Animator = animator;
     }
 
     public void Initialize( Animator animator, AnimationCurve curve )
     {
         _hash = Animator.StringToHash( Name );
         _curve = curve;
-        _animator = animator;
+        Animator = animator;
     }
 
     public void Apply( )
     {
-        _animator.SetFloat( _hash, Value );
+        Animator.SetFloat( _hash, Value );
     }
 
     public void InterpolateValue( float target, float duration )

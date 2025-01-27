@@ -1,18 +1,27 @@
 using UnityEngine;
 using Pathfinding;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
+using static VariablePoissonSampling;
+using static UnityEditor.FilePathAttribute;
+using UnityEngine.UIElements;
 
 public class Board
 {
 
     public AstarPath Pathing = null;
-    public GridStar Map = new GridStar( 10, 10 );
+    public GridGraph Graph;
+    
 
-    public int Width => Map.Width;
+    public int Width => Graph.Width;
 
-    public int Height => Map.Height;
+    public int Height => Graph.depth;
 
     private FloatWindow _scratchBoard;
+
+    private List<SingleNodeBlocker> _freeNodeBlockers = new List<SingleNodeBlocker>();
+    private Dictionary<Vector2Int, SingleNodeBlocker> _nodeBlockers = new Dictionary<Vector2Int, SingleNodeBlocker>();
 
     [JsonConstructor]
     public Board()
@@ -22,7 +31,6 @@ public class Board
 
     public Board( Board other )
     {
-        this.Map = new GridStar( other.Map );
         Pathing = Object.FindFirstObjectByType<AstarPath>( FindObjectsInactive.Exclude );
         _scratchBoard = new FloatWindow( other.Width, other.Height, this );
     }
@@ -31,6 +39,7 @@ public class Board
     public Board( AstarPath astarPath )
     {
         this.Pathing = astarPath;
+        Graph = Pathing.graphs.FirstOrDefault() as GridGraph;
         if( astarPath == null )
             throw new System.Exception( "You must have a GridGraph in the scene!" );
 
@@ -156,49 +165,47 @@ public class Board
         } );
     }
 
+    /// <summary>
+    /// Can be replaced with the get constant path function from the pathing API
+    /// </summary>
+    /// <param name="range"></param>
+    /// <param name="result"></param>
     public void GetCellsManhattan( int range, BoolWindow result )
     {
         result.Modify( ( cell, world, win ) => { 
-            return Map.IsValidCoord( world ) && GetManhattanDistance( win.Center, world ) <= range; 
+            return IsCoordinateInMap( world ) && GetManhattanDistance( win.Center, world ) <= range; 
         } );
     }
 
     public int? GetDistance( Vector2Int start, Vector2Int end )
     {
-        var path = Map.GetPath( start, end, true );
+        var path = GetNewPath( start, end, true );
         if( path == null )
             return null;
         else
-            return path.Count;
+            return path.path.Count;
+    }
+
+    public bool IsCoordinateInMap( Vector2Int coord )
+    {
+        if( Graph == null )
+            return false;
+
+        return Graph.bounds.Contains( coord.WorldPosition() );
     }
 
     public void GetMovableCellsManhattan( int range, BoolWindow result )
     {
         result.Modify( ( cell, world, win ) => {
-            var valid = Map.IsValidCoord( world ) && GetManhattanDistance( win.Center, world ) <= range;
+            var valid = IsCoordinateInMap( world ) && GetManhattanDistance( win.Center, world ) <= range;
             if( valid ) {
-                var path = Map.GetPath( win.Center, world );
+                var path = GetNewPath( win.Center, world );
                 if( path == null )
                     valid = false;
                 else
-                    valid = valid && path.Count <= range;
+                    valid = valid && path.path.Count <= range;
             }
             return valid;
-        } );
-    }
-
-
-
-    /// <summary>
-    /// Find all the cells which can be moved to 
-    /// </summary>
-    /// <param name="range"></param>
-    /// <param name="result"></param>
-    public void GetMovableCells( int range, BoolWindow result )
-    {
-        result.Modify( ( local, world, win ) => {
-            var path = Map.GetPath( result.Center, local );
-            return Map.IsValidCoord( world ) && GetManhattanDistance( win.Center, world ) <= range && path.Count <= range;
         } );
     }
 
@@ -210,7 +217,7 @@ public class Board
         result.Y = originY - range;
 
         result.Do( cell => {
-            result[cell.local] = Map.IsValidCoord( cell.world ) && GetManhattanDistance( cell.window.Center, cell.world ) <= range;
+            result[cell.local] = IsCoordinateInMap( cell.world ) && GetManhattanDistance( cell.window.Center, cell.world ) <= range;
         } );
 
         return result;
@@ -228,10 +235,15 @@ public class Board
                 int zeroX = x + range;
                 int zeroY = y + range;
 
+                Vector2Int coord = new Vector2Int( originX + x, originY + y );
                 int dX = originX + x;
                 int dY = originY + y;
 
-                if( Map.IsValidCoord( dX, dY ) && GetManhattanDistance( originX, originY, dX, dY ) <= range )
+                if( Pathing.graphs[0] is GridGraph graph )
+                {
+                    graph.IsInsideBounds( new Vector3( dX, 0, dY ) );
+                }
+                if( IsCoordinateInMap( coord ) && GetManhattanDistance( originX, originY, dX, dY ) <= range )
                 {
                     cell.x = dX;
                     cell.y = dY;
@@ -266,6 +278,25 @@ public class Board
     }
 
 
+    private SingleNodeBlocker GetNodeBlocker()
+    {
+        //Find existing instance
+        if( _freeNodeBlockers.Count > 0 )
+        {
+            var lastIndex = _freeNodeBlockers.Count - 1;
+            var free = _freeNodeBlockers[lastIndex];
+            _freeNodeBlockers.RemoveAt( lastIndex );
+            return free;
+        }
+
+        //Create a new instance and return it
+        GameObject newBlocker = new GameObject( "Node Blocker" );
+        var blockerComponent = newBlocker.AddComponent<SingleNodeBlocker>();
+        blockerComponent.manager = GameEngine.Instance.BlockManager;
+        _freeNodeBlockers.Add( blockerComponent );
+        return blockerComponent;
+    }
+
     public bool SetActorOccupiesCell( Vector2Int cell, bool occupied )
     {
         if( !IsCoordInBoard( cell ) )
@@ -273,17 +304,49 @@ public class Board
         //If we are occupying, we need to check if it's already occupied.
         if( occupied && !CanActorOccupyCell( cell ) )
             return false;
-        Map.SetCellOccupied( cell, occupied );
+        //TODO: Has to be replaced with blocking
+
+        if( occupied )
+            BlockNode( cell );
+        else
+            UnblockNode( cell );
         return true;
+    }
+
+    public void BlockNode( Vector2Int location )
+    {
+        if( !_nodeBlockers.ContainsKey( location ) )
+        {
+            var blocker = GetNodeBlocker();
+            blocker.transform.position = location.WorldPosition();
+            blocker.BlockAtCurrentPosition();
+        }
+    }   
+
+    private void UnblockNode( Vector2Int location )
+    {
+        SingleNodeBlocker blocker = null;
+        if( _nodeBlockers.TryGetValue( location, out blocker ) )
+        {
+            blocker.Unblock();
+            _nodeBlockers.Remove( location );
+            _freeNodeBlockers.Add( blocker );
+        }
     }
 
 
     public bool CanActorOccupyCell( Vector2Int cell )
     {
-        return true;
+        /*
+        if( GameManager.Instance.BlockManager == null )
+            return false;
+        Vector3 worldPosition = cell.WorldPosition();
+        var node = AstarPath.active.GetNearest( worldPosition, NNConstraint.None ).node;
+        */
+        return !_nodeBlockers.ContainsKey( cell );
     }
 
-    public ABPath GetNewPath( Vector2Int start, Vector2Int end )
+    public ABPath GetNewPath( Vector2Int start, Vector2Int end, bool allowOccupied = false )
     {
         var path = ABPath.Construct( start.WorldPosition(), end.WorldPosition() );
         AstarPath.StartPath( path );

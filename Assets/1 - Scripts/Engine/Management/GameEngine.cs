@@ -5,9 +5,9 @@ using System.Text;
 using System.Linq;
 using ScriptableObjectArchitecture;
 using Sirenix.OdinInspector;
-using System.Xml.Serialization;
 using System.Threading.Tasks;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
+using Pathfinding;
+
 
 
 
@@ -29,6 +29,7 @@ public class GameEngine : Singleton<GameEngine>
     public GfxBoard GfxBoard;
     public UIManager UIManager;
     public GameEventBase EndTurnButtonEvent;
+    public BlockManager BlockManager;
 
     [HideInInspector]
     public GfxAvatarManager AvatarManager;
@@ -61,15 +62,49 @@ public class GameEngine : Singleton<GameEngine>
     protected override void Awake()
     {
         base.Awake();
-        UIManager.Initialize( this );
 
-        AvatarManager = new GfxAvatarManager();
-        Camera = FindObjectOfType<GfxCamera>();
-        GfxBoard = FindObjectOfType<GfxBoard>();
+        AwakeBlockManager();
+        AwakeUIManager();
+        AwakeAvatarManager();
+        AwakeCamera();
+        AwakeGfxBoard();
+        CollectSpawnLocations();
+    }
 
-        AvatarManager.ActorCreated += AvatarCreated;
-
+    private void CollectSpawnLocations()
+    {
         _spawnLocations = FindObjectsByType<SpawnLocation>( FindObjectsSortMode.None ).ToList();
+    }
+
+    private void AwakeGfxBoard()
+    {
+        if( GfxBoard != null )
+            GfxBoard = FindFirstObjectByType<GfxBoard>();
+    }
+
+    private void AwakeUIManager()
+    {
+        UIManager.Initialize( this );
+    }
+
+    private void AwakeAvatarManager()
+    {
+        if( AvatarManager == null )
+            AvatarManager = new GfxAvatarManager();
+        AvatarManager.ActorCreated += AvatarCreated;
+    }
+
+    private void AwakeCamera()
+    {
+        if( Camera == null )
+            Camera = FindFirstObjectByType<GfxCamera>();
+    }
+
+    private void AwakeBlockManager()
+    {
+        if( BlockManager != null )
+            return;
+        BlockManager = FindFirstObjectByType<BlockManager>();
     }
 
     private void AvatarCreated( GfxActor createdActor )

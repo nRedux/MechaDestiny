@@ -114,14 +114,14 @@ public class Actor : SimpleEntity<ActorAsset>
         return GetSubEntities()[0] as MechData;
     }
 
-    public void SetPosition( Vector2Int position, Game game )
+    public void SetPosition( Vector2Int newPosition, Game game )
     {
-        if( !game.Board.CanActorOccupyCell( position ) )
+        if( !game.Board.CanActorOccupyCell( newPosition ) )
             return;//TODO: How is the calling code supposed to know this failed???
 
-        game.Board.SetActorOccupiesCell( Position, false );
-        game.Board.SetActorOccupiesCell( position, true );
-        this.Position = position;
+        game.Board.SetActorOccupiesCell( this.Position, false );
+        game.Board.SetActorOccupiesCell( newPosition, true );
+        this.Position = newPosition;
     }
 
 
