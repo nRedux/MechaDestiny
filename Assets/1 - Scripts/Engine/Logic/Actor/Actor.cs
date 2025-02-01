@@ -116,11 +116,16 @@ public class Actor : SimpleEntity<ActorAsset>
 
     public void SetPosition( Vector2Int newPosition, Game game )
     {
-        if( !game.Board.CanActorOccupyCell( newPosition ) )
-            return;//TODO: How is the calling code supposed to know this failed???
+        Vector3 curWorldPosition = this.Position.WorldPosition();
+        Vector3 newWorldPosition = newPosition.WorldPosition();
 
-        game.Board.SetActorOccupiesCell( this.Position, false );
-        game.Board.SetActorOccupiesCell( newPosition, true );
+        if( game.Board.IsBlocked( newWorldPosition ) )
+        {
+            throw new System.Exception("Invlid position request.");
+        }
+
+        GameEngine.Instance.Board.Unblock( curWorldPosition );
+        GameEngine.Instance.Board.Block( this, newWorldPosition );
         this.Position = newPosition;
     }
 

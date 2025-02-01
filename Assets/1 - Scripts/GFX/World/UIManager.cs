@@ -539,7 +539,7 @@ public class UIManager : Singleton<UIManager>
         RaycastHit h = hit.Value;
         Vector3Int intVec = h.point.ToInt();
         if( !_gameEngine.Game.Board.IsCoordInBoard( intVec.x, intVec.z ) ||
-            !_gameEngine.Game.Board.CanActorOccupyCell( new Vector2Int(intVec.x, intVec.z) ) ||
+            _gameEngine.Game.Board.IsBlocked( new Vector2Int(intVec.x, intVec.z) ) ||
             !IsCoordinateActive( h.point, cells ) )
             return false;
 

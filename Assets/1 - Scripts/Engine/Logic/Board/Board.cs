@@ -6,13 +6,15 @@ using System.Linq;
 using static VariablePoissonSampling;
 using static UnityEditor.FilePathAttribute;
 using UnityEngine.UIElements;
+using System.Runtime.CompilerServices;
+
 
 public class Board
 {
 
     public AstarPath Pathing = null;
     public GridGraph Graph;
-    
+    public BoardTraversalProvider TraversalProvider;
 
     public int Width => Graph.Width;
 
@@ -31,6 +33,7 @@ public class Board
 
     public Board( Board other )
     {
+        TraversalProvider = new BoardTraversalProvider( other.TraversalProvider );
         Pathing = Object.FindFirstObjectByType<AstarPath>( FindObjectsInactive.Exclude );
         _scratchBoard = new FloatWindow( other.Width, other.Height, this );
     }
@@ -40,6 +43,7 @@ public class Board
     {
         this.Pathing = astarPath;
         Graph = Pathing.graphs.FirstOrDefault() as GridGraph;
+        TraversalProvider = new BoardTraversalProvider();
         if( astarPath == null )
             throw new System.Exception( "You must have a GridGraph in the scene!" );
 
@@ -48,6 +52,27 @@ public class Board
 
         var graph = Pathing.graphs[0] as GridGraph;
         _scratchBoard = new FloatWindow( graph.width, graph.depth, this );
+    }
+
+    public bool IsBlocked( Vector2Int position )
+    {
+        return TraversalProvider.IsBlocked( position );
+    }
+
+    public bool IsBlocked( Vector3 position )
+    {
+        return TraversalProvider.IsBlocked( position );
+    }
+
+
+    public bool Block( Actor actor, Vector3 position )
+    {
+        return TraversalProvider.Block( actor, position );
+    }
+
+    public void Unblock( Vector3 position )
+    {
+        TraversalProvider.Unblock( position );
     }
 
 
@@ -179,7 +204,7 @@ public class Board
 
     public int? GetDistance( Vector2Int start, Vector2Int end )
     {
-        var path = GetNewPath( start, end, true );
+        var path = GetNewPath( start, end, null );
         if( path == null )
             return null;
         else
@@ -199,7 +224,7 @@ public class Board
         result.Modify( ( cell, world, win ) => {
             var valid = IsCoordinateInMap( world ) && GetManhattanDistance( win.Center, world ) <= range;
             if( valid ) {
-                var path = GetNewPath( win.Center, world );
+                var path = GetNewPath( win.Center, world, null );
                 if( path == null )
                     valid = false;
                 else
@@ -277,78 +302,11 @@ public class Board
         return coord.x >= 0 && coord.y >= 0 && coord.x < Width && coord.y < Height;
     }
 
-
-    private SingleNodeBlocker GetNodeBlocker()
-    {
-        //Find existing instance
-        if( _freeNodeBlockers.Count > 0 )
-        {
-            var lastIndex = _freeNodeBlockers.Count - 1;
-            var free = _freeNodeBlockers[lastIndex];
-            _freeNodeBlockers.RemoveAt( lastIndex );
-            return free;
-        }
-
-        //Create a new instance and return it
-        GameObject newBlocker = new GameObject( "Node Blocker" );
-        var blockerComponent = newBlocker.AddComponent<SingleNodeBlocker>();
-        blockerComponent.manager = GameEngine.Instance.BlockManager;
-        _freeNodeBlockers.Add( blockerComponent );
-        return blockerComponent;
-    }
-
-    public bool SetActorOccupiesCell( Vector2Int cell, bool occupied )
-    {
-        if( !IsCoordInBoard( cell ) )
-            return false;
-        //If we are occupying, we need to check if it's already occupied.
-        if( occupied && !CanActorOccupyCell( cell ) )
-            return false;
-        //TODO: Has to be replaced with blocking
-
-        if( occupied )
-            BlockNode( cell );
-        else
-            UnblockNode( cell );
-        return true;
-    }
-
-    public void BlockNode( Vector2Int location )
-    {
-        if( !_nodeBlockers.ContainsKey( location ) )
-        {
-            var blocker = GetNodeBlocker();
-            blocker.transform.position = location.WorldPosition();
-            blocker.BlockAtCurrentPosition();
-        }
-    }   
-
-    private void UnblockNode( Vector2Int location )
-    {
-        SingleNodeBlocker blocker = null;
-        if( _nodeBlockers.TryGetValue( location, out blocker ) )
-        {
-            blocker.Unblock();
-            _nodeBlockers.Remove( location );
-            _freeNodeBlockers.Add( blocker );
-        }
-    }
-
-
-    public bool CanActorOccupyCell( Vector2Int cell )
-    {
-        /*
-        if( GameManager.Instance.BlockManager == null )
-            return false;
-        Vector3 worldPosition = cell.WorldPosition();
-        var node = AstarPath.active.GetNearest( worldPosition, NNConstraint.None ).node;
-        */
-        return !_nodeBlockers.ContainsKey( cell );
-    }
-
-    public ABPath GetNewPath( Vector2Int start, Vector2Int end, bool allowOccupied = false )
+    public ABPath GetNewPath( Vector2Int start, Vector2Int end, Actor requester )
     {
         var path = ABPath.Construct( start.WorldPosition(), end.WorldPosition() );
+        GameEngine.Instance.Board.TraversalProvider.Traverser = requester;
+        path.traversalProvider = GameEngine.Instance.Board.TraversalProvider;
         AstarPath.StartPath( path );
         path.BlockUntilCalculated();
 

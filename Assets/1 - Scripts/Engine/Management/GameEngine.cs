@@ -29,7 +29,6 @@ public class GameEngine : Singleton<GameEngine>
     public GfxBoard GfxBoard;
     public UIManager UIManager;
     public GameEventBase EndTurnButtonEvent;
-    public BlockManager BlockManager;
 
     [HideInInspector]
     public GfxAvatarManager AvatarManager;
@@ -63,7 +62,6 @@ public class GameEngine : Singleton<GameEngine>
     {
         base.Awake();
 
-        AwakeBlockManager();
         AwakeUIManager();
         AwakeAvatarManager();
         AwakeCamera();
@@ -98,13 +96,6 @@ public class GameEngine : Singleton<GameEngine>
     {
         if( Camera == null )
             Camera = FindFirstObjectByType<GfxCamera>();
-    }
-
-    private void AwakeBlockManager()
-    {
-        if( BlockManager != null )
-            return;
-        BlockManager = FindFirstObjectByType<BlockManager>();
     }
 
     private void AvatarCreated( GfxActor createdActor )
@@ -204,8 +195,8 @@ public class GameEngine : Singleton<GameEngine>
 
             var actor = currentActor.GetDataSync();
             actor.SetIsPlayer( false );
-            actor.SetPosition( new Vector2Int( (int) spawnPosition.x, (int) spawnPosition.z ), Game );
             aiTeam.AddMember( actor );
+            actor.SetPosition( new Vector2Int( (int) spawnPosition.x, (int) spawnPosition.z ), Game );
         }
     }
 
@@ -220,13 +211,13 @@ public class GameEngine : Singleton<GameEngine>
 
         var actor = TestActor1.GetDataSync();
         actor.SetIsPlayer( true );
-        actor.SetPosition( new Vector2Int( 1, 1 ), Game );
         team1.AddMember( actor );
+        actor.SetPosition( new Vector2Int( 1, 1 ), Game );
 
         var actor2 = TestActor1.GetDataSync();
         actor2.SetIsPlayer( true );
-        actor2.SetPosition( new Vector2Int( 2, 1 ), Game );
         team1.AddMember( actor2 );
+        actor2.SetPosition( new Vector2Int( 2, 1 ), Game );
     }
 
 

@@ -329,7 +329,6 @@ public class GameManager : Singleton<GameManager>
     public EncounterData TestEncounter;
     public MxSelection Selection;
     public MxSelectionProcessor SelectionProcessor;
-    public BlockManager BlockManager;
     
     
     private MapObjectData _playerHarvester;
@@ -342,8 +341,6 @@ public class GameManager : Singleton<GameManager>
         var inst = SUIManager.Instance;
 
         InitializeCaravan();
-
-        BlockManager = FindFirstObjectByType<BlockManager>();
 
         Selection = new MxSelection();
         Selection.OnSelectionAdd += SelectionAdd;

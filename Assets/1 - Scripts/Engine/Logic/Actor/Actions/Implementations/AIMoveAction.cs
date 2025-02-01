@@ -98,7 +98,7 @@ public class AIMoveAction : MoveAction
         utility.Do( iter =>
         {
             //Prefer closer options.
-            var abPath = game.Board.GetNewPath( actor.Position, iter.world );
+            var abPath = game.Board.GetNewPath( actor.Position, iter.world, actor );
             if( abPath == null || abPath.path.Count > moveRange )
                 utility[iter.local] = 0;
             else
@@ -189,7 +189,7 @@ public class AIMoveAction : MoveAction
         FloatWindow utility = GenerateMoveHeatmap( game, actor );
         utility.Do( iter =>
         {
-            var abPath = game.Board.GetNewPath( actor.Position, iter.world );
+            var abPath = game.Board.GetNewPath( actor.Position, iter.world, actor );
             if( abPath!= null && abPath.path.Count > 0 )
             {
                 targets.Add( iter.value, iter.world );
@@ -218,7 +218,7 @@ public class AIMoveAction : MoveAction
         }
 
 
-        ActionResult res = new MoveActionResult( actor, GameEngine.Instance.Board.GetNewPath( actor.Position, Target ) );
+        ActionResult res = new MoveActionResult( actor, GameEngine.Instance.Board.GetNewPath( actor.Position, Target, actor ) );
         actor.SetPosition( Target, game );
 
         _state = ActorActionState.Executing;
