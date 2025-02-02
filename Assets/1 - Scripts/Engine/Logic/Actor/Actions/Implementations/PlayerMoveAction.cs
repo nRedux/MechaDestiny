@@ -43,6 +43,16 @@ public class PlayerMoveAction : MoveAction
         return _state;
     }
 
+    public override CanStartActionResult AllowedToExecute( Actor actor )
+    {
+        var ap = actor.GetStatistic( StatisticType.AbilityPoints );
+
+        if( ap.Value == 0 )
+            return CanStartActionResult.InsufficientAP;
+
+        return base.AllowedToExecute( actor );
+    }
+
     public override void Tick()
     {
         return;
@@ -57,12 +67,17 @@ public class PlayerMoveAction : MoveAction
 
         var mainEntity = actor.GetSubEntities().Where( x => x is MechData ).FirstOrDefault();
         var mechData = mainEntity as MechData;
-        _range = mechData.Legs.Statistics.GetStatistic( StatisticType.Range ).Value;
+
+        //Find max range as either the ap or range of the mech. 1ap per move atm.
+        var apRange = actor.GetStatisticValue( StatisticType.AbilityPoints );
+        int legsRange = mechData.Legs.Statistics.GetStatistic( StatisticType.Range ).Value;
+        _range = Mathf.Min( legsRange, apRange );
+
         _moveOptionsWindow = new BoolWindow( _range * 2, game.Board );
 
         _state = ActorActionState.Started;
         _moveOptionsWindow.MoveCenter( actor.Position );
-        _game.Board.GetMovableCellsManhattan( _range, _moveOptionsWindow );
+        _game.Board.GetMovableCellsManhattan( _range, _moveOptionsWindow, actor );
 
         //Unset the cell under the mover.
         Vector2Int myWindowPos = _moveOptionsWindow.WorldToLocalIndex( actor.Position );
@@ -77,7 +92,7 @@ public class PlayerMoveAction : MoveAction
                 return;
             }
 
-            int? cost = GameEngine.Instance.Board.GetDistance( actor.Position, moveTarget );
+            int? cost = GameEngine.Instance.Board.GetMovePathDistance( actor.Position, moveTarget, actor );
 
             //Spend the AP required to run this ability's action
             SpendAP( actor, cost ?? 0); 

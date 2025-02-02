@@ -588,7 +588,7 @@ public class UIManager : Singleton<UIManager>
         var hitCell = new Vector2Int( intVec.x, intVec.z );
         //Get all actors at the cell
         //Discard any which should be ignored.
-        var hoveredActor = UIManager.Instance.GetActorsAtCell( hitCell ).FirstOrDefault();
+        var hoveredActor = GameEngine.Instance.Board.GetActorsAtCell( hitCell ).FirstOrDefault();
         bool result = _hoveredActor != hoveredActor;
         _hoveredActor = hoveredActor;
         return hoveredActor;
@@ -712,22 +712,6 @@ public class UIManager : Singleton<UIManager>
 
         var req = _activeRequests[0];
         req.CellClicked( cell );
-    }
-
-
-    public List<Actor> GetActorsAtCell( Vector2Int cell )
-    {
-        List<Actor> actors = new List<Actor>();
-        _gameEngine.Game.Teams.Do( x => x.GetMembers().Where( a => a.Position == cell ).Do( z => actors.Add( z ) ) ); ;
-        return actors;
-    }
-
-
-    public Actor GetActorAtCell( Vector2Int cell )
-    {
-        List<Actor> actors = new List<Actor>();
-        _gameEngine.Game.Teams.Do( x => x.GetMembers().Where( a => a.Position == cell ).Do( z => actors.Add( z ) ) ); ;
-        return actors.FirstOrDefault();
     }
 
 

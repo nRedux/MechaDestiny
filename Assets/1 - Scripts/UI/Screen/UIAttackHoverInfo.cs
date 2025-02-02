@@ -16,6 +16,7 @@ public class UIAttackHoverInfo : UICellHoverInfo
         var mechData = attacker.GetMechData();
         if( mechData.ActiveWeapon is MechComponentData weaponComp )
         {
+            //TODO: Shouldn't this just be manhattan distance?
             var distance = GameEngine.Instance.Board.GetDistance( attacker.Position, target.Position );
             if( distance == null )
                 return;

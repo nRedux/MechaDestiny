@@ -7,7 +7,19 @@ using static VariablePoissonSampling;
 using static UnityEditor.FilePathAttribute;
 using UnityEngine.UIElements;
 using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
+using TMPro;
 
+
+public static class ABPathExt
+{
+
+    public static int MoveLength( this ABPath path )
+    {
+        return path.path.Count - 1;
+    }
+
+}
 
 public class Board
 {
@@ -202,13 +214,23 @@ public class Board
         } );
     }
 
+    public int? GetMovePathDistance( Vector2Int start, Vector2Int end, Actor movingActor )
+    {
+        var path = GetNewPath( start, end, movingActor );
+        if( path.CompleteState != PathCompleteState.Complete )
+            return null;
+        else
+            return path.MoveLength();
+    }
+
     public int? GetDistance( Vector2Int start, Vector2Int end )
     {
         var path = GetNewPath( start, end, null );
-        if( path == null )
+        if( path.CompleteState != PathCompleteState.Complete )
             return null;
         else
-            return path.path.Count;
+            //Includes the start node, we don't count it.
+            return path.MoveLength();
     }
 
     public bool IsCoordinateInMap( Vector2Int coord )
@@ -219,16 +241,21 @@ public class Board
         return Graph.bounds.Contains( coord.WorldPosition() );
     }
 
-    public void GetMovableCellsManhattan( int range, BoolWindow result )
+    public void GetMovableCellsManhattan( int range, BoolWindow result, Actor actorToMove = null )
     {
+        //Should change this to using the constantpath from *star library
+
         result.Modify( ( cell, world, win ) => {
             var valid = IsCoordinateInMap( world ) && GetManhattanDistance( win.Center, world ) <= range;
+            //if( TraversalProvider.IsBlocked(world) )
+            //    valid = false;
             if( valid ) {
-                var path = GetNewPath( win.Center, world, null );
-                if( path == null )
+                var path = GetNewPath( win.Center, world, actorToMove );
+                //This is not a valid way to do tests. Will still consider path to destination valid even if that destination is blocked.
+                if( path.CompleteState != PathCompleteState.Complete )
                     valid = false;
                 else
-                    valid = valid && path.path.Count <= range;
+                    valid = valid && path.MoveLength() <= range;
             }
             return valid;
         } );
@@ -246,6 +273,21 @@ public class Board
         } );
 
         return result;
+    }
+
+    public List<Actor> GetActorsAtCell( Vector2Int cell )
+    {
+        List<Actor> actors = new List<Actor>();
+        GameEngine.Instance.Game.Teams.Do( x => x.GetMembers().Where( a => a.Position == cell ).Do( z => actors.Add( z ) ) ); ;
+        return actors;
+    }
+
+
+    public Actor GetActorAtCell( Vector2Int cell )
+    {
+        List<Actor> actors = new List<Actor>();
+        GameEngine.Instance.Game.Teams.Do( x => x.GetMembers().Where( a => a.Position == cell ).Do( z => actors.Add( z ) ) ); ;
+        return actors.FirstOrDefault();
     }
 
 
@@ -303,10 +345,13 @@ public class Board
     }
 
     public ABPath GetNewPath( Vector2Int start, Vector2Int end, Actor requester )
-    {
+    {      
         var path = ABPath.Construct( start.WorldPosition(), end.WorldPosition() );
-        GameEngine.Instance.Board.TraversalProvider.Traverser = requester;
-        path.traversalProvider = GameEngine.Instance.Board.TraversalProvider;
+        if( requester != null )
+        {
+            GameEngine.Instance.Board.TraversalProvider.Traverser = requester;
+            path.traversalProvider = GameEngine.Instance.Board.TraversalProvider;
+        }
         AstarPath.StartPath( path );
         path.BlockUntilCalculated();
 
@@ -314,3 +359,4 @@ public class Board
     }
 
 }
+

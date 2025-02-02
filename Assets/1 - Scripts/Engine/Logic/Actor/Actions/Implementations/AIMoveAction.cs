@@ -99,12 +99,11 @@ public class AIMoveAction : MoveAction
         {
             //Prefer closer options.
             var abPath = game.Board.GetNewPath( actor.Position, iter.world, actor );
-            if( abPath == null || abPath.path.Count > moveRange )
+            if( abPath.CompleteState != PathCompleteState.Complete || abPath.MoveLength() > moveRange )
                 utility[iter.local] = 0;
             else
-                utility[iter.local] -= ( abPath.path.Count / (float) moveRange ) * .5f;
+                utility[iter.local] -= ( abPath.MoveLength() / (float) moveRange ) * .5f;
         } );
-
 
         var nonZeroOptions = utility.Cells.Where( x => x > 0f ).Count() > 0;
         if( !nonZeroOptions )
@@ -190,7 +189,7 @@ public class AIMoveAction : MoveAction
         utility.Do( iter =>
         {
             var abPath = game.Board.GetNewPath( actor.Position, iter.world, actor );
-            if( abPath!= null && abPath.path.Count > 0 )
+            if( abPath.CompleteState == PathCompleteState.Complete && abPath.MoveLength() > 0 )
             {
                 targets.Add( iter.value, iter.world );
             }

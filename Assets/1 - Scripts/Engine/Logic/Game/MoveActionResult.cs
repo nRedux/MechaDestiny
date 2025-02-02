@@ -85,7 +85,7 @@ public class MoveActionResult : ActionResult
 
     private bool TargetIsPathEnd()
     {
-        return TargetNode == this.ABPath.path.Count - 1;
+        return TargetNode == this.ABPath.MoveLength();
     }
 
 

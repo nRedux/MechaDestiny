@@ -1668,7 +1668,6 @@ MonoBehaviour:
   GfxBoard: {fileID: 1293984246}
   UIManager: {fileID: 30036390}
   EndTurnButtonEvent: {fileID: 11400000, guid: c6c1b13edaf052644bde187230efa665, type: 2}
-  BlockManager: {fileID: 0}
 --- !u!4 &704293112
 Transform:
   m_ObjectHideFlags: 0

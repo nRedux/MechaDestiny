@@ -61,7 +61,7 @@ public abstract class AttackAction : ActorAction
             if( !game.Board.IsCoordInBoard( iter.world ) )
                 return;
 
-            var actorAtCell = UIManager.Instance.GetActorAtCell( iter.world );
+            var actorAtCell = GameEngine.Instance.Board.GetActorAtCell( iter.world );
             if( actorAtCell == null || actorAtCell.GetTeamID() == actor.GetTeamID() )
                 return;
 

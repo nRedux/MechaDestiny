@@ -63,7 +63,7 @@ public class UIFindMoveTargetRequest : UIRequest<Vector2Int, bool>
 
     public override void CellHoverStart( Vector2Int cell )
     {
-        int? distance = GameEngine.Instance.Board.GetDistance( _actor.Position, cell );
+        int? distance = GameEngine.Instance.Board.GetMovePathDistance( _actor.Position, cell, _actor );
         OnCellHover?.Invoke( (hover: true, cost: distance ?? -1, location: cell) );
         _goodHover = true;
         _hoveredCell = cell;

@@ -84,7 +84,7 @@ public static class AttackHelper
             {
                 if( !x.value )
                     return;
-                var actor = UIManager.Instance.GetActorAtCell( x.world );
+                var actor = GameEngine.Instance.Board.GetActorAtCell( x.world );
                 if( actor != null )
                     actors.Add( actor );
                 res.AffectedAOECells.Add( x.world );
@@ -142,6 +142,7 @@ public static class AttackHelper
     {
         var actor = attackActor;
         var weapon = GetAttackWeapon( actor ) as MechComponentData;
+        //TODO: Shouldn't this just be manhattan distance?
         var distance = GameEngine.Instance.Board.GetDistance( attackActor.Position, targetActor.Position );
         if( distance == null )
             return false;

@@ -77,7 +77,7 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
             {
                 //Get all actors at the cell
                 //Discard any which should be ignored.
-                var actor = UIManager.Instance.GetActorsAtCell( result ).Where( x => !ShouldIgnoreActor(x) ).FirstOrDefault();
+                var actor = GameEngine.Instance.Board.GetActorsAtCell( result ).Where( x => !ShouldIgnoreActor(x) ).FirstOrDefault();
                 if( actor != null )
                     Succeed( actor );
             }
