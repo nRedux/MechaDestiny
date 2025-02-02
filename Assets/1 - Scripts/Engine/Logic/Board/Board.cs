@@ -10,17 +10,6 @@ using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 using TMPro;
 
-
-public static class ABPathExt
-{
-
-    public static int MoveLength( this ABPath path )
-    {
-        return path.path.Count - 1;
-    }
-
-}
-
 public class Board
 {
 
