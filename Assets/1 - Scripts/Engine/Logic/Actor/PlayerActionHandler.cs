@@ -24,7 +24,7 @@ public class PlayerActionHandler : ActorActionHandler
 
     }
 
-    public override bool ShouldForceEndActor()
+    public override bool ShouldEndActorTurn()
     {
         return _forceEndActorTurn;
     }

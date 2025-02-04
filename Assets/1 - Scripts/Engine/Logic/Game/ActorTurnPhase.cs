@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -27,12 +28,11 @@ public class ActorTurnPhase: TurnPhase
         _team = team;
         SetActiveActor( null );
         _isComplete = false;
-        _activeActorIndex = ACTIVE_ACTOR_START_VALUE;
 
         for( int i = 0; i < team.MemberCount; ++i )
         {
             var member = team.GetMember( i );
-            member.PrepareForPhase();
+            member.ResetForPhase();
         }
         StartNextActor( game );
     }
@@ -40,7 +40,12 @@ public class ActorTurnPhase: TurnPhase
 
     private void StartNextActor( Game game )
     {
-        if( _activeActorIndex + 1 >= _team.MemberCount )
+        //Find first member in team which hasn't performed it's turn actions yet.
+        var members = _team.GetMembers();
+        var nextMember = members.Where( x => !x.TurnActionsCompleted && !x.IsDead() ).FirstOrDefault();
+
+        //Turn phase complete?
+        if( nextMember == null )
         {
             //All actors done.
             _isComplete = true;
@@ -48,18 +53,14 @@ public class ActorTurnPhase: TurnPhase
             return;
         }
 
+        //Do some AI specific stuff
         if( !_team.IsPlayerTeam )
         {
             //Debug.Log( "Start next actor for phase" );
             _delayAIActionsTimer = DevConfiguration.DELAY_AI_ACTIONS_DURATION;
         }
 
-        var nextActor = _team.GetMember( ++_activeActorIndex );
-        //Next attempt will check next team member.
-        if( nextActor.IsDead() )
-            return;
-
-        SetActiveActor( nextActor );
+        SetActiveActor( nextMember );
     }
 
 
@@ -105,8 +106,11 @@ public class ActorTurnPhase: TurnPhase
             return;
         _activeActor.RunActions( _game );
 
-        if( !_activeActor.HasActionsAvailable() && _activeActor.ActiveAction == null || _activeActor.ShouldForceEnd() )
+        if( _activeActor.EndActorTurn() )
+        {
+            _activeActor.TurnActionsCompleted = true;
             SetActiveActor( null );
+        }
     }
 
     public override void TurnEnded()

@@ -17,7 +17,7 @@ public class AIActionHandler : ActorActionHandler
 
     }
 
-    public override bool ShouldForceEndActor()
+    public override bool ShouldEndActorTurn()
     {
         return false;
     }

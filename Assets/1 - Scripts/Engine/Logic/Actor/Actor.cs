@@ -28,12 +28,13 @@ public class Actor : SimpleEntity<ActorAsset>
 
     public ActorAction[] Actions = null;
     public GameObjectReference Avatar;
+
     /// <summary>
     /// Run all actions automatically - for NPCs
     /// </summary>
-    public bool RunActionsAutomatically;
     public System.Action OnKill;
-
+    public bool RunActionsAutomatically;
+    public bool TurnActionsCompleted = false;
 
     private Team _team;
     private ActorActionHandler ActionHandler;
@@ -142,12 +143,9 @@ public class Actor : SimpleEntity<ActorAsset>
     }
 
 
-    /*
-     * Players should be able perform actions continuously until their action points are exhausted.
-     */
-
-    public void PrepareForPhase()
+    public void ResetForPhase()
     {
+        TurnActionsCompleted = false;
         ActionHandler.SetupForTurn();
     }
 
@@ -217,10 +215,12 @@ public class Actor : SimpleEntity<ActorAsset>
         return ActionHandler.HasActionsAvailable();
     }
 
-
-    public bool ShouldForceEnd()
+    public bool EndActorTurn()
     {
-        return ActionHandler.ShouldForceEndActor();
+        if( _team.IsPlayerTeam )
+            return ActionHandler.ShouldEndActorTurn();
+        else
+            return !HasActionsAvailable() && ActiveAction == null;
     }
 
 
