@@ -31,40 +31,8 @@ public class PlayerEngageAction : AttackAction
 
     public override void Tick()
     {
-        TryRequestWeaponPick();
 
         return;
-    }
-
-
-    private void TryRequestWeaponPick()
-    {
-        if( !UIPickWeaponRequest.CanExecute( _actor ) )
-            return;
-        if( !Input.GetKeyDown( KeyCode.Q ) )
-            return;
-
-        if( _weaponPickRequest != null )
-            return;
-
-        _weaponPickRequest = new UIPickWeaponRequest( _actor,
-        x =>
-        {
-            AllowActionSelect = true;
-            _weaponPickRequest = null;
-        },
-        y =>
-        {
-            AllowActionSelect = true;
-            _weaponPickRequest = null;
-        },
-        () =>
-        {
-            AllowActionSelect = true;
-            _weaponPickRequest = null;
-        } );
-        AllowActionSelect = false;
-        UIManager.Instance.RequestUI( _weaponPickRequest, false );
     }
 
 
@@ -104,38 +72,20 @@ public class PlayerEngageAction : AttackAction
         _actor = actor;
 
         UIManager.Instance.PlayerAttackUI.Opt()?.SetActive( true );
-        BeginBehavior( game, actor );
-    }
 
-
-    public void BeginBehavior( Game game, Actor actor )
-    {
         //Get valid move locations. Notify the UI we need to display a collection of move locations. Wait for UI to return a result. Execute move.
         _state = ActorActionState.Executing;
 
-        var attackerMechEntity = actor.GetSubEntities()[0];
-        var attackerMechData = attackerMechEntity as MechData;
-        var weapon = attackerMechData.ActiveWeapon;
-
-        //TODO: will have to validate that the assets which define these are correct. Make finding these problems easy!
-        var range = weapon.GetStatistic( StatisticType.Range );
-
-        var attackOptions = new BoolWindow( range.Value * 2, game.Board );
-        attackOptions.MoveCenter( actor.Position );
-        _game.Board.GetCellsManhattan( range.Value, attackOptions );
-        Board.LOS_PruneBoolWindow( attackOptions, actor.Position );
-
-
         GfxActor attackerAvatar = GameEngine.Instance.AvatarManager.GetAvatar( actor );
         UIManager.Instance.ShowSideAMechInfo( attackerAvatar.Actor, UIManager.MechInfoDisplayMode.Full );
-        _uiRequest = CreateFindAttackTargetRequest( attackerAvatar, attackOptions );
+        _uiRequest = CreateFindAttackTargetRequest( attackerAvatar );
         //Don't target actors on the same team
         _uiRequest.MarkInvalidTeams( actor.GetTeamID() );
         UIManager.Instance.RequestUI( _uiRequest );
     }
 
 
-    private UIFindAttackTargetRequest CreateFindAttackTargetRequest( GfxActor attackerAvatar, BoolWindow attackOptions )
+    private UIFindAttackTargetRequest CreateFindAttackTargetRequest( GfxActor attackerAvatar )
     {
 
         UIRequestSuccessCallback<object> success = selectedTarget =>
@@ -172,7 +122,7 @@ public class PlayerEngageAction : AttackAction
 
         UIRequestFailureCallback<bool> failure = moveTarget => { End(); _uiRequest = null; };
         UIRequestCancelResult cancel = () => { End(); _uiRequest = null; };
-        return new UIFindAttackTargetRequest( attackerAvatar.Actor, attackOptions, success, failure, cancel );
+        return new UIFindAttackTargetRequest( attackerAvatar.Actor, success, failure, cancel );
     }
 
     UIActionSequenceRequest _sequencePickRequest;

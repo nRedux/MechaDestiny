@@ -5,16 +5,21 @@ using UnityEngine;
 using Newtonsoft.Json;
 using System.Runtime.Serialization;
 using System;
+using static UnityEngine.EventSystems.EventTrigger;
 
 [System.Serializable]
 public class StatisticCollection: Dictionary<StatisticType, Statistic>, IStatisticSource, ISerializationCallbackReceiver
 {
+    [JsonProperty]
+    private IEntity _entity;
     [JsonProperty]
     [SerializeField]
     private List<StatisticType> _serializedKeys = new List<StatisticType>();
     [JsonProperty]
     [SerializeField]
     private List<Statistic> _serializedValues = new List<Statistic>();
+
+    public IEntity Entity { get => _entity; }
 
     public bool HasStatistic( StatisticType statistic)
     {
@@ -66,8 +71,9 @@ public class StatisticCollection: Dictionary<StatisticType, Statistic>, IStatist
             this.Add( _serializedKeys[i], _serializedValues[i] );
     }
 
-    internal void SetEntity( IEntity simpleEntity )
+    internal void SetEntity( IEntity entity )
     {
-        this.Do( x => x.Value.Entity = simpleEntity );
+        _entity = entity;
+        this.Do( x => x.Value.Entity = entity );
     }
 }

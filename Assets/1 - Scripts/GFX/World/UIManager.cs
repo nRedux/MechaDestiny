@@ -42,6 +42,8 @@ public class UIManager : Singleton<UIManager>
     public UIActionSequence ActionSequence;
     public UIActionSequenceItemHover ActionSequenceHover;
 
+    public BattleInput BattleInput = new BattleInput();
+
     public UITextOverlay DebugTextOverlay;
 
     public UIAITools AITools;
@@ -72,6 +74,8 @@ public class UIManager : Singleton<UIManager>
     private GameTurnChangeEvent _changeEvent;
     private List<UITextOverlay> _debugOverlays = new List<UITextOverlay>();
 
+    private UIPickActionRequest _actionPickRequest = null;
+    private UIPickWeaponRequest _weaponPickRequest = null;
 
     //Generalized hovered detecting
     private Vector2Int? _hoveredCell = new Vector2Int( int.MinValue, int.MinValue );
@@ -113,6 +117,60 @@ public class UIManager : Singleton<UIManager>
         AITools.Opt()?.Hide();
     }
 
+    public void TryRequestWeaponPick( Actor actor )
+    {
+        if( _actionPickRequest != null )
+            return;
+        if( _weaponPickRequest != null )
+            return;
+        if( !UIPickWeaponRequest.CanExecute( actor ) )
+            return;
+        if( !Input.GetKeyDown( KeyCode.Q ) )
+            return;
+
+        _weaponPickRequest = new UIPickWeaponRequest( actor,
+        x =>
+        {
+            _weaponPickRequest = null;
+        },
+        y =>
+        {
+            _weaponPickRequest = null;
+        },
+        () =>
+        {
+            _weaponPickRequest = null;
+        } );
+
+        UIManager.Instance.RequestUI( _weaponPickRequest, false );
+    }
+
+    public void TryPickAction( Actor actor, UIRequestSuccessCallback<object> succeeded, UIRequestCancelResult cancelled)
+    {
+
+        if( _weaponPickRequest != null )
+            return;
+
+        if( _actionPickRequest != null )
+            return;
+
+        _actionPickRequest = new UIPickActionRequest( actor,
+        x => {
+            _actionPickRequest = null;
+            succeeded?.Invoke(x);
+        },
+        y =>
+        {
+            _actionPickRequest = null;
+        },
+        () => 
+        {
+            _actionPickRequest = null;
+            cancelled?.Invoke();
+        } );
+
+        UIManager.Instance.RequestUI( _actionPickRequest, false );
+    }
 
     public void CreateSimpleHealthbar( Actor actor )
     {
@@ -296,6 +354,9 @@ public class UIManager : Singleton<UIManager>
 
     private void Update()
     {
+        if( Input.GetKeyDown( KeyCode.J ) )
+            FullDebugQueue();
+        BattleInput.Update();
         DoFrameRaycast();
         RunRequests();
         RunResultQueue();
@@ -470,15 +531,27 @@ public class UIManager : Singleton<UIManager>
 
     private void DebugUIQueue()
     {
+        Debug.Log( $"Pending Request Count: {_pendingRequests.Count}" );
+        Debug.Log( $"Current UI Queue: Active_Requests: {_activeRequests.Count()}" );
+    }
+
+    public void FullDebugQueue()
+    {
+        Debug.Log( $"Pending Request Count: {_pendingRequests.Count}" );
+        _pendingRequests.Do( x =>
+        {
+            Debug.Log( x.GetType().Name + " \n" );
+        } );
+
         Debug.Log( $"Current UI Queue: Active_Requests: {_activeRequests.Count()}" );
         _activeRequests.Do( x =>
         {
-            Debug.Log( $"Type: {x.GetType().Name}" );
+            Debug.Log( x.GetType().Name + " \n" );
         } );
     }
 
 
-    public void ExecuteResult(ActionResult result )
+    public void QueueResult(ActionResult result )
     {
         _actionResults.Enqueue( result );
     }
@@ -651,12 +724,6 @@ public class UIManager : Singleton<UIManager>
 
     }
 
-    /*
-        Actor lastActor = GetHoveredActor();
-        Vector2Int lastCell = GetHoveredCell();
-        UpdateRequestActorHover( lastActor, false );
-        UpdateRequestCellHover( lastCell, false );
-    */
 
     private void UpdateRequestActorHover( Actor actor, bool hovered )
     {
@@ -733,6 +800,8 @@ public class UIManager : Singleton<UIManager>
 
     public void TerminateActiveRequests()
     {
+        _actionPickRequest = null;
+        _weaponPickRequest = null;
         while( _activeRequests.Count > 0 )
         {
             _activeRequests[0].Cleanup();

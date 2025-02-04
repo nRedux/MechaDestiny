@@ -18,12 +18,23 @@ public class DataObject<TData>
 
     public void GetAsset( Action<TData> onComplete )
     {
+        //I think this should be safe for future load operations.... similarly though, when this is deserialized, we could assign the existing assetreference.
+        if( Operation.IsValid() )
+        {
+            onComplete?.Invoke( Operation.Result );
+            return;
+        }
+
         Operation = Addressables.LoadAssetAsync<TData>( AssetReference );
         Operation.Completed += opHandle => onComplete(opHandle.Result);
     }
 
     public TData GetAssetSync()
     {
+        //I think this should be safe for future load operations.... similarly though, when this is deserialized, we could assign the existing assetreference.
+        if( Operation.IsValid() )
+            return Operation.Result;
+
         //What if Operation already in place? Thinking ... thinking....
         Operation = Addressables.LoadAssetAsync<TData>( AssetReference );
         Operation.WaitForCompletion();

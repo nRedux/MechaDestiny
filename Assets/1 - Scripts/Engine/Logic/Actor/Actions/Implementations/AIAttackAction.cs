@@ -157,14 +157,12 @@ public class AIAttackAction : AttackAction
             targetLocation = new SmartPoint( targetAvatar );
         }
 
-
-        _state = ActorActionState.Executing;
-        AttackActionResult res = AttackHelper.CreateAttackActionResult( attackerAvatar, targetLocation );
-
         UIManager.Instance.ShowSideAMechInfo( actor, UIManager.MechInfoDisplayMode.Mini );
         if( !activeWep.IsAOE() )
             UIManager.Instance.ShowSideBMechInfo( targetActor, UIManager.MechInfoDisplayMode.Mini );
 
+        _state = ActorActionState.Executing;
+        AttackActionResult res = new AttackActionResult( attackerAvatar, targetLocation );
         res.OnComplete = () => {
             UIManager.Instance.HideSideBMechInfo();
             if( !activeWep.IsAOE() )
@@ -176,7 +174,7 @@ public class AIAttackAction : AttackAction
 
         TestKilledTargets( res );
 
-        UIManager.Instance.ExecuteResult( res );
+        UIManager.Instance.QueueResult( res );
     }
 
 

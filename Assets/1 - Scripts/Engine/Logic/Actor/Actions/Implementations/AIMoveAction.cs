@@ -225,7 +225,7 @@ public class AIMoveAction : MoveAction
         {
             End(); //Whole action done. Can move on.
         };
-        UIManager.Instance.ExecuteResult( res );
+        UIManager.Instance.QueueResult( res );
 
     }
 

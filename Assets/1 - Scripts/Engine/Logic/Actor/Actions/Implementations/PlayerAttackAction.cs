@@ -147,8 +147,8 @@ public class PlayerAttackAction : AttackAction
             //AOE attack
             finalTarget = new SmartPoint( selectedTarget.Position );
         }
-
-        AttackActionResult res = AttackHelper.CreateAttackActionResult( attackerAvatar, finalTarget );
+        
+        AttackActionResult res = new AttackActionResult( attackerAvatar, finalTarget ); ;
         res.OnComplete = () =>
         {
             if( this.SequencePos == SequencePos.End || this.SequencePos == SequencePos.All )
@@ -165,7 +165,7 @@ public class PlayerAttackAction : AttackAction
         TestKilledTargets( res );
 
         res.SequencePosition = this.SequencePos;
-        UIManager.Instance.ExecuteResult( res );
+        UIManager.Instance.QueueResult( res );
     }
 
     public class StatisticChangeRootComp : IEqualityComparer<StatisticChange>

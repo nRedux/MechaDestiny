@@ -16,10 +16,32 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
     private Vector2Int _hoveredCell;
 
 
-    public UIFindAttackTargetRequest( Actor requester, BoolWindow cells, SuccessCallback onSuccess, FailureCallback onFailure, CancelCallback onCancel): base( onSuccess, onFailure, onCancel, requester )
+    public UIFindAttackTargetRequest( Actor requester, SuccessCallback onSuccess, FailureCallback onFailure, CancelCallback onCancel): base( onSuccess, onFailure, onCancel, requester )
     {
         _requestingActor = requester;
-        this.Cells = cells;
+        this.Cells = CalculateCells( requester );
+    }
+
+
+    /// <summary>
+    /// Calculate the cells which will be considered for this request.
+    /// </summary>
+    private BoolWindow CalculateCells( Actor actor )
+    {
+        BoolWindow resultCells = null;
+        int range = 0;
+        //Get the active weapon so we can use it's range
+        MechData attackerMechData = actor.GetMechData();
+        MechComponentData weapon = attackerMechData.ActiveWeapon;
+
+        //TODO: will have to validate that the assets which define these are correct. Make finding these problems easy!
+        range = weapon.GetStatisticValue( StatisticType.Range );
+        resultCells = new BoolWindow( range * 2, GameEngine.Instance.Board );
+        resultCells.MoveCenter( _requestingActor.Position );
+        GameEngine.Instance.Board.GetCellsManhattan( range, resultCells );
+        Board.LOS_PruneBoolWindow( resultCells, _requestingActor.Position );
+
+        return resultCells;
     }
 
 
@@ -48,12 +70,24 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
     public override void Start()
     {
         base.Start();
+        Events.Instance.AddListener<ActiveWeaponChanged>( OnWeaponChanged );
+        SetupGrid();
+    }
 
+    private void SetupGrid()
+    {
         GameEngine.Instance.GfxBoard.GeneralOverlay.SetCellColor( GfxCellMode.Attack );
 
         float mainTintShift = -.2f;
         GameEngine.Instance.GfxBoard.GeneralOverlay.RenderCells( Cells, true, tintShift: mainTintShift );
         GameEngine.Instance.GfxBoard.AOEOverlay.SetCellColor( GfxCellMode.Attack );
+    }
+
+
+    private void OnWeaponChanged( ActiveWeaponChanged e )
+    {
+        this.Cells = CalculateCells( _requestingActor );
+        SetupGrid();
     }
 
 

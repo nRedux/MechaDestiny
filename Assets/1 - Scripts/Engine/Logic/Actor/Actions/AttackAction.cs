@@ -98,7 +98,8 @@ public abstract class AttackAction : ActorAction
 
         distinct.Do( x => numKilled += AttackHelper.HandleDeadActor( x ) ? 1 : 0 );
 
-        if( numKilled == numHit )
+        //Hit and killed the same number?
+        if( numHit > 0 && numKilled == numHit )
             OnKillTarget?.Invoke();
     }
 

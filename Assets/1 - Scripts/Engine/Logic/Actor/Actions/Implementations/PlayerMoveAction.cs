@@ -102,7 +102,7 @@ public class PlayerMoveAction : MoveAction
                 End();
              };
             _state = ActorActionState.Executing;
-            UIManager.Instance.ExecuteResult( res );
+            UIManager.Instance.QueueResult( res );
 
             actor.SetPosition( moveTarget, game );
         };

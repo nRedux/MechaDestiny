@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 
 
@@ -13,7 +14,6 @@ public class PlayerActionHandler : ActorActionHandler
     /// </summary>
     private bool _forceEndActorTurn = false;
     private UIPickActionRequest _actionPickRequest = null;
-    private UIPickWeaponRequest _weaponPickRequest = null;
     private List<ActorAction> _sequence = null;
     private int _sequenceIndex = 0;
 
@@ -42,38 +42,6 @@ public class PlayerActionHandler : ActorActionHandler
         return _actor.Actions.Where( x => _actor.CanSpendStatistic( StatisticType.AbilityPoints, x.Cost ) && x.AllowedToExecute( _actor ) == CanStartActionResult.Success );
     }
 
-    private void TryRequestWeaponPick()
-    {
-        if( _actionPickRequest != null )
-            return;
-        if( _weaponPickRequest != null )
-            return;
-        if( !UIPickWeaponRequest.CanExecute( _actor ) )
-            return;
-        if( !Input.GetKeyDown( KeyCode.Q ) )
-            return;
-
-        _weaponPickRequest = new UIPickWeaponRequest( _actor,
-        x =>
-        {
-            //AllowActionSelect = true;
-            _weaponPickRequest = null;
-        },
-        y =>
-        {
-            //AllowActionSelect = true;
-            _weaponPickRequest = null;
-        },
-        () =>
-        {
-            //AllowActionSelect = true;
-            _weaponPickRequest = null;
-        } );
-        //AllowActionSelect = false;
-        UIManager.Instance.RequestUI( _weaponPickRequest, false );
-    }
-
-
 
     public override bool HasActionsAvailable()
     {
@@ -88,17 +56,17 @@ public class PlayerActionHandler : ActorActionHandler
     public override void Tick( Game game )
     {
 
-        TryRequestWeaponPick();
-        
+        UIManager.Instance.TryRequestWeaponPick( this._actor );
+
         if( _activeAction != null && _activeAction.State() == ActorActionState.Finished )
             _activeAction = null;
 
         PerformActionSequence( game );
 
         //Need to check some sort of input to see if we want to perform an action.
-        if( _actionPickRequest == null && Input.GetKeyDown( KeyCode.Space ) )
+        if( Input.GetKeyDown( KeyCode.Space ) )
         {
-            TryPickAction( game );
+            TryPickAction();
         }
 
         if( _actionPickRequest != null )
@@ -197,11 +165,43 @@ public class PlayerActionHandler : ActorActionHandler
         return;
     }
 
+    private bool _pickingAction = false;
 
-    private bool TryPickAction( Game game )
+    public void ActionPickSuccess( object x )
     {
-        if( _weaponPickRequest != null )
-            return false;
+        Game game = GameEngine.Instance.Game;
+        _activeAction?.End();
+        _pickingAction = false;
+        //Player selected to end this actor turn.
+        if( x is EndActorAction )
+        {
+            _forceEndActorTurn = true;
+            return;
+        }
+        else if( x is List<ActorAction> sequence )
+        {
+
+            this._sequence = sequence;
+            return;
+        }
+
+        if( x is ActorAction singleAction )
+        {
+            ExecuteAction( singleAction, game );
+        }
+    }
+
+    public void ActionPickCancel( )
+    {
+        _pickingAction = false;
+        //This is to kill the active move action which is active....
+        _activeAction?.End();
+        //This is to clear any time there's a cancel... not terrible, but not clearly linked to being in a "Targeting state" where clearing makes sense.
+        _actor.Target = null;
+    }
+
+    private bool TryPickAction( )
+    {
         //Only allow picking actions if there isn't a currently executing action
         if( _activeAction != null && _activeAction.State() == ActorActionState.Executing )
             return false;
@@ -209,50 +209,7 @@ public class PlayerActionHandler : ActorActionHandler
         if( _activeAction != null && !_activeAction.AllowActionSelect )
             return false;
 
-        if( _actionPickRequest != null )
-            return false;
-
-        _actionPickRequest = new UIPickActionRequest( _actor,
-        x =>
-        {
-            _activeAction?.End();
-
-            //Player selected to end this actor turn.
-            if( x is EndActorAction )
-            {
-                _forceEndActorTurn = true;
-                _actionPickRequest = null;
-                return;
-            }
-            else if( x is List<ActorAction> sequence )
-            {
-
-                this._sequence = sequence;
-                _actionPickRequest = null;
-                return;
-            }
-
-            if( x is ActorAction singleAction )
-            {
-                ExecuteAction( singleAction, game );
-            }
-
-
-            _actionPickRequest = null;
-        },
-        y =>
-        {
-            _actionPickRequest = null;
-        },
-        () =>
-        {
-            _activeAction?.End();
-            //This is to clear any time there's a cancel... not terrible, but not clearly linked to being in a "Targeting state" where clearing makes sense.
-            _actor.Target = null;
-            _actionPickRequest = null;
-        } );
-
-        UIManager.Instance.RequestUI( _actionPickRequest, false );
+        UIManager.Instance.TryPickAction( _actor, ActionPickSuccess, ActionPickCancel );
 
         return true;
     }
@@ -275,6 +232,7 @@ public class PlayerActionHandler : ActorActionHandler
 
     public override void TurnEnded()
     {
+        //Might be a sign of a problem
         _actionPickRequest = null;
         UIManager.Instance.TerminateActiveRequests();
         if( _activeAction != null )

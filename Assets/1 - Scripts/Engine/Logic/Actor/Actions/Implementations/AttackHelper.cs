@@ -12,26 +12,6 @@ public static class AttackHelper
         return false;
     }
 
-    public static AttackActionResult CreateAttackActionResult( GfxActor attackerAvatar, SmartPoint target )
-    {
-        var weapon = GetAttackWeapon( attackerAvatar.Actor );
-        int count = GetAttackCount( weapon );
-
-        //Start set up attack action result
-        AttackActionResult res = new AttackActionResult( )
-        {
-            Attacker = attackerAvatar,
-            AttackerMechComponent = weapon.GetParent() as MechComponentData,
-            AttackerWeapon = weapon as MechComponentData,
-            Count = count
-        };
-
-        //End set up attack action result
-        res.Target = target;
-        return res;
-    }
-
-
     private static MechComponentData SelectComponentTarget( this MechData data )
     {
         if( DevConfiguration.TARGET_TORSO_ONLY )
@@ -57,9 +37,8 @@ public static class AttackHelper
     public static void CalculateAttackDamage( AttackActionResult res )
     {
         var actor = res.Attacker.Actor;
-        var weaponEntity = GetAttackWeapon( actor );
-        int shotCount = GetAttackCount( weaponEntity );
-        var damage = weaponEntity.GetStatistic( StatisticType.Damage );
+        var weaponEntity = actor.ActiveWeapon;
+        int shotCount = weaponEntity.GetStatisticValue( StatisticType.ShotCount );
 
         if( res.AttackerWeapon.IsAOE() )
         {
@@ -92,12 +71,12 @@ public static class AttackHelper
 
             Debug.Log( $"Found {actors.Count} actors" );
 
-            int fragmentCount = GetFragmentCount( weaponEntity );
+            int fragmentCount = weaponEntity.GetStatisticValue( StatisticType.FragmentCount );
             actors.Do( target =>
             {
                 for( int i = 0; i < fragmentCount; i++ )
                 {
-                    CalculateHitDamage( actor, target, res );
+                    CheckHitAndApplyDamage( actor, target, res );
                 }
             } );
 
@@ -106,17 +85,17 @@ public static class AttackHelper
         {
             for( int i = 0; i < shotCount; i++ )
             {
-                CalculateHitDamage( actor, res.Target.GfxActor.Actor, res );
+                CheckHitAndApplyDamage( actor, res.Target.GfxActor.Actor, res );
             }
         }
     }
 
 
-    private static void CalculateHitDamage( Actor attacker, Actor target, AttackActionResult res )
+    private static void CheckHitAndApplyDamage( Actor attacker, Actor target, AttackActionResult res )
     {
-        var weaponEntity = GetAttackWeapon( attacker );
-        int shotCount = GetAttackCount( weaponEntity );
-        var damage = weaponEntity.GetStatistic( StatisticType.Damage );
+        var weaponEntity = attacker.ActiveWeapon;
+        int shotCount = weaponEntity.GetStatisticValue( StatisticType.ShotCount );
+        var damage = weaponEntity.GetStatisticValue( StatisticType.Damage );
         var targetMechData = target.GetMechData();
 
         var randomCompEntity = targetMechData.SelectComponentTarget();
@@ -134,14 +113,14 @@ public static class AttackHelper
 
         ///TODO
         //This could just return the change and we could add it to the result
-        healthStat.SetValue( isHit ? healthStat.Value - damage.Value : healthStat.Value, tags );
+        healthStat.SetValue( isHit ? healthStat.Value - damage : healthStat.Value, tags );
     }
 
 
     private static bool CalculateHitOrMiss( Actor attackActor, Actor targetActor )
     {
         var actor = attackActor;
-        var weapon = GetAttackWeapon( actor ) as MechComponentData;
+        var weapon = actor.ActiveWeapon;
         //TODO: Shouldn't this just be manhattan distance?
         var distance = GameEngine.Instance.Board.GetDistance( attackActor.Position, targetActor.Position );
         if( distance == null )
@@ -150,20 +129,7 @@ public static class AttackHelper
         return UnityEngine.Random.value < accuracy;
     }
 
-    public static IEntity GetAttackWeapon( Actor actor )
-    {
-        var attackerMechEntity = actor.GetSubEntities()[0];
-        var attackerMechData = attackerMechEntity as MechData;
-        return attackerMechData.ActiveWeapon;
-    }
 
-    public static int GetAttackCount( IEntity weapon )
-    {
-        var weaponStats = weapon.GetStatistics();
-        var shotCount = weaponStats.GetStatistic( StatisticType.ShotCount );
-        //TODO: What if there isn't a shotCount stat defined?
-        return shotCount.Value;
-    }
 
     public static int GetFragmentCount( IEntity weapon )
     {

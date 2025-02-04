@@ -24,6 +24,14 @@ public class AttackActionResult : ActionResult
     {
     }
 
+    public AttackActionResult( GfxActor attacker, SmartPoint target )
+    {
+        Attacker = attacker;
+        AttackerWeapon = attacker.Actor.ActiveWeapon;
+        AttackerMechComponent = AttackerWeapon.GetParent() as MechComponentData;
+        Count = AttackerWeapon.GetStatisticValue( StatisticType.ShotCount );
+        Target = target;
+    }
 
     public string GetAnimationParam()
     {

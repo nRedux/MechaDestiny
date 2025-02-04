@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.VisualScripting;
 using System.Runtime.Serialization;
+using UnityEngine.Android;
 
 public enum EntityFlags
 {
@@ -16,7 +17,7 @@ public class SimpleEntity<TData> : DataObject<TData>, IEntity
     [HideInInspector]
     public string ID;
 
-    public StatisticCollection Statistics;
+    public StatisticCollection Statistics = new StatisticCollection();
 
     [HideInInspector]
     public EntityCollection SubEntities = new EntityCollection();
@@ -33,6 +34,11 @@ public class SimpleEntity<TData> : DataObject<TData>, IEntity
     {
         _entityFlags = 0;
         _statusFlags = 0;
+    }
+
+    public string GetEntityAssetName()
+    {
+        return AssetReference.Asset
     }
 
     [OnDeserialized]
@@ -211,8 +217,13 @@ public class SimpleEntity<TData> : DataObject<TData>, IEntity
     public int GetStatisticValue( StatisticType type )
     {
         var stat = Statistics.GetStatistic( type );
+        //TODO: Should I throw here?
         if( stat == null )
+        {
+            Statistics.Entity as SimpleEntity<>
+            Debug.LogWarning("Requests statistic value which doesn't exist in entity.");
             return 0;
+        }
         return stat.Value;
     }
 
