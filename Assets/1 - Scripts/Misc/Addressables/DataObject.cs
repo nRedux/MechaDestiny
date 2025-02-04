@@ -11,7 +11,7 @@ public class DataObject<TData>
 
     public AsyncOperationHandle<TData> Operation;
 
-    public void SetGUID( string dataGUID ) 
+    public void SetGUID( string dataGUID )
     {
         AssetReference = new AssetReference( dataGUID );
     }

@@ -36,11 +36,6 @@ public class SimpleEntity<TData> : DataObject<TData>, IEntity
         _statusFlags = 0;
     }
 
-    public string GetEntityAssetName()
-    {
-        return AssetReference.Asset
-    }
-
     [OnDeserialized]
     void OnDeserialized( StreamingContext c )
     {
@@ -220,8 +215,7 @@ public class SimpleEntity<TData> : DataObject<TData>, IEntity
         //TODO: Should I throw here?
         if( stat == null )
         {
-            Statistics.Entity as SimpleEntity<>
-            Debug.LogWarning("Requests statistic value which doesn't exist in entity.");
+            Debug.LogWarning($"Requests statistic value which doesn't exist in entity. {stat.Entity.GetID()}");
             return 0;
         }
         return stat.Value;
