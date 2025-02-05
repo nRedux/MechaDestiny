@@ -77,7 +77,9 @@ public class UIManager : Singleton<UIManager>
     private UIPickActionRequest _actionPickRequest = null;
     private UIPickWeaponRequest _weaponPickRequest = null;
 
-    //Generalized hovered detecting
+    /// <summary>
+    /// The world coordinate hovered cell user is interacting with.
+    /// </summary>
     private Vector2Int? _hoveredCell = new Vector2Int( int.MinValue, int.MinValue );
     private Actor _hoveredActor = null;
 

@@ -6,11 +6,12 @@ using SuccessCallback = UIRequestSuccessCallback<UnityEngine.Vector2Int>;
 using FailureCallback = UIRequestFailureCallback<bool>;
 using CancelCallback = UIRequestCancelResult;
 using Unity.VisualScripting;
+using static VariablePoissonSampling;
 
 public class UIFindMoveTargetRequest : UIRequest<Vector2Int, bool>
 {
 
-    public BoolWindow Cells;
+    public BoolWindow MoveOptionCells;
     public System.Action<(bool hover, int cost, Vector2Int location)> OnCellHover;
 
     private bool _goodHover = false;
@@ -20,7 +21,7 @@ public class UIFindMoveTargetRequest : UIRequest<Vector2Int, bool>
     public UIFindMoveTargetRequest( Actor requester, BoolWindow cells, SuccessCallback onSuccess, FailureCallback onFailure = null, CancelCallback onCancel = null ): base( onSuccess, onFailure, onCancel, requester )
     {
         this._actor = requester;
-        this.Cells = cells;
+        this.MoveOptionCells = cells;
     }
 
 
@@ -52,7 +53,7 @@ public class UIFindMoveTargetRequest : UIRequest<Vector2Int, bool>
         base.Start();
 
         GameEngine.Instance.GfxBoard.GeneralOverlay.SetCellColor( GfxCellMode.Move );
-        GameEngine.Instance.GfxBoard.GeneralOverlay.RenderCells( Cells, true );
+        GameEngine.Instance.GfxBoard.GeneralOverlay.RenderCells( MoveOptionCells, true );
     }
 
 
@@ -63,6 +64,14 @@ public class UIFindMoveTargetRequest : UIRequest<Vector2Int, bool>
 
     public override void CellHoverStart( Vector2Int cell )
     {
+        //Is the cell within our movable cells?
+        if( !MoveOptionCells.ContainsWorldCell( cell ) )
+            return;
+        //Is the cell part of the move options?
+        Vector2Int local = MoveOptionCells.WorldToLocalCell( cell );
+        if( !MoveOptionCells[local] )
+            return;
+
         int? distance = GameEngine.Instance.Board.GetMovePathDistance( _actor.Position, cell, _actor );
         OnCellHover?.Invoke( (hover: true, cost: distance ?? -1, location: cell) );
         _goodHover = true;

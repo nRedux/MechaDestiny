@@ -93,7 +93,7 @@ public class Game
     public Actor GetRandomMemberFromOtherTeams( int thisTeamID, BoolWindow validLocations )
     {
         var otherTeam = GetOtherTeams( thisTeamID ).Random();
-        return otherTeam.GetMembers().Where( x => !x.IsDead() && validLocations.ContainsWorldCoord( x.Position ) && validLocations.GetValueAtWorldCoord( x.Position ) ).Random();
+        return otherTeam.GetMembers().Where( x => !x.IsDead() && validLocations.ContainsWorldCell( x.Position ) && validLocations.GetValueWorld( x.Position ) ).Random();
     }
 
 

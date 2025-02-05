@@ -181,7 +181,7 @@ public class GridOverlay
             float maxDist = ( cells.Width * .5f ) + ( cells.Height * .5f );
             float manDist = Mathf.Abs( offs.x ) + Mathf.Abs( offs.y );
 
-            var renderCell = GetCell( cells.GetWorldPosition( iter.local.x, iter.local.y ) );
+            var renderCell = GetCell( cells.LocalToWorldPosition( iter.local ) );
             renderCell.Tint = Mathf.Max( (1f - manDist / maxDist ) + tintShift, 0f );
             if( highlightCenter && iter.world == cells.Center )
             {
@@ -201,7 +201,7 @@ public class GridOverlay
             float maxDist = ( cells.Width * .5f ) + ( cells.Height * .5f );
             float manDist = Mathf.Abs( offs.x ) + Mathf.Abs( offs.y );
 
-            var renderCell = GetCell( cells.GetWorldPosition( iter.local.x, iter.local.y ) );
+            var renderCell = GetCell( cells.LocalToWorldPosition( iter.local ) );
             renderCell.Tint = Mathf.Max( ( 1f - manDist / maxDist ) + tintShift, 0f );
             if( highlightCenter && iter.world == cells.Center )
             {

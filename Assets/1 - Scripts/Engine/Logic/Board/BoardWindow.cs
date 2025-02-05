@@ -147,7 +147,6 @@ public class BoardWindow<TCellType>
         RecalculateCenter();
     }
 
-
     public virtual TCellType Clamp( TCellType value )
     {
         return value;
@@ -164,15 +163,14 @@ public class BoardWindow<TCellType>
 
 
     /// <summary>
-    /// Does the window contain the coordinate
+    /// Does the window contain the cell which is in a world reference?
     /// </summary>
-    /// <param name="worldCoordinate"></param>
+    /// <param name="world"></param>
     /// <returns></returns>
-    public bool ContainsWorldCoord( Vector2Int worldCoordinate )
+    public bool ContainsWorldCell( Vector2Int world )
     {
-        return worldCoordinate.x >= _x && worldCoordinate.y >= _y && worldCoordinate.x < _x + Width && worldCoordinate.y < _y + Height;
+        return world.x >= _x && world.y >= _y && world.x < _x + Width && world.y < _y + Height;
     }
-
 
     private void RecalculateCenter()
     {
@@ -192,13 +190,7 @@ public class BoardWindow<TCellType>
     }
 
 
-    private Vector2Int GetLocalCoordinate( int index )
-    {
-        return GetArrayCoordinate( index, Width, Height );
-    }
-
-
-    public static Vector2Int GetArrayCoordinate( int index, int width, int height )
+    public static Vector2Int GetArrayIndex( int index, int width, int height )
     {
         int dY = index / width;
         int dX = index - dY * height;
@@ -206,9 +198,15 @@ public class BoardWindow<TCellType>
     }
 
 
-    private Vector2Int GetWorldCoordinate( int index )
+    private Vector2Int IndexToLocalCell( int index )
     {
-        Vector2Int coord = GetLocalCoordinate( index );
+        return GetArrayIndex( index, Width, Height );
+    }
+
+
+    private Vector2Int IndexToWorldCell( int index )
+    {
+        Vector2Int coord = IndexToLocalCell( index );
         coord.x = coord.x + _x;
         coord.y = coord.y + _y;
         return coord;
@@ -218,46 +216,58 @@ public class BoardWindow<TCellType>
     /// <summary>
     /// Gets the value in the window at a given world coordinate.
     /// </summary>
-    /// <param name="worldCoord">The world coordinate to query a value from</param>
+    /// <param name="worldCell">The world coordinate to query a value from</param>
     /// <returns>The value within the window at the given world Coordinates</returns>
-    public TCellType GetValueAtWorldCoord( Vector2Int worldCoord )
+    public TCellType GetValueWorld( Vector2Int worldCell )
     {
-        Vector2Int local = WorldToLocalIndex( worldCoord );
+        Vector2Int local = WorldToLocalCell( worldCell );
         return this[local];
     }
 
 
-    public Vector2Int WorldToLocalIndex( Vector2Int worldCoord )
+    public Vector2Int WorldToLocalCell( Vector2Int worldCell )
     {
-        return new Vector2Int( worldCoord.x - X, worldCoord.y - Y );
+        return new Vector2Int( worldCell.x - X, worldCell.y - Y );
     }
 
 
-    private Vector2Int GetWorldCoordinate( int x, int y )
+    private Vector2Int LocalToWorldCell( int x, int y )
     {
         Vector2Int coord = new Vector2Int(x + _x, y + _y);
         return coord;
     }
 
-
-    public Vector3 GetWorldPosition( int index )
+    private Vector2Int LocalToWorldCell( Vector2Int locelCell )
     {
-        Vector2Int coord = GetWorldCoordinate( index );
+        Vector2Int coord = new Vector2Int( locelCell.x + _x, locelCell.y + _y );
+        return coord;
+    }
+
+
+    public Vector3 IndexToWorldPosition( int index )
+    {
+        Vector2Int coord = IndexToWorldCell( index );
         return new Vector3( coord.x + .5f, 0f, coord.y + .5f );
     }
 
 
-    public Vector3 GetWorldPosition( int x, int y )
+    public Vector3 LocalToWorldPosition( int x, int y )
     {
-        Vector2Int coord = GetWorldCoordinate( x, y );
+        Vector2Int coord = LocalToWorldCell( x, y );
+        return new Vector3( coord.x + .5f, 0f, coord.y + .5f );
+    }
+
+    public Vector3 LocalToWorldPosition( Vector2Int localCell )
+    {
+        Vector2Int coord = LocalToWorldCell( localCell );
         return new Vector3( coord.x + .5f, 0f, coord.y + .5f );
     }
 
 
-    public void MoveCenter( Vector2Int position )
+    public void MoveCenter( Vector2Int cellPosition )
     {
-        this._x = position.x - Width / 2;
-        this._y = position.y - Height / 2;
+        this._x = cellPosition.x - Width / 2;
+        this._y = cellPosition.y - Height / 2;
         this.RecalculateCenter();
     }
 
@@ -336,13 +346,13 @@ public class BoardWindow<TCellType>
     {
         for( int i = 0; i < Size; i++ )
         {
-            Vector2Int world = GetWorldCoordinate( i );
+            Vector2Int world = IndexToWorldCell( i );
             Vector2Int toCenter = Center - world;
             if( Board != null && !Board.IsCoordInBoard( world ) )
                 continue;
             if( toCenter.ManhattanDistance() > MaxIterDistance )
                 continue;
-            action?.Invoke( (local: GetLocalCoordinate(i), world: GetWorldCoordinate(i), value: Cells[i], window: this) );
+            action?.Invoke( (local: IndexToLocalCell(i), world: IndexToWorldCell(i), value: Cells[i], window: this) );
         }
     }
 
@@ -351,14 +361,14 @@ public class BoardWindow<TCellType>
     {
         for( int i = 0; i < Size; i++ )
         {
-            Vector2Int world = GetWorldCoordinate( i );
+            Vector2Int world = IndexToWorldCell( i );
             Vector2Int toCenter = Center - world;
             int toCenterDist = toCenter.ManhattanDistance();
             if( toCenterDist > range || toCenterDist > MaxIterDistance )
                 continue;
             if( Board != null && !Board.IsCoordInBoard( world ) )
                 continue;
-            action?.Invoke( (local: GetLocalCoordinate( i ), world: world, value: Cells[i], window: this) );
+            action?.Invoke( (local: IndexToLocalCell( i ), world: world, value: Cells[i], window: this) );
         }
     }
 
@@ -372,7 +382,7 @@ public class BoardWindow<TCellType>
         }
         for( int i = 0; i < Size; i++ )
         {
-            Cells[i] = Clamp( action.Invoke( GetLocalCoordinate( i ), GetWorldCoordinate( i ), this ) );
+            Cells[i] = Clamp( action.Invoke( IndexToLocalCell( i ), IndexToWorldCell( i ), this ) );
         }
     }
 

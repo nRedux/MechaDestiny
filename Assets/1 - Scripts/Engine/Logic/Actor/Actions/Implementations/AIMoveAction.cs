@@ -153,7 +153,7 @@ public class AIMoveAction : MoveAction
         
         utility.Do( iter =>
         {
-            var proxLocalCoord = enemyProxUtility.WorldToLocalIndex(iter.world);
+            var proxLocalCoord = enemyProxUtility.WorldToLocalCell(iter.world);
             var proxVal = enemyProxUtility[proxLocalCoord];
             utility[iter.local] += proxVal;
         }, Range );
@@ -167,7 +167,7 @@ public class AIMoveAction : MoveAction
 
         utility.Do( iter =>
         {
-            var proxLocalCoord = enemyProxUtility.WorldToLocalIndex( iter.world );
+            var proxLocalCoord = enemyProxUtility.WorldToLocalCell( iter.world );
             var proxVal = enemyProxUtility[proxLocalCoord];
             utility[iter.local] += proxVal;
         }, Range );
