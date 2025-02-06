@@ -77,11 +77,8 @@ public class PlayerMoveAction : MoveAction
 
         _state = ActorActionState.Started;
         _moveOptionsWindow.MoveCenter( actor.Position );
+        //Get all cells which could be moved to.
         _game.Board.GetMovableCellsManhattan( _range, _moveOptionsWindow, actor );
-
-        //Unset the cell under the mover.
-        Vector2Int myWindowPos = _moveOptionsWindow.WorldToLocalCell( actor.Position );
-        //_moveOptionsWindow[myWindowPos] = false;
 
         UIRequestSuccessCallback<Vector2Int> success = moveTarget =>
         {

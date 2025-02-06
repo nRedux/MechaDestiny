@@ -174,7 +174,11 @@ public class GridOverlay
     {
         Clear();
         cells.Do( iter => {
-            if( iter.value == false )
+            //Check if we should force show this cell. If it's the center cell, and we want that cell highlighted.
+            bool forceShowCenterCell = highlightCenter && iter.world == cells.Center;
+
+            //Only show a cell if the window value is true - unless we force it.
+            if( iter.value == false && !forceShowCenterCell )
                 return;
 
             Vector2Int offs = cells.Center - iter.world;

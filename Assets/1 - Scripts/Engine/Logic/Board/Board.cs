@@ -230,11 +230,19 @@ public class Board
         return Graph.bounds.Contains( coord.WorldPosition() );
     }
 
-    public void GetMovableCellsManhattan( int range, BoolWindow result, Actor actorToMove = null )
+    public void GetMovableCellsManhattan( int range, BoolWindow result, Actor actorToMove = null, bool rejectCellUnderActor = true )
     {
         //Should change this to using the constantpath from *star library
 
         result.Modify( ( cell, world, win ) => {
+
+            if( actorToMove != null && rejectCellUnderActor )
+            {
+                //We want to not be able to select the cell in the center - this is the location of the actor which will move.
+                var actorCellInResultWin = result.WorldToLocalCell( actorToMove.Position );
+                result[actorCellInResultWin] = false;
+            }
+
             var valid = IsCoordinateInMap( world ) && GetManhattanDistance( win.Center, world ) <= range;
             //if( TraversalProvider.IsBlocked(world) )
             //    valid = false;
