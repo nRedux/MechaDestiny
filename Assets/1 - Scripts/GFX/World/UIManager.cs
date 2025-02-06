@@ -177,6 +177,18 @@ public class UIManager : Singleton<UIManager>
         UIManager.Instance.RequestUI( _actionPickRequest, false );
     }
 
+    public bool TryEndPickAction()
+    {
+        if( _actionPickRequest != null )
+        {
+            _actionPickRequest.Cancel();
+            _actionPickRequest = null;
+            return true;
+        }
+
+        return false;
+    }
+
     public void CreateSimpleHealthbar( Actor actor )
     {
         if( actor == null )

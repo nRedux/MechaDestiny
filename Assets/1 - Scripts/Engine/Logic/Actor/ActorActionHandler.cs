@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,4 +20,8 @@ public abstract class ActorActionHandler
     public abstract void TurnEnded();
 
     public abstract List<ActorAction> GetActionOptions( ActionCategory category );
+
+    public abstract void Selected();
+
+    public abstract void Deselected();
 }

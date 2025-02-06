@@ -106,4 +106,14 @@ public class AIActionHandler : ActorActionHandler
     {
         throw new NotImplementedException();
     }
+
+    public override void Selected()
+    {
+        
+    }
+
+    public override void Deselected()
+    {
+        
+    }
 }

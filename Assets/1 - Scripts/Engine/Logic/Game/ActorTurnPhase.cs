@@ -104,12 +104,14 @@ public class ActorTurnPhase: TurnPhase
 
         if( _selectedActor != null && _selectedActor != actor )
         {
+            _selectedActor.Deselected();
             UIManager.Instance.TerminateActiveRequests( _selectedActor );
             UIManager.Instance.TerminatePending( _selectedActor );
         }
 
         _selectedActor = actor;
         _selectedActor?.ResetOnSelect();
+        _selectedActor?.Selected();
         Events.Instance.Raise( new CurrentActorEvent() { Actor = actor } );
     }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Localization.Plugins.XLIFF.V12;
@@ -19,15 +20,43 @@ public class PlayerActionHandler : ActorActionHandler
 
     public override ActorAction ActiveAction => _activeAction;
 
+
     public PlayerActionHandler( Actor actor ) : base( actor )
     {
 
     }
 
+
     public override bool ShouldEndActorTurn()
     {
         return _forceEndActorTurn;
     }
+
+
+    public void SetupInput()
+    {
+        UIManager.Instance.UserControls.Cancel.AddActivateListener( OnCancelInput );
+    }
+
+
+    public void ShutdownInput()
+    {
+        UIManager.Instance.UserControls.Cancel.RemoveActivateListener( OnCancelInput );
+    }
+
+
+    private void OnCancelInput( InputActionEvent evt )
+    {
+        if( evt.Used )
+            return;
+        evt.Use();
+
+        if( _canRightClickActionPick )
+        {
+            TryPickAction();
+        }
+    }
+
 
     public override void SetupForTurn()
     {
@@ -63,11 +92,6 @@ public class PlayerActionHandler : ActorActionHandler
 
         PerformActionSequence( game );
 
-        //Need to check some sort of input to see if we want to perform an action.
-        if( Input.GetKeyDown( KeyCode.Space ) )
-        {
-            TryPickAction();
-        }
 
         if( _actionPickRequest != null )
             return;
@@ -80,11 +104,8 @@ public class PlayerActionHandler : ActorActionHandler
 
     }
 
-    private void HandleCompleteActiveAction( Game game )
-    {
 
-    }
-
+    private bool _canRightClickActionPick = false;
 
     /// <summary>
     /// If we have an active action, run it's tick. If not, try to select default action
@@ -92,15 +113,25 @@ public class PlayerActionHandler : ActorActionHandler
     /// <param name="game">The game state instance</param>
     private void TickActiveOrSelectDefault( Game game )
     {
-        if( _activeAction == null )
+        if( _activeAction == null && !_pickingAction )
         {
             if( _moveAction.AllowedToExecute( _actor ) == CanStartActionResult.Success )
                 ExecuteAction( _moveAction, game );
+
+            //Selected default.
+            //FORMALIZE DEFAULT ACTION.
+            _canRightClickActionPick = true;
+
         }
-        else
+        else if( _activeAction != null )
         {
             _activeAction.Tick();
         }
+    }
+
+    public void BeginDefaultActionState()
+    {
+
     }
 
 
@@ -152,7 +183,8 @@ public class PlayerActionHandler : ActorActionHandler
                     };
                 }
                 _sequenceIndex++;
-               
+
+                _canRightClickActionPick = false;
                 ExecuteAction( nextAction, game );
             }
             else
@@ -165,10 +197,12 @@ public class PlayerActionHandler : ActorActionHandler
         return;
     }
 
-    private bool _pickingAction = false;
 
     public void ActionPickSuccess( object x )
     {
+        //Set to default state if picked was the default (move) action. Otherwise, not default state.
+        _canRightClickActionPick = x == _moveAction;
+
         Game game = GameEngine.Instance.Game;
         _activeAction?.End();
         _pickingAction = false;
@@ -180,16 +214,18 @@ public class PlayerActionHandler : ActorActionHandler
         }
         else if( x is List<ActorAction> sequence )
         {
-
             this._sequence = sequence;
             return;
         }
 
         if( x is ActorAction singleAction )
         {
+            _activeAction = singleAction;
             ExecuteAction( singleAction, game );
         }
     }
+
+    public bool _pickingAction = false;
 
     public void ActionPickCancel( )
     {
@@ -209,6 +245,7 @@ public class PlayerActionHandler : ActorActionHandler
         if( _activeAction != null && !_activeAction.AllowActionSelect )
             return false;
 
+        _pickingAction = true;
         UIManager.Instance.TryPickAction( _actor, ActionPickSuccess, ActionPickCancel );
 
         return true;
@@ -259,6 +296,20 @@ public class PlayerActionHandler : ActorActionHandler
         }
 
         return GetUsableActions().Where( x => x.Category == category ).ToList();//.Where( x => x != _activeAction ).ToList();
+    }
+
+
+    public override void Selected()
+    {
+        _canRightClickActionPick = false;
+        SetupInput();
+    }
+
+
+    public override void Deselected()
+    {
+        _canRightClickActionPick = false;
+        ShutdownInput();
     }
 
 }

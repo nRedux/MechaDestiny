@@ -11,6 +11,7 @@ using Debug = UnityEngine.Debug;
 using static MoonSharp.Interpreter.Debugging.DebuggerAction;
 using Unity.VisualScripting;
 using UnityEditor.Localization.Plugins.XLIFF.V12;
+using System.Net.Sockets;
 
 public enum SequencePos
 {
@@ -140,6 +141,16 @@ public class Actor : SimpleEntity<ActorAsset>
     public List<ActionType> GetAIActionsNotOfType<ActionType>() where ActionType : ActorAction
     {
         return Actions.Where( x => !typeof( ActionType ).IsAssignableFrom( x.GetType() ) ).Select( x => x as ActionType ).ToList();
+    }
+
+    public void Selected()
+    {
+        ActionHandler.Selected();
+    }
+
+    public void Deselected()
+    {
+        ActionHandler.Deselected();
     }
 
 
