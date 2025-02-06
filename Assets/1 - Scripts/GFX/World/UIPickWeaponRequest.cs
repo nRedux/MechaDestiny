@@ -6,6 +6,7 @@ using System.Linq;
 using SuccessCallback = UIRequestSuccessCallback<bool>;
 using FailureCallback = UIRequestFailureCallback<bool>;
 using CancelCallback = UIRequestCancelResult;
+using System;
 
 public class UIPickWeaponRequest : UIRequest<bool, bool>
 {
@@ -26,20 +27,40 @@ public class UIPickWeaponRequest : UIRequest<bool, bool>
 
     public override void Cleanup()
     {
+        ShutdownInput();
         UIManager.Instance.HideWeaponPicker();
     }
 
 
     public override void Run()
     {
-        if( Input.GetMouseButtonDown( 1 ) )
-            this.Cancel();
+    }
+
+    private void SetupInput()
+    {
+        UIManager.Instance.UserControls.Cancel.AddActivateListener( OnCancelInput );
+    }
+
+
+    private void ShutdownInput()
+    {
+        UIManager.Instance.UserControls.Cancel.RemoveActivateListener( OnCancelInput );
+    }
+
+
+    private void OnCancelInput( InputActionEvent evt )
+    {
+        if( evt.Used )
+            return;
+        evt.Use();
+        Cancel();
     }
 
 
     public override void Start()
     {
         base.Start();
+        SetupInput();
         UIManager.Instance.ShowWeaponPicker( () =>
         {
             UIManager.Instance.HideWeaponPicker();

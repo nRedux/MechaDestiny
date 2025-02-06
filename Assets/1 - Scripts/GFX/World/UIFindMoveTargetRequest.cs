@@ -7,6 +7,7 @@ using FailureCallback = UIRequestFailureCallback<bool>;
 using CancelCallback = UIRequestCancelResult;
 using Unity.VisualScripting;
 using static VariablePoissonSampling;
+using System;
 
 public class UIFindMoveTargetRequest : UIRequest<Vector2Int, bool>
 {
@@ -29,6 +30,7 @@ public class UIFindMoveTargetRequest : UIRequest<Vector2Int, bool>
     {
         GameEngine.Instance.GfxBoard.GeneralOverlay.UnHighlightCell( _hoveredCell );
         GameEngine.Instance.GfxBoard.GeneralOverlay.Clear();
+        ShutdownInput();
         _goodHover = false;
         //Send callback for "hover ended"
         InvokeCellHoverEnd();
@@ -41,17 +43,34 @@ public class UIFindMoveTargetRequest : UIRequest<Vector2Int, bool>
     }
 
 
-
     private void InvokeCellHoverEnd()
     {
         OnCellHover?.Invoke( (hover: false, cost: 0, location: Vector2Int.zero) );
     }
 
 
+    private void SetupInput()
+    {
+        UIManager.Instance.UserControls.Cancel.AddActivateListener( OnCancelInput );
+    }
+
+
+    private void ShutdownInput()
+    {
+        UIManager.Instance.UserControls.Cancel.RemoveActivateListener( OnCancelInput );
+    }
+
+    private void OnCancelInput( InputActionEvent evt )
+    {
+        if( evt.Used )
+            return;
+        Cancel();
+    }
+
     public override void Start()
     {
         base.Start();
-
+        SetupInput();
         GameEngine.Instance.GfxBoard.GeneralOverlay.SetCellColor( GfxCellMode.Move );
         GameEngine.Instance.GfxBoard.GeneralOverlay.RenderCells( MoveOptionCells, true );
     }
@@ -91,8 +110,6 @@ public class UIFindMoveTargetRequest : UIRequest<Vector2Int, bool>
 
     private void TryGetUserSelectedCell( )
     {
-        if( Input.GetMouseButtonDown( 1 ) )
-            this.Cancel();
 
         if( Input.GetMouseButtonDown( 0 ) )
         {

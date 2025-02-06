@@ -58,12 +58,10 @@ public class CombatUserControls
         Interact.AddActivateListener( OnInteract );
     }
 
-
     private void OnInteract( InputActionEvent evt )
     {
         if( evt.Used )
             return;
-
         if( HoveredActor != null && HoveredActor.IsPlayer )
         {
             SelectMech.Activate( HoveredActor );

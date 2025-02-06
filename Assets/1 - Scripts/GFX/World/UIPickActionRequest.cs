@@ -9,6 +9,7 @@ using CancelCallback = UIRequestCancelResult;
 using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine.Localization.SmartFormat.Core.Parsing;
 using UnityEngine.EventSystems;
+using System;
 
 public class UIPickActionRequest : UIRequest<object, bool>
 {
@@ -32,21 +33,41 @@ public class UIPickActionRequest : UIRequest<object, bool>
 
     public override void Cleanup()
     {
+        ShutdownInput();
         UIManager.Instance.HideActionPicker();
     }
 
 
+    private void SetupInput()
+    {
+        UIManager.Instance.UserControls.Cancel.AddActivateListener( OnCancelInput );
+    }
+
+
+    private void ShutdownInput()
+    {
+        UIManager.Instance.UserControls.Cancel.RemoveActivateListener( OnCancelInput );
+    }
+
+    private void OnCancelInput( InputActionEvent evt )
+    {
+        if( evt.Used )
+            return;
+        if( EventSystem.current.IsPointerOverGameObject() )
+            return;
+        evt.Use();
+        Cancel();
+    }
+
     public override void Run()
     {
-        if( !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown( 1 ) && frames > 2 )
-            this.Cancel();
-        frames++;
     }
 
 
     public override void Start()
     {
         base.Start();
+        SetupInput();
         GetNextAction();
     }
 

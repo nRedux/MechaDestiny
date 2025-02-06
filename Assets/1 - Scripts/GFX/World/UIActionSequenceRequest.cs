@@ -7,6 +7,7 @@ using System.Linq;
 using SuccessCallback = UIRequestSuccessCallback<System.Collections.Generic.List<ActorAction>>;
 using FailureCallback = UIRequestFailureCallback<bool>;
 using CancelCallback = UIRequestCancelResult;
+using System;
 
 public class UIActionSequenceRequest : UIRequest<List<ActorAction>, bool>
 {
@@ -21,8 +22,39 @@ public class UIActionSequenceRequest : UIRequest<List<ActorAction>, bool>
 
     private bool _uiWantsFire = false;
 
+
+    public override void Start()
+    {
+        base.Start();
+        UIManager.Instance.ShowActionSequence( _requester, () => _uiWantsFire = true );
+        SetupInput();
+        GetNextAction();
+    }
+
+
+    private void SetupInput()
+    {
+        UIManager.Instance.UserControls.Cancel.AddActivateListener( OnCancelInput );
+    }
+
+
+    private void ShutdownInput()
+    {
+        UIManager.Instance.UserControls.Cancel.RemoveActivateListener( OnCancelInput );
+    }
+
+    private void OnCancelInput( InputActionEvent evt )
+    {
+        if( evt.Used )
+            return;
+        evt.Use();
+        this.Cancel();
+    }
+
+
     public override void Cleanup()
     {
+        ShutdownInput();
         UIManager.Instance.HideActionPicker();
         UIManager.Instance.HideActionSequence();
     }
@@ -30,11 +62,6 @@ public class UIActionSequenceRequest : UIRequest<List<ActorAction>, bool>
 
     public override void Run()
     {
-        //I don't know why we have the 2 frame delay here.. was right click cancelling and selecting?  I think we were right clicking to initiate
-        //this action and the right click immediately cancelled it too. Input conflict. Should change input, or should have input usage handling like
-        //"InputEvent" and be able to call myInputEvent.Used() to make it not used by anything else. This would have scheduling concerns though.
-        if( !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown( 1 ) && frames > 2 )
-            this.Cancel();
 
         if( Input.GetKeyDown( KeyCode.F ) || _uiWantsFire )
         {
@@ -42,14 +69,6 @@ public class UIActionSequenceRequest : UIRequest<List<ActorAction>, bool>
         }
 
         frames++;
-    }
-
-
-    public override void Start()
-    {
-        base.Start();
-        UIManager.Instance.ShowActionSequence( _requester, () => _uiWantsFire = true );
-        GetNextAction();
     }
 
 

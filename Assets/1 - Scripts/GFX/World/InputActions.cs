@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct InputActionEvent
+public class InputActionEvent
 {
 
     private bool _used;
@@ -29,8 +29,10 @@ public struct InputActionEvent
     }
 }
 
+
 public delegate void InputActionEventDelegate( InputActionEvent evt );
 public delegate void InputActionDelegate( InputAction evt );
+
 
 public class InputAction
 {
@@ -49,10 +51,17 @@ public class InputAction
     {
         if( _onActivate == callback )
             return;
-        _onActivate += callback;
+
+        //We want things added later to be called first.
+        //Cache the previous delegate and all of it's calls.
+        var prev = _onActivate;
+        //Set the new callback as the base (front of the list)
+        _onActivate = callback;
+        //Add everything previously added back in.
+        _onActivate += prev;
     }
 
-    public void removeActivateListener( InputActionEventDelegate callback )
+    public void RemoveActivateListener( InputActionEventDelegate callback )
     {
         _onActivate -= callback;
     }

@@ -7,6 +7,7 @@ using SuccessCallback = UIRequestSuccessCallback<object>;
 using FailureCallback = UIRequestFailureCallback<bool>;
 using CancelCallback = UIRequestCancelResult;
 using UnityEditor.Localization.Plugins.XLIFF.V12;
+using System;
 
 public class UIFindAttackTargetRequest : UIRequest<object, bool>
 {
@@ -47,6 +48,7 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
 
     public override void Cleanup()
     {
+        ShutdownInput();
         GameEngine.Instance.GfxBoard.GeneralOverlay.Clear();
         GameEngine.Instance.GfxBoard.GeneralOverlay.UnHighlightCell( _hoveredCell );
         GameEngine.Instance.GfxBoard.AOEOverlay.Clear();
@@ -70,6 +72,7 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
     public override void Start()
     {
         base.Start();
+        SetupInput();
         Events.Instance.AddListener<ActiveWeaponChanged>( OnWeaponChanged );
         SetupGrid();
     }
@@ -98,11 +101,29 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
     }
 
 
+    private void SetupInput()
+    {
+        UIManager.Instance.UserControls.Cancel.AddActivateListener( OnCancelInput );
+    }
+
+
+    private void ShutdownInput()
+    {
+        UIManager.Instance.UserControls.Cancel.RemoveActivateListener( OnCancelInput );
+    }
+
+
+    private void OnCancelInput( InputActionEvent evt )
+    {
+        if( evt.Used )
+            return;
+        evt.Use();
+        this.Cancel();
+    }
+
+
     private void TryGetUserSelectedCell( )
     {
-        if( Input.GetMouseButtonDown( 1 ) )
-            this.Cancel();
-
         if( Input.GetMouseButtonDown( 0 ) )
         {
             Vector2Int result = new Vector2Int();
@@ -120,9 +141,6 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
 
     private void TryGetUserSelectedCell_AOE()
     {
-        if( Input.GetMouseButtonDown( 1 ) )
-            this.Cancel();
-
         if( Input.GetMouseButtonDown( 0 ) )
         {
             Vector2Int result = new Vector2Int();
