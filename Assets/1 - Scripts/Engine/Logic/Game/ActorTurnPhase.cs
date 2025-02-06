@@ -55,7 +55,7 @@ public class ActorTurnPhase: TurnPhase
 
     private void ShutDownInput()
     {
-        UIManager.Instance.UserControls.SelectMech.removeActivateListener( TrySelectMech );
+        UIManager.Instance.UserControls.SelectMech.RemoveActivateListener( TrySelectMech );
     }
 
     private void TrySelectMech( InputActionEvent evt )
@@ -64,7 +64,11 @@ public class ActorTurnPhase: TurnPhase
             return;
         if( evt.UserData == null )
             return;
-        SelectActiveActor( (Actor) evt.UserData );
+        Actor evtActor = (Actor) evt.UserData;
+        if( evtActor == _selectedActor )
+            return;
+
+        SelectActiveActor( evtActor );
     }
 
     private void StartNextActor( Game game )
