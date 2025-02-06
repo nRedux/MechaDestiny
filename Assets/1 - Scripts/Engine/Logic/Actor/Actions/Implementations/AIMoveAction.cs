@@ -78,7 +78,7 @@ public class AIMoveAction : MoveAction
         utility.Do( iter =>
         {
             //The cell on the board? If not bail
-            if( !game.Board.IsCoordInBoard( iter.world ) )
+            if( !game.Board.ContainsCell( iter.world ) )
                 return;
 
             //TODO: Looping through when really we shouldn't need a loop. The AI should have one attack ability.

@@ -34,7 +34,7 @@ public class Actor : SimpleEntity<ActorAsset>
     /// </summary>
     public System.Action OnKill;
     public bool RunActionsAutomatically;
-    public bool TurnActionsCompleted = false;
+    public bool TurnComplete = false;
 
     private Team _team;
     private ActorActionHandler ActionHandler;
@@ -145,7 +145,12 @@ public class Actor : SimpleEntity<ActorAsset>
 
     public void ResetForPhase()
     {
-        TurnActionsCompleted = false;
+        TurnComplete = false;
+        ActionHandler.SetupForTurn();
+    }
+
+    public void ResetOnSelect()
+    {
         ActionHandler.SetupForTurn();
     }
 

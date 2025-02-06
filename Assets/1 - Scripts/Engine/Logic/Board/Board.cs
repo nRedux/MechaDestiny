@@ -322,13 +322,13 @@ public class Board
     }
 
 
-    public bool IsCoordInBoard( int x, int y )
+    public bool ContainsCell( int x, int y )
     {
         return x >= 0 && y >= 0 && x < Width && y < Height;
     }
 
 
-    public bool IsCoordInBoard( Vector2Int coord )
+    public bool ContainsCell( Vector2Int coord )
     {
         return coord.x >= 0 && coord.y >= 0 && coord.x < Width && coord.y < Height;
     }

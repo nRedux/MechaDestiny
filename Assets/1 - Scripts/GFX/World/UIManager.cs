@@ -42,7 +42,7 @@ public class UIManager : Singleton<UIManager>
     public UIActionSequence ActionSequence;
     public UIActionSequenceItemHover ActionSequenceHover;
 
-    public BattleInput BattleInput = new BattleInput();
+    public InputActions BattleInput = new InputActions();
 
     public UITextOverlay DebugTextOverlay;
 
@@ -55,6 +55,8 @@ public class UIManager : Singleton<UIManager>
     public CombatCamera CombatCamera;
 
     public GameObject SpawnedObjectsRoot;
+
+    public CombatUserControls UserControls = new CombatUserControls();
 
     public string SwitchWeaponInput = KeyCode.Q.ToString();
 
@@ -119,7 +121,7 @@ public class UIManager : Singleton<UIManager>
         AITools.Opt()?.Hide();
     }
 
-    public void TryRequestWeaponPick( Actor actor )
+    public void TryPickWeapon( Actor actor )
     {
         if( _actionPickRequest != null )
             return;
@@ -146,6 +148,7 @@ public class UIManager : Singleton<UIManager>
 
         UIManager.Instance.RequestUI( _weaponPickRequest, false );
     }
+
 
     public void TryPickAction( Actor actor, UIRequestSuccessCallback<object> succeeded, UIRequestCancelResult cancelled)
     {
@@ -206,12 +209,12 @@ public class UIManager : Singleton<UIManager>
         _debugOverlays.Add( instance );
     }
 
+
     public enum MechInfoDisplayMode
     {
         Mini,
         Full
     }
-
 
     public void ShowSideAMechInfo( Actor actor, MechInfoDisplayMode mode)
     {
@@ -358,7 +361,7 @@ public class UIManager : Singleton<UIManager>
     {
         if( Input.GetKeyDown( KeyCode.J ) )
             FullDebugQueue();
-        BattleInput.Update();
+        UserControls.Update();
         DoFrameRaycast();
         RunRequests();
         RunResultQueue();
@@ -496,6 +499,7 @@ public class UIManager : Singleton<UIManager>
         ActivateRequest( newActiveRequest );
     }
 
+
     private void ActivateRequest( IUIRequest newActiveRequest )
     {
         if( newActiveRequest == null )
@@ -531,11 +535,13 @@ public class UIManager : Singleton<UIManager>
         }
     }
 
+
     private void DebugUIQueue()
     {
         Debug.Log( $"Pending Request Count: {_pendingRequests.Count}" );
         Debug.Log( $"Current UI Queue: Active_Requests: {_activeRequests.Count()}" );
     }
+
 
     public void FullDebugQueue()
     {
@@ -613,7 +619,7 @@ public class UIManager : Singleton<UIManager>
 
         RaycastHit h = hit.Value;
         Vector3Int intVec = h.point.ToInt();
-        if( !_gameEngine.Game.Board.IsCoordInBoard( intVec.x, intVec.z ) ||
+        if( !_gameEngine.Game.Board.ContainsCell( intVec.x, intVec.z ) ||
             _gameEngine.Game.Board.IsBlocked( new Vector2Int(intVec.x, intVec.z) ) ||
             !IsCoordinateActive( h.point, cells ) )
             return false;
@@ -631,7 +637,7 @@ public class UIManager : Singleton<UIManager>
 
         RaycastHit h = hit.Value;
         Vector3Int intVec = h.point.ToInt();
-        if( !_gameEngine.Game.Board.IsCoordInBoard( intVec.x, intVec.z ) ||
+        if( !_gameEngine.Game.Board.ContainsCell( intVec.x, intVec.z ) ||
             !IsCoordinateActive( h.point, cells ) )
             return false;
 
@@ -646,82 +652,33 @@ public class UIManager : Singleton<UIManager>
     }
 
 
-    public Actor GetHoveredActor( )
-    {
-        if( _frameRaycast == null || !_frameRaycast.HasValue )
-        {
-            return null;
-        }
-
-        RaycastHit h = _frameRaycast.Value;
-        Vector3Int intVec = h.point.ToInt();
-        if( !_gameEngine.Game.Board.IsCoordInBoard( intVec.x, intVec.z ) )
-        {
-            return null;
-        }
-
-        var hitCell = new Vector2Int( intVec.x, intVec.z );
-        //Get all actors at the cell
-        //Discard any which should be ignored.
-        var hoveredActor = GameEngine.Instance.Board.GetActorsAtCell( hitCell ).FirstOrDefault();
-        bool result = _hoveredActor != hoveredActor;
-        _hoveredActor = hoveredActor;
-        return hoveredActor;
-    }
-
-
-    public Vector2Int? GetHoveredCell( )
-    {
-        if( _frameRaycast == null || !_frameRaycast.HasValue )
-        {
-            return null;
-        }
-
-        RaycastHit h = _frameRaycast.Value;
-        Vector3Int castPoint = h.point.ToInt();
-        if( !_gameEngine.Game.Board.IsCoordInBoard( castPoint.x, castPoint.z ) )
-        {
-            _hoveredCell = new Vector2Int( -1, -1 );
-            return null;
-        }
-
-        
-        var hitCell = new Vector2Int( castPoint.x, castPoint.z );
-        _hoveredCell = hitCell;
-        return hitCell;
-    }
-
-
     private void UpdateRequestInput()
     {
         var lastActor = _hoveredActor;
-        var actorNow = GetHoveredActor();
-        if( actorNow != lastActor )
+        if( UserControls.HoveredActorChanged )
         {
             //Old hover ended.
-            if( lastActor != null )
+            if( UserControls.LastHoveredActor != null )
             {
-                UpdateRequestActorHover( lastActor, false );
+                UpdateRequestActorHover( UserControls.LastHoveredActor, false );
             }
-            if( actorNow != null )
+            if( UserControls.HoveredActor != null )
             {
-                UpdateRequestActorHover( actorNow, true );
+                UpdateRequestActorHover( UserControls.HoveredActor, true );
             }
         }
-        if( actorNow != null && Input.GetMouseButtonDown( 0 ) )
+        if( UserControls.HoveredActor != null && Input.GetMouseButtonDown( 0 ) )
         {
-            UpdateRequestActorClick( actorNow );
+            UpdateRequestActorClick( UserControls.HoveredActor );
         }
 
 
-        Vector2Int? lastCell = _hoveredCell;
-        Vector2Int? cellNow = GetHoveredCell();
-        if( cellNow != lastCell  )
+        if( UserControls.HoveredCell != UserControls.LastHoveredCell )
         {
-            if( lastCell != null )
-                UpdateRequestCellHover( lastCell.Value, false );
-            if( cellNow != null )
-                UpdateRequestCellHover( cellNow.Value, true );
+            if( UserControls.LastHoveredCell != null )
+                UpdateRequestCellHover( UserControls.LastHoveredCell.Value, false );
+            if( UserControls.HoveredCell != null )
+                UpdateRequestCellHover( UserControls.HoveredCell.Value, true );
         }
 
     }

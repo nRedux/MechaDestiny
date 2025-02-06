@@ -1,19 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
 public class ActorTurnPhase: TurnPhase
 {
-    private const int ACTIVE_ACTOR_START_VALUE = -1;
-
     private Game _game;
     private Team _team;
     private bool _isComplete = false;
     private float _delayAIActionsTimer = 0f;
-    private int _activeActorIndex = ACTIVE_ACTOR_START_VALUE;
-    private Actor _activeActor;
+
+    private Actor _selectedActor;
 
     public override bool CanEndTurn => false;
 
@@ -22,13 +22,22 @@ public class ActorTurnPhase: TurnPhase
     public override bool EndOnPhasesExhausted => true;
 
 
+    public Actor SelectedActor
+    {
+        get => _selectedActor;
+    }
+
+
     public override void Setup( Game game, Team team )
     {
+
         _game = game;
         _team = team;
-        SetActiveActor( null );
         _isComplete = false;
 
+        SetUpInput();
+        SelectActiveActor( null );
+        
         for( int i = 0; i < team.MemberCount; ++i )
         {
             var member = team.GetMember( i );
@@ -37,19 +46,39 @@ public class ActorTurnPhase: TurnPhase
         StartNextActor( game );
     }
 
+    private void SetUpInput()
+    {
+        if( !_team.IsPlayerTeam )
+            return;
+        UIManager.Instance.UserControls.SelectMech.AddActivateListener( TrySelectMech ); 
+    }
+
+    private void ShutDownInput()
+    {
+        UIManager.Instance.UserControls.SelectMech.removeActivateListener( TrySelectMech );
+    }
+
+    private void TrySelectMech( InputActionEvent evt )
+    {
+        if( evt.Used )
+            return;
+        if( evt.UserData == null )
+            return;
+        SelectActiveActor( (Actor) evt.UserData );
+    }
 
     private void StartNextActor( Game game )
     {
         //Find first member in team which hasn't performed it's turn actions yet.
         var members = _team.GetMembers();
-        var nextMember = members.Where( x => !x.TurnActionsCompleted && !x.IsDead() ).FirstOrDefault();
+        var nextMember = members.Where( x => !x.TurnComplete && !x.IsDead() ).FirstOrDefault();
 
         //Turn phase complete?
         if( nextMember == null )
         {
             //All actors done.
             _isComplete = true;
-            SetActiveActor( null );
+            SelectActiveActor( null );
             return;
         }
 
@@ -60,26 +89,30 @@ public class ActorTurnPhase: TurnPhase
             _delayAIActionsTimer = DevConfiguration.DELAY_AI_ACTIONS_DURATION;
         }
 
-        SetActiveActor( nextMember );
+        SelectActiveActor( nextMember );
     }
 
 
-    private void SetActiveActor( Actor actor )
+    private void SelectActiveActor( Actor actor )
     {
-        if( _activeActor != null && _activeActor != actor )
+        if( actor != null && actor.TurnComplete )
+            return;
+
+        if( _selectedActor != null && _selectedActor != actor )
         {
-            UIManager.Instance.TerminateActiveRequests( _activeActor );
-            UIManager.Instance.TerminatePending( _activeActor );
+            UIManager.Instance.TerminateActiveRequests( _selectedActor );
+            UIManager.Instance.TerminatePending( _selectedActor );
         }
 
-        _activeActor = actor;
+        _selectedActor = actor;
+        _selectedActor?.ResetOnSelect();
         Events.Instance.Raise( new CurrentActorEvent() { Actor = actor } );
     }
 
 
     private bool HasActiveActor()
     {
-        return _activeActor != null;
+        return _selectedActor != null;
     }
 
 
@@ -104,19 +137,21 @@ public class ActorTurnPhase: TurnPhase
         _delayAIActionsTimer -= Time.deltaTime;
         if( _delayAIActionsTimer > 0 )
             return;
-        _activeActor.RunActions( _game );
+        _selectedActor.RunActions( _game );
 
-        if( _activeActor.EndActorTurn() )
+        if( _selectedActor.EndActorTurn() )
         {
-            _activeActor.TurnActionsCompleted = true;
-            SetActiveActor( null );
+            _selectedActor.TurnComplete = true;
+            SelectActiveActor( null );
         }
     }
 
+
     public override void TurnEnded()
     {
-        _activeActor?.TurnEnded();
-        SetActiveActor( null );
+        _selectedActor?.TurnEnded();
+        SelectActiveActor( null );
+        ShutDownInput();
     }
 
 

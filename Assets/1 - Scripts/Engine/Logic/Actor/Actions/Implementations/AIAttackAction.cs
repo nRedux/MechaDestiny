@@ -70,7 +70,7 @@ public class AIAttackAction : AttackAction
 
                     members.Do( member =>
                     {
-                        if( !game.Board.IsCoordInBoard( aoeIter.world ) )
+                        if( !game.Board.ContainsCell( aoeIter.world ) )
                             return;
                         if( member.Position == aoeIter.world )
                         {

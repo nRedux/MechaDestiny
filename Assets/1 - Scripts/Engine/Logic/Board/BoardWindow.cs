@@ -348,7 +348,7 @@ public class BoardWindow<TCellType>
         {
             Vector2Int world = IndexToWorldCell( i );
             Vector2Int toCenter = Center - world;
-            if( Board != null && !Board.IsCoordInBoard( world ) )
+            if( Board != null && !Board.ContainsCell( world ) )
                 continue;
             if( toCenter.ManhattanDistance() > MaxIterDistance )
                 continue;
@@ -366,7 +366,7 @@ public class BoardWindow<TCellType>
             int toCenterDist = toCenter.ManhattanDistance();
             if( toCenterDist > range || toCenterDist > MaxIterDistance )
                 continue;
-            if( Board != null && !Board.IsCoordInBoard( world ) )
+            if( Board != null && !Board.ContainsCell( world ) )
                 continue;
             action?.Invoke( (local: IndexToLocalCell( i ), world: world, value: Cells[i], window: this) );
         }

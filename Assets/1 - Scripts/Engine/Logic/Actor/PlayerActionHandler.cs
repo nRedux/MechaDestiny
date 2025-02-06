@@ -56,7 +56,7 @@ public class PlayerActionHandler : ActorActionHandler
     public override void Tick( Game game )
     {
 
-        UIManager.Instance.TryRequestWeaponPick( this._actor );
+        UIManager.Instance.TryPickWeapon( this._actor );
 
         if( _activeAction != null && _activeAction.State() == ActorActionState.Finished )
             _activeAction = null;

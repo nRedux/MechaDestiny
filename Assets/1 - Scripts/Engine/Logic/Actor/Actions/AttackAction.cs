@@ -51,14 +51,14 @@ public abstract class AttackAction : ActorAction
 
         var otherTeams = game.GetOtherTeams( actor.GetTeamID() );
 
-        if( !game.Board.IsCoordInBoard( coord ) )
+        if( !game.Board.ContainsCell( coord ) )
             return 0f;
 
         //Loop over every cell in attack window
         rangeWindow.Do( iter =>
         {
             //The cell on the board? If not bail
-            if( !game.Board.IsCoordInBoard( iter.world ) )
+            if( !game.Board.ContainsCell( iter.world ) )
                 return;
 
             var actorAtCell = GameEngine.Instance.Board.GetActorAtCell( iter.world );
