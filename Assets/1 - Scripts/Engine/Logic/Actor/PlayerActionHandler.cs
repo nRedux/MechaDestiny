@@ -5,17 +5,23 @@ using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 
 
+public class SequenceAction
+{
+    public ActorAction Action;
+    public SmartPoint Target;
+}
+
+
 public class PlayerActionHandler : ActorActionHandler
 {
     private MoveAction _moveAction = null;
     private ActorAction _activeAction = null;
-    private List<ActorAction> _nonMoveActions = new List<ActorAction>();
     /// <summary>
     /// If true, we will end the turn for the current actor.
     /// </summary>
     private bool _forceEndActorTurn = false;
     private UIPickActionRequest _actionPickRequest = null;
-    private List<ActorAction> _sequence = null;
+    private List<SequenceAction> _sequence = null;
     private int _sequenceIndex = 0;
 
     public override ActorAction ActiveAction => _activeAction;
@@ -161,7 +167,8 @@ public class PlayerActionHandler : ActorActionHandler
             if( _sequenceIndex < _sequence.Count )
             {
                 var nextAction = _sequence[_sequenceIndex];
-                if( nextAction is PlayerAttackAction attack )
+                _actor.Target = nextAction.Target;
+                if( nextAction.Action is PlayerAttackAction attack )
                 {
 
                     SequencePos seqPos = SequencePos.Start;
@@ -176,20 +183,18 @@ public class PlayerActionHandler : ActorActionHandler
                     //If this kills the target, break out of the sequence so we don't fire on something dead.
                     attack.OnKillTarget = () =>
                     {
-                        if( nextAction is AttackAction endSeqNow )
+                        if( nextAction.Action is AttackAction endSeqNow )
                             endSeqNow.SequencePos = SequencePos.End;
-                        _actor.Target = null;
                         _sequence = null;
                     };
                 }
                 _sequenceIndex++;
 
                 _canRightClickActionPick = false;
-                ExecuteAction( nextAction, game );
+                ExecuteAction( nextAction.Action, game );
             }
             else
             {
-                _actor.Target = null;
                 _sequence = null;
             }
         }
@@ -212,7 +217,7 @@ public class PlayerActionHandler : ActorActionHandler
             _forceEndActorTurn = true;
             return;
         }
-        else if( x is List<ActorAction> sequence )
+        else if( x is List<SequenceAction> sequence )
         {
             this._sequence = sequence;
             return;
@@ -233,7 +238,6 @@ public class PlayerActionHandler : ActorActionHandler
         //This is to kill the active move action which is active....
         _activeAction?.End();
         //This is to clear any time there's a cancel... not terrible, but not clearly linked to being in a "Targeting state" where clearing makes sense.
-        _actor.Target = null;
     }
 
     private bool TryPickAction( )
@@ -280,21 +284,6 @@ public class PlayerActionHandler : ActorActionHandler
 
     public override List<ActorAction> GetActionOptions( ActionCategory category )
     {
-        if( this._actor.Target != null )
-        {
-            if( _actor.Target.GfxActor != null )
-            {
-                ActionCategory forcedCategory = _actor.GetInteractionCategory( _actor.Target.GfxActor.Actor );
-                return GetUsableActions().Where( x => x.Category == forcedCategory ).ToList();//.Where( x => x != _activeAction ).ToList();
-            }
-            else
-            {
-                //Will need to find a way to ask the active weapon for it's category type. For now assume attack.
-                ActionCategory forcedCategory = ActionCategory.Attack;
-                return GetUsableActions().Where( x => x.Category == forcedCategory ).ToList();//.Where( x => x != _activeAction ).ToList();
-            }
-        }
-
         return GetUsableActions().Where( x => x.Category == category ).ToList();//.Where( x => x != _activeAction ).ToList();
     }
 

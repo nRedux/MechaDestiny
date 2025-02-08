@@ -16,7 +16,7 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
     [HideInInspector]
     public UIActionSequence UISequence;
 
-    public ActorAction Action;
+    public SequenceAction Action;
     public TextMeshProUGUI ActionName;
     
     public Mask Mask;
@@ -26,14 +26,14 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
     public Sprite CenterSprite;
     public Sprite RightSprite;
 
-    public void Initialize( ActorAction action, ActionSequenceItemPart part, UIActionSequence sequence )
+    public void Initialize( SequenceAction action, ActionSequenceItemPart part, UIActionSequence sequence )
     {
         if( action == null )
             return;
         UISequence = sequence;
         UpdateSpritePart( part );
         this.Action = action;
-        this.ActionName.Opt()?.SetText( action?.DisplayName.TryGetLocalizedString() ?? string.Empty );
+        this.ActionName.Opt()?.SetText( action?.Action.DisplayName.TryGetLocalizedString() ?? string.Empty );
     }
 
     public void UpdateSpritePart( ActionSequenceItemPart part )
@@ -66,7 +66,7 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
 
     public ActorAction Cancel()
     {
-        return Action;
+        return Action.Action;
     }
 
     public void OnPointerClick( PointerEventData eventData )

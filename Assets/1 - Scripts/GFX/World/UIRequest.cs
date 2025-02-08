@@ -35,6 +35,7 @@ public interface IUIRequest
     void CellHoverEnd( Vector2Int cell );
     void ActorClicked( Actor actor );
     void CellClicked( Vector2Int actor );
+    void PerformCompletion();
 }
 
 public abstract class UIRequest<TResult, TError>: IUIRequest
@@ -45,6 +46,8 @@ public abstract class UIRequest<TResult, TError>: IUIRequest
 
     private object _requester;
     protected UIRequestState _state = UIRequestState.Idle;
+
+    private System.Action _completion;
 
     public UIRequestState State => _state;
 
@@ -70,7 +73,8 @@ public abstract class UIRequest<TResult, TError>: IUIRequest
         _state = UIRequestState.Complete;
         if( Succeeded == null )
             throw new UIRequestCallbackNullException( "OnSuccess callback null" );
-        Succeeded?.Invoke( result );
+
+        _completion = () => { Succeeded?.Invoke( result ); };
     }
 
 
@@ -81,7 +85,8 @@ public abstract class UIRequest<TResult, TError>: IUIRequest
         _state = UIRequestState.Failed;
         if( Failed == null )
             throw new UIRequestCallbackNullException( "OnFailure callback null" );
-        Failed?.Invoke( error );
+        _completion = () => { Failed?.Invoke( error ); };
+        
     }
 
 
@@ -95,7 +100,7 @@ public abstract class UIRequest<TResult, TError>: IUIRequest
         OnCancelled();
         if( Cancelled == null )
             throw new UIRequestCallbackNullException( "OnSuccess callback null" );
-        Cancelled?.Invoke();
+        _completion = () => { Cancelled?.Invoke(); };
     }
 
 
@@ -137,5 +142,10 @@ public abstract class UIRequest<TResult, TError>: IUIRequest
 
     public virtual void CellClicked( Vector2Int cell )
     {
+    }
+
+    public void PerformCompletion()
+    {
+        _completion?.Invoke();
     }
 }

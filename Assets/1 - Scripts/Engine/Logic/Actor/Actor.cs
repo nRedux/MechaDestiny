@@ -50,7 +50,7 @@ public class Actor : SimpleEntity<ActorAsset>
     [JsonIgnore]
     public SmartPoint Target { get; set; } = null;
     [JsonIgnore]
-    public List<ActorAction> Sequence { get; set; }
+    public List<SequenceAction> Sequence { get; set; }
     [JsonIgnore]
     public ActorAction ActiveAction { get => ActionHandler?.ActiveAction; }
 
@@ -137,6 +137,11 @@ public class Actor : SimpleEntity<ActorAsset>
         return Actions.Where( x => typeof(ActionType).IsAssignableFrom( x.GetType() ) ).Select( x => x as ActionType ).ToList();
     }
 
+    public List<ActionType> GetActionsOfTypeStrict<ActionType>() where ActionType : ActorAction
+    {
+        return Actions.Where( x => typeof( ActionType ) == x.GetType() ).Select( x => x as ActionType ).ToList();
+    }
+
 
     public List<ActionType> GetAIActionsNotOfType<ActionType>() where ActionType : ActorAction
     {
@@ -172,6 +177,11 @@ public class Actor : SimpleEntity<ActorAsset>
     }
 
 
+    /// <summary>
+    /// Get what type of actions you can use on the target
+    /// </summary>
+    /// <param name="target">The target actor</param>
+    /// <returns>The things you can do</returns>
     public ActionCategory GetInteractionCategory( Actor target )
     {
         if( target == null )
@@ -187,7 +197,7 @@ public class Actor : SimpleEntity<ActorAsset>
         return _team.Id;
     }
 
-
+    
     public List<ActorAction> GetActionOptions( ActionCategory category )
     {
         return this.ActionHandler.GetActionOptions( category );

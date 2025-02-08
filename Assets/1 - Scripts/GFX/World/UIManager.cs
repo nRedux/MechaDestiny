@@ -287,11 +287,9 @@ public class UIManager : Singleton<UIManager>
     }
 
 
-    public void ShowActionSequence( Actor actor, System.Action onClick = null )
+    public void ShowSequenceSelector( Actor actor, System.Action onClick = null )
     {
         if( ActionSequence == null ) return;
-
-        ActionSequence.OnUIFire += onClick;
         ActionSequence.Show( actor );
     }
 
@@ -542,6 +540,7 @@ public class UIManager : Singleton<UIManager>
         if( IsRequestEnding( req ) )
         {
             req.Cleanup();
+            req.PerformCompletion();
             _activeRequests.Remove( req );
             DebugUIQueue();
         }

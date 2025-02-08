@@ -8,6 +8,10 @@ using System;
 using JetBrains.Annotations;
 using UnityEditor.PackageManager.Requests;
 using UnityEditor.Sprites;
+using Unity.VisualScripting;
+using UnityEngine.Localization.SmartFormat.Core.Parsing;
+using System.Linq;
+using static UnityEditor.FilePathAttribute;
 
 [System.Serializable]
 public class PlayerEngageAction : AttackAction
@@ -19,19 +23,26 @@ public class PlayerEngageAction : AttackAction
     private Game _game;
     private Actor _actor;
     private UIFindAttackTargetRequest _uiRequest = null;
-    private UIPickWeaponRequest _weaponPickRequest = null;
+    private bool _uiWantsToFire = false;
 
     public override int BoardRange => Range;
 
     public override ActorActionState State()
     {
         return _state;
-    }
+    } 
 
 
     public override void Tick()
     {
-
+        if( Input.GetKeyDown( KeyCode.F ) || _uiWantsToFire )
+        {
+            //Assign sequence and get out of here.
+            var uiSequence = UIManager.Instance.ActionSequence.GetSelectedSequence();
+            if( uiSequence.Count > 0 )
+                _actor.Sequence = uiSequence;
+            End();
+        }
         return;
     }
 
@@ -51,6 +62,8 @@ public class PlayerEngageAction : AttackAction
     public override void End()
     {
         _state = ActorActionState.Finished;
+        UIManager.Instance.HideActionPicker();
+        UIManager.Instance.HideActionSequence();
         UIManager.Instance.PlayerAttackUI.Opt()?.SetActive( false );
         CancelUIRequests();
         TeardownListeners();
@@ -64,6 +77,13 @@ public class PlayerEngageAction : AttackAction
     }
 
 
+    private ActionCategory GetPickableActionCategory()
+    {
+        ActionCategory category = ActionCategory.Attack;
+        return category;
+    }
+
+
     public override void Start( Game game, Actor actor )
     {
         base.Start( game, actor );
@@ -71,6 +91,8 @@ public class PlayerEngageAction : AttackAction
         _game = game;
         _actor = actor;
 
+        UIManager.Instance.ShowActionPicker( OnSelect, GetPickableActionCategory() );
+        UIManager.Instance.ShowSequenceSelector( actor, () => _uiWantsToFire = true );
         UIManager.Instance.PlayerAttackUI.Opt()?.SetActive( true );
 
         //Get valid move locations. Notify the UI we need to display a collection of move locations. Wait for UI to return a result. Execute move.
@@ -78,16 +100,29 @@ public class PlayerEngageAction : AttackAction
 
         GfxActor attackerAvatar = GameEngine.Instance.AvatarManager.GetAvatar( actor );
         UIManager.Instance.ShowSideAMechInfo( attackerAvatar.Actor, UIManager.MechInfoDisplayMode.Full );
+
+        StartAttackLocationPick();
+    }
+
+
+    private void StartAttackLocationPick()
+    {
+        GfxActor attackerAvatar = GameEngine.Instance.AvatarManager.GetAvatar( _actor );
         _uiRequest = CreateFindAttackTargetRequest( attackerAvatar );
         //Don't target actors on the same team
-        _uiRequest.MarkInvalidTeams( actor.GetTeamID() );
+        _uiRequest.MarkInvalidTeams( _actor.GetTeamID() );
         UIManager.Instance.RequestUI( _uiRequest );
+    }
+
+    private void OnSelect( ActorAction selected )
+    {
+        UIManager.Instance.ActionSequence.AddItem( new SequenceAction() { Action = selected, Target = null } );
+        UIManager.Instance.ShowActionPicker( OnSelect, GetPickableActionCategory() );
     }
 
 
     private UIFindAttackTargetRequest CreateFindAttackTargetRequest( GfxActor attackerAvatar )
     {
-
         UIRequestSuccessCallback<object> success = selectedTarget =>
         {
             UIManager.Instance.PlayerAttackUI.Opt()?.SetActive( false );
@@ -98,58 +133,35 @@ public class PlayerEngageAction : AttackAction
                 return;
             }
 
+            var attack = this._actor.GetActionsOfTypeStrict<PlayerAttackAction>().FirstOrDefault();
+            if( attack == null )
+                return;
+
             if( attackerAvatar.Actor.ActiveWeapon.IsAOE() )
             {
                 var location = (Vector2Int) selectedTarget;
 
-                this._actor.Target = new SmartPoint( new Vector3( location.x, 0, location.y ) );
-
-                TryPickSequence( attackerAvatar.Actor );
+                SmartPoint targetLocation = new SmartPoint( new Vector3( location.x, 0, location.y ) );
+                UIManager.Instance.ActionSequence.AddItem( new SequenceAction() { Action = attack, Target = targetLocation } );
             }
             else
-            { 
+            {
                 var actor = (Actor)selectedTarget;
                 var targetAvatar = GameEngine.Instance.AvatarManager.GetAvatar( actor );
 
                 UIManager.Instance.ShowSideBMechInfo( actor, UIManager.MechInfoDisplayMode.Full );
-                this._actor.Target = new SmartPoint( targetAvatar );
 
-                TryPickSequence( attackerAvatar.Actor );
+                SmartPoint targetLocation = new SmartPoint( targetAvatar );
+                UIManager.Instance.ActionSequence.AddItem( new SequenceAction() { Action = attack, Target = targetLocation } );
             }
 
-
+            StartAttackLocationPick();
         };
 
         UIRequestFailureCallback<bool> failure = moveTarget => { End(); _uiRequest = null; };
         UIRequestCancelResult cancel = () => { End(); _uiRequest = null; };
         return new UIFindAttackTargetRequest( attackerAvatar.Actor, success, failure, cancel );
     }
-
-    UIActionSequenceRequest _sequencePickRequest;
-
-    private void TryPickSequence( Actor attacker )
-    {
-        _sequencePickRequest = new UIActionSequenceRequest( _actor,
-        x =>
-        {
-            _sequencePickRequest = null;
-            this._actor.Sequence = x;
-            End();
-        },
-        y =>
-        {
-            End();
-            _sequencePickRequest = null;
-        },
-        () =>
-        {
-            End();
-            _sequencePickRequest = null;
-        } );
-
-        UIManager.Instance.RequestUI( _sequencePickRequest, true );
-    }
-
 
 
     public override void TurnEnded()
@@ -159,10 +171,8 @@ public class PlayerEngageAction : AttackAction
 
     private void CancelUIRequests()
     {
-        _weaponPickRequest?.Cancel();
         _uiRequest?.Cancel();
         _uiRequest = null;
-        _weaponPickRequest = null;
 
         AllowActionSelect = true;
     }

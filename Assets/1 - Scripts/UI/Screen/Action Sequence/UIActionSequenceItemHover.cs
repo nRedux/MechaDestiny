@@ -16,10 +16,10 @@ public class UIActionSequenceItemHover : UIPanel
     {
         var action = content.Action;
 
-        Title.Opt()?.SetText( action.DisplayName.TryGetLocalizedString() );
-        ActionDescription.Opt()?.SetText( action.Description.TryGetLocalizedString() );
-        ActionCost.Opt()?.SetText( action.Cost.ToString() );
-        UpdateLocalization( action );
+        Title.Opt()?.SetText( action.Action.DisplayName.TryGetLocalizedString() );
+        ActionDescription.Opt()?.SetText( action.Action.Description.TryGetLocalizedString() );
+        ActionCost.Opt()?.SetText( action.Action.Cost.ToString() );
+        UpdateLocalization( action.Action );
     }
 
     private void UpdateLocalization( ActorAction action )

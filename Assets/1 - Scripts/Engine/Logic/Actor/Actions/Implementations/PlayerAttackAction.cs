@@ -119,7 +119,7 @@ public class PlayerAttackAction : AttackAction
         if( SequencePos == SequencePos.Start || SequencePos == SequencePos.All )
         {
             UIManager.Instance.ShowSideAMechInfo( actor, UIManager.MechInfoDisplayMode.Mini );
-            if( actor.Target.GfxActor != null )
+            if( actor.Target?.GfxActor != null )
                 UIManager.Instance.ShowSideBMechInfo( actor.Target.GfxActor.Actor, UIManager.MechInfoDisplayMode.Mini );
         }
         

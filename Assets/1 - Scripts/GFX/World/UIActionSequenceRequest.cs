@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Linq;
 
-using SuccessCallback = UIRequestSuccessCallback<System.Collections.Generic.List<ActorAction>>;
+using SuccessCallback = UIRequestSuccessCallback<System.Collections.Generic.List<SequenceAction>>;
 using FailureCallback = UIRequestFailureCallback<bool>;
 using CancelCallback = UIRequestCancelResult;
 using System;
 
-public class UIActionSequenceRequest : UIRequest<List<ActorAction>, bool>
+public class UIActionSequenceRequest : UIRequest<List<SequenceAction>, bool>
 {
     private int frames = 0;
     private List<ActorAction> _actions;
@@ -26,7 +26,7 @@ public class UIActionSequenceRequest : UIRequest<List<ActorAction>, bool>
     public override void Start()
     {
         base.Start();
-        UIManager.Instance.ShowActionSequence( _requester, () => _uiWantsFire = true );
+        UIManager.Instance.ShowSequenceSelector( _requester, () => _uiWantsFire = true );
         SetupInput();
         GetNextAction();
     }
@@ -76,9 +76,7 @@ public class UIActionSequenceRequest : UIRequest<List<ActorAction>, bool>
     {
         //Succeed( selected );
         _state = UIRequestState.Running;
-
-        UIManager.Instance.ActionSequence.AddItem( selected );
-        //When do we return success on full sequence? (Should be based on other input?
+        UIManager.Instance.ActionSequence.AddItem( new SequenceAction() { Action = selected } );
         GetNextAction();
     }
 
@@ -87,18 +85,7 @@ public class UIActionSequenceRequest : UIRequest<List<ActorAction>, bool>
     {
         //Check if we can actually pick any more actions.
 
-        ActionCategory category = ActionCategory.Control;
-
-        if( _requester.Target?.GfxActor == null )
-        {
-            category = ActionCategory.Attack;
-        }
-        else
-        {
-            //TODO: Actor.Target deciding how so many things function is not good. That property is too open to modification and failure to cleanup (setting null)
-            category = _requester.GetInteractionCategory( _requester.Target?.GfxActor.Actor );
-        }
-
+        ActionCategory category = ActionCategory.Attack;
         UIManager.Instance.ShowActionPicker( OnSelect, category );
         return true;
     }
@@ -106,7 +93,6 @@ public class UIActionSequenceRequest : UIRequest<List<ActorAction>, bool>
 
     protected override void OnCancelled()
     {
-        _requester.Target = null;
         UIManager.Instance.HideActionPicker();
         UIManager.Instance.HideActionSequence();
     }

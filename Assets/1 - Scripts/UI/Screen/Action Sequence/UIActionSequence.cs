@@ -38,10 +38,10 @@ public class UIActionSequence : UIPanel
     }
 
 
-    private int PointsUsed => _items?.Select( x => GetSafeCostForAction( x.Action ) ).Sum() ?? INFINITE_COST;
+    private int PointsUsed => _items?.Select( x => GetSafeCostForAction( x.Action.Action ) ).Sum() ?? INFINITE_COST;
 
 
-    public List<ActorAction> GetSelectedSequence()
+    public List<SequenceAction> GetSelectedSequence()
     {
         return _items.Select( x => x.Action ).ToList();
     }
@@ -99,15 +99,15 @@ public class UIActionSequence : UIPanel
         OnUIFire?.Invoke();
     }
 
-    public bool CanAddItem( ActorAction action )
+    public bool CanAddItem( SequenceAction action )
     {
         if( action == null )
             return false;
-        return _actorPointUsable - (PointsUsed + GetSafeCostForAction(action) ) >= 0;
+        return _actorPointUsable - (PointsUsed + GetSafeCostForAction(action.Action) ) >= 0;
     }
 
 
-    public void AddItem( ActorAction action )
+    public void AddItem( SequenceAction action )
     {
         if( !CanAddItem( action ) )
             return;
@@ -115,7 +115,7 @@ public class UIActionSequence : UIPanel
     }
 
 
-    private UIActionSequenceItem CreateBlock( ActorAction action )
+    private UIActionSequenceItem CreateBlock( SequenceAction action )
     {
         var newInstance = ItemPrefab.Opt()?.Duplicate();
 

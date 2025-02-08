@@ -83,7 +83,6 @@ public class UIPickActionRequest : UIRequest<object, bool>
         //Check if we can actually pick any more actions.
 
         ActionCategory category = ActionCategory.Control; 
-
         UIManager.Instance.ShowActionPicker( OnSelect, category );
         return true;
     }
