@@ -68,8 +68,6 @@ public abstract class UIRequest<TResult, TError>: IUIRequest
 
     public void Succeed( TResult result )
     {
-        if( _state != UIRequestState.Running )
-            return;
         _state = UIRequestState.Complete;
         if( Succeeded == null )
             throw new UIRequestCallbackNullException( "OnSuccess callback null" );
@@ -80,8 +78,6 @@ public abstract class UIRequest<TResult, TError>: IUIRequest
 
     protected void Fail( TError error )
     {
-        if( _state != UIRequestState.Running )
-            return;
         _state = UIRequestState.Failed;
         if( Failed == null )
             throw new UIRequestCallbackNullException( "OnFailure callback null" );
@@ -92,8 +88,6 @@ public abstract class UIRequest<TResult, TError>: IUIRequest
 
     public void Cancel()
     {
-        if( _state != UIRequestState.Running )
-            return;
         _state = UIRequestState.Cancelled;
 
         UIManager.Instance.TerminatePending( this );

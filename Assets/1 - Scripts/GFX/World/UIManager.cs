@@ -493,12 +493,12 @@ public class UIManager : Singleton<UIManager>
     private void RunRequests()
     {
         UpdateRequestInput();
-        TryActivateQueuedRequests();
+        TryActivatePendingRequests();
         RunActiveRequests();
     }
 
 
-    private void TryActivateQueuedRequests()
+    private void TryActivatePendingRequests()
     {
         if( _activeRequests.Count != 0 || _pendingRequests.Count == 0 )
             return;
@@ -515,7 +515,6 @@ public class UIManager : Singleton<UIManager>
         if( newActiveRequest == null )
             return;
         _activeRequests.Insert( 0, newActiveRequest );
-        DebugUIQueue();
         newActiveRequest.Start();
     }
 
@@ -542,7 +541,6 @@ public class UIManager : Singleton<UIManager>
             req.Cleanup();
             req.PerformCompletion();
             _activeRequests.Remove( req );
-            DebugUIQueue();
         }
     }
 
@@ -559,13 +557,13 @@ public class UIManager : Singleton<UIManager>
         Debug.Log( $"Pending Request Count: {_pendingRequests.Count}" );
         _pendingRequests.Do( x =>
         {
-            Debug.Log( x.GetType().Name + " \n" );
+            Debug.Log( x.GetType().Name + $" {x.State} \n" );
         } );
 
         Debug.Log( $"Current UI Queue: Active_Requests: {_activeRequests.Count()}" );
         _activeRequests.Do( x =>
         {
-            Debug.Log( x.GetType().Name + " \n" );
+            Debug.Log( x.GetType().Name + $" {x.State} \n" );
         } );
     }
 
