@@ -150,7 +150,7 @@ public class UIManager : Singleton<UIManager>
     }
 
 
-    public void TryPickAction( Actor actor, UIRequestSuccessCallback<object> succeeded, UIRequestCancelResult cancelled)
+    public void TryPickAction( Actor actor, UIRequestSuccessCallback<object> succeeded, UIRequestCancelResult cancelled, ActionCategory category )
     {
 
         if( _weaponPickRequest != null )
@@ -159,20 +159,25 @@ public class UIManager : Singleton<UIManager>
         if( _actionPickRequest != null )
             return;
 
-        _actionPickRequest = new UIPickActionRequest( actor,
-        x => {
-            _actionPickRequest = null;
-            succeeded?.Invoke(x);
-        },
-        y =>
+        //Callbacks for action pick request
+        UIRequestSuccessCallback<object> success = x =>
         {
             _actionPickRequest = null;
-        },
-        () => 
+            succeeded?.Invoke( x );
+        };
+
+        UIRequestFailureCallback<bool> fail = y =>
+        {
+            _actionPickRequest = null;
+        };
+
+        UIRequestCancelResult cancel = () =>
         {
             _actionPickRequest = null;
             cancelled?.Invoke();
-        } );
+        };
+
+        _actionPickRequest = new UIPickActionRequest( actor, success, fail, cancel, category );
 
         UIManager.Instance.RequestUI( _actionPickRequest, false );
     }
@@ -529,6 +534,8 @@ public class UIManager : Singleton<UIManager>
 
     private void RunActiveRequests()
     {
+        _activeRequests = _activeRequests.Where( x => !IsRequestEnding( x ) ).ToList();
+
         if(  _activeRequests.Count == 0 )
             return;
         
@@ -538,8 +545,6 @@ public class UIManager : Singleton<UIManager>
         //Request state changed to something interesting?
         if( IsRequestEnding( req ) )
         {
-            req.Cleanup();
-            req.PerformCompletion();
             _activeRequests.Remove( req );
         }
     }
@@ -797,9 +802,10 @@ public class UIManager : Singleton<UIManager>
     /// </summary>
     /// <param name="request">The request to terminate</param>
     /// <returns>True if request was pending and was terminated. False if wasn't a pending request.</returns>
-    internal bool TerminatePending( IUIRequest request )
+    internal void TerminatePending( IUIRequest request )
     {
-        return _pendingRequests.Remove( request );
+        //_activeRequests.Remove( request );
+        _pendingRequests.Remove( request );
     }
 
 

@@ -16,10 +16,12 @@ public class UIPickActionRequest : UIRequest<object, bool>
     private int frames = 0;
     private List<ActorAction> _actions;
     private Actor _requester;
+    private ActionCategory _category;
 
-    public UIPickActionRequest( object requester, SuccessCallback onSuccess, FailureCallback onFailure, CancelCallback onCancel ) : base( onSuccess, onFailure, onCancel, requester )
+    public UIPickActionRequest( object requester, SuccessCallback onSuccess, FailureCallback onFailure, CancelCallback onCancel, ActionCategory category ) : base( onSuccess, onFailure, onCancel, requester )
     {
         _requester = requester as Actor;
+        _category = category;
     }
 
     private bool _uiWantsFire = false;
@@ -82,8 +84,7 @@ public class UIPickActionRequest : UIRequest<object, bool>
     {
         //Check if we can actually pick any more actions.
 
-        ActionCategory category = ActionCategory.Control; 
-        UIManager.Instance.ShowActionPicker( OnSelect, category );
+        UIManager.Instance.ShowActionPicker( OnSelect, _category );
         return true;
     }
 

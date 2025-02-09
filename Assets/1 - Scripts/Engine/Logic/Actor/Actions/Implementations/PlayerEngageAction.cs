@@ -62,7 +62,7 @@ public class PlayerEngageAction : AttackAction
     public override void End()
     {
         _state = ActorActionState.Finished;
-        UIManager.Instance.HideActionPicker();
+        UIManager.Instance.TryEndPickAction();
         UIManager.Instance.HideActionSequence();
         UIManager.Instance.PlayerAttackUI.Opt()?.SetActive( false );
         CancelUIRequests();
@@ -77,13 +77,6 @@ public class PlayerEngageAction : AttackAction
     }
 
 
-    private ActionCategory GetPickableActionCategory()
-    {
-        ActionCategory category = ActionCategory.Attack;
-        return category;
-    }
-
-
     public override void Start( Game game, Actor actor )
     {
         base.Start( game, actor );
@@ -91,7 +84,8 @@ public class PlayerEngageAction : AttackAction
         _game = game;
         _actor = actor;
 
-        UIManager.Instance.ShowActionPicker( OnSelect, GetPickableActionCategory() );
+        UIManager.Instance.TryPickAction( _actor, ActionPicked, () => { }, ActionCategory.Attack );
+        //UIManager.Instance.ShowActionPicker( OnSelect, GetPickableActionCategory() );
         UIManager.Instance.ShowSequenceSelector( actor, () => _uiWantsToFire = true );
         UIManager.Instance.PlayerAttackUI.Opt()?.SetActive( true );
 
@@ -111,13 +105,15 @@ public class PlayerEngageAction : AttackAction
         _uiRequest = CreateFindAttackTargetRequest( attackerAvatar );
         //Don't target actors on the same team
         _uiRequest.MarkInvalidTeams( _actor.GetTeamID() );
-        UIManager.Instance.RequestUI( _uiRequest );
+        UIManager.Instance.RequestUI( _uiRequest, false );
     }
 
-    private void OnSelect( ActorAction selected )
+    private void ActionPicked( object result )
     {
+        var selected = result as ActorAction;
         UIManager.Instance.ActionSequence.AddItem( new SequenceAction() { Action = selected, Target = null } );
-        UIManager.Instance.ShowActionPicker( OnSelect, GetPickableActionCategory() );
+        UIManager.Instance.TryPickAction( _actor, ActionPicked, () => { }, ActionCategory.Attack );
+        //UIManager.Instance.ShowActionPicker( OnSelect, GetPickableActionCategory() );
     }
 
 

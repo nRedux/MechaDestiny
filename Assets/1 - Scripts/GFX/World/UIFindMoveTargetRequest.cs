@@ -65,7 +65,7 @@ public class UIFindMoveTargetRequest : UIRequest<Vector2Int, bool>
         if( evt.Used )
             return;
         //evt.Use();
-        Cancel();
+        //Cancel();
     }
 
     public override void Start()

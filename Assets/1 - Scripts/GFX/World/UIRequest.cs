@@ -60,6 +60,7 @@ public abstract class UIRequest<TResult, TError>: IUIRequest
         this.Cancelled = onCancel;
     }
 
+
     public void SetStateRunning()
     {
         _state = UIRequestState.Running;
@@ -68,33 +69,53 @@ public abstract class UIRequest<TResult, TError>: IUIRequest
 
     public void Succeed( TResult result )
     {
+        if( _state == UIRequestState.Complete )
+            return;
+        Cleanup();
         _state = UIRequestState.Complete;
         if( Succeeded == null )
             throw new UIRequestCallbackNullException( "OnSuccess callback null" );
-
-        _completion = () => { Succeeded?.Invoke( result ); };
+        var succeededCallback = Succeeded;
+        NukeCallbacks();
+        succeededCallback?.Invoke( result );
     }
 
 
     protected void Fail( TError error )
     {
+        if( _state == UIRequestState.Failed )
+            return;
+        Cleanup();
         _state = UIRequestState.Failed;
         if( Failed == null )
             throw new UIRequestCallbackNullException( "OnFailure callback null" );
-        _completion = () => { Failed?.Invoke( error ); };
-        
+        var failedCallback = Failed;
+        NukeCallbacks();
+        failedCallback?.Invoke( error );
     }
 
 
     public void Cancel()
     {
+        if( _state == UIRequestState.Cancelled )
+            return;
+        Cleanup();
         _state = UIRequestState.Cancelled;
-
         UIManager.Instance.TerminatePending( this );
         OnCancelled();
         if( Cancelled == null )
             throw new UIRequestCallbackNullException( "OnSuccess callback null" );
-        _completion = () => { Cancelled?.Invoke(); };
+
+        var cancelCallback = Cancelled;
+        NukeCallbacks();
+        cancelCallback?.Invoke();
+    }
+
+    public void NukeCallbacks()
+    {
+        Cancelled = null;
+        Failed = null;
+        Succeeded = null;
     }
 
 

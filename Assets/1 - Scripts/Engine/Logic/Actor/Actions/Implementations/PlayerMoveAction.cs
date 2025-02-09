@@ -140,7 +140,10 @@ public class PlayerMoveAction : MoveAction
 
     private void CancelUIRequest()
     {
-        _uiRequest?.Cancel();
-        _uiRequest = null;
+        if( _uiRequest != null )
+        {
+            _uiRequest?.Cancel();
+            _uiRequest = null;
+        }
     }
 }

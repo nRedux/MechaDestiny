@@ -250,7 +250,7 @@ public class PlayerActionHandler : ActorActionHandler
             return false;
 
         _pickingAction = true;
-        UIManager.Instance.TryPickAction( _actor, ActionPickSuccess, ActionPickCancel );
+        UIManager.Instance.TryPickAction( _actor, ActionPickSuccess, ActionPickCancel, ActionCategory.Control );
 
         return true;
     }
