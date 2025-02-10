@@ -163,7 +163,20 @@ public class Actor : SimpleEntity<ActorAsset>
     {
         TurnComplete = false;
         ActionHandler.SetupForTurn();
+        RestoreAbilityPointsForTurn();
     }
+
+
+    /// <summary>
+    /// Regain ability points each turn.
+    /// </summary>
+    public void RestoreAbilityPointsForTurn()
+    {
+        var ap = GetStatistic( StatisticType.AbilityPoints );
+        var maxAP = GetStatisticValue( StatisticType.MaxAbilityPoints );
+        ap.SetValue( maxAP );
+    }
+
 
     public void ResetOnSelect()
     {
