@@ -119,7 +119,7 @@ public class PlayerMoveAction : MoveAction
         };
 
 
-        UIManager.Instance.RequestUI( _uiRequest );
+        UIManager.Instance.RequestUI( _uiRequest, false );
     }
 
 

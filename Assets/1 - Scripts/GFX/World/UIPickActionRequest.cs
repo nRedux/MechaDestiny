@@ -88,11 +88,23 @@ public class UIPickActionRequest : UIRequest<object, bool>
         return true;
     }
 
-
     protected override void OnCancelled()
     {
         UIManager.Instance.HideActionPicker();
         UIManager.Instance.HideActionSequence();
+    }
+
+
+    public override void OnPaused()
+    {
+        base.OnPaused();
+        UIManager.Instance.ActionPicker.Hide();
+    }
+
+    public override void OnResumed()
+    {
+        base.OnResumed();
+        UIManager.Instance.ActionPicker.Show();
     }
 
 }

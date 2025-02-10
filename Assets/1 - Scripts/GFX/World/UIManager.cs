@@ -133,8 +133,10 @@ public class UIManager : Singleton<UIManager>
 
     public void TryPickWeapon( Actor actor )
     {
+        /*
         if( _actionPickRequest != null )
             return;
+        */
         if( _weaponPickRequest != null )
             return;
         if( !UIPickWeaponRequest.CanExecute( actor ) )
@@ -145,16 +147,25 @@ public class UIManager : Singleton<UIManager>
         _weaponPickRequest = new UIPickWeaponRequest( actor,
         x =>
         {
+            //Resume in case it was paused
+            _actionPickRequest?.Resume();
             _weaponPickRequest = null;
         },
         y =>
         {
+            //Resume in case it was paused
+            _actionPickRequest?.Resume();
             _weaponPickRequest = null;
         },
         () =>
         {
+            //Resume in case it was paused
+            _actionPickRequest?.Resume();
             _weaponPickRequest = null;
         } );
+
+        //If action pick request already going, pause it.
+        _actionPickRequest?.Pause();
 
         UIManager.Instance.RequestUI( _weaponPickRequest, false );
     }
@@ -498,6 +509,7 @@ public class UIManager : Singleton<UIManager>
         _newRequests.Add( new NewRequest() { Queued = queue, Request = request } );
     }
 
+
     private void ProcessNewRequests()
     {
         _newRequests.Do( x =>
@@ -568,6 +580,8 @@ public class UIManager : Singleton<UIManager>
         for( int i = _activeRequests.Count - 1; i >= 0; i-- )
         {
             var req = _activeRequests[i];
+            if( req.Paused )
+                continue;
             if( IsRequestEnding( req ) )
                 continue;
             action( req );

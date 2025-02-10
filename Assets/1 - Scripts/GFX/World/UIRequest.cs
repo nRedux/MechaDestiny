@@ -24,6 +24,7 @@ public enum UIRequestState
 
 public interface IUIRequest
 {
+    bool Paused { get; }
     UIRequestState State { get; }
     object GetRequester();
     void Start ();
@@ -34,7 +35,6 @@ public interface IUIRequest
     void CellHoverUpdate( Vector2Int cell );
     void ActorClicked( Actor actor );
     void CellClicked( Vector2Int actor );
-    void PerformCompletion();
 }
 
 public abstract class UIRequest<TResult, TError>: IUIRequest
@@ -46,10 +46,10 @@ public abstract class UIRequest<TResult, TError>: IUIRequest
     private object _requester;
     protected UIRequestState _state = UIRequestState.Idle;
 
-    private System.Action _completion;
-
     public UIRequestState State => _state;
 
+    private bool _paused;
+    public bool Paused { get => _paused; }
 
     public UIRequest( UIRequestSuccessCallback<TResult> onSuccess, UIRequestFailureCallback<TError> onFailure, UIRequestCancelResult onCancel, object requester )
     {
@@ -57,12 +57,6 @@ public abstract class UIRequest<TResult, TError>: IUIRequest
         this.Succeeded = onSuccess;
         this.Failed = onFailure;
         this.Cancelled = onCancel;
-    }
-
-
-    public void SetStateRunning()
-    {
-        _state = UIRequestState.Running;
     }
 
 
@@ -91,6 +85,32 @@ public abstract class UIRequest<TResult, TError>: IUIRequest
         var failedCallback = Failed;
         NukeCallbacks();
         failedCallback?.Invoke( error );
+    }
+
+    public void Pause()
+    {
+        if( Paused )
+            return;
+        _paused = true;
+        OnPaused();
+    }
+
+    public void Resume()
+    {
+        if( !Paused )
+            return;
+        _paused = false;
+        OnResumed();
+    }
+
+    public virtual void OnPaused()
+    {
+
+    }
+
+    public virtual void OnResumed()
+    {
+
     }
 
 
@@ -154,8 +174,4 @@ public abstract class UIRequest<TResult, TError>: IUIRequest
     {
     }
 
-    public void PerformCompletion()
-    {
-        _completion?.Invoke();
-    }
 }

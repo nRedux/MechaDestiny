@@ -126,7 +126,7 @@ public class PlayerAttackAction : AttackAction
         /*_uiRequest = CreateFindAttackTargetRequest( attackerAvatar, attackOptions );
         //Don't target actors on the same team
         _uiRequest.MarkInvalidTeams( actor.GetTeamID() );*/
-        UIManager.Instance.RequestUI( _uiRequest );
+        //UIManager.Instance.RequestUI( _uiRequest );
     }
 
     private void DoAttack( GfxActor attackerAvatar )
