@@ -162,7 +162,7 @@ public class AIAttackAction : AttackAction
             UIManager.Instance.ShowSideBMechInfo( targetActor, UIManager.MechInfoDisplayMode.Mini );
 
         _state = ActorActionState.Executing;
-        AttackActionResult res = new AttackActionResult( attackerAvatar, targetLocation );
+        AttackActionResult res = new AttackActionResult( attackerAvatar, targetLocation, actor.ActiveWeapon );
         res.OnComplete = () => {
             UIManager.Instance.HideSideBMechInfo();
             if( !activeWep.IsAOE() )

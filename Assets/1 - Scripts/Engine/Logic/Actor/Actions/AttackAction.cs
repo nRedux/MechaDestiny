@@ -10,6 +10,9 @@ public abstract class AttackAction : ActorAction
 {
     public SequencePos SequencePos { get; internal set; }
 
+    public MechComponentData UsedWeapon;
+    public SmartPoint Target;
+
     public override void Start( Game game, Actor actor )
     {
         

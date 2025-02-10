@@ -171,7 +171,6 @@ public class AIMoveAction : MoveAction
             var proxVal = enemyProxUtility[proxLocalCoord];
             utility[iter.local] += proxVal;
         }, Range );
-
     }
 
 

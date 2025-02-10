@@ -37,16 +37,14 @@ public static class AttackHelper
     public static void CalculateAttackDamage( AttackActionResult res )
     {
         var actor = res.Attacker.Actor;
-        var weaponEntity = actor.ActiveWeapon;
-        int shotCount = weaponEntity.GetStatisticValue( StatisticType.ShotCount );
+        int shotCount = res.AttackerWeapon.GetStatisticValue( StatisticType.ShotCount );
 
         if( res.AttackerWeapon.IsAOE() )
         {
             //Res should have target location in this case.
             //Find all actors within area of effect
 
-            var weaponComponent = weaponEntity as MechComponentData;
-            var shape = weaponComponent.AOEShape;
+            var shape = res.AttackerWeapon.AOEShape;
             if( shape == null )
             {
                 Debug.LogError("Weapon doesn't have AOEShape.");
@@ -71,7 +69,7 @@ public static class AttackHelper
 
             Debug.Log( $"Found {actors.Count} actors" );
 
-            int fragmentCount = weaponEntity.GetStatisticValue( StatisticType.FragmentCount );
+            int fragmentCount = res.AttackerWeapon.GetStatisticValue( StatisticType.FragmentCount );
             actors.Do( target =>
             {
                 for( int i = 0; i < fragmentCount; i++ )

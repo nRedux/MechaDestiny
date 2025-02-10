@@ -15,7 +15,7 @@ using System.Net.Sockets;
 
 public enum SequencePos
 {
-    All,
+    Both,
     Start,
     Mid,
     End,

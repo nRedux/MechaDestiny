@@ -34,7 +34,7 @@ public class PlayerAttackAction : AttackAction
 
     public override void Tick()
     {
-        TryRequestWeaponPick();
+        //TryRequestWeaponPick();
 
         return;
     }
@@ -116,7 +116,7 @@ public class PlayerAttackAction : AttackAction
         _state = ActorActionState.Started;
         GfxActor attackerAvatar = GameEngine.Instance.AvatarManager.GetAvatar( actor );
         DoAttack( attackerAvatar );
-        if( SequencePos == SequencePos.Start || SequencePos == SequencePos.All )
+        if( SequencePos == SequencePos.Start || SequencePos == SequencePos.Both )
         {
             UIManager.Instance.ShowSideAMechInfo( actor, UIManager.MechInfoDisplayMode.Mini );
             if( actor.Target?.GfxActor != null )
@@ -131,27 +131,14 @@ public class PlayerAttackAction : AttackAction
 
     private void DoAttack( GfxActor attackerAvatar )
     {
-        var selectedTarget = attackerAvatar.Actor.Target;
-        var targetAvatar = selectedTarget.GfxActor;
+        var selectedTarget = this.Target;
         SpendAP( attackerAvatar.Actor );
         _state = ActorActionState.Executing;
-
-        SmartPoint finalTarget = null;
-        if( selectedTarget.GfxActor != null )
-        {
-            //Single target attack
-            finalTarget = new SmartPoint( targetAvatar );
-        }
-        else
-        {
-            //AOE attack
-            finalTarget = new SmartPoint( selectedTarget.Position );
-        }
         
-        AttackActionResult res = new AttackActionResult( attackerAvatar, finalTarget ); ;
+        AttackActionResult res = new AttackActionResult( attackerAvatar, this.Target, this.UsedWeapon );
         res.OnComplete = () =>
         {
-            if( this.SequencePos == SequencePos.End || this.SequencePos == SequencePos.All )
+            if( this.SequencePos == SequencePos.End || this.SequencePos == SequencePos.Both )
             {
                 UIManager.Instance.ShowSideAMechInfo( attackerAvatar.Actor, UIManager.MechInfoDisplayMode.Full );
                 UIManager.Instance.HideSideBMechInfo();

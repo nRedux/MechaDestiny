@@ -9,6 +9,7 @@ public class SequenceAction
 {
     public ActorAction Action;
     public SmartPoint Target;
+    public MechComponentData UsedWeapon;
 }
 
 
@@ -141,6 +142,44 @@ public class PlayerActionHandler : ActorActionHandler
     }
 
 
+    MechComponentData PreviousWeapon( int index )
+    {
+        if( _sequence == null )
+            return null;
+
+        if( index == 0 )
+            return null;
+
+        for( int i = index-1; i >= 0; i-- )
+        {
+            if( _sequence[i].Action is PlayerAttackAction attack )
+            {
+                return _sequence[i].UsedWeapon;
+            }
+        }
+
+        return null;
+    }
+
+    MechComponentData NextWeapon( int index )
+    {
+        if( _sequence == null )
+            return null;
+
+        if( index == _sequence.Count -1 )
+            return null;
+
+        for( int i = index + 1; i <= _sequence.Count; i++ )
+        {
+            if( _sequence[i].Action is PlayerAttackAction attack )
+            {
+                return _sequence[i].UsedWeapon;
+            }
+        }
+
+        return null;
+    }
+
     private void PerformActionSequence( Game game )
     {
         //Take sequence from actor, if one exists, and we're not executing one.
@@ -168,16 +207,41 @@ public class PlayerActionHandler : ActorActionHandler
             {
                 var nextAction = _sequence[_sequenceIndex];
                 _actor.Target = nextAction.Target;
+
+                //Determine if in sequence
+                //Determine position within sequence
+
                 if( nextAction.Action is PlayerAttackAction attack )
                 {
+                    MechComponentData thisWeapon = nextAction.UsedWeapon;
+                    MechComponentData prevWeapon = PreviousWeapon( _sequenceIndex );
+                    MechComponentData nextWeapon = NextWeapon( _sequenceIndex );
 
                     SequencePos seqPos = SequencePos.Start;
-                    if( _sequenceIndex > 0 && _sequenceIndex < _sequence.Count - 1 )
-                        seqPos = SequencePos.Mid;
-                    else if( _sequenceIndex == _sequence.Count - 1 )
-                        seqPos = SequencePos.End;
-                    if( _sequence.Count == 1 )
-                        seqPos = SequencePos.All;
+
+                    if( prevWeapon == thisWeapon )
+                    {
+                        if( nextWeapon == thisWeapon )
+                        {
+                            seqPos = SequencePos.Mid;
+                        }
+                        else
+                        {
+                            seqPos = SequencePos.End;
+                        }
+                    }
+                    else
+                    {
+                        if( nextWeapon == thisWeapon )
+                        {
+                            seqPos = SequencePos.Start;
+                        }
+                        else
+                        {
+                            seqPos = SequencePos.Both;
+                        }
+                    }
+
                     attack.SequencePos = seqPos;
 
                     //If this kills the target, break out of the sequence so we don't fire on something dead.
@@ -187,11 +251,17 @@ public class PlayerActionHandler : ActorActionHandler
                             endSeqNow.SequencePos = SequencePos.End;
                         _sequence = null;
                     };
+
+
+                    //Give attack info about this action in the sequence.
+                    attack.Target = nextAction.Target;
+                    attack.UsedWeapon = nextAction.UsedWeapon;
                 }
+
                 _sequenceIndex++;
 
                 _canRightClickActionPick = false;
-                ExecuteAction( nextAction.Action, game );
+                 ExecuteAction( nextAction.Action, game );
             }
             else
             {

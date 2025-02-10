@@ -111,7 +111,13 @@ public class PlayerEngageAction : AttackAction
     private void ActionPicked( object result )
     {
         var selected = result as ActorAction;
+        
+
+        //This sucker won't work. We need more info for the sequence action.
         UIManager.Instance.ActionSequence.AddItem( new SequenceAction() { Action = selected, Target = null } );
+        //Realistically the only thing we should be doing when we pick actions this way is picking augmentations to the existing actual actions.
+        
+        
         UIManager.Instance.TryPickAction( _actor, ActionPicked, () => { }, ActionCategory.Attack );
         //UIManager.Instance.ShowActionPicker( OnSelect, GetPickableActionCategory() );
     }
@@ -138,7 +144,7 @@ public class PlayerEngageAction : AttackAction
                 var location = (Vector2Int) selectedTarget;
 
                 SmartPoint targetLocation = new SmartPoint( new Vector3( location.x, 0, location.y ) );
-                UIManager.Instance.ActionSequence.AddItem( new SequenceAction() { Action = attack, Target = targetLocation } );
+                UIManager.Instance.ActionSequence.AddItem( new SequenceAction() { Action = attack, Target = targetLocation, UsedWeapon = this._actor.ActiveWeapon } );
             }
             else
             {
@@ -148,7 +154,7 @@ public class PlayerEngageAction : AttackAction
                 UIManager.Instance.ShowSideBMechInfo( actor, UIManager.MechInfoDisplayMode.Full );
 
                 SmartPoint targetLocation = new SmartPoint( targetAvatar );
-                UIManager.Instance.ActionSequence.AddItem( new SequenceAction() { Action = attack, Target = targetLocation } );
+                UIManager.Instance.ActionSequence.AddItem( new SequenceAction() { Action = attack, Target = targetLocation, UsedWeapon = this._actor.ActiveWeapon } );
             }
 
             StartAttackLocationPick();

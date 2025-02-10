@@ -12,7 +12,7 @@ public class AttackActionResult : ActionResult
 
     public int Count = 1;
     public Transform _fireSource;
-    public SequencePos SequencePosition = SequencePos.All;
+    public SequencePos SequencePosition = SequencePos.Both;
 
     public List<Vector2Int> AffectedAOECells = new List<Vector2Int>();
     public GameObject AOEGraphics = null;
@@ -24,10 +24,10 @@ public class AttackActionResult : ActionResult
     {
     }
 
-    public AttackActionResult( GfxActor attacker, SmartPoint target )
+    public AttackActionResult( GfxActor attacker, SmartPoint target, MechComponentData weapon )
     {
         Attacker = attacker;
-        AttackerWeapon = attacker.Actor.ActiveWeapon;
+        AttackerWeapon = weapon;
         AttackerMechComponent = AttackerWeapon.GetParent() as MechComponentData;
         Count = AttackerWeapon.GetStatisticValue( StatisticType.ShotCount );
         Target = target;
@@ -55,7 +55,7 @@ public class AttackActionResult : ActionResult
     public override async void Start()
     {
         bool camDone = false;
-        if( this.SequencePosition == SequencePos.Start || this.SequencePosition == SequencePos.All )
+        if( this.SequencePosition == SequencePos.Start || this.SequencePosition == SequencePos.Both )
         {
             Attacker.StartAttackCamera( () =>
             {
@@ -76,7 +76,7 @@ public class AttackActionResult : ActionResult
             GameEngine.Instance.Game.CheckGameOver();
         } );
 
-        if( this.SequencePosition == SequencePos.End || this.SequencePosition == SequencePos.All )
+        if( this.SequencePosition == SequencePos.End || this.SequencePosition == SequencePos.Both )
             Attacker.StopAttackCamera();
     }
 

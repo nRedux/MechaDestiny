@@ -268,8 +268,9 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
 
         _attackTurnDone = true;
-        LastAnimEvent = String.Empty;
-        if( result.SequencePosition == SequencePos.Start || result.SequencePosition == SequencePos.All )
+        LastAnimEvent = String.Empty; 
+
+        if( result.SequencePosition == SequencePos.Start || result.SequencePosition == SequencePos.Both )
         {
             _attackTurnDone = false;
             StartAttackTurn( result.Target.Position );
@@ -295,7 +296,7 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             while( !AnimationEventMatches( ANIM_FIRED ) )
                 await Task.Yield();
 
-            if( result.SequencePosition == SequencePos.End || result.SequencePosition == SequencePos.All )
+            if( result.SequencePosition == SequencePos.End || result.SequencePosition == SequencePos.Both )
                 _animator.SetBool( attackParam, false );
             
             for( int i = 0; i < result.Count; i++ )
@@ -317,7 +318,8 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _animator.SetBool( fireParam, false );
 
 
-        if( result.SequencePosition == SequencePos.End || result.SequencePosition == SequencePos.All )
+        //Can never end the previous attack sequencing, because we're never
+        if( result.SequencePosition == SequencePos.End || result.SequencePosition == SequencePos.Both )
         {
             _animator.SetBool( attackParam, false );
             await Task.Delay( 500 );
