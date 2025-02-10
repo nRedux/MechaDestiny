@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using UnityEngine;
+using UnityEditor.Search;
 
 
 public class GfxAvatarNullException: Exception
@@ -16,6 +17,13 @@ public class GfxAvatarInvalidPrefab : Exception
 {
     public GfxAvatarInvalidPrefab() : base() { }
     public GfxAvatarInvalidPrefab( string msg ) : base( msg ) { }
+}
+
+
+public struct NewRequest
+{
+    public IUIRequest Request;
+    public bool Queued;
 }
 
 
@@ -63,6 +71,8 @@ public class UIManager : Singleton<UIManager>
     //public UIMechInfo 
 
     private GameEngine _gameEngine;
+
+    private List<NewRequest> _newRequests = new List<NewRequest>();
 
     private List<IUIRequest> _pendingRequests = new List<IUIRequest>();
 
@@ -474,29 +484,39 @@ public class UIManager : Singleton<UIManager>
     }
 
 
+
     /// <summary>
     /// Request UI start activity.
     /// </summary>
     /// <param name="request">The request</param>
     /// <param name="queue">If activating this from within another request, you MUST set queue = true</param>
-    public void RequestUI( IUIRequest request, bool queue = true )
+    public void  RequestUI( IUIRequest request, bool queue = true )
     {
         if( request == null )
             return;
 
-        if( queue )
-        {
-            _pendingRequests.Add( request );
-        }
-        else
-        {
-            ActivateRequest( request );
-        }
+        _newRequests.Add( new NewRequest() { Queued = queue, Request = request } );
     }
 
+    private void ProcessNewRequests()
+    {
+        _newRequests.Do( x =>
+        {
+            if( x.Queued )
+            {
+                _pendingRequests.Add( x.Request );
+            }
+            else
+            {
+                ActivateRequest( x.Request );
+            }
+        } );
+        _newRequests.Clear();
+    }
 
     private void RunRequests()
     {
+        ProcessNewRequests();
         UpdateRequestInput();
         TryActivatePendingRequests();
         RunActiveRequests();
@@ -531,21 +551,26 @@ public class UIManager : Singleton<UIManager>
             request.State == UIRequestState.Cancelled;
     }
 
-
     private void RunActiveRequests()
     {
         _activeRequests = _activeRequests.Where( x => !IsRequestEnding( x ) ).ToList();
 
         if(  _activeRequests.Count == 0 )
             return;
-        
-        var req = _activeRequests[0];
-        req.Run();
 
-        //Request state changed to something interesting?
-        if( IsRequestEnding( req ) )
+        DoToActiveRequests( x => x.Run() );
+
+        _activeRequests = _activeRequests.Where( x => !IsRequestEnding( x ) ).ToList();
+    }
+
+    private void DoToActiveRequests( System.Action<IUIRequest> action )
+    {
+        for( int i = _activeRequests.Count - 1; i >= 0; i-- )
         {
-            _activeRequests.Remove( req );
+            var req = _activeRequests[i];
+            if( IsRequestEnding( req ) )
+                continue;
+            action( req );
         }
     }
 
@@ -706,12 +731,13 @@ public class UIManager : Singleton<UIManager>
         if( _activeRequests.Count() == 0 )
             return;
 
-        var req = _activeRequests[0];
-
-        if( hovered )
-            req.ActorHoverStart( actor );
-        else
-            req.ActorHoverEnd( actor );
+        DoToActiveRequests( req =>
+        {
+            if( hovered )
+                req.ActorHoverStart( actor );
+            else
+                req.ActorHoverEnd( actor );
+        } );
     }
 
 
@@ -720,12 +746,13 @@ public class UIManager : Singleton<UIManager>
         if( _activeRequests.Count() == 0 )
             return;
 
-        var req = _activeRequests[0];
-
-        if( hovered )
-            req.CellHoverStart( cell );
-        else
-            req.CellHoverEnd( cell );
+        DoToActiveRequests( req =>
+        {
+            if( hovered )
+                req.CellHoverStart( cell );
+            else
+                req.CellHoverEnd( cell );
+        } );
     }
 
 
@@ -734,11 +761,10 @@ public class UIManager : Singleton<UIManager>
         if( actor == null )
             return;
 
-        if( _activeRequests.Count() == 0 )
-            return;
-
-        var req = _activeRequests[0];
-        req.ActorClicked( actor );
+        DoToActiveRequests( req =>
+        {
+            req.ActorClicked( actor );
+        } );
     }
 
 
@@ -747,11 +773,10 @@ public class UIManager : Singleton<UIManager>
         if( cell == null )
             return;
 
-        if( _activeRequests.Count() == 0 )
-            return;
-
-        var req = _activeRequests[0];
-        req.CellClicked( cell );
+        DoToActiveRequests( req =>
+        {
+            req.CellClicked( cell );
+        } );
     }
 
 

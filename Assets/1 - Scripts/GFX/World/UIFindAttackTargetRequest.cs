@@ -77,6 +77,7 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
         SetupGrid();
     }
 
+
     private void SetupGrid()
     {
         GameEngine.Instance.GfxBoard.GeneralOverlay.SetCellColor( GfxCellMode.Attack );
@@ -85,8 +86,6 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
         GameEngine.Instance.GfxBoard.GeneralOverlay.RenderCells( Cells, true, tintShift: mainTintShift );
         GameEngine.Instance.GfxBoard.AOEOverlay.SetCellColor( GfxCellMode.Attack );
     }
-
-
     private void OnWeaponChanged( ActiveWeaponChanged e )
     {
         this.Cells = CalculateCells( _requestingActor );
