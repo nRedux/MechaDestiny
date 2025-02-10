@@ -143,13 +143,17 @@ public class ActorTurnPhase: TurnPhase
         _delayAIActionsTimer -= Time.deltaTime;
         if( _delayAIActionsTimer > 0 )
             return;
-        _selectedActor.RunActions( _game );
+        
 
-        if( _selectedActor.EndActorTurn() )
+        if( _selectedActor.ShouldEndActorTurn() )
         {
             _selectedActor.TurnComplete = true;
             SelectActiveActor( null );
         }
+
+        //Could be null if we just ended above
+        if( _selectedActor != null )
+            _selectedActor.RunActions( _game );
     }
 
 
