@@ -11,6 +11,7 @@ using System;
 
 public class UIFindAttackTargetRequest : UIRequest<object, bool>
 {
+    private bool _rebuildGrid = false;
     public BoolWindow Cells;
     private int[] _ignoredTeamIDs;
     private Actor _requestingActor;
@@ -19,6 +20,7 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
 
     public UIFindAttackTargetRequest( Actor requester, SuccessCallback onSuccess, FailureCallback onFailure, CancelCallback onCancel): base( onSuccess, onFailure, onCancel, requester )
     {
+        _rebuildGrid = true;
         _requestingActor = requester;
         this.Cells = CalculateCells( requester );
     }
@@ -58,6 +60,12 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
 
     public override void Run()
     {
+        if( _rebuildGrid )
+        {
+            _rebuildGrid = false;
+            SetupGrid();
+        }
+
         if( _requestingActor.ActiveWeapon.IsAOE() )
         {
             TryGetUserSelectedCell_AOE();
@@ -86,10 +94,12 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
         GameEngine.Instance.GfxBoard.GeneralOverlay.RenderCells( Cells, true, tintShift: mainTintShift );
         GameEngine.Instance.GfxBoard.AOEOverlay.SetCellColor( GfxCellMode.Attack );
     }
+
+
     private void OnWeaponChanged( ActiveWeaponChanged e )
     {
         this.Cells = CalculateCells( _requestingActor );
-        SetupGrid();
+        _rebuildGrid = true;
     }
 
 

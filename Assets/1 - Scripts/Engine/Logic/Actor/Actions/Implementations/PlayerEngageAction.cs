@@ -72,8 +72,8 @@ public class PlayerEngageAction : AttackAction
 
     private void OnWeaponChanged( ActiveWeaponChanged e )
     {
-        CancelUIRequests();
-        Start( _game, _actor );
+        //CancelUIRequests();
+        //Start( _game, _actor );
     }
 
 

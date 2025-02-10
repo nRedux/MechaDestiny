@@ -37,8 +37,6 @@ public class UISelector<TDataSource, TUIOptionType> : UIPanel where TUIOptionTyp
     public override void Hide()
     {
         base.Hide();
-        _event = null;
-        OptionSelected = null;
     }
 
 
@@ -66,6 +64,7 @@ public class UISelector<TDataSource, TUIOptionType> : UIPanel where TUIOptionTyp
     private void OnPick( UISelectorItemOption<TDataSource> option )
     {
         var optionSelected = OptionSelected;
+        OptionSelected = null;
         Hide();
         optionSelected?.Invoke( option.DataSource );
     }
