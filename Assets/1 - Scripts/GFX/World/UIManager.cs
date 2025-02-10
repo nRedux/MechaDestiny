@@ -711,7 +711,9 @@ public class UIManager : Singleton<UIManager>
             UpdateRequestActorClick( UserControls.HoveredActor );
         }
 
-
+        if( UserControls.HoveredCell != null )
+            UpdateRequestCellHover( UserControls.HoveredCell.Value, false );
+        /*
         if( UserControls.HoveredCell != UserControls.LastHoveredCell )
         {
             if( UserControls.LastHoveredCell != null )
@@ -719,7 +721,7 @@ public class UIManager : Singleton<UIManager>
             if( UserControls.HoveredCell != null )
                 UpdateRequestCellHover( UserControls.HoveredCell.Value, true );
         }
-
+        */
     }
 
 
@@ -748,10 +750,13 @@ public class UIManager : Singleton<UIManager>
 
         DoToActiveRequests( req =>
         {
+            req.CellHoverUpdate( cell );
+            /*
             if( hovered )
                 req.CellHoverStart( cell );
             else
                 req.CellHoverEnd( cell );
+            */
         } );
     }
 

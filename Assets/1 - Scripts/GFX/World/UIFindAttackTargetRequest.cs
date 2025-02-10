@@ -14,7 +14,7 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
     public BoolWindow Cells;
     private int[] _ignoredTeamIDs;
     private Actor _requestingActor;
-    private Vector2Int _hoveredCell;
+    private Vector2Int _hoveredCell = new Vector2Int( -1000, -1000 );
 
 
     public UIFindAttackTargetRequest( Actor requester, SuccessCallback onSuccess, FailureCallback onFailure, CancelCallback onCancel): base( onSuccess, onFailure, onCancel, requester )
@@ -169,8 +169,18 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
         return _ignoredTeamIDs.Count( x => x == actor.GetTeamID() ) > 0;
     }
 
+    public override void CellHoverUpdate( Vector2Int cell )
+    {
+        if( cell != _hoveredCell )
+        {
+            CellHoverEnd( _hoveredCell );
+            CellHoverStart( cell );
+        }
+        _hoveredCell = cell;
+    }
 
-    public override void CellHoverStart( Vector2Int cell )
+
+    private void CellHoverStart( Vector2Int cell )
     {
         _hoveredCell = cell;
         GameEngine.Instance.GfxBoard.GeneralOverlay.HighlightCell( cell );
@@ -179,7 +189,7 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
     }
 
 
-    public override void CellHoverEnd( Vector2Int cell )
+    private void CellHoverEnd( Vector2Int cell )
     {
         GameEngine.Instance.GfxBoard.GeneralOverlay.UnHighlightCell( cell );
         GameEngine.Instance.GfxBoard.AOEOverlay.Clear();

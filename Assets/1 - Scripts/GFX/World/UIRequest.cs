@@ -31,8 +31,7 @@ public interface IUIRequest
     void Cleanup();
     void ActorHoverStart( Actor actor );
     void ActorHoverEnd( Actor actor );
-    void CellHoverStart( Vector2Int cell );
-    void CellHoverEnd( Vector2Int cell );
+    void CellHoverUpdate( Vector2Int cell );
     void ActorClicked( Actor actor );
     void CellClicked( Vector2Int actor );
     void PerformCompletion();
@@ -145,15 +144,11 @@ public abstract class UIRequest<TResult, TError>: IUIRequest
     {
     }
 
-    public virtual void CellHoverStart( Vector2Int cell )
+    public virtual void CellHoverUpdate( Vector2Int cell )
     {
-        
+
     }
 
-    public virtual void CellHoverEnd( Vector2Int cell )
-    {
-        
-    }
 
     public virtual void CellClicked( Vector2Int cell )
     {

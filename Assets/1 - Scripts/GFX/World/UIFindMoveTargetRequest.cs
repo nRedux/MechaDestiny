@@ -82,7 +82,17 @@ public class UIFindMoveTargetRequest : UIRequest<Vector2Int, bool>
     }
 
 
-    public override void CellHoverStart( Vector2Int cell )
+    public override void CellHoverUpdate( Vector2Int cell )
+    {
+        if( cell != _hoveredCell )
+        {
+            CellHoverEnd( _hoveredCell );
+            CellHoverStart( cell );
+        }
+        _hoveredCell = cell;
+    }
+
+    private void CellHoverStart( Vector2Int cell )
     {
         //Is the cell within our movable cells?
         if( !MoveOptionCells.ContainsWorldCell( cell ) )
@@ -101,7 +111,7 @@ public class UIFindMoveTargetRequest : UIRequest<Vector2Int, bool>
 
     
 
-    public override void CellHoverEnd( Vector2Int cell )
+    private void CellHoverEnd( Vector2Int cell )
     {
         InvokeCellHoverEnd();
         _goodHover = false;
