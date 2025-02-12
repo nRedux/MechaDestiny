@@ -4,12 +4,25 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using UnityEngine.EventSystems;
 
-public class UIActionPickerOption : UISelectorItemOption<ActorAction>
+public class UIActionPickerOption : UISelectorItemOption<ActorAction>, IPointerEnterHandler, IPointerExitHandler
 {
 
     public TMP_Text NameText;
 
+    public System.Action PointerEnter;
+    public System.Action PointerExit;
+
+    public void OnPointerEnter( PointerEventData eventData )
+    {
+        PointerEnter?.Invoke();
+    }
+
+    public void OnPointerExit( PointerEventData eventData )
+    {
+        PointerExit?.Invoke();
+    }
 
     public override void Refresh()
     {

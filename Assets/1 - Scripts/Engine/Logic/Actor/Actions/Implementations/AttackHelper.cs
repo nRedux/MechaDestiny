@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using UnityEngine;
 
@@ -135,6 +136,18 @@ public static class AttackHelper
         var shotCount = weaponStats.GetStatistic( StatisticType.FragmentCount );
         //TODO: What if there isn't a shotCount stat defined?
         return shotCount.Value;
+    }
+
+    public static UIFindAttackTargetRequest ShowWeaponOverlay( Actor actor, MechComponentData weapon )
+    {
+        UIFindAttackTargetRequest result = null;
+
+        result = new UIFindAttackTargetRequest( actor, weapon, null, null, null ); ;
+
+        //Don't target actors on the same team
+        result.MarkInvalidTeams( actor.GetTeamID() );
+        UIManager.Instance.RequestUI( result, false );
+        return result;
     }
 
 

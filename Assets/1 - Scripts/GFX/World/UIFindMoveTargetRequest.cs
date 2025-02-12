@@ -81,6 +81,19 @@ public class UIFindMoveTargetRequest : UIRequest<Vector2Int, bool>
     {
     }
 
+    public override void OnPaused()
+    {
+        base.OnPaused();
+        GameEngine.Instance.GfxBoard.GeneralOverlay.UnHighlightCell( _hoveredCell );
+        GameEngine.Instance.GfxBoard.GeneralOverlay.Clear();
+    }
+
+    public override void OnResumed()
+    {
+        base.OnResumed();
+        GameEngine.Instance.GfxBoard.GeneralOverlay.SetCellColor( GfxCellMode.Move );
+        GameEngine.Instance.GfxBoard.GeneralOverlay.RenderCells( MoveOptionCells, true );
+    }
 
     public override void CellHoverUpdate( Vector2Int cell )
     {

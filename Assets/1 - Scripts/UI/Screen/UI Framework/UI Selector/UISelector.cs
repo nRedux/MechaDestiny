@@ -25,12 +25,16 @@ public class UISelector<TDataSource, TUIOptionType> : UIPanel where TUIOptionTyp
 
     }
 
-
     public void StartPick( List<TDataSource> optionData, TDataSource selected, System.Action<TDataSource> onPick )
     {
         this.OptionSelected = onPick;
         Refresh( optionData, selected );
         Show();
+    }
+
+    protected virtual void OptionCreated(TUIOptionType option )
+    {
+
     }
 
 
@@ -51,6 +55,7 @@ public class UISelector<TDataSource, TUIOptionType> : UIPanel where TUIOptionTyp
         }
 
         TUIOptionType instance = Instantiate<TUIOptionType>( OptionPrefab );
+        OptionCreated( instance );
         if( selected )
             EventSystem.current.SetSelectedGameObject( instance.gameObject );
         instance.transform.SetParent( OptionsRoot, false );

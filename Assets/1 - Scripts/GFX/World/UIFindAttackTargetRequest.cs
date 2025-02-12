@@ -15,6 +15,7 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
     public BoolWindow Cells;
     private int[] _ignoredTeamIDs;
     private Actor _requestingActor;
+    private MechComponentData _weapon;
     private Vector2Int _hoveredCell = new Vector2Int( -1000, -1000 );
 
 
@@ -22,6 +23,15 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
     {
         _rebuildGrid = true;
         _requestingActor = requester;
+        _weapon = requester.ActiveWeapon;
+        this.Cells = CalculateCells( requester );
+    }
+
+    public UIFindAttackTargetRequest( Actor requester, MechComponentData weapon, SuccessCallback onSuccess, FailureCallback onFailure, CancelCallback onCancel ) : base( onSuccess, onFailure, onCancel, requester )
+    {
+        _rebuildGrid = true;
+        _requestingActor = requester;
+        _weapon = weapon;
         this.Cells = CalculateCells( requester );
     }
 
@@ -35,7 +45,7 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
         int range = 0;
         //Get the active weapon so we can use it's range
         MechData attackerMechData = actor.GetMechData();
-        MechComponentData weapon = attackerMechData.ActiveWeapon;
+        MechComponentData weapon = _weapon;
 
         //TODO: will have to validate that the assets which define these are correct. Make finding these problems easy!
         range = weapon.GetStatisticValue( StatisticType.Range );
@@ -66,7 +76,7 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
             SetupGrid();
         }
 
-        if( _requestingActor.ActiveWeapon.IsAOE() )
+        if( _weapon.IsAOE() )
         {
             TryGetUserSelectedCell_AOE();
         }
@@ -208,10 +218,10 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
 
     private void RenderAOE( Vector2Int cell ) 
     {
-        if( !_requestingActor.ActiveWeapon.IsAOE() )
+        if( !_weapon.IsAOE() )
             return;
 
-        var shape = _requestingActor.ActiveWeapon.AOEShape;
+        var shape = _weapon.AOEShape;
         BoolWindow win = shape.NewBoolWindow( GameEngine.Instance.Game.Board );
         win.MoveCenter( cell );
         GameEngine.Instance.GfxBoard.AOEOverlay.RenderCells( win, false, tintShift: .2f );

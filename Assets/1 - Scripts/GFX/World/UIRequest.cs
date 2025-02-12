@@ -71,8 +71,6 @@ public abstract class UIRequest<TResult, TError>: IUIRequest
             return;
         Cleanup();
         _state = UIRequestState.Complete;
-        if( Succeeded == null )
-            throw new UIRequestCallbackNullException( "OnSuccess callback null" );
         var succeededCallback = Succeeded;
         NukeCallbacks();
         succeededCallback?.Invoke( result );
@@ -85,8 +83,6 @@ public abstract class UIRequest<TResult, TError>: IUIRequest
             return;
         Cleanup();
         _state = UIRequestState.Failed;
-        if( Failed == null )
-            throw new UIRequestCallbackNullException( "OnFailure callback null" );
         var failedCallback = Failed;
         NukeCallbacks();
         failedCallback?.Invoke( error );
@@ -127,9 +123,6 @@ public abstract class UIRequest<TResult, TError>: IUIRequest
         _state = UIRequestState.Cancelled;
         UIManager.Instance.TerminatePending( this );
         OnCancelled();
-        if( Cancelled == null )
-            throw new UIRequestCallbackNullException( "OnSuccess callback null" );
-
         var cancelCallback = Cancelled;
         NukeCallbacks();
         cancelCallback?.Invoke();

@@ -41,7 +41,7 @@ public class PauseGroupHandle: List<IUIRequest>, IRequestGroupHandle
 
     public void Undo()
     {
-        this.Do( x => x.Pause() );
+        this.Do( x => x.Resume() );
     }
 }
 
@@ -120,6 +120,7 @@ public class UIManager : Singleton<UIManager>
     private Vector2Int? _hoveredCell = new Vector2Int( int.MinValue, int.MinValue );
     private Actor _hoveredActor = null;
 
+    public Actor ActiveActor { get => _activeActor; }
 
     /// <summary>
     /// Raycast performed once per frame for testing cell interactions: Hovered actor and hovered cell tests.

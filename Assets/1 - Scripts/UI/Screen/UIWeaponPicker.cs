@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class UIWeaponPicker : UIPanel
 {
@@ -13,7 +15,22 @@ public class UIWeaponPicker : UIPanel
     public System.Action<IEntity> ActiveWeaponPicked;
 
     private PickActiveWeaponEvent _event;
+    private UIFindAttackTargetRequest _tempAttackOverlay;
 
+    private bool _pauseMoveAndAttackOverlays = true;
+    public bool PauseMoveAttackReqsOptionEnter
+    {
+        get
+        {
+            return _pauseMoveAndAttackOverlays;
+        }
+        set
+        {
+            _pauseMoveAndAttackOverlays = value;
+        }
+    }
+
+    private IRequestGroupHandle _pausedRequests;
 
     protected override void Awake()
     {
@@ -24,7 +41,11 @@ public class UIWeaponPicker : UIPanel
 
     private void OnDestroy()
     {
-
+        if( _pausedRequests != null )
+        {
+            _pausedRequests.Undo();
+            _pausedRequests = null;
+        }
     }
 
 
@@ -55,6 +76,13 @@ public class UIWeaponPicker : UIPanel
         }
 
         UIWeaponPickerOption instance = Instantiate<UIWeaponPickerOption>( OptionPrefab );
+        if( PauseMoveAttackReqsOptionEnter )
+        {
+            instance.PointerEntered += OptionPointerEntered;
+            instance.PointerExited += OptionPointerExited;
+            instance.Clicked += OptionClicked;
+        }
+
         if( entity == currentActive )
             EventSystem.current.SetSelectedGameObject( instance.gameObject );
         instance.transform.SetParent( OptionsRoot, false );
@@ -63,6 +91,34 @@ public class UIWeaponPicker : UIPanel
         return instance;
     }
 
+    private void OptionPointerEntered( UIWeaponPickerOption opt )
+    {
+        _pausedRequests = UIManager.Instance.PauseRequests( new System.Type[] { typeof( UIFindMoveTargetRequest ), typeof( UIFindAttackTargetRequest ) } );
+        _tempAttackOverlay = AttackHelper.ShowWeaponOverlay( UIManager.Instance.ActiveActor, opt.Entity as MechComponentData );
+    }
+
+
+    private void OptionPointerExited( UIWeaponPickerOption opt )
+    {
+        _tempAttackOverlay?.Cancel();
+        _tempAttackOverlay = null;
+        if( _pausedRequests != null )
+        {
+            _pausedRequests.Undo();
+            _pausedRequests = null;
+        }
+    }
+
+    private void OptionClicked( UIWeaponPickerOption opt )
+    {
+        _tempAttackOverlay?.Cancel();
+        _tempAttackOverlay = null;
+        if( _pausedRequests != null )
+        {
+            _pausedRequests.Undo();
+            _pausedRequests = null;
+        }
+    }
 
     private void OnPick( UIWeaponPickerOption option )
     {

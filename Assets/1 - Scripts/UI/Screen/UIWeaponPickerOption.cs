@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using UnityEngine.EventSystems;
 
-public class UIWeaponPickerOption : MonoBehaviour
+public class UIWeaponPickerOption : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
 
     public TMP_Text NameText;
@@ -14,6 +15,27 @@ public class UIWeaponPickerOption : MonoBehaviour
 
     public IEntity Entity;
 
+    public System.Action<UIWeaponPickerOption> PointerEntered;
+    public System.Action<UIWeaponPickerOption> PointerExited;
+    public System.Action<UIWeaponPickerOption> Clicked;
+
+    
+
+    public void OnPointerEnter( PointerEventData eventData )
+    {
+        PointerEntered?.Invoke( this );
+    }
+
+    public void OnPointerExit( PointerEventData eventData )
+    {
+        PointerExited?.Invoke( this );
+    }
+
+    public void OnPointerClick( PointerEventData eventData )
+    {
+        Clicked?.Invoke( this );
+    }
+
     public void Initialize( IEntity Entity )
     {
         this.Entity = Entity;
@@ -21,6 +43,7 @@ public class UIWeaponPickerOption : MonoBehaviour
 
         Button btn = GetComponent<Button>();
         btn.onClick.AddListener( OnClick );
+        //BindPointerEvents();
     }
 
     private void OnClick()
@@ -43,4 +66,5 @@ public class UIWeaponPickerOption : MonoBehaviour
                 NameText.text = x.DisplayName.TryGetLocalizedString();
         }
     }
+
 }

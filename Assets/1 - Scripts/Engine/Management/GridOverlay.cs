@@ -124,7 +124,10 @@ public class GridOverlay
     public GridCell GetCell( Vector3 position )
     {
         if( _available.Count == 0 )
-            throw new GridOverlayException( $"Too many overlay cells requested. Max cells: {NumCells}." );
+        {
+            Debug.LogError( $"Too many overlay cells requested. Max cells: {NumCells}." );
+            return null;
+        }
 
         GridCell taken = _available[_available.Count - 1];
         _available.RemoveAt( _available.Count - 1 );
@@ -186,6 +189,9 @@ public class GridOverlay
             float manDist = Mathf.Abs( offs.x ) + Mathf.Abs( offs.y );
 
             var renderCell = GetCell( cells.LocalToWorldPosition( iter.local ) );
+            if( renderCell == null )
+                return;
+
             renderCell.Tint = Mathf.Max( (1f - manDist / maxDist ) + tintShift, 0f );
             if( highlightCenter && iter.world == cells.Center )
             {
@@ -206,6 +212,9 @@ public class GridOverlay
             float manDist = Mathf.Abs( offs.x ) + Mathf.Abs( offs.y );
 
             var renderCell = GetCell( cells.LocalToWorldPosition( iter.local ) );
+            if( renderCell == null )
+                return;
+
             renderCell.Tint = Mathf.Max( ( 1f - manDist / maxDist ) + tintShift, 0f );
             if( highlightCenter && iter.world == cells.Center )
             {
