@@ -30,6 +30,11 @@ public interface IUIRequest
     void Start ();
     void Run();
     void Cleanup();
+
+    void Pause();
+
+    void Resume();
+
     void ActorHoverStart( Actor actor );
     void ActorHoverEnd( Actor actor );
     void CellHoverUpdate( Vector2Int cell );

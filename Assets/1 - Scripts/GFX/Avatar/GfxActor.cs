@@ -270,7 +270,7 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         _attackTurnDone = true;
         LastAnimEvent = String.Empty; 
 
-        if( result.SequencePosition == SequencePos.Start || result.SequencePosition == SequencePos.Both )
+        if( result.DisplayProps.IsSequenceStart )
         {
             _attackTurnDone = false;
             StartAttackTurn( result.Target.Position );
@@ -290,13 +290,14 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         
 
         _animator.SetBool( attackParam, true );
+
         if( result.AttackerWeapon.HasFeatureFlag( (int) WeaponFlags.ShotgunFireMode ) )
         {
             _animator.SetTrigger( fireParam );
             while( !AnimationEventMatches( ANIM_FIRED ) )
                 await Task.Yield();
 
-            if( result.SequencePosition == SequencePos.End || result.SequencePosition == SequencePos.Both )
+            if( result.DisplayProps.DoArmStart )
                 _animator.SetBool( attackParam, false );
             
             for( int i = 0; i < result.Count; i++ )
@@ -317,18 +318,17 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
         _animator.SetBool( fireParam, false );
 
-
-        //Can never end the previous attack sequencing, because we're never
-        if( result.SequencePosition == SequencePos.End || result.SequencePosition == SequencePos.Both )
+        if( result.DisplayProps.DoArmEnd )
         {
             _animator.SetBool( attackParam, false );
-            await Task.Delay( 500 );
+        }
+
+        if( result.DisplayProps.IsSequenceEnd )
+        {
             FinishAttackTurn();
             await TurnTorsoToNeutral( result, .4f );
             await Task.Delay( 1000 );
         }
-        else
-            await Task.Delay( 200 );
 
 
         complete?.Invoke();

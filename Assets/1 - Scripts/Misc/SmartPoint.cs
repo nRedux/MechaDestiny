@@ -36,6 +36,13 @@ public class SmartPoint
         private set;
     }
 
+
+    public Actor Actor
+    {
+        get;
+        private set;
+    }
+
     public static implicit operator GfxActor( SmartPoint sp ) => sp.GfxActor;
 
     public override string ToString()
@@ -52,7 +59,9 @@ public class SmartPoint
         {
             if( HasTransform )
             {
-                
+                if( Transform == null )
+                    return Coordinate;
+                Coordinate = Transform.position;
                 return Coordinate = Transform.position;
             }
             else
@@ -88,6 +97,7 @@ public class SmartPoint
     {
         if( target == null )
             return;
+        this.Actor = target.Actor;
         this.GfxActor = target;
         this.Transform = target.transform;
         this.Coordinate = target.transform.position;

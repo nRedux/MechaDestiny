@@ -182,7 +182,7 @@ public class GfxComponent : MonoBehaviour
     {
         this.ComponentData = data;
         WatchStatistics();
-        Debug.Log( "Mech component initialized", gameObject );
+        //Debug.Log( "Mech component initialized", gameObject );
     }
 
     internal Vector3 GetFirePosition()

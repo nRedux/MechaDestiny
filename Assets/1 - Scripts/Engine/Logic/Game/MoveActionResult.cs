@@ -110,8 +110,7 @@ public class MoveActionResult : ActionResult
         float stoppingTime = .3f;
         float stoppingDistance = ( velocity * stoppingTime ) / 2f;
         float stopDist = _avatar.AnimatorMoveSpeed.Animator.velocity.magnitude;
-        Debug.Log( ToTargetNode().magnitude.ToString() + " : " + stoppingDistance.ToString() );
-
+      
         if( TargetIsPathEnd() && ToTargetNode().magnitude < stoppingDistance )
         {
             _avatar.AnimatorMoveSpeed.InterpolateValue( 0f, stoppingTime );

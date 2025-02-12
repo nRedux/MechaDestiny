@@ -15,10 +15,25 @@ using System.Net.Sockets;
 
 public enum SequencePos
 {
+    SequenceStart,
     Both,
     Start,
     Mid,
     End,
+    SequenceEnd
+}
+
+public class ResultDisplayProps
+{
+    public bool IsSequenceStart;
+    public bool DoArmStart;
+    public bool DoArmEnd;
+    public bool IsSequenceEnd;
+
+    public override string ToString()
+    {
+        return $"{nameof( ResultDisplayProps )}: {nameof(IsSequenceStart)}:{IsSequenceStart}, {nameof( DoArmStart )}:{DoArmStart}, {nameof( DoArmEnd )}:{DoArmEnd}, {nameof( IsSequenceEnd )}:{IsSequenceEnd}";
+    }
 }
 
 

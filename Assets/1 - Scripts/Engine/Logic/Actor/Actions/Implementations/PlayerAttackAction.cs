@@ -116,7 +116,7 @@ public class PlayerAttackAction : AttackAction
         _state = ActorActionState.Started;
         GfxActor attackerAvatar = GameEngine.Instance.AvatarManager.GetAvatar( actor );
         DoAttack( attackerAvatar );
-        if( SequencePos == SequencePos.Start || SequencePos == SequencePos.Both )
+        if( DisplayProps.IsSequenceStart )
         {
             UIManager.Instance.ShowSideAMechInfo( actor, UIManager.MechInfoDisplayMode.Mini );
             if( actor.Target?.GfxActor != null )
@@ -136,9 +136,11 @@ public class PlayerAttackAction : AttackAction
         _state = ActorActionState.Executing;
         
         AttackActionResult res = new AttackActionResult( attackerAvatar, this.Target, this.UsedWeapon );
+        res.SequencePosition = this.SequencePos;
+        res.DisplayProps = this.DisplayProps;
         res.OnComplete = () =>
         {
-            if( this.SequencePos == SequencePos.End || this.SequencePos == SequencePos.Both )
+            if( res.DisplayProps.IsSequenceStart )
             {
                 UIManager.Instance.ShowSideAMechInfo( attackerAvatar.Actor, UIManager.MechInfoDisplayMode.Full );
                 UIManager.Instance.HideSideBMechInfo();
@@ -151,7 +153,7 @@ public class PlayerAttackAction : AttackAction
 
         TestKilledTargets( res );
 
-        res.SequencePosition = this.SequencePos;
+        
         UIManager.Instance.QueueResult( res );
     }
 

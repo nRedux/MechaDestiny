@@ -13,6 +13,7 @@ public class AttackActionResult : ActionResult
     public int Count = 1;
     public Transform _fireSource;
     public SequencePos SequencePosition = SequencePos.Both;
+    public ResultDisplayProps DisplayProps;
 
     public List<Vector2Int> AffectedAOECells = new List<Vector2Int>();
     public GameObject AOEGraphics = null;
@@ -55,7 +56,7 @@ public class AttackActionResult : ActionResult
     public override async void Start()
     {
         bool camDone = false;
-        if( this.SequencePosition == SequencePos.Start || this.SequencePosition == SequencePos.Both )
+        if( this.DisplayProps.IsSequenceStart )
         {
             Attacker.StartAttackCamera( () =>
             {
@@ -76,7 +77,7 @@ public class AttackActionResult : ActionResult
             GameEngine.Instance.Game.CheckGameOver();
         } );
 
-        if( this.SequencePosition == SequencePos.End || this.SequencePosition == SequencePos.Both )
+        if( this.DisplayProps.IsSequenceEnd )
             Attacker.StopAttackCamera();
     }
 

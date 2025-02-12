@@ -24,6 +24,7 @@ public class PlayerActionHandler : ActorActionHandler
     private UIPickActionRequest _actionPickRequest = null;
     private List<SequenceAction> _sequence = null;
     private int _sequenceIndex = 0;
+    private bool _firstBaseAction = true;
 
     public override ActorAction ActiveAction => _activeAction;
 
@@ -147,9 +148,6 @@ public class PlayerActionHandler : ActorActionHandler
         if( _sequence == null )
             return null;
 
-        if( index == 0 )
-            return null;
-
         for( int i = index-1; i >= 0; i-- )
         {
             if( _sequence[i].Action is PlayerAttackAction attack )
@@ -166,10 +164,7 @@ public class PlayerActionHandler : ActorActionHandler
         if( _sequence == null )
             return null;
 
-        if( index == _sequence.Count -1 )
-            return null;
-
-        for( int i = index + 1; i <= _sequence.Count; i++ )
+        for( int i = index + 1; i < _sequence.Count; i++ )
         {
             if( _sequence[i].Action is PlayerAttackAction attack )
             {
@@ -196,6 +191,7 @@ public class PlayerActionHandler : ActorActionHandler
             _activeAction?.End();
             _activeAction = null;
             _sequenceIndex = 0;
+            _firstBaseAction = true;
         }
 
         if( this._sequence == null )
@@ -206,6 +202,7 @@ public class PlayerActionHandler : ActorActionHandler
             if( _sequenceIndex < _sequence.Count )
             {
                 var nextAction = _sequence[_sequenceIndex];
+
                 _actor.Target = nextAction.Target;
 
                 //Determine if in sequence
@@ -218,44 +215,43 @@ public class PlayerActionHandler : ActorActionHandler
                     MechComponentData nextWeapon = NextWeapon( _sequenceIndex );
 
                     SequencePos seqPos = SequencePos.Start;
+                    ResultDisplayProps displayProps = new ResultDisplayProps();
 
-                    if( prevWeapon == thisWeapon )
+                    if( nextWeapon != thisWeapon )
                     {
-                        if( nextWeapon == thisWeapon )
-                        {
-                            seqPos = SequencePos.Mid;
-                        }
-                        else
-                        {
-                            seqPos = SequencePos.End;
-                        }
+                        displayProps.DoArmEnd = true;
                     }
-                    else
+                    if( prevWeapon != thisWeapon )
                     {
-                        if( nextWeapon == thisWeapon )
-                        {
-                            seqPos = SequencePos.Start;
-                        }
-                        else
-                        {
-                            seqPos = SequencePos.Both;
-                        }
+                        displayProps.DoArmStart = true;
                     }
+                    if( prevWeapon == null )
+                    {
+                        displayProps.IsSequenceStart = true;
+                    }
+                    if( nextWeapon == null )
+                        displayProps.IsSequenceEnd = true;
 
+
+                    attack.DisplayProps = displayProps;
                     attack.SequencePos = seqPos;
 
                     //If this kills the target, break out of the sequence so we don't fire on something dead.
                     attack.OnKillTarget = () =>
                     {
                         if( nextAction.Action is AttackAction endSeqNow )
-                            endSeqNow.SequencePos = SequencePos.End;
-                        _sequence = null;
+                        {
+                            //We want to end arm activity even if it was previously not desired.
+                            //displayProps.DoArmStuff = true;
+                        }
                     };
 
 
                     //Give attack info about this action in the sequence.
                     attack.Target = nextAction.Target;
                     attack.UsedWeapon = nextAction.UsedWeapon;
+
+                    Debug.Log( "DP: " +  attack.DisplayProps.ToString() );
                 }
 
                 _sequenceIndex++;

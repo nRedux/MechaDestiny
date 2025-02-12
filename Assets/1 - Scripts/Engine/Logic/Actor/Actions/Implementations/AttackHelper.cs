@@ -83,7 +83,7 @@ public static class AttackHelper
         {
             for( int i = 0; i < shotCount; i++ )
             {
-                CheckHitAndApplyDamage( actor, res.Target.GfxActor.Actor, res );
+                CheckHitAndApplyDamage( actor, res.Target.Actor, res );
             }
         }
     }

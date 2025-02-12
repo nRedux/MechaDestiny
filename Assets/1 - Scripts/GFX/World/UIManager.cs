@@ -20,6 +20,31 @@ public class GfxAvatarInvalidPrefab : Exception
 }
 
 
+public interface IRequestGroupHandle
+{
+    void Do();
+
+    void Undo();
+}
+
+public class PauseGroupHandle: List<IUIRequest>, IRequestGroupHandle
+{
+    public PauseGroupHandle( List<IUIRequest> requests )
+    {
+        this.AddRange( requests );
+    }
+
+    public void Do()
+    {
+        this.Do( x => x.Pause() );
+    }
+
+    public void Undo()
+    {
+        this.Do( x => x.Pause() );
+    }
+}
+
 public struct NewRequest
 {
     public IUIRequest Request;
@@ -507,6 +532,14 @@ public class UIManager : Singleton<UIManager>
             return;
 
         _newRequests.Add( new NewRequest() { Queued = queue, Request = request } );
+    }
+
+
+    public IRequestGroupHandle PauseRequests( params Type[] types )
+    {
+        PauseGroupHandle handle = new PauseGroupHandle( _activeRequests.Where( x => types.Contains( x.GetType() ) ).ToList() );
+        handle.Do();
+        return handle;
     }
 
 
