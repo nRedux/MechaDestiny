@@ -111,13 +111,24 @@ public class UIWeaponPicker : UIPanel
 
     private void OptionClicked( UIWeaponPickerOption opt )
     {
-        _tempAttackOverlay?.Cancel();
-        _tempAttackOverlay = null;
-        if( _pausedRequests != null )
+        /*Delaying to avoid any race condition where the button component hasn't had it's click callback invoked yet at this time.
+        The button component, on this gameobject, changes the active weapon in it's click callback. Resuming an attack overlay will refresh it to latest
+        active weapon, but if the active weapon hasn't been updated yet it would show the old state.
+        It's possible this code could run, resume the paused requests, and they would display an overlay based on the previously selected weapon.
+        Refer to the comment labeled "A." below this.*/
+        CoroutineUtils.DoDelayUnityFrameEnd( () =>
         {
-            _pausedRequests.Undo();
-            _pausedRequests = null;
-        }
+            //Delay this as well so we have continuity of overlay - this prevents potential flicker.
+            _tempAttackOverlay?.Cancel();
+            _tempAttackOverlay = null;
+
+            //A.The below undo resumes anything paused. If there was a find attack target request, it would resume and refresh it's grid overlay. We want to make sure the new active weapon is set first.
+            if( _pausedRequests != null )
+            {
+                _pausedRequests.Undo();
+                _pausedRequests = null;
+            }
+        } );
     }
 
     private void OnPick( UIWeaponPickerOption option )

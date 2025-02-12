@@ -12,11 +12,17 @@ using System;
 public class UIFindAttackTargetRequest : UIRequest<object, bool>
 {
     private bool _rebuildGrid = false;
-    public BoolWindow Cells;
+    public BoolWindow AttackOptions;
     private int[] _ignoredTeamIDs;
     private Actor _requestingActor;
     private MechComponentData _weapon;
     private Vector2Int _hoveredCell = new Vector2Int( -1000, -1000 );
+
+
+    /// <summary>
+    /// Was the weapon to calculate provided to the request or do we rely on the actor active weapon?
+    /// </summary>
+    private bool _useSpecificWeapon = false;
 
 
     public UIFindAttackTargetRequest( Actor requester, SuccessCallback onSuccess, FailureCallback onFailure, CancelCallback onCancel): base( onSuccess, onFailure, onCancel, requester )
@@ -24,7 +30,7 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
         _rebuildGrid = true;
         _requestingActor = requester;
         _weapon = requester.ActiveWeapon;
-        this.Cells = CalculateCells( requester );
+        this.AttackOptions = CalculateCells( requester );
     }
 
     public UIFindAttackTargetRequest( Actor requester, MechComponentData weapon, SuccessCallback onSuccess, FailureCallback onFailure, CancelCallback onCancel ) : base( onSuccess, onFailure, onCancel, requester )
@@ -32,7 +38,8 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
         _rebuildGrid = true;
         _requestingActor = requester;
         _weapon = weapon;
-        this.Cells = CalculateCells( requester );
+        _useSpecificWeapon = true;
+        this.AttackOptions = CalculateCells( requester );
     }
 
 
@@ -95,20 +102,19 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
         SetupGrid();
     }
 
+    private float _mainTintShift = .2f;
 
     private void SetupGrid()
     {
         GameEngine.Instance.GfxBoard.GeneralOverlay.SetCellColor( GfxCellMode.Attack );
-
-        float mainTintShift = -.2f;
-        GameEngine.Instance.GfxBoard.GeneralOverlay.RenderCells( Cells, true, tintShift: mainTintShift );
+        GameEngine.Instance.GfxBoard.GeneralOverlay.RenderCells( AttackOptions, true, tintShift: _mainTintShift );
         GameEngine.Instance.GfxBoard.AOEOverlay.SetCellColor( GfxCellMode.Attack );
     }
 
 
     private void OnWeaponChanged( ActiveWeaponChanged e )
     {
-        this.Cells = CalculateCells( _requestingActor );
+        this.AttackOptions = CalculateCells( _requestingActor );
         _rebuildGrid = true;
     }
 
@@ -146,7 +152,7 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
         if( Input.GetMouseButtonDown( 0 ) )
         {
             Vector2Int result = new Vector2Int();
-            var cellUnderMouse = UIManager.Instance.FindAttackableCellUnderMouse( ref result, Cells );
+            var cellUnderMouse = UIManager.Instance.FindAttackableCellUnderMouse( ref result, AttackOptions );
             if( cellUnderMouse )
             {
                 //Get all actors at the cell
@@ -163,7 +169,7 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
         if( Input.GetMouseButtonDown( 0 ) )
         {
             Vector2Int result = new Vector2Int();
-            var cellUnderMouse = UIManager.Instance.FindAttackableCellUnderMouse( ref result, Cells );
+            var cellUnderMouse = UIManager.Instance.FindAttackableCellUnderMouse( ref result, AttackOptions );
             if( cellUnderMouse )
             {
                 Succeed( result );
@@ -215,6 +221,25 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
         GameEngine.Instance.GfxBoard.AOEOverlay.Clear();
     }
 
+    public override void OnPaused()
+    {
+        base.OnPaused();
+        GameEngine.Instance.GfxBoard.GeneralOverlay.UnHighlightCell( _hoveredCell );
+        GameEngine.Instance.GfxBoard.GeneralOverlay.Clear();
+    }
+
+    public override void OnResumed()
+    {
+        base.OnResumed();
+
+        if( !_useSpecificWeapon )
+            this._weapon = _requestingActor.ActiveWeapon;
+        this.AttackOptions = CalculateCells( _requestingActor );
+        
+        GameEngine.Instance.GfxBoard.GeneralOverlay.SetCellColor( GfxCellMode.Attack );
+        GameEngine.Instance.GfxBoard.GeneralOverlay.RenderCells( AttackOptions, true, tintShift: _mainTintShift );
+        GameEngine.Instance.GfxBoard.AOEOverlay.SetCellColor( GfxCellMode.Attack );
+    }
 
     private void RenderAOE( Vector2Int cell ) 
     {
