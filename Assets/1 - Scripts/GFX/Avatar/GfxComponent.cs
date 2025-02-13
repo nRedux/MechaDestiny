@@ -5,6 +5,7 @@ using UnityEngine;
 using Sirenix.OdinInspector;
 using static UnityEngine.EventSystems.EventTrigger;
 using System.Linq;
+using UnityEngine.UIElements;
 
 [System.Serializable]
 public class GfxAttachment
@@ -18,42 +19,69 @@ public enum ComponentDestroyEffect
     VersionSwitch
 }
 
+public enum GFXComponentType
+{
+    Weapon,
+    MechPart
+}
+
 
 
 public class GfxComponent : MonoBehaviour
 {
+    public GFXComponentType ComponentType;
+
     public string ActionAnimation;
 
     /// <summary>
     /// Graphics for attack
     /// </summary>
+    [ShowIf( nameof( ShowIfWeapon ) )]
+    [Tooltip( "The Effect to use if this is a weapon and it fires AOE. Effect is spawned in each affected cell." )]
     public GameObjectReference ActionEffect;
 
     /// <summary>
     /// Graphics for aoe effect on cells
     /// </summary>
+    ///     [ShowIf( nameof( ShowIfWeapon ) )]
+    [ShowIf( nameof( ShowIfWeapon ) )]
+    [Tooltip( "The Effect to use if this is a weapon and it fires AOE. Effect is spawned in each affected cell." )]
     public GameObject AOEGraphics;
 
+    [Tooltip("Decides how to effect this part of the mech when it's destroyed. Destroy - hides the object. Version switch - Will make the appearance change.")]
     public ComponentDestroyEffect DestroyEffect;
 
-    public Transform Root;
+    [ShowIf( nameof( ShowIfWeapon ) )]
+    [Tooltip( "The location where fire effects eminate from" )]
     public Transform FirePoint;
+    [Tooltip( "Attachment slots to be able to attach dynamically" )]
     public GfxAttachment[] AttachmentSlots;
 
-    [HideInInspector]
-    public MechComponentData ComponentData;
-
-    public Quaternion IdentityRotation;
-
-    [TitleGroup( "Explosion Points" )]
-    public Renderer SkinnedMeshRenderer;
-    [ReadOnly]
-    public List<Transform> SurfacePoints = new List<Transform>();
-
+    [Tooltip( "Reference to the explosion script which handles death" )]
     public MechComponentDestroyed ExplosionEffect;
 
     [TitleGroup( "Explosion Points" )]
+    [ShowIf( nameof( ShowIfMechPart ) )]
+    public Renderer SkinnedMeshRenderer;
+
+    [ReadOnly]
+    public List<Transform> SurfacePoints = new List<Transform>();
+
+    [TitleGroup( "Explosion Points" )]
     public int NumPoints = 10;
+
+    /// <summary>
+    /// Runtime mech component data
+    /// </summary>
+    [HideInInspector]
+    public MechComponentData ComponentData;
+
+    /// <summary>
+    /// Starting rotation
+    /// </summary>
+    [HideInInspector]
+    public Quaternion IdentityRotation;
+
 
     private StatisticWatcher _healthWatcher;
     private bool _destroyed = false;
@@ -94,6 +122,16 @@ public class GfxComponent : MonoBehaviour
         }
 
         SurfacePoints.Clear();
+    }
+
+    public bool ShowIfMechPart()
+    {
+        return ComponentType == GFXComponentType.MechPart;
+    }
+
+    public bool ShowIfWeapon()
+    {
+        return ComponentType == GFXComponentType.Weapon;
     }
 
 

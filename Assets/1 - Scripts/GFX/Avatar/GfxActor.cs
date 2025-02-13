@@ -125,7 +125,14 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         Actor = actor;
 
-        _mechHealthWatcher = new StatisticWatcher( Torso.ComponentData.GetStatistic( StatisticType.Health ), OnMechHealthChange );
+        if( Torso == null )
+        {
+            Debug.LogError($"{nameof(Torso)} Not assigned", gameObject );
+        }
+        else
+        {
+            _mechHealthWatcher = new StatisticWatcher( Torso.ComponentData.GetStatistic( StatisticType.Health ), OnMechHealthChange );
+        }
     }
 
     private void OnMechHealthChange( StatisticChange change )

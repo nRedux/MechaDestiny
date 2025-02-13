@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 using System.Linq;
 using UnityEngine;
 using Newtonsoft.Json;
+using Unity.VisualScripting;
 
 
 
@@ -17,7 +18,6 @@ public class PlayerMoveAction : MoveAction
         return 0;
     }
 
-    private ActorActionState _state;
     private Game _game;
     private Actor _actor;
     private IEntity _mainEntity;
@@ -36,11 +36,6 @@ public class PlayerMoveAction : MoveAction
     public void OnDeserialize( StreamingContext context )
     {
         
-    }
-
-    public override ActorActionState State()
-    {
-        return _state;
     }
 
     public override CanStartActionResult AllowedToExecute( Actor actor )
@@ -75,7 +70,7 @@ public class PlayerMoveAction : MoveAction
 
         _moveOptionsWindow = new BoolWindow( _range * 2, game.Board );
 
-        _state = ActorActionState.Started;
+        this.State = ActorActionState.Started;
         _moveOptionsWindow.MoveCenter( actor.Position );
         //Get all cells which could be moved to.
         _game.Board.GetMovableCellsManhattan( _range, _moveOptionsWindow, actor );
@@ -98,7 +93,7 @@ public class PlayerMoveAction : MoveAction
             res.OnComplete = () => {
                 End();
              };
-            _state = ActorActionState.Executing;
+            this.State = ActorActionState.Executing;
             UIManager.Instance.QueueResult( res );
 
             actor.SetPosition( moveTarget, game );
@@ -132,7 +127,7 @@ public class PlayerMoveAction : MoveAction
     public override void End()
     {
         base.End();
-        _state = ActorActionState.Finished;
+        this.State = ActorActionState.Finished;
         UIManager.Instance.MoveHoverInfo?.Hide();
         CancelUIRequest();
     }

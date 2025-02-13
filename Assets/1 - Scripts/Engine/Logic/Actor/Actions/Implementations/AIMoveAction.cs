@@ -36,9 +36,6 @@ public class AIMoveAction : MoveAction
     public override int BoardRange => Range;
 
 
-    private ActorActionState _state;
-
-
     private FloatWindow GenerateMoveHeatmap( Game game, Actor actor )
     {
         var mechData = actor.GetMechData();
@@ -177,7 +174,7 @@ public class AIMoveAction : MoveAction
     public override void Start( Game game, Actor actor )
     {
         base.Start( game, actor );
-        _state = ActorActionState.Started;
+        this.State = ActorActionState.Started;
         var gfxBoard = GameEngine.Instance.GfxBoard;
 
         SortedList<float, Vector2Int> targets = new SortedList<float, Vector2Int>( new DuplicateKeyComparer<float>() );
@@ -219,7 +216,7 @@ public class AIMoveAction : MoveAction
         ActionResult res = new MoveActionResult( actor, GameEngine.Instance.Board.GetNewPath( actor.Position, Target, actor ) );
         actor.SetPosition( Target, game );
 
-        _state = ActorActionState.Executing;
+        this.State = ActorActionState.Executing;
         res.OnComplete = () => 
         {
             End(); //Whole action done. Can move on.
@@ -239,14 +236,11 @@ public class AIMoveAction : MoveAction
         return;
     }
 
-    public override ActorActionState State()
-    {
-        return _state;
-    }
+
 
     public override void End()
     {
-        _state = ActorActionState.Finished;
+        this.State = ActorActionState.Finished;
         base.End();
     }
 }

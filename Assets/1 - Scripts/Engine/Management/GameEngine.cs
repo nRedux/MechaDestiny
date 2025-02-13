@@ -213,11 +213,12 @@ public class GameEngine : Singleton<GameEngine>
         actor.SetIsPlayer( true );
         team1.AddMember( actor );
         actor.SetPosition( new Vector2Int( 1, 1 ), Game );
-
+        /*
         var actor2 = TestActor1.GetDataSync();
         actor2.SetIsPlayer( true );
         team1.AddMember( actor2 );
         actor2.SetPosition( new Vector2Int( 2, 1 ), Game );
+        */
     }
 
 

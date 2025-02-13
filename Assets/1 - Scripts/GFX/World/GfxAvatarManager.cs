@@ -60,10 +60,10 @@ public class GfxAvatarManager
 
         //Make sure the data is linked between graphics and the runtime data.
         var mech = actor.GetSubEntities()[0] as MechData;
-        gfxActor.Torso.Initialize( mech.Torso );
-        gfxActor.Legs.Initialize( mech.Legs );
-        gfxActor.LeftArm.Initialize( mech.LeftArm );
-        gfxActor.RightArm.Initialize( mech.RightArm );
+        gfxActor.Torso.Opt()?.Initialize( mech.Torso );
+        gfxActor.Legs.Opt()?.Initialize( mech.Legs );
+        gfxActor.LeftArm.Opt()?.Initialize( mech.LeftArm );
+        gfxActor.RightArm.Opt()?.Initialize( mech.RightArm );
 
         gfxActor.Initialize( actor );
     }
@@ -76,6 +76,12 @@ public class GfxAvatarManager
 
     public async void BuildComponent( MechComponentData component, GfxComponent gfxComponent )
     {
+        if( gfxComponent == null )
+        {
+            Debug.LogError($"{nameof(gfxComponent)} argument cannot be null.");
+            return;
+        }
+
         if( component == null )
             return;
         for( int i = 0; i < component.Attachments.Length; i++ )

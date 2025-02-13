@@ -11,8 +11,6 @@ using Newtonsoft.Json;
 public class EndActorAction : ActorAction
 {
 
-    private ActorActionState _state;
-
 
     [OnDeserialized]
     public void OnDeserialize( StreamingContext context )
@@ -20,10 +18,6 @@ public class EndActorAction : ActorAction
         
     }
 
-    public override ActorActionState State()
-    {
-        return _state;
-    }
 
     public override void Tick()
     {
@@ -32,7 +26,7 @@ public class EndActorAction : ActorAction
 
     public override void Start( Game game, Actor actor ) 
     {
-        _state = ActorActionState.Executing;
+        this.State = ActorActionState.Executing;
     }
 
 
@@ -45,6 +39,6 @@ public class EndActorAction : ActorAction
     public override void End()
     {
         base.End();
-        _state = ActorActionState.Finished;
+        this.State = ActorActionState.Finished;
     }
 }

@@ -36,7 +36,7 @@ public enum ActionCategory
     Control,
     Attack,
     Support,
-
+    Augment,
     NONE
 }
 
@@ -47,11 +47,16 @@ public abstract class ActorAction
     public LocalizedString DisplayName;
     public LocalizedString Description;
 
+    public ActorActionState State
+    {
+        get;
+        protected set;
+    } = ActorActionState.Started;
+
     public virtual int BoardRange { get; }
     public virtual void Start( Game game, Actor actor ) { }
     public virtual void Tick() { }
     public virtual void TurnEnded() { }
-    public virtual ActorActionState State() { return ActorActionState.Started;  }
     public virtual void End() { }
 
     public bool AllowActionSelect { get; protected set; } = true;

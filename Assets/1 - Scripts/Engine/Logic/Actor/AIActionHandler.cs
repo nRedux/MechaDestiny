@@ -58,7 +58,7 @@ public class AIActionHandler : ActorActionHandler
         {
             _activeAction.Tick();
 
-            if( _activeAction.State() == ActorActionState.Finished )
+            if( _activeAction.State == ActorActionState.Finished )
             {
                 //Why isn't it ending itself if it's completed?
                 _activeAction.End();

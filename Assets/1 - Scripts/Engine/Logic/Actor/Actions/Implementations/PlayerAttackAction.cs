@@ -16,8 +16,6 @@ public class PlayerAttackAction : AttackAction
     public int Range = 3;
     public int Damage = 1;
 
-
-    private ActorActionState _state;
     private Game _game;
     private Actor _actor;
     private UIFindAttackTargetRequest _uiRequest = null;
@@ -26,16 +24,9 @@ public class PlayerAttackAction : AttackAction
     public override int BoardRange => Range;
 
 
-    public override ActorActionState State()
-    {
-        return _state;
-    }
-
-
     public override void Tick()
     {
         //TryRequestWeaponPick();
-
         return;
     }
 
@@ -85,7 +76,7 @@ public class PlayerAttackAction : AttackAction
 
     public override void End()
     {
-        _state = ActorActionState.Finished;
+        State = ActorActionState.Finished;
         //UIManager.Instance.PlayerAttackUI.Opt()?.SetActive( false );
         CancelUIRequests();
         TeardownListeners();
@@ -113,7 +104,7 @@ public class PlayerAttackAction : AttackAction
     public void BeginBehavior( Game game, Actor actor )
     {
         //Get valid move locations. Notify the UI we need to display a collection of move locations. Wait for UI to return a result. Execute move.
-        _state = ActorActionState.Started;
+        State = ActorActionState.Started;
         GfxActor attackerAvatar = GameEngine.Instance.AvatarManager.GetAvatar( actor );
         DoAttack( attackerAvatar );
         if( DisplayProps.IsSequenceStart )
@@ -133,7 +124,7 @@ public class PlayerAttackAction : AttackAction
     {
         var selectedTarget = this.Target;
         SpendAP( attackerAvatar.Actor );
-        _state = ActorActionState.Executing;
+        State = ActorActionState.Executing;
         
         AttackActionResult res = new AttackActionResult( attackerAvatar, this.Target, this.UsedWeapon );
         res.SequencePosition = this.SequencePos;

@@ -1,0 +1,139 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e9f80112c6378e408ab46af9c7034ec, type: 3}
+  m_Name: Mech Asset
+  m_EditorClassIdentifier: 
+  Data:
+    AssetReference:
+      m_AssetGUID: 19f517940b291084caac4da5afe38bf6
+      m_SubObjectName: 
+      m_SubObjectGUID: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    ID: 
+    Statistics:
+      _serializedKeys: 
+      _serializedValues: []
+    MechColor: {r: 0.29369885, g: 0.5360936, b: 0.8301887, a: 1}
+    TorsoAsset:
+      m_AssetGUID: 8a289ba85b3167b429167d1e9e952c22
+      m_SubObjectName: 
+      m_SubObjectGUID: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    LegsAsset:
+      m_AssetGUID: 1b94ecdd1d930fc408545dde50568766
+      m_SubObjectName: 
+      m_SubObjectGUID: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    LeftArmAsset:
+      m_AssetGUID: 0ba063b3a4219ae43953438ea5836988
+      m_SubObjectName: 
+      m_SubObjectGUID: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    RightArmAsset:
+      m_AssetGUID: f0cc40bbd6ea05e479eab6b5a084f791
+      m_SubObjectName: 
+      m_SubObjectGUID: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    ComponentData: []
+    Torso:
+      AssetReference:
+        m_AssetGUID: 
+        m_SubObjectName: 
+        m_SubObjectGUID: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+      ID: 
+      Statistics:
+        _serializedKeys: 
+        _serializedValues: []
+      Model:
+        m_AssetGUID: 
+        m_SubObjectName: 
+        m_SubObjectGUID: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+      Type: 0
+      AttachmentType: {fileID: 0}
+      Attachments: []
+      Flags: 0
+      AOEShape: {fileID: 0}
+    Legs:
+      AssetReference:
+        m_AssetGUID: 
+        m_SubObjectName: 
+        m_SubObjectGUID: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+      ID: 
+      Statistics:
+        _serializedKeys: 
+        _serializedValues: []
+      Model:
+        m_AssetGUID: 
+        m_SubObjectName: 
+        m_SubObjectGUID: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+      Type: 0
+      AttachmentType: {fileID: 0}
+      Attachments: []
+      Flags: 0
+      AOEShape: {fileID: 0}
+    LeftArm:
+      AssetReference:
+        m_AssetGUID: 
+        m_SubObjectName: 
+        m_SubObjectGUID: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+      ID: 
+      Statistics:
+        _serializedKeys: 
+        _serializedValues: []
+      Model:
+        m_AssetGUID: 
+        m_SubObjectName: 
+        m_SubObjectGUID: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+      Type: 0
+      AttachmentType: {fileID: 0}
+      Attachments: []
+      Flags: 0
+      AOEShape: {fileID: 0}
+    RightArm:
+      AssetReference:
+        m_AssetGUID: 
+        m_SubObjectName: 
+        m_SubObjectGUID: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+      ID: 
+      Statistics:
+        _serializedKeys: 
+        _serializedValues: []
+      Model:
+        m_AssetGUID: 
+        m_SubObjectName: 
+        m_SubObjectGUID: 
+        m_SubObjectType: 
+        m_EditorAssetChanged: 0
+      Type: 0
+      AttachmentType: {fileID: 0}
+      Attachments: []
+      Flags: 0
+      AOEShape: {fileID: 0}

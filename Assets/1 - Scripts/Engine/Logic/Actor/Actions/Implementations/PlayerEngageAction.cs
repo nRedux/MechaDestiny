@@ -19,18 +19,12 @@ public class PlayerEngageAction : AttackAction
     public int Range = 3;
     public int Damage = 1;
 
-    private ActorActionState _state;
     private Game _game;
     private Actor _actor;
     private UIFindAttackTargetRequest _uiRequest = null;
     private bool _uiWantsToFire = false;
 
     public override int BoardRange => Range;
-
-    public override ActorActionState State()
-    {
-        return _state;
-    } 
 
 
     public override void Tick()
@@ -61,7 +55,7 @@ public class PlayerEngageAction : AttackAction
 
     public override void End()
     {
-        _state = ActorActionState.Finished;
+        this.State = ActorActionState.Finished;
         UIManager.Instance.TryEndPickAction();
         UIManager.Instance.HideActionSequence();
         UIManager.Instance.PlayerAttackUI.Opt()?.SetActive( false );
@@ -90,7 +84,7 @@ public class PlayerEngageAction : AttackAction
         UIManager.Instance.PlayerAttackUI.Opt()?.SetActive( true );
 
         //Get valid move locations. Notify the UI we need to display a collection of move locations. Wait for UI to return a result. Execute move.
-        _state = ActorActionState.Executing;
+        this.State = ActorActionState.Executing;
 
         GfxActor attackerAvatar = GameEngine.Instance.AvatarManager.GetAvatar( actor );
         UIManager.Instance.ShowSideAMechInfo( attackerAvatar.Actor, UIManager.MechInfoDisplayMode.Full );

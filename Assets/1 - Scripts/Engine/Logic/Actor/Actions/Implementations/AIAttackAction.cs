@@ -20,19 +20,12 @@ public class AIAttackAction : AttackAction
 
     UIFindAttackTargetRequest _uiRequest = null;
 
-    private ActorActionState _state;
-
 
     [OnDeserialized]
     public void OnDeserialize( StreamingContext context )
     {
     }
 
-
-    public override ActorActionState State()
-    {
-        return _state;
-    }
 
 
     public override void Tick()
@@ -113,7 +106,7 @@ public class AIAttackAction : AttackAction
 
         _game = game;
         _actor = actor;
-        _state = ActorActionState.Started;
+        this.State = ActorActionState.Started;
 
         _attackOptions = new BoolWindow( range * 2, game.Board );
 
@@ -161,7 +154,7 @@ public class AIAttackAction : AttackAction
         if( !activeWep.IsAOE() )
             UIManager.Instance.ShowSideBMechInfo( targetActor, UIManager.MechInfoDisplayMode.Mini );
 
-        _state = ActorActionState.Executing;
+        this.State = ActorActionState.Executing;
         AttackActionResult res = new AttackActionResult( attackerAvatar, targetLocation, actor.ActiveWeapon );
         res.OnComplete = () => {
             UIManager.Instance.HideSideBMechInfo();
@@ -185,7 +178,7 @@ public class AIAttackAction : AttackAction
 
     public override void End()
     {
-        _state = ActorActionState.Finished;
+        this.State = ActorActionState.Finished;
         _uiRequest?.Cancel();
         _uiRequest = null;
     }

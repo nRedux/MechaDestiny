@@ -95,7 +95,7 @@ public class PlayerActionHandler : ActorActionHandler
 
         UIManager.Instance.TryPickWeapon( this._actor );
 
-        if( _activeAction != null && _activeAction.State() == ActorActionState.Finished )
+        if( _activeAction != null && _activeAction.State == ActorActionState.Finished )
             _activeAction = null;
 
         PerformActionSequence( game );
@@ -309,7 +309,7 @@ public class PlayerActionHandler : ActorActionHandler
     private bool TryPickAction( )
     {
         //Only allow picking actions if there isn't a currently executing action
-        if( _activeAction != null && _activeAction.State() == ActorActionState.Executing )
+        if( _activeAction != null && _activeAction.State == ActorActionState.Executing )
             return false;
 
         if( _activeAction != null && !_activeAction.AllowActionSelect )
