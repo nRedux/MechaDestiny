@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
 using System;
+using TMPro;
 
 public class AttackActionResult : ActionResult
 {
     public GfxActor Attacker;
     public MechComponentData AttackerMechComponent;
     public MechComponentData AttackerWeapon;
+    public bool Evaded = false;
 
     public int Count = 1;
     public Transform _fireSource;
     public SequencePos SequencePosition = SequencePos.Both;
-    public ResultDisplayProps DisplayProps;
+    //Has default, AI isn't set up with custom props when attacking
+    public ResultDisplayProps DisplayProps = new ResultDisplayProps() { DoArmEnd = true, DoArmStart = true, IsSequenceEnd = true, IsSequenceStart = true };
 
     public List<Vector2Int> AffectedAOECells = new List<Vector2Int>();
     public GameObject AOEGraphics = null;
@@ -56,6 +59,12 @@ public class AttackActionResult : ActionResult
     public override async void Start()
     {
         bool camDone = false;
+
+        if( Evaded )
+        {
+            UIDamageNumbers.Instance.CreatePop( "Evaded", Target.Position );
+        }
+
         if( this.DisplayProps.IsSequenceStart )
         {
             Attacker.StartAttackCamera( () =>

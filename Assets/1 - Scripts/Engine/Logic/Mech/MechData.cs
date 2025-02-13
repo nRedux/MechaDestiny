@@ -52,6 +52,18 @@ public class MechData: SimpleEntity<MechAsset>
         } 
     }
 
+
+    public StatisticCollection AccumulateStatistics()
+    {
+        StatisticCollection accumulatedStats = new StatisticCollection();
+        accumulatedStats.Merge( Torso.Statistics );
+        accumulatedStats.Merge( Legs.Statistics );
+        accumulatedStats.Merge( LeftArm.Statistics );
+        accumulatedStats.Merge( RightArm.Statistics );
+        return accumulatedStats;
+    }
+
+
     /// <summary>
     /// First time initialization. Should be called after deserialized.
     /// </summary>
@@ -103,5 +115,12 @@ public class MechData: SimpleEntity<MechAsset>
     public override bool IsDead()
     {
         return Torso.IsDead();
+    }
+
+    public int GetEvasion()
+    {
+        if( Legs == null )
+            return 0;
+        return Legs.GetStatisticValue( StatisticType.Evasion );
     }
 }

@@ -78,7 +78,7 @@ public class PlayerEngageAction : AttackAction
         _game = game;
         _actor = actor;
 
-        UIManager.Instance.TryPickAction( _actor, ActionPicked, () => { }, ActionCategory.Attack );
+        UIManager.Instance.TryPickAction( _actor, ActionPicked, () => { }, ActionCategory.Augment );
         //UIManager.Instance.ShowActionPicker( OnSelect, GetPickableActionCategory() );
         UIManager.Instance.ShowSequenceSelector( actor, () => _uiWantsToFire = true );
         UIManager.Instance.PlayerAttackUI.Opt()?.SetActive( true );

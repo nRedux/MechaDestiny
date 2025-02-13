@@ -125,6 +125,14 @@ MonoBehaviour:
 '
     m_Metadata:
       m_Items: []
+  - m_Id: 108645643252547584
+    m_Key: ui_action_evade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 108645788065087488
+    m_Key: ui_action_evade_desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -24,6 +24,8 @@ public enum StatisticType
 
     MinAccuracy = 0x0130,
     MaxAccuracy = 0x0131,
+
+    Evasion = 0x0140,
 }
 
 [Flags]
@@ -115,9 +117,15 @@ public class Statistic
     }
 
 
-    public Statistic( int value )
+    public Statistic( StatisticType type, int value )
     {
+        this.Type = type;
         _value = value;
+    }
+
+    public override string ToString()
+    {
+        return $"{Type.ToString()}: {_value}";
     }
 
 

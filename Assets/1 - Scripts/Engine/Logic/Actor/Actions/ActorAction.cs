@@ -57,7 +57,7 @@ public abstract class ActorAction
     public virtual void Start( Game game, Actor actor ) { }
     public virtual void Tick() { }
     public virtual void TurnEnded() { }
-    public virtual void End() { }
+    public virtual void End() { State = ActorActionState.Finished; }
 
     public bool AllowActionSelect { get; protected set; } = true;
 

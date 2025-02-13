@@ -82,6 +82,7 @@ public static class AttackHelper
         }
         else
         {
+            res.Evaded = AttackHelper.CalculateAttackEvaded( actor, res.Target.Actor );
             for( int i = 0; i < shotCount; i++ )
             {
                 CheckHitAndApplyDamage( actor, res.Target.Actor, res );
@@ -100,8 +101,11 @@ public static class AttackHelper
         var randomCompEntity = targetMechData.SelectComponentTarget();
         var targetStats = randomCompEntity.GetStatistics();
         var healthStat = targetStats.GetStatistic( StatisticType.Health );
-        bool isHit = CalculateHitOrMiss( attacker, target );
 
+
+        bool isHit = CalculateHitOrMiss( attacker, target );
+        if( res.Evaded )
+            isHit = false;
         StatChangeTag tags = StatChangeTag.None;
         if( !isHit )
             tags |= StatChangeTag.Miss;
@@ -128,6 +132,17 @@ public static class AttackHelper
         return UnityEngine.Random.value < accuracy;
     }
 
+
+    public static bool CalculateAttackEvaded( Actor attackActor, Actor targetActor )
+    {
+        var actor = attackActor;
+        var weapon = actor.ActiveWeapon;
+        var evasion = targetActor.Boosts.GetStatistic( StatisticType.Evasion );
+        if( evasion == null )
+            return false;
+
+        return UnityEngine.Random.value < evasion.Value;
+    }
 
 
     public static int GetFragmentCount( IEntity weapon )

@@ -29,4 +29,17 @@ public class UIDamageNumbers : Singleton<UIDamageNumbers>
         pop.DoRise();
     }
 
+    public void CreatePop( string message, Vector3 worldPos )
+    {
+        if( DamagePrefab == null )
+            return;
+
+        var pop = Instantiate<UIDamagePop>( DamagePrefab );
+        pop.transform.SetParent( this.transform, false );
+        pop.Initialize( message );
+        var rt = pop.transform as RectTransform;
+        rt.SetCanvasScreenPosition( _rectTransform, worldPos + Random.insideUnitSphere * .1f );
+        pop.DoRise();
+    }
+
 }

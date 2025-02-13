@@ -22,6 +22,8 @@ public class SimpleEntity<TData> : DataObject<TData>, IEntity
     [HideInInspector]
     public EntityCollection SubEntities = new EntityCollection();
 
+    public StatisticCollection Boosts = new StatisticCollection();
+
     public int FeatureFlags => _entityFlags;
 
     public int StatusFlags => _statusFlags;

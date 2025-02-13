@@ -178,7 +178,14 @@ public class Actor : SimpleEntity<ActorAsset>
     {
         TurnComplete = false;
         ActionHandler.SetupForTurn();
+        DoStatisticsResetForTurn();
+    }
+
+
+    private void DoStatisticsResetForTurn()
+    {
         RestoreAbilityPointsForTurn();
+        ResetBoostsStatistics();
     }
 
 
@@ -190,6 +197,15 @@ public class Actor : SimpleEntity<ActorAsset>
         var ap = GetStatistic( StatisticType.AbilityPoints );
         var maxAP = GetStatisticValue( StatisticType.MaxAbilityPoints );
         ap.SetValue( maxAP );
+    }
+
+    public void ResetBoostsStatistics()
+    {
+        MechData md = this.GetMechData();
+        //Fresh copy of base statistics
+        Boosts = new StatisticCollection( this.Statistics );
+        //Merge in statistics from mech components (not including weapons, etc)
+        Boosts.Merge( md.AccumulateStatistics() );
     }
 
 

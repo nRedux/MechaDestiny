@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System.Runtime.Serialization;
 using System;
 using static UnityEngine.EventSystems.EventTrigger;
+using UnityEngine.Android;
 
 [System.Serializable]
 public class StatisticCollection: Dictionary<StatisticType, Statistic>, IStatisticSource, ISerializationCallbackReceiver
@@ -20,6 +21,10 @@ public class StatisticCollection: Dictionary<StatisticType, Statistic>, IStatist
     private List<Statistic> _serializedValues = new List<Statistic>();
 
     public IEntity Entity { get => _entity; }
+
+    public StatisticCollection() : base() { }
+
+    public StatisticCollection( StatisticCollection other ) : base( other ) { }
 
     public bool HasStatistic( StatisticType statistic)
     {
@@ -38,16 +43,18 @@ public class StatisticCollection: Dictionary<StatisticType, Statistic>, IStatist
 
     public Statistic AddStatistic( StatisticType statistic, int value )
     {
-        Statistic newStatistic = new Statistic( value );
+        Statistic newStatistic = new Statistic( statistic, value );
         Add( statistic, newStatistic );
         return newStatistic;
     }
+
 
     [OnDeserialized]
     public void OnJsonDeserialized( StreamingContext context )
     {
         this.Do( x => x.Value.Type = x.Key );
     }
+
 
     public void OnBeforeSerialize()
     {
@@ -60,6 +67,7 @@ public class StatisticCollection: Dictionary<StatisticType, Statistic>, IStatist
         }
     }
 
+
     public void OnAfterDeserialize()
     {
         this.Clear();
@@ -71,9 +79,33 @@ public class StatisticCollection: Dictionary<StatisticType, Statistic>, IStatist
             this.Add( _serializedKeys[i], _serializedValues[i] );
     }
 
+
     internal void SetEntity( IEntity entity )
     {
         _entity = entity;
         this.Do( x => x.Value.Entity = entity );
+    }
+
+
+    /// <summary>
+    /// Merge other collection into this collection. Creates stats in this from other if they don't exist in this. Adds values from other if they do exist in this.
+    /// Does nothing with callbacks or events from other.
+    /// </summary>
+    /// <param name="other">The other statistic collection</param>
+    public void Merge( StatisticCollection other )
+    {
+        foreach( var stat in other )
+        {
+            if( this.ContainsKey(stat.Key) )
+            {
+                //Merge into our value
+                this[stat.Key].Value += stat.Value.Value;
+            }
+            else
+            {
+                //Add, we don't have it
+                AddStatistic( stat.Key, stat.Value.Value );
+            }
+        }
     }
 }
