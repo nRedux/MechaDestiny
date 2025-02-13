@@ -60,11 +60,6 @@ public class AttackActionResult : ActionResult
     {
         bool camDone = false;
 
-        if( Evaded )
-        {
-            UIDamageNumbers.Instance.CreatePop( "Evaded", Target.Position );
-        }
-
         if( this.DisplayProps.IsSequenceStart )
         {
             Attacker.StartAttackCamera( () =>
@@ -78,6 +73,11 @@ public class AttackActionResult : ActionResult
             {
                 await Task.Yield();
             }
+        }
+
+        if( Evaded )
+        {
+            UIDamageNumbers.Instance.CreatePop( "Evaded", Target.Position );
         }
 
         await Attacker.ExecuteAction( this, () =>
