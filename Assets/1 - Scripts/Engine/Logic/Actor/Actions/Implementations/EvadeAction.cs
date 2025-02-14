@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 //Action responsible for boosting evasion
@@ -9,6 +10,9 @@ public class EvadeAction : ActorAction
     /// </summary>
     public int EvadeChance;
 
+    [NonSerialized]
+    public UIInfoPop InfoPop;
+
     public override void Start( Game game, Actor actor )
     {
         base.Start( game, actor );
@@ -19,6 +23,28 @@ public class EvadeAction : ActorAction
         else
             evasion.Value += EvadeChance;
 
+        CreatePopup( actor, UIInfoPopups.BOOST_POPUP );
+
         End();
+    }
+
+    private void CreatePopup( Actor actor, string popupType )
+    {
+        if( string.IsNullOrEmpty( popupType ) )
+            return;
+
+        var avatar = GameEngine.Instance.AvatarManager.GetAvatar( actor );
+        if( avatar == null )
+        {
+            Debug.LogError("Avatar null");
+            return;
+        }
+        var torso = avatar.Torso;
+        if( torso == null )
+        {
+            Debug.LogError("Avatar has no torso");
+            return;
+        }
+        UIInfoPopups.Instance.CreatePop( popupType, "Evade UP", torso.transform.position );
     }
 }

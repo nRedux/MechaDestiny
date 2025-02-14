@@ -61,7 +61,7 @@ public class UIPanel : UIShowable
     /// <param name="position">The screen position</param>
     public void SetCanvasScreenPosition( Vector3 position )
     {
-        _rectTransform.SetCanvasScreenPosition( _canvasRectTransform, position );
+        _rectTransform.PositionOverWorld( _canvasRectTransform, position );
     }
 
     public void CreateBackground()

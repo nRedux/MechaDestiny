@@ -1,9 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
-using System;
-using TMPro;
 
 public class AttackActionResult : ActionResult
 {
@@ -66,9 +63,7 @@ public class AttackActionResult : ActionResult
             {
                 camDone = true;
             }, Attacker, Target );
-        
 
-            //OnComplete += () => { Attacker.StopAttackCamera(); };
             while( !camDone )
             {
                 await Task.Yield();
@@ -77,7 +72,7 @@ public class AttackActionResult : ActionResult
 
         if( Evaded )
         {
-            UIDamageNumbers.Instance.CreatePop( "Evaded", Target.Position );
+            UIInfoPopups.Instance.CreatePop( "Evaded", Target.GfxActor.GetTorsoPosition() );
         }
 
         await Attacker.ExecuteAction( this, () =>

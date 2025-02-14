@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting;
 
-public class UIDamagePop : MonoBehaviour
+public class UIInfoPop : MonoBehaviour
 {
 
     public TMP_Text Value;
@@ -69,6 +69,6 @@ public class UIDamagePop : MonoBehaviour
         if( _container == null )
             return;
         if( _rectTransform != null )
-            _rectTransform.SetCanvasScreenPosition( _container, _worldPosTarget + _offset );
+            _rectTransform.PositionOverWorld( _container, _worldPosTarget + _offset );
     }
 }

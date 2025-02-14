@@ -122,7 +122,7 @@ public class RigidBodyProjectile : ActionEffect, IGfxResult
             var avatar = GameEngine.Instance.AvatarManager.GetAvatar( actor );
 
             var targetComponent = avatar.FindComponent( x.Statistic.Entity ); 
-            UIDamageNumbers.Instance.CreatePop( x, targetComponent?.transform.position ?? transform.position );
+            UIInfoPopups.Instance.CreatePop( x, targetComponent?.transform.position ?? transform.position );
         } );
 
         OnHitSurface.Invoke( EffectSurfaceType.Metal );

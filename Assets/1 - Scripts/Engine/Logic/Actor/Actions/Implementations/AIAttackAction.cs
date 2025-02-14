@@ -145,9 +145,7 @@ public class AIAttackAction : AttackAction
                 Debug.Log( "No target for AI to attack" );
                 return;
             }
-
-            targetAvatar = GameEngine.Instance.AvatarManager.GetAvatar( targetActor );
-            targetLocation = new SmartPoint( targetAvatar );
+            targetLocation = new SmartPoint( targetActor );
         }
 
         UIManager.Instance.ShowSideAMechInfo( actor, UIManager.MechInfoDisplayMode.Mini );

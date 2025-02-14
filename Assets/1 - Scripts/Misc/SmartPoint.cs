@@ -6,6 +6,12 @@ using Newtonsoft.Json;
 using Unity.VisualScripting;
 
 
+public class SmartPointException: System.Exception
+{
+    public SmartPointException() : base() { }
+    public SmartPointException( string message ) : base( message ) { }
+}
+
 
 [System.Serializable]
 public class SmartPoint
@@ -53,6 +59,7 @@ public class SmartPoint
             return $"Transform: None, Position: {Position}";
     }
 
+    
     public Vector3 Position
     {
         get
@@ -93,14 +100,18 @@ public class SmartPoint
             this.Coordinate = target.position;
     }
 
-    public SmartPoint( GfxActor target )
+    public SmartPoint( Actor target )
     {
         if( target == null )
-            return;
-        this.Actor = target.Actor;
-        this.GfxActor = target;
-        this.Transform = target.transform;
-        this.Coordinate = target.transform.position;
+            throw new SmartPointException( $"Argument {nameof( target )} cannot be null." );
+
+        this.Actor = target;
+        this.GfxActor = GameEngine.Instance.AvatarManager.GetAvatar( target );
+        if( this.GfxActor == null )
+            throw new SmartPointException( $"{nameof(SmartPoint)} No avatar found for actor in argument {nameof(target)}" );
+
+        this.Transform = this.GfxActor.transform;
+        this.Coordinate = this.GfxActor.transform.position;
     }
 
 

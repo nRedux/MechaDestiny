@@ -36,6 +36,6 @@ public class UIWorldOverlay : MonoBehaviour
         if( !canvasRT || !thisRT )
             return;
 
-        RectTransform.SetCanvasScreenPosition( CanvasRectTransform, position );
+        RectTransform.PositionOverWorld( CanvasRectTransform, position );
     }
 }

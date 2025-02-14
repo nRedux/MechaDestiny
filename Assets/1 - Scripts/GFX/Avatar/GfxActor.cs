@@ -427,4 +427,13 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     #endregion CAMERA
 
+
+    /// <summary>
+    /// Convenience method for finding the position of the torso component in world space.
+    /// </summary>
+    /// <returns>The torso transform position if Torso is non null, this transform position otherwise</returns>
+    public Vector3 GetTorsoPosition()
+    {
+        return Torso.Opt()?.transform.position ?? transform.position;
+    }
 }

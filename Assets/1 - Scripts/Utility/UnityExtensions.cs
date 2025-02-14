@@ -78,6 +78,6 @@ public static class UnityExtensions
     {
         var _rectTransform = transform.GetComponent<RectTransform>();
         var _canvasRectTransform = transform.GetComponentInParent<Canvas>().Opt()?.GetComponent<RectTransform>();
-        _rectTransform.Opt()?.SetCanvasScreenPosition( _canvasRectTransform, worldPosition );
+        _rectTransform.Opt()?.PositionOverWorld( _canvasRectTransform, worldPosition );
     }
 }

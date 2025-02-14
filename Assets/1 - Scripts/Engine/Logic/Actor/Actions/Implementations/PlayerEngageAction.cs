@@ -147,7 +147,7 @@ public class PlayerEngageAction : AttackAction
 
                 UIManager.Instance.ShowSideBMechInfo( actor, UIManager.MechInfoDisplayMode.Full );
 
-                SmartPoint targetLocation = new SmartPoint( targetAvatar );
+                SmartPoint targetLocation = new SmartPoint( actor );
                 UIManager.Instance.ActionSequence.AddItem( new SequenceAction() { Action = attack, Target = targetLocation, UsedWeapon = this._actor.ActiveWeapon } );
             }
 

@@ -459,6 +459,7 @@ RectTransform:
   - {fileID: 692621372}
   - {fileID: 1864104056}
   - {fileID: 1797041578}
+  - {fileID: 1257286234}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2126,8 +2127,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 795212736}
+  - component: {fileID: 795212737}
   m_Layer: 5
-  m_Name: UIDamagePopups
+  m_Name: UI Info Popups
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2152,6 +2154,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &795212737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795212735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97730c389a185814cb065d52ff938e30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DamagePrefab: {fileID: 5326303884624702734, guid: 721f1a2ccd063a148aaf62984b2555a2, type: 3}
+  Popups:
+  - Type: boost
+    Popup: {fileID: 7172026385726007587, guid: bbaac57af37ebb441a406cdf3ab5b874, type: 3}
 --- !u!1 &805445163
 GameObject:
   m_ObjectHideFlags: 0
@@ -3584,6 +3602,41 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1257286233
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1257286234}
+  m_Layer: 5
+  m_Name: Boost UI Animation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1257286234
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1257286233}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 30036388}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1292006881
 GameObject:
   m_ObjectHideFlags: 0
@@ -5283,6 +5336,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI AI Tools
       objectReference: {fileID: 0}
+    - target: {fileID: 7304650814770808855, guid: 8b33d50c766d22a4092e0f58a7981fc4, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7862670197601745614, guid: 8b33d50c766d22a4092e0f58a7981fc4, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -6164,6 +6221,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI Action Sequence
       objectReference: {fileID: 0}
+    - target: {fileID: 4157895541239049516, guid: 4d32f08ac227ad243addfd910103d919, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7230672417999727173, guid: 4d32f08ac227ad243addfd910103d919, type: 3}
       propertyPath: m_RaycastTarget
       value: 0
@@ -6763,6 +6824,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI Full Mech Info P2
       objectReference: {fileID: 0}
+    - target: {fileID: 7338714695082495643, guid: 15ba48cdd9266c94e8ad27fa6e08673d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7654135526788900009, guid: 15ba48cdd9266c94e8ad27fa6e08673d, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
@@ -6867,6 +6932,10 @@ PrefabInstance:
     - target: {fileID: 6111917183394082272, guid: e3d03085ee3807f40ba9d3bc98abc6d3, type: 3}
       propertyPath: m_Name
       value: Current Mech Info P2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6111917183394082272, guid: e3d03085ee3807f40ba9d3bc98abc6d3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6503625452141103809, guid: e3d03085ee3807f40ba9d3bc98abc6d3, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
@@ -7104,6 +7173,10 @@ PrefabInstance:
     - target: {fileID: 6308056244896694731, guid: 3f8ba1ae136d5d84fa1188895125ce3f, type: 3}
       propertyPath: m_Name
       value: UI Mech Popup
+      objectReference: {fileID: 0}
+    - target: {fileID: 6308056244896694731, guid: 3f8ba1ae136d5d84fa1188895125ce3f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6308056244896694732, guid: 3f8ba1ae136d5d84fa1188895125ce3f, type: 3}
       propertyPath: m_Pivot.x
