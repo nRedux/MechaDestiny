@@ -36,7 +36,7 @@ public class TimeModeChanged: GameEvent
 public class GameTurnChangeEvent: GameEvent
 {
     public Game Game;
-
+    public bool UIFinished = false;
     private GameTurnChangeEvent() { }
     
     public GameTurnChangeEvent( Game game )

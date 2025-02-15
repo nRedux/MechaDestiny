@@ -87,7 +87,7 @@ public class PlayerEngageAction : AttackAction
         this.State = ActorActionState.Executing;
 
         GfxActor attackerAvatar = GameEngine.Instance.AvatarManager.GetAvatar( actor );
-        UIManager.Instance.ShowSideAMechInfo( attackerAvatar.Actor, UIManager.MechInfoDisplayMode.Full );
+        //UIManager.Instance.ShowSideAMechInfo( attackerAvatar.Actor, UIManager.MechInfoDisplayMode.Full );
 
         StartAttackLocationPick();
     }

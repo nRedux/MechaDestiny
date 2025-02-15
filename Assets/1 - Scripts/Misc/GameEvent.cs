@@ -79,13 +79,15 @@ public class Events
         }
     }
 
-    public void Raise(GameEvent e)
+    public bool Raise(GameEvent e)
     {
         EventDelegate del;
         if (delegates.TryGetValue(e.GetType(), out del))
         {
 			//Debug.Log("Raise " + e);
             del.Invoke(e);
+            return true;
         }
+        return false;
     }
 }

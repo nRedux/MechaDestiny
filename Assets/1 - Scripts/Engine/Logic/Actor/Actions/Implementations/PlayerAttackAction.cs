@@ -131,7 +131,7 @@ public class PlayerAttackAction : AttackAction
         res.DisplayProps = this.DisplayProps;
         res.OnComplete = () =>
         {
-            if( res.DisplayProps.IsSequenceStart )
+            if( res.DisplayProps.IsSequenceEnd )
             {
                 UIManager.Instance.ShowSideAMechInfo( attackerAvatar.Actor, UIManager.MechInfoDisplayMode.Full );
                 UIManager.Instance.HideSideBMechInfo();

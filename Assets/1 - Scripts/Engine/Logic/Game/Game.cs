@@ -17,7 +17,10 @@ public class Game
 
     public Board Board { get; private set; }
 
-    public TurnManager TurnManager{ get; private set; }
+    public TurnManager TurnManager { get; private set; }
+
+
+    private bool _startNewTurn = false;
 
 
     public Game()
@@ -110,13 +113,21 @@ public class Game
         if( _gameOver )
             return;
 
+        if( _startNewTurn )
+        {
+            _startNewTurn = false;
+            TurnManager.StartNextTurn();
+        }
+
         bool turnFinished = TurnManager.Tick();
         if( turnFinished )
         {
-            TurnManager.StartNextTurn();
-            Events.Instance.Raise( new GameTurnChangeEvent( this ) );
+            _startNewTurn = true;
+            var turnChangeEvent = new GameTurnChangeEvent( this );
+            Events.Instance.Raise( turnChangeEvent );
         }
     }
+
 
     public bool CheckGameOver()
     {
