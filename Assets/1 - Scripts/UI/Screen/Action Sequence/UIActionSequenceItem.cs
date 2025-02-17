@@ -20,6 +20,8 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
     public GameObject SpacerTemplate;
     public int OverlapStretch = 10;
 
+    public Color HoveredTint;
+
     public SequenceAction SequenceAction;
     public TextMeshProUGUI ActionName;
     
@@ -30,6 +32,8 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
     public Sprite CenterSprite;
     public Sprite RightSprite;
 
+
+    private Color _startColor;
     private HorizontalLayoutGroup _layoutGroup;
     private GameObject _spacer = null;
 
@@ -41,6 +45,7 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
 
         PipDividerTemplate.Opt()?.SetActive( false );
         SpacerTemplate.Opt()?.SetActive( false );
+        _startColor = MaskImage.Opt()?.color ?? Color.white;
     }
 
     public void UpdateStretch( ActionSequenceItemPart part )
@@ -150,6 +155,9 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
         if( hoverUI == null )
             return;
 
+        if( MaskImage != null )
+            MaskImage.CrossFadeColor( HoveredTint, .1f, true, true );
+
         hoverUI.Refresh( this );
         hoverUI.transform.position = this.transform.position;
         hoverUI.Show();
@@ -158,6 +166,8 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
 
     public void OnPointerExit( PointerEventData eventData )
     {
+        if( MaskImage != null )
+            MaskImage.CrossFadeColor( _startColor, .1f, true, true );
         UIManager.Instance.ActionSequenceHover.Opt()?.Hide();
     }
 }

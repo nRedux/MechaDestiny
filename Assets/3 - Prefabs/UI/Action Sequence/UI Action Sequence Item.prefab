@@ -204,6 +204,8 @@ MonoBehaviour:
   UISequence: {fileID: 0}
   PipDividerTemplate: {fileID: 2775939588411073639}
   SpacerTemplate: {fileID: 5283423158650630588}
+  OverlapStretch: 10
+  HoveredTint: {r: 0.7735849, g: 0.5801887, b: 0.5801887, a: 1}
   ActionName: {fileID: 0}
   Mask: {fileID: 7840956010682265717}
   MaskImage: {fileID: 3494737820516192805}
