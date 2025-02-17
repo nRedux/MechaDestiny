@@ -189,7 +189,7 @@ public class GfxWorldIndicators
         _cellIndicators.Clear();
     }
 
-    public void DestroyIndicators( bool afterHide )
+    public void DestroyAllIndicators( bool afterHide )
     {
         DestroyActorIndicators( afterHide );
         DestroyCellIndicators( afterHide );

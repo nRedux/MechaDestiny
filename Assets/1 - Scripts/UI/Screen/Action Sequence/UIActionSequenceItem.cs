@@ -1,5 +1,6 @@
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -15,6 +16,9 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
 {
     [HideInInspector]
     public UIActionSequence UISequence;
+    public GameObject PipDividerTemplate;
+    public GameObject SpacerTemplate;
+    public int OverlapStretch = 10;
 
     public SequenceAction SequenceAction;
     public TextMeshProUGUI ActionName;
@@ -26,6 +30,64 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
     public Sprite CenterSprite;
     public Sprite RightSprite;
 
+    private HorizontalLayoutGroup _layoutGroup;
+    private GameObject _spacer = null;
+
+
+    private void Awake()
+    {
+        PipDividerTemplate.SetActive( true );
+        _layoutGroup = transform.GetComponent<HorizontalLayoutGroup>();
+
+        PipDividerTemplate.Opt()?.SetActive( false );
+        SpacerTemplate.Opt()?.SetActive( false );
+    }
+
+    public void UpdateStretch( ActionSequenceItemPart part )
+    {
+        if( _layoutGroup == null )
+            return;
+
+        switch( part )
+        {
+            case ActionSequenceItemPart.Left:
+                _layoutGroup.padding.right = OverlapStretch;
+                break;
+
+            case ActionSequenceItemPart.Right:
+                _layoutGroup.padding.left = OverlapStretch;
+                break;
+
+            case ActionSequenceItemPart.Center:
+                _layoutGroup.padding.left = OverlapStretch;
+                _layoutGroup.padding.right = OverlapStretch;
+                break;
+        }
+    }
+
+    public void CreateDividers( int subBlocks, ActionSequenceItemPart part )
+    {
+        if( _layoutGroup == null )
+            return;
+        if( subBlocks <= 1 )
+            return;
+
+        var spacerInst = Instantiate<GameObject>( SpacerTemplate );
+        spacerInst.transform.SetParent( transform, false );
+        spacerInst.SetActive( true );
+        for( int i = 0; i < subBlocks; i++ )
+        {
+            var pipInst = Instantiate<GameObject>( PipDividerTemplate );
+            pipInst.transform.SetParent( transform, false );
+            pipInst.SetActive( true );
+
+            spacerInst = Instantiate<GameObject>( SpacerTemplate );
+            spacerInst.transform.SetParent( transform, false );
+            spacerInst.SetActive( true );
+        }
+    }
+
+
     public void Initialize( SequenceAction action, ActionSequenceItemPart part, UIActionSequence sequence )
     {
         if( action == null )
@@ -35,6 +97,7 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
         this.SequenceAction = action;
         this.ActionName.Opt()?.SetText( action?.Action.DisplayName.TryGetLocalizedString() ?? string.Empty );
     }
+
 
     public void UpdateSpritePart( ActionSequenceItemPart part )
     {
@@ -48,6 +111,7 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
             MaskImage.sprite = GetImageForPart( part );
         }
     }
+
 
     private Sprite GetImageForPart( ActionSequenceItemPart part )
     {
@@ -64,10 +128,12 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
         }
     }
 
+
     public ActorAction Cancel()
     {
         return SequenceAction.Action;
     }
+
 
     public void OnPointerClick( PointerEventData eventData )
     {
@@ -76,6 +142,7 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
             UISequence.Opt()?.RemoveSequenceAction( this );
         }
     }
+
 
     public void OnPointerEnter( PointerEventData eventData )
     {
@@ -87,6 +154,7 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
         hoverUI.transform.position = this.transform.position;
         hoverUI.Show();
     }
+
 
     public void OnPointerExit( PointerEventData eventData )
     {

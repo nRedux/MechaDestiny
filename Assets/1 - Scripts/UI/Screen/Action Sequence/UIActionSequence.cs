@@ -140,20 +140,21 @@ public class UIActionSequence : UIPanel
         newInstance.Opt()?.transform.SetParent( ItemRootRT, false );
         if( newInstance != null )
             _items.Add( newInstance );
-        SizeBlock( newInstance );
+        SizeBlock( newInstance, action.Action.Cost );
+        newInstance.CreateDividers( action.Action.Cost, part );
         UpdateSpriteParts();
 
         return newInstance;
     }
 
 
-    private void SizeBlock( UIActionSequenceItem item )
+    private void SizeBlock( UIActionSequenceItem item, int widthCount )
     {
         if( item == null )
             return;
         var rt = item.GetComponent<RectTransform>();
         var rect = rt.rect;
-        rt.sizeDelta = new Vector2( _itemsWidth, rect.height );
+        rt.sizeDelta = new Vector2( _itemsWidth * widthCount, rect.height );
     }
 
 
@@ -162,6 +163,7 @@ public class UIActionSequence : UIPanel
         for( int i = 0; i < _items.Count; i++ )
         {
             _items[i].UpdateSpritePart( GetSpritePart( i ) );
+            _items[i].UpdateStretch( GetSpritePart( i ) );
         }
     }
 
@@ -195,6 +197,6 @@ public class UIActionSequence : UIPanel
     {
         base.OnHide();
         OnUIFire = null;
-        UIManager.Instance.WorldIndicators.DestroyActorIndicators( true );
+        UIManager.Instance.WorldIndicators.DestroyAllIndicators( true );
     }
 }
