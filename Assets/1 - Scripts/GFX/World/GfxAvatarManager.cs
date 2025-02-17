@@ -7,8 +7,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 
+[System.Serializable]
 public class GfxAvatarManager
 {
+
     public System.Action<GfxActor> ActorCreated;
 
 
@@ -33,7 +35,10 @@ public class GfxAvatarManager
             var avatarInstance = GameObject.Instantiate<GameObject>( avatarGO );
             var gfxActorInstance = avatarInstance.GetComponent<GfxActor>();
             avatarInstance.name += "__" + actor.GetTeamID().ToString();
+
             BuildMech( actor, gfxActorInstance );
+            gfxActorInstance.CalculateBounds();
+
             _actors.Add( actor, gfxActorInstance );
             ActorCreated?.Invoke( gfxActorInstance );
             onReady?.Invoke( gfxActorInstance );

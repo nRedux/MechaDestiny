@@ -9,6 +9,7 @@ using UnityEngine.EventSystems;
 using Unity.Cinemachine;
 using Sirenix.OdinInspector;
 
+
 public class GfxActorAction
 {
     public ActionResult SourceAction;
@@ -100,9 +101,12 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [Space]
     public AttackCamera AttackCamera;
 
+    public Bounds Bounds { get; private set; }
+
     public Actor Actor { get; private set; }
 
     private Animator _animator;
+
 
     [HideInInspector]
     public string LastAnimEvent;
@@ -119,6 +123,21 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         AnimatorMoveSpeed.Initialize( _animator );
     }
 
+    private void OnDestroy()
+    {
+    }
+
+    public void CalculateBounds()
+    {
+        var result = new Bounds();
+        var renderers = GetComponentsInChildren<Renderer>();
+        renderers.Do( 
+            x => {
+                result.Encapsulate( x.bounds );
+                }
+            );
+        this.Bounds = result;
+    }
 
 
     public void Initialize( Actor actor )

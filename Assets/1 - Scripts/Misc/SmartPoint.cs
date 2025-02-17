@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 using UnityEngine;
 using Newtonsoft.Json;
 using Unity.VisualScripting;
+using System;
 
 
 public class SmartPointException: System.Exception
@@ -14,7 +15,7 @@ public class SmartPointException: System.Exception
 
 
 [System.Serializable]
-public class SmartPoint
+public class SmartPoint: IEquatable<SmartPoint>
 {
     
     public Vector3 Coordinate;
@@ -131,5 +132,64 @@ public class SmartPoint
     {
         if( HasTransform )
             Coordinate = Transform.position;
+    }
+
+    public static bool operator ==(SmartPoint lhs, SmartPoint rhs )
+    {
+        if( ReferenceEquals( lhs, rhs ) )
+            return true;
+        if( ReferenceEquals( lhs, null ) )
+            return false;
+        if( ReferenceEquals( rhs, null ) )
+            return false;
+        return lhs.Equals( rhs );
+    }
+
+    public static bool operator !=( SmartPoint lhs, SmartPoint rhs )
+    {
+        return !( lhs == rhs );
+    }
+
+
+    public override bool Equals( object obj )
+    {
+        if( ReferenceEquals( obj, null ) )
+            return false;
+        if( ReferenceEquals( obj, this ) )
+            return true;
+
+        if( obj is SmartPoint pt )
+            return Equals( pt );
+
+
+        if( obj is Transform transform )
+        {
+            if( !this.HasTransform )
+                return false;
+            return this.Transform == transform;
+        }
+
+        if( obj is Vector3 vec )
+            return this.Position == vec;
+
+        if( obj is Actor actor )
+            return this.Actor == actor;
+
+        if( obj is GfxActor gfxActor )
+            return this.GfxActor == GfxActor;
+        return base.Equals( obj );
+    }
+
+    public bool Equals( SmartPoint other )
+    {
+        if( other == null )
+            return false;
+
+        return this.Transform == other.Transform && this.Actor == other.Actor && this.GfxActor == other.GfxActor && this.Position == other.Position;
+    }
+
+    public override int GetHashCode()
+    {
+        return base.GetHashCode();
     }
 }

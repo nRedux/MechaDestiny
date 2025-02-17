@@ -14,7 +14,7 @@ public class UIActionSequenceItemHover : UIPanel
 
     public void Refresh( UIActionSequenceItem content )
     {
-        var action = content.Action;
+        var action = content.SequenceAction;
 
         Title.Opt()?.SetText( action.Action.DisplayName.TryGetLocalizedString() );
         ActionDescription.Opt()?.SetText( action.Action.Description.TryGetLocalizedString() );

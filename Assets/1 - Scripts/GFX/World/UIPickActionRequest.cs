@@ -55,7 +55,7 @@ public class UIPickActionRequest : UIRequest<object, bool>
     {
         if( evt.Used )
             return;
-        if( EventSystem.current.IsPointerOverGameObject() )
+        if( UIManager.Instance.IsPointerOverUI() )
             return;
         evt.Use();
         Cancel();

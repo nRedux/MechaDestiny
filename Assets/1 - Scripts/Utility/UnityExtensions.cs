@@ -80,4 +80,14 @@ public static class UnityExtensions
         var _canvasRectTransform = transform.GetComponentInParent<Canvas>().Opt()?.GetComponent<RectTransform>();
         _rectTransform.Opt()?.PositionOverWorld( _canvasRectTransform, worldPosition );
     }
+
+    public static Vector2Int ToVector2Int( this Vector2 vec2 )
+    {
+        return new Vector2Int( Mathf.FloorToInt( vec2.x ), Mathf.FloorToInt( vec2.y ) );
+    }
+
+    public static Vector2Int ToVector2Int( this Vector3 vec3 )
+    {
+        return new Vector2Int( Mathf.FloorToInt( vec3.x ), Mathf.FloorToInt( vec3.z ) );
+    }
 }

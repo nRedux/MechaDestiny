@@ -15,7 +15,7 @@ public static class Vector2IntEx
         return Mathf.Abs( vec.x - other.x ) + Mathf.Abs( vec.y - other.y );
     }
 
-    public static Vector3 WorldPosition( this Vector2Int vec )
+    public static Vector3 GetWorldPosition( this Vector2Int vec )
     {
         return new Vector3( vec.x + .5f, 0f, vec.y + .5f );
     }

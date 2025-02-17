@@ -38,12 +38,12 @@ public class UIActionSequence : UIPanel
     }
 
 
-    private int PointsUsed => _items?.Select( x => GetSafeCostForAction( x.Action.Action ) ).Sum() ?? INFINITE_COST;
+    private int PointsUsed => _items?.Select( x => GetSafeCostForAction( x.SequenceAction.Action ) ).Sum() ?? INFINITE_COST;
 
 
     public List<SequenceAction> GetSelectedSequence()
     {
-        return _items.Select( x => x.Action ).ToList();
+        return _items.Select( x => x.SequenceAction ).ToList();
     }
 
 
@@ -99,7 +99,7 @@ public class UIActionSequence : UIPanel
         OnUIFire?.Invoke();
     }
 
-    public bool CanAddItem( SequenceAction action )
+    public bool CanAddSequenceAction( SequenceAction action )
     {
         if( action == null )
             return false;
@@ -107,11 +107,26 @@ public class UIActionSequence : UIPanel
     }
 
 
-    public void AddItem( SequenceAction action )
+    public void AddSequenceAction( SequenceAction action )
     {
-        if( !CanAddItem( action ) )
+        if( !CanAddSequenceAction( action ) )
             return;
         var newUIAction = CreateBlock( action );
+
+        UIManager.Instance.WorldIndicators.TryCreateIndicatorOnSmartPos( GfxWorldIndicators.ATTACK_INDICATOR, action.Target );
+    }
+
+
+    internal void RemoveSequenceAction( UIActionSequenceItem item )
+    {
+        if( _items.Remove( item ) )
+        {
+            Destroy( item.gameObject );
+            UpdateSpriteParts();
+
+            if( !IsTargetInSequence( item.SequenceAction.Target ) )
+                UIManager.Instance.WorldIndicators.DestroyIndicator( item.SequenceAction.Target, true );      
+        }
     }
 
 
@@ -168,19 +183,18 @@ public class UIActionSequence : UIPanel
         return ActionSequenceItemPart.Whole;
     }
 
-
-    internal void RemoveActionFromSequence( UIActionSequenceItem item )
+    private bool IsTargetInSequence( SmartPoint target )
     {
-        if( _items.Remove( item ) )
+        return _items.Exists( x =>
         {
-            Destroy( item.gameObject );
-            UpdateSpriteParts();
-        }
+            return x.SequenceAction.Target == target;
+        } );
     }
 
     public override void OnHide()
     {
         base.OnHide();
         OnUIFire = null;
+        UIManager.Instance.WorldIndicators.DestroyActorIndicators( true );
     }
 }

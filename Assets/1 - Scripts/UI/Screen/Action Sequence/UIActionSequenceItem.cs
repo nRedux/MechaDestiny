@@ -16,7 +16,7 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
     [HideInInspector]
     public UIActionSequence UISequence;
 
-    public SequenceAction Action;
+    public SequenceAction SequenceAction;
     public TextMeshProUGUI ActionName;
     
     public Mask Mask;
@@ -32,7 +32,7 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
             return;
         UISequence = sequence;
         UpdateSpritePart( part );
-        this.Action = action;
+        this.SequenceAction = action;
         this.ActionName.Opt()?.SetText( action?.Action.DisplayName.TryGetLocalizedString() ?? string.Empty );
     }
 
@@ -66,14 +66,14 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
 
     public ActorAction Cancel()
     {
-        return Action.Action;
+        return SequenceAction.Action;
     }
 
     public void OnPointerClick( PointerEventData eventData )
     {
         if( eventData.button == PointerEventData.InputButton.Right )
         {
-            UISequence.Opt()?.RemoveActionFromSequence( this );
+            UISequence.Opt()?.RemoveSequenceAction( this );
         }
     }
 

@@ -133,8 +133,8 @@ public class Actor : SimpleEntity<ActorAsset>
 
     public void SetPosition( Vector2Int newPosition, Game game )
     {
-        Vector3 curWorldPosition = this.Position.WorldPosition();
-        Vector3 newWorldPosition = newPosition.WorldPosition();
+        Vector3 curWorldPosition = this.Position.GetWorldPosition();
+        Vector3 newWorldPosition = newPosition.GetWorldPosition();
 
         if( game.Board.IsBlocked( newWorldPosition ) )
         {

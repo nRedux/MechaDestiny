@@ -76,7 +76,7 @@ public class UIActionSequenceRequest : UIRequest<List<SequenceAction>, bool>
     {
         //Succeed( selected );
         _state = UIRequestState.Running;
-        UIManager.Instance.ActionSequence.AddItem( new SequenceAction() { Action = selected } );
+        UIManager.Instance.ActionSequence.AddSequenceAction( new SequenceAction() { Action = selected } );
         GetNextAction();
     }
 

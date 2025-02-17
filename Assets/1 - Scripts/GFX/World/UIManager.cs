@@ -4,6 +4,8 @@ using System;
 using System.Linq;
 using UnityEngine;
 using UnityEditor.Search;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 
 public class GfxAvatarNullException: Exception
@@ -90,6 +92,8 @@ public class UIManager : Singleton<UIManager>
     public GameObject SpawnedObjectsRoot;
 
     public CombatUserControls UserControls = new CombatUserControls();
+
+    public GfxWorldIndicators WorldIndicators = new GfxWorldIndicators();
 
     public string SwitchWeaponInput = KeyCode.Q.ToString();
 
@@ -331,6 +335,23 @@ public class UIManager : Singleton<UIManager>
         SideB_FocusMechInfoFull.Opt()?.Hide();
     }
 
+
+    public bool IsPointerOverUI()
+    {
+        List<RaycastResult> results = new List<RaycastResult>();
+        var pointerData = new PointerEventData( EventSystem.current );
+        pointerData.position = Mouse.current.position.ReadValue();
+
+        EventSystem.current.RaycastAll( pointerData, results );
+
+        foreach( var res in results )
+        {
+            if( res.gameObject != null && res.gameObject.layer == LayerMask.NameToLayer( "UI" ) )
+                return true;
+        }
+
+        return false;
+    }
 
     public void HideMechInfos()
     {

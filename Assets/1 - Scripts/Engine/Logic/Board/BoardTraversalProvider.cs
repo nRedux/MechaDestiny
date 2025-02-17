@@ -16,7 +16,7 @@ public class BoardTraversalProvider : ITraversalProvider
 
     public bool IsBlocked( Vector2Int position )
     {
-        var node = AstarPath.active.GetNearest( position.WorldPosition() );
+        var node = AstarPath.active.GetNearest( position.GetWorldPosition() );
         return Occupied.ContainsKey( node.node );
     }
 

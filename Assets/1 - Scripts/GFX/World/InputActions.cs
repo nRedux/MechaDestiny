@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class InputActionEvent
 {
@@ -115,7 +116,7 @@ public class InputActions
 
     private void UpdateCancel( InputAction cancel )
     {
-        if( Input.GetMouseButtonDown( 1 ) )
+        if( Input.GetMouseButtonDown( 1 ) && !UIManager.Instance.IsPointerOverUI() )
             cancel.Activate();
     }
 

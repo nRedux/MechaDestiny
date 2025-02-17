@@ -86,7 +86,7 @@ public class Board
     /// <param name="losSource">The source of the line of sight query.</param>
     public static void LOS_PruneBoolWindow( BoolWindow windowToPrune, Vector2Int losSource )
     {
-        Vector3 srcWorldPosition = losSource.WorldPosition() + Vector3.up;
+        Vector3 srcWorldPosition = losSource.GetWorldPosition() + Vector3.up;
 
         windowToPrune.Do( iter =>
         {
@@ -106,8 +106,8 @@ public class Board
     /// <returns>True if there isn't an object blocking the raycast. False if we are blocked.</returns>
     public static bool LOS_CanSeeTo( Vector2Int source, Vector2Int dest )
     {
-        Vector3 srcWorldPosition = source.WorldPosition() + Vector3.up;
-        Vector3 worldPos = dest.WorldPosition() + Vector3.up;
+        Vector3 srcWorldPosition = source.GetWorldPosition() + Vector3.up;
+        Vector3 worldPos = dest.GetWorldPosition() + Vector3.up;
         Vector3 toCell = worldPos - srcWorldPosition;
         Ray r = new Ray( srcWorldPosition, toCell.normalized );
         return Physics.Raycast( r, toCell.magnitude, 1 << (int) Layers.Environment );
@@ -227,7 +227,7 @@ public class Board
         if( Graph == null )
             return false;
 
-        return Graph.bounds.Contains( coord.WorldPosition() );
+        return Graph.bounds.Contains( coord.GetWorldPosition() );
     }
 
     public void GetMovableCellsManhattan( int range, BoolWindow result, Actor actorToMove = null, bool rejectCellUnderActor = true )
@@ -343,7 +343,7 @@ public class Board
 
     public ABPath GetNewPath( Vector2Int start, Vector2Int end, Actor requester )
     {      
-        var path = ABPath.Construct( start.WorldPosition(), end.WorldPosition() );
+        var path = ABPath.Construct( start.GetWorldPosition(), end.GetWorldPosition() );
         if( requester != null )
         {
             GameEngine.Instance.Board.TraversalProvider.Traverser = requester;
