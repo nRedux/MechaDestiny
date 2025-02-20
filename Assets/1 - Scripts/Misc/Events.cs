@@ -36,11 +36,15 @@ public class TimeModeChanged: GameEvent
 public class GameTurnChangeEvent: GameEvent
 {
     public Game Game;
+    public int NextTurn;
+    public Team NextTeam;
     public bool UIFinished = false;
     private GameTurnChangeEvent() { }
     
     public GameTurnChangeEvent( Game game )
     {
         Game = game;
+        NextTurn = game.TurnManager.TurnNumber + 1;
+        NextTeam = game.TurnManager.NextTeam;
     }
 }

@@ -14,6 +14,7 @@ public class TurnManager
     private AIPlayerHandler _aiPlayerHandler = null;
 
     public Team ActiveTeam => _game.GetTeam( _turnNumber % _game.TeamCount );
+    public Team NextTeam => _game.GetTeam( (_turnNumber + 1) % _game.TeamCount );
 
     public int TurnNumber { get { return _turnNumber; } }
 

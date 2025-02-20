@@ -408,7 +408,8 @@ public class UIManager : Singleton<UIManager>
     private async void ExecuteTurnChangeUI( GameTurnChangeEvent e )
     {
         e.Game.RunGameLogic = false;
-        TurnChange.Refresh( e.Game.TurnManager.TurnNumber, e.Game.TurnManager.ActiveTeam.IsPlayerTeam );
+        //We use next team as the UI updates before the turn has changed.
+        TurnChange.Refresh( e.NextTurn, e.NextTeam.IsPlayerTeam );
         await TurnChange.Run();
         e.Game.RunGameLogic = true;
     }
