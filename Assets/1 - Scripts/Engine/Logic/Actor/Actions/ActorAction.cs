@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine.Localization;
 using UnityEditor.Localization.Plugins.XLIFF.V12;
+using UnityEngine.Serialization;
 
 public enum ResultType
 {
@@ -43,7 +44,9 @@ public enum ActionCategory
 public abstract class ActorAction
 {
     public ActionCategory Category;
-    public int Cost;
+    [FormerlySerializedAs("Cost")]
+    public int APCost;
+    public int BlocksUsed;
     public LocalizedString DisplayName;
     public LocalizedString Description;
 
@@ -69,7 +72,7 @@ public abstract class ActorAction
     /// <returns></returns>
     public virtual CanStartActionResult AllowedToExecute( Actor actor )
     {
-        if( !actor.CanSpendStatistic( StatisticType.AbilityPoints, Cost ) )
+        if( !actor.CanSpendStatistic( StatisticType.AbilityPoints, APCost ) )
             return CanStartActionResult.InsufficientAP;
 
         return CanStartActionResult.Success;
@@ -77,7 +80,7 @@ public abstract class ActorAction
 
     public void SpendAP( Actor actor )
     {
-        actor.SpendStatistic( StatisticType.AbilityPoints, Cost );
+        actor.SpendStatistic( StatisticType.AbilityPoints, APCost );
     }
 
     public void SpendAP( Actor actor, int cost )

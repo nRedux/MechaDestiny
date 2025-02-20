@@ -14,6 +14,10 @@ public enum StatisticType
     AbilityPoints = 0x0010,
     MaxAbilityPoints = 0x0011,
 
+
+    MaxActionBlocks = 0x0020,
+
+
     //Ability statistics
     MinRange = 0x0099,
     Range = 0x0100,

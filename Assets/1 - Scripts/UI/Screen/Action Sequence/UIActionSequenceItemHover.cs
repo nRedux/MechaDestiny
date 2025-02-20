@@ -18,7 +18,7 @@ public class UIActionSequenceItemHover : UIPanel
 
         Title.Opt()?.SetText( action.Action.DisplayName.TryGetLocalizedString() );
         ActionDescription.Opt()?.SetText( action.Action.Description.TryGetLocalizedString() );
-        ActionCost.Opt()?.SetText( action.Action.Cost.ToString() );
+        ActionCost.Opt()?.SetText( action.Action.APCost.ToString() );
         UpdateLocalization( action.Action );
     }
 
@@ -29,7 +29,7 @@ public class UIActionSequenceItemHover : UIPanel
 
         titleEvent.StringReference = action.DisplayName;
         descEvent.StringReference = action.Description;
-        Cost = action.Cost;
+        Cost = action.APCost;
         RefreshLocalizedStrings();
     }
 

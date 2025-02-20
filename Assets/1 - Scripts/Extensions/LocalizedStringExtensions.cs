@@ -39,7 +39,7 @@ public static class LocalizedStringExtensions
         catch( System.Exception e )
         {
             failure = true;
-            Debug.LogError( "TryGetLocalization: Bad LocalizedString setup.", failContext );
+           // Debug.LogError( "TryGetLocalization: Bad LocalizedString setup.", failContext );
         }
         finally
         {

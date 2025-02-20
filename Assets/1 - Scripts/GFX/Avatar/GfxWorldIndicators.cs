@@ -172,7 +172,6 @@ public class GfxWorldIndicators
                 indicator.Hide( true );
             else
                 GameObject.Destroy( indicator.gameObject );
-            _actorIndicators.Remove( target.Actor );
             return true;
         }
 

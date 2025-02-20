@@ -76,7 +76,7 @@ public class PlayerActionHandler : ActorActionHandler
 
     private IEnumerable<ActorAction> GetUsableActions()
     {
-        return _actor.Actions.Where( x => _actor.CanSpendStatistic( StatisticType.AbilityPoints, x.Cost ) && x.AllowedToExecute( _actor ) == CanStartActionResult.Success );
+        return _actor.Actions.Where( x => _actor.CanSpendStatistic( StatisticType.AbilityPoints, x.APCost ) && x.AllowedToExecute( _actor ) == CanStartActionResult.Success );
     }
 
 

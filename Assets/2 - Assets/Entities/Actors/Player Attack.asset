@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data:
     Category: 1
-    Cost: 3
+    APCost: 1
+    BlocksUsed: 2
     DisplayName:
       m_TableReference:
         m_TableCollectionName: GUID:c9f6f54132f444c459cb15fcd0afa795

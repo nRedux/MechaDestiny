@@ -77,10 +77,12 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
         if( subBlocks <= 1 )
             return;
 
+        int realBlockCount = subBlocks - 1;
+
         var spacerInst = Instantiate<GameObject>( SpacerTemplate );
         spacerInst.transform.SetParent( transform, false );
         spacerInst.SetActive( true );
-        for( int i = 0; i < subBlocks; i++ )
+        for( int i = 0; i < realBlockCount; i++ )
         {
             var pipInst = Instantiate<GameObject>( PipDividerTemplate );
             pipInst.transform.SetParent( transform, false );

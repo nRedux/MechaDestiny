@@ -2,6 +2,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor.Build;
 
 public class UIActionSequence : UIPanel
 {
@@ -16,7 +17,7 @@ public class UIActionSequence : UIPanel
     private List<UIActionSequenceItem> _items = new List<UIActionSequenceItem>();
     private float _rootWidth = 0f;
     private float _itemsWidth = 0f;
-    private int _maxPointUsable = 0;
+    private int _maxActionBlocks = 0;
     private int _actorPointUsable = 0;
     private RectTransform _itemsRootRT = null;
 
@@ -38,7 +39,8 @@ public class UIActionSequence : UIPanel
     }
 
 
-    private int PointsUsed => _items?.Select( x => GetSafeCostForAction( x.SequenceAction.Action ) ).Sum() ?? INFINITE_COST;
+    private int PointsUsed => _items?.Select( x => GetAPCostForAction( x.SequenceAction.Action ) ).Sum() ?? INFINITE_COST;
+    private int BlocksUsed => _items?.Select( x => GetBlockCostForAction( x.SequenceAction.Action ) ).Sum() ?? INFINITE_COST;
 
 
     public List<SequenceAction> GetSelectedSequence()
@@ -52,18 +54,20 @@ public class UIActionSequence : UIPanel
         if( actor == null )
             return;
 
-        var maxAP = actor.GetStatistic( StatisticType.MaxAbilityPoints );
-        _maxPointUsable = maxAP?.Value ?? DEFAULT_MAX_BLOCKS;
+        var maxAP = actor.GetStatistic( StatisticType.MaxActionBlocks );
+        _maxActionBlocks = maxAP?.Value ?? DEFAULT_MAX_BLOCKS;
 
-        var AP = actor.GetStatistic( StatisticType.AbilityPoints );
-        _actorPointUsable = AP.Value;
+        var apStat = actor.GetStatistic( StatisticType.AbilityPoints );
+        _actorPointUsable = apStat.Value;
+
+
 
         if( ExhaustedAPBar != null )
-            ExhaustedAPBar.fillAmount = 1f - ( _actorPointUsable / (float)_maxPointUsable ) - ( ItemsRoot.padding.right / _rootWidth ) * 1;
+            ExhaustedAPBar.fillAmount = 1f - ( _actorPointUsable / (float)_maxActionBlocks ) - ( ItemsRoot.padding.right / _rootWidth ) * 1;
 
-        float spacingGain = ( _maxPointUsable - 1) * -ItemsRoot.spacing;
+        float spacingGain = ( _maxActionBlocks - 1) * -ItemsRoot.spacing;
 
-        _itemsWidth = (_rootWidth + spacingGain) / _maxPointUsable;
+        _itemsWidth = (_rootWidth + spacingGain) / _maxActionBlocks;
     }
 
 
@@ -87,11 +91,18 @@ public class UIActionSequence : UIPanel
     }
 
 
-    private int GetSafeCostForAction( ActorAction action )
+    private int GetAPCostForAction( ActorAction action )
     {
         if( action == null )
             return 1;
-        return Mathf.Max( action.Cost, 1 );
+        return Mathf.Max( action.APCost, 1 );
+    }
+
+    private int GetBlockCostForAction( ActorAction action )
+    {
+        if( action == null )
+            return 1;
+        return Mathf.Max( action.BlocksUsed, 1 );
     }
 
     public void UIBtn_Fire()
@@ -103,7 +114,10 @@ public class UIActionSequence : UIPanel
     {
         if( action == null )
             return false;
-        return _actorPointUsable - (PointsUsed + GetSafeCostForAction(action.Action) ) >= 0;
+        bool canAffordAP = _actorPointUsable - ( PointsUsed + GetAPCostForAction( action.Action ) ) >= 0;
+        bool canAffordBlocks = _maxActionBlocks - ( BlocksUsed + GetBlockCostForAction( action.Action ) ) >= 0;
+
+        return canAffordAP && canAffordBlocks;
     }
 
 
@@ -140,8 +154,8 @@ public class UIActionSequence : UIPanel
         newInstance.Opt()?.transform.SetParent( ItemRootRT, false );
         if( newInstance != null )
             _items.Add( newInstance );
-        SizeBlock( newInstance, action.Action.Cost );
-        newInstance.CreateDividers( action.Action.Cost, part );
+        SizeBlock( newInstance, action.Action.BlocksUsed );
+        newInstance.CreateDividers( action.Action.BlocksUsed, part );
         UpdateSpriteParts();
 
         return newInstance;
