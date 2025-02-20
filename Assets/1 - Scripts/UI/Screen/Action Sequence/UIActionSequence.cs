@@ -1,3 +1,6 @@
+//Available defines
+//USE_ACTION_BLOCKS
+
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +9,7 @@ using UnityEditor.Build;
 
 public class UIActionSequence : UIPanel
 {
+    private const bool USE_ACTION_BLOCKS = false;
     private const int DEFAULT_MAX_BLOCKS = 5;
     private const int INFINITE_COST = int.MaxValue;
 
@@ -18,7 +22,7 @@ public class UIActionSequence : UIPanel
     private float _rootWidth = 0f;
     private float _itemsWidth = 0f;
     private int _maxActionBlocks = 0;
-    private int _actorPointUsable = 0;
+    private int _spentAbilityPoints = 0;
     private RectTransform _itemsRootRT = null;
 
     public System.Action OnUIFire;
@@ -49,21 +53,26 @@ public class UIActionSequence : UIPanel
     }
 
 
-    private void PreparePartitions( Actor actor )
+    private void EvaluateActorStats( Actor actor )
     {
         if( actor == null )
             return;
 
+#if USE_ACTION_BLOCKS
         var maxAP = actor.GetStatistic( StatisticType.MaxActionBlocks );
-        _maxActionBlocks = maxAP?.Value ?? DEFAULT_MAX_BLOCKS;
-
+#else
+        var maxBlocksStat = actor.GetStatistic( StatisticType.MaxAbilityPoints );
+#endif
+        _maxActionBlocks = maxBlocksStat?.Value ?? DEFAULT_MAX_BLOCKS;
         var apStat = actor.GetStatistic( StatisticType.AbilityPoints );
-        _actorPointUsable = apStat.Value;
+        _spentAbilityPoints = apStat.Value;
+    }
 
 
-
+    private void CalculateUILayout()
+    {
         if( ExhaustedAPBar != null )
-            ExhaustedAPBar.fillAmount = 1f - ( _actorPointUsable / (float)_maxActionBlocks ) - ( ItemsRoot.padding.right / _rootWidth ) * 1;
+            ExhaustedAPBar.fillAmount = 1f - ( _spentAbilityPoints / (float)_maxActionBlocks ) - ( ItemsRoot.padding.right / _rootWidth ) * 1;
 
         float spacingGain = ( _maxActionBlocks - 1) * -ItemsRoot.spacing;
 
@@ -78,15 +87,21 @@ public class UIActionSequence : UIPanel
             _rootWidth = ItemRootRT.rect.width - ItemsRoot.padding.left - ItemsRoot.padding.right;
     }
 
+    private void DestroyBlockInstances()
+    {
+        ItemRootRT.Opt()?.DestroyChildren();
+        _items.Clear();
+    }
 
     public void Show( Actor controlActor )
     {
         if( controlActor == null )
             return;
 
-        PreparePartitions( controlActor );
-        ItemRootRT.Opt()?.DestroyChildren();
-        _items.Clear();
+        EvaluateActorStats( controlActor );
+        CalculateUILayout();
+        DestroyBlockInstances();
+
         base.Show();
     }
 
@@ -114,10 +129,15 @@ public class UIActionSequence : UIPanel
     {
         if( action == null )
             return false;
-        bool canAffordAP = _actorPointUsable - ( PointsUsed + GetAPCostForAction( action.Action ) ) >= 0;
-        bool canAffordBlocks = _maxActionBlocks - ( BlocksUsed + GetBlockCostForAction( action.Action ) ) >= 0;
 
+        bool canAffordAP = _spentAbilityPoints - ( PointsUsed + GetAPCostForAction( action.Action ) ) >= 0;
+
+#if USE_ACTION_BLOCKS
+        bool canAffordBlocks = _maxActionBlocks - ( BlocksUsed + GetBlockCostForAction( action.Action ) ) >= 0;
         return canAffordAP && canAffordBlocks;
+#else
+        return canAffordAP;
+#endif
     }
 
 
@@ -144,18 +164,27 @@ public class UIActionSequence : UIPanel
     }
 
 
+    private int GetBlocksRequired( SequenceAction action )
+    {
+#if USE_ACTION_BLOCKS
+        return action.Action.BlocksUsed;
+#else
+        return action.Action.APCost;
+#endif
+    }
+
     private UIActionSequenceItem CreateBlock( SequenceAction action )
     {
         var newInstance = ItemPrefab.Opt()?.Duplicate();
-
+        int blocksRequired = GetBlocksRequired( action );
         ActionSequenceItemPart part = ActionSequenceItemPart.Left;
            
         newInstance.Opt()?.Initialize( action, part, this );
         newInstance.Opt()?.transform.SetParent( ItemRootRT, false );
         if( newInstance != null )
             _items.Add( newInstance );
-        SizeBlock( newInstance, action.Action.BlocksUsed );
-        newInstance.CreateDividers( action.Action.BlocksUsed, part );
+        SizeBlock( newInstance, blocksRequired );
+        newInstance.CreateDividers( blocksRequired, part );
         UpdateSpriteParts();
 
         return newInstance;
