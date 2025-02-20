@@ -13,15 +13,12 @@ using System.Linq;
 [System.Serializable]
 public class PlayerAttackAction : AttackAction
 {
-    public int Range = 3;
     public int Damage = 1;
 
     private Game _game;
     private Actor _actor;
     private UIFindAttackTargetRequest _uiRequest = null;
     private UIPickWeaponRequest _weaponPickRequest = null;
-
-    public override int BoardRange => Range;
 
 
     public override void Tick()

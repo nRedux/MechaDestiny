@@ -56,7 +56,6 @@ public abstract class ActorAction
         protected set;
     } = ActorActionState.Started;
 
-    public virtual int BoardRange { get; }
     public virtual void Start( Game game, Actor actor ) { }
     public virtual void Tick() { }
     public virtual void TurnEnded() { }

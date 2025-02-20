@@ -16,15 +16,12 @@ using static UnityEditor.FilePathAttribute;
 [System.Serializable]
 public class PlayerEngageAction : AttackAction
 {
-    public int Range = 3;
     public int Damage = 1;
 
     private Game _game;
     private Actor _actor;
     private UIFindAttackTargetRequest _uiRequest = null;
     private bool _uiWantsToFire = false;
-
-    public override int BoardRange => Range;
 
 
     public override void Tick()

@@ -11,7 +11,6 @@ using Unity.VisualScripting;
 [System.Serializable]
 public class PlayerMoveAction : MoveAction
 {
-    public int Range;
 
     private int CalcCost()
     {
@@ -28,8 +27,6 @@ public class PlayerMoveAction : MoveAction
     BoolWindow _moveOptionsWindow = null;
 
     UIFindMoveTargetRequest _uiRequest;
-
-    public override int BoardRange => Range;
 
 
     [OnDeserialized]
@@ -60,8 +57,7 @@ public class PlayerMoveAction : MoveAction
         _game = game;
         _actor = actor;
 
-        var mainEntity = actor.GetSubEntities().Where( x => x is MechData ).FirstOrDefault();
-        var mechData = mainEntity as MechData;
+        var mechData = actor.GetMechData();
 
         //Find max range as either the ap or range of the mech. 1ap per move atm.
         var apRange = actor.GetStatisticValue( StatisticType.AbilityPoints );

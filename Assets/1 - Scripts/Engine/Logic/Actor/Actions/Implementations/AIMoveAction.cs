@@ -29,12 +29,9 @@ public class DuplicateKeyComparer<TKey> : IComparer<TKey> where TKey : IComparab
 [System.Serializable]
 public class AIMoveAction : MoveAction
 {
-    public int Range;
-
     public Vector2Int Target;
 
-    public override int BoardRange => Range;
-
+    private int _range;
 
     private FloatWindow GenerateMoveHeatmap( Game game, Actor actor )
     {
@@ -60,14 +57,11 @@ public class AIMoveAction : MoveAction
     }
 
 
-    private void FillAttackHeatmap( Game game, Actor actor, FloatWindow utility )
+    private void FillAttackHeatmap( Game game, Actor actor, FloatWindow utility  )
     {
         var actions = actor.GetActionsOfType<AttackAction>();
         if( actions.Count == 0 )
             return;
-
-        var mechData = actor.GetMechData();
-        var moveRange = mechData.Legs.GetStatisticValue( StatisticType.Range );
 
         if( actor.AIPersonality != null )
             actor.ActiveWeapon = actor.AIPersonality?.CheckPreferredWeapon( actor );
@@ -84,11 +78,11 @@ public class AIMoveAction : MoveAction
                 //Get all cells the action can effect
                 if( action is AttackAction aiAction )
                 {
-                    utility[iter.local] += aiAction.GetUtilityAtLocation( game, actor, iter.world, moveRange );
+                    utility[iter.local] += aiAction.GetUtilityAtLocation( game, actor, iter.world, _range );
                 }
             }
         },
-        Range );
+        _range );
 
         
         //Move cost adjustments - too far, no utility. Further, reduced utility.
@@ -96,10 +90,10 @@ public class AIMoveAction : MoveAction
         {
             //Prefer closer options.
             var abPath = game.Board.GetNewPath( actor.Position, iter.world, actor );
-            if( abPath.CompleteState != PathCompleteState.Complete || abPath.MoveLength() > moveRange )
+            if( abPath.CompleteState != PathCompleteState.Complete || abPath.MoveLength() > _range )
                 utility[iter.local] = 0;
             else
-                utility[iter.local] -= ( abPath.MoveLength() / (float) moveRange ) * .5f;
+                utility[iter.local] -= ( abPath.MoveLength() / (float) _range ) * .5f;
         } );
 
         var nonZeroOptions = utility.Cells.Where( x => x > 0f ).Count() > 0;
@@ -153,7 +147,7 @@ public class AIMoveAction : MoveAction
             var proxLocalCoord = enemyProxUtility.WorldToLocalCell(iter.world);
             var proxVal = enemyProxUtility[proxLocalCoord];
             utility[iter.local] += proxVal;
-        }, Range );
+        }, _range );
         
     }
 
@@ -167,13 +161,21 @@ public class AIMoveAction : MoveAction
             var proxLocalCoord = enemyProxUtility.WorldToLocalCell( iter.world );
             var proxVal = enemyProxUtility[proxLocalCoord];
             utility[iter.local] += proxVal;
-        }, Range );
+        }, _range );
     }
 
 
     public override void Start( Game game, Actor actor )
     {
         base.Start( game, actor );
+
+        var mechData = actor.GetMechData();
+
+        //Find max range as either the ap or range of the mech. 1ap per move atm.
+        var apRange = actor.GetStatisticValue( StatisticType.AbilityPoints );
+        int legsRange = mechData.Legs.Statistics.GetStatistic( StatisticType.Range ).Value;
+        _range = Mathf.Min( legsRange, apRange );
+
         this.State = ActorActionState.Started;
         var gfxBoard = GameEngine.Instance.GfxBoard;
 
