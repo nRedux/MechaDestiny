@@ -232,7 +232,9 @@ public class UIActionSequence : UIPanel
     {
         return _items.Exists( x =>
         {
-            return x.SequenceAction.Target == target;
+            //We have to just rely on position - this could later be a source of bugs if position can be moved as part of an attack.
+            //Actors moving as part of an attack will cause bugs either way if indicators are cell based though.
+            return x.SequenceAction.Target.Position.ToVector2Int() == target.Position.ToVector2Int();
         } );
     }
 

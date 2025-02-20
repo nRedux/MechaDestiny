@@ -82,9 +82,14 @@ public class GfxWorldIndicators
     {
         try
         {
-            if( point.Actor != null )
+            //We're going to try to find an actor, either in the smartpoint or at the location of the smartpoint.
+            Actor actor = point.Actor;
+            if( actor == null )
+                actor = GameEngine.Instance.Board.GetActorAtCell( point.Position.ToVector2Int() );
+
+            if( actor != null )
             {
-                return TryCreateIndicatorOnActor( GfxWorldIndicators.ATTACK_INDICATOR, point.Actor );
+                return TryCreateIndicatorOnActor( GfxWorldIndicators.ATTACK_INDICATOR, actor );
             }
             else
             {
@@ -155,15 +160,21 @@ public class GfxWorldIndicators
     }
 
 
-    public bool DestroyIndicator(SmartPoint target, bool afterHide)
+    public bool DestroyIndicator(SmartPoint point, bool afterHide)
     {
         GfxWorldIndicator indicator = null;
 
+        //We're going to try to find an actor, either in the smartpoint or at the location of the smartpoint.
+        Actor actor = point.Actor;
+        if( actor == null )
+            actor = GameEngine.Instance.Board.GetActorAtCell( point.Position.ToVector2Int() );
+
+
         //Try find indicator
-        if( target.Actor != null && _actorIndicators.TryGetValue( target.Actor, out indicator ) )
-            _actorIndicators.Remove( target.Actor );
-        else if( _cellIndicators.TryGetValue( target.Position.ToVector2Int(), out indicator ) )
-            _cellIndicators.Remove( target.Position.ToVector2Int() );
+        if( actor != null && _actorIndicators.TryGetValue( actor, out indicator ) )
+            _actorIndicators.Remove( actor );
+        else if( _cellIndicators.TryGetValue( point.Position.ToVector2Int(), out indicator ) )
+            _cellIndicators.Remove( point.Position.ToVector2Int() );
 
         //If exists, destroy
         if( indicator != null )
