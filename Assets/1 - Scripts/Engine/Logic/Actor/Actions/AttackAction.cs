@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,12 @@ public abstract class AttackAction : ActorAction
 {
     public SequencePos SequencePos { get; internal set; }
     public ResultDisplayProps DisplayProps { get; set; }
+
+    [HideInInspector]
+    [NonSerialized]
     public MechComponentData UsedWeapon;
+    [HideInInspector]
+    [NonSerialized]
     public SmartPoint Target;
 
 
@@ -23,6 +29,18 @@ public abstract class AttackAction : ActorAction
     public override void End()
     {
         base.End();
+    }
+
+    public override int APCost
+    {
+        get
+        {
+            if( UsedWeapon != null )
+            {
+                return UsedWeapon.GetStatisticValue( StatisticType.AbilityPointCost );
+            }
+            return 0;
+        }
     }
 
 
@@ -108,9 +126,6 @@ public abstract class AttackAction : ActorAction
     }
 
     public System.Action OnKillTarget;
-
-
-
 }
 
 public class StatisticChangeRootComp : IEqualityComparer<StatisticChange>

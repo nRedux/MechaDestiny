@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor.Build;
+using Unity.VisualScripting;
+using System;
+
 
 public class UIActionSequence : UIPanel
 {
@@ -15,8 +18,8 @@ public class UIActionSequence : UIPanel
 
     public UIActionSequenceItem ItemPrefab;
     public HorizontalLayoutGroup ItemsRoot;
-
     public Image ExhaustedAPBar;
+    public Color PreviewColor;
 
     private List<UIActionSequenceItem> _items = new List<UIActionSequenceItem>();
     private float _rootWidth = 0f;
@@ -24,6 +27,9 @@ public class UIActionSequence : UIPanel
     private int _maxActionBlocks = 0;
     private int _spentAbilityPoints = 0;
     private RectTransform _itemsRootRT = null;
+    private ActionSequence _sequence = null;
+
+    private UIActionSequenceItem _previewBlock;
 
     public System.Action OnUIFire;
 
@@ -37,15 +43,16 @@ public class UIActionSequence : UIPanel
     }
 
 
-    private float ItemsRootWidth
-    {
-        get => ItemsRoot != null ? ItemRootRT.rect.width : 1f;
-    }
-
-
-    private int PointsUsed => _items?.Select( x => GetAPCostForAction( x.SequenceAction.Action ) ).Sum() ?? INFINITE_COST;
+#if USE_ACTION_BLOCKS
     private int BlocksUsed => _items?.Select( x => GetBlockCostForAction( x.SequenceAction.Action ) ).Sum() ?? INFINITE_COST;
+#endif
 
+    protected override void Awake()
+    {
+        base.Awake();
+        if( ItemsRoot != null )
+            _rootWidth = ItemRootRT.rect.width - ItemsRoot.padding.left - ItemsRoot.padding.right;
+    }
 
     public List<SequenceAction> GetSelectedSequence()
     {
@@ -73,19 +80,8 @@ public class UIActionSequence : UIPanel
     {
         if( ExhaustedAPBar != null )
             ExhaustedAPBar.fillAmount = 1f - ( _spentAbilityPoints / (float)_maxActionBlocks ) - ( ItemsRoot.padding.right / _rootWidth ) * 1;
-
-        float spacingGain = ( _maxActionBlocks - 1) * -ItemsRoot.spacing;
-
-        _itemsWidth = (_rootWidth + spacingGain) / _maxActionBlocks;
     }
 
-
-    protected override void Awake()
-    {
-        base.Awake();
-        if( ItemsRoot != null )
-            _rootWidth = ItemRootRT.rect.width - ItemsRoot.padding.left - ItemsRoot.padding.right;
-    }
 
     private void DestroyBlockInstances()
     {
@@ -93,100 +89,144 @@ public class UIActionSequence : UIPanel
         _items.Clear();
     }
 
-    public void Show( Actor controlActor )
+    public void Show( Actor actor, ActionSequence sequence )
     {
-        if( controlActor == null )
-            return;
+        if( actor == null )
+            throw new System.ArgumentNullException( $"Argument '{nameof( actor )}' can not be null." );
+        if( sequence == null )
+            throw new System.ArgumentNullException( $"Argument '{nameof(sequence)}' can not be null." );
 
-        EvaluateActorStats( controlActor );
+        _sequence = sequence;
+        _sequence.ActionAdded += SequenceActionAdded;
+        _sequence.ActionRemoved += SequenceActionRemoved;
+
+        EvaluateActorStats( actor );
         CalculateUILayout();
         DestroyBlockInstances();
 
         base.Show();
     }
 
-
-    private int GetAPCostForAction( ActorAction action )
+    public override void Hide()
     {
-        if( action == null )
-            return 1;
-        return Mathf.Max( action.APCost, 1 );
+        _sequence?.ClearListeners();
+        _sequence = null;
+        base.Hide();
     }
 
+#if USE_ACTION_BLOCKS
     private int GetBlockCostForAction( ActorAction action )
     {
         if( action == null )
             return 1;
         return Mathf.Max( action.BlocksUsed, 1 );
     }
+#endif
 
     public void UIBtn_Fire()
     {
         OnUIFire?.Invoke();
     }
 
-    public bool CanAddSequenceAction( SequenceAction action )
-    {
-        if( action == null )
-            return false;
-
-        bool canAffordAP = _spentAbilityPoints - ( PointsUsed + GetAPCostForAction( action.Action ) ) >= 0;
-
-#if USE_ACTION_BLOCKS
-        bool canAffordBlocks = _maxActionBlocks - ( BlocksUsed + GetBlockCostForAction( action.Action ) ) >= 0;
-        return canAffordAP && canAffordBlocks;
-#else
-        return canAffordAP;
-#endif
-    }
-
-
     public void AddSequenceAction( SequenceAction action )
     {
-        if( !CanAddSequenceAction( action ) )
+        if( !_sequence.CanAddSequenceAction( action ) )
             return;
-        var newUIAction = CreateBlock( action );
-
-        UIManager.Instance.WorldIndicators.TryCreateIndicatorOnSmartPos( GfxWorldIndicators.ATTACK_INDICATOR, action.Target );
+        _sequence.AddAction( action );
     }
 
 
     internal void RemoveSequenceAction( UIActionSequenceItem item )
     {
-        if( _items.Remove( item ) )
+        _sequence.RemoveAction( item.SequenceAction );
+    }
+
+    private void SequenceActionAdded( SequenceAction action )
+    {
+        CreateBlock( action );
+        UpdateSpriteParts();
+
+        //Shift preview block to end, if it exists
+        if( _previewBlock != null )
         {
-            Destroy( item.gameObject );
+            if( _items.Remove( _previewBlock ) )
+                _items.Add( _previewBlock );
+            _previewBlock?.transform.SetAsLastSibling();
+        }
+
+        UpdateSpriteParts();
+        UIManager.Instance.WorldIndicators.TryCreateIndicatorOnSmartPos( GfxWorldIndicators.ATTACK_INDICATOR, action.Target );
+    }
+
+    public void PreviewAction( SequenceAction action )
+    {
+        EndPreviewAction();
+        //Don't preview that which shalt not be showable!
+        if( !_sequence.CanAddSequenceAction( action ) )
+            return;
+
+        _previewBlock = CreateBlock( action );
+        _previewBlock.gameObject.name = "Preview_Block";
+        //_previewBlock.SetColor( PreviewColor );
+        UpdateSpriteParts();
+        _previewBlock?.ShowAsPreview();
+    }
+
+
+    public void EndPreviewAction()
+    {
+        if( _previewBlock == null )
+            return;
+        _items.Remove( _previewBlock );
+        Destroy( _previewBlock.gameObject );
+        _previewBlock = null;
+        UpdateSpriteParts();
+    }
+
+
+    private void SequenceActionRemoved( SequenceAction action )
+    {
+        var uiItem = _items.FirstOrDefault( x => x.SequenceAction == action );
+
+        if( _items.Remove( uiItem ) )
+        {
+            Destroy( uiItem.gameObject );
             UpdateSpriteParts();
 
-            if( !IsTargetInSequence( item.SequenceAction.Target ) )
-                UIManager.Instance.WorldIndicators.DestroyIndicator( item.SequenceAction.Target, true );      
+            if( !IsTargetInSequence( uiItem.SequenceAction.Target ) )
+                UIManager.Instance.WorldIndicators.DestroyIndicator( uiItem.SequenceAction.Target, true );
         }
     }
 
+    private void OnDestroy()
+    {
+        _sequence?.ClearListeners();
+        _sequence = null;
+    }
 
     private int GetBlocksRequired( SequenceAction action )
     {
 #if USE_ACTION_BLOCKS
         return action.Action.BlocksUsed;
 #else
-        return action.Action.APCost;
+        return action.GetCost();
 #endif
     }
+
 
     private UIActionSequenceItem CreateBlock( SequenceAction action )
     {
         var newInstance = ItemPrefab.Opt()?.Duplicate();
-        int blocksRequired = GetBlocksRequired( action );
+        if( newInstance == null )
+            return null;
+        _items.Add( newInstance );
+        int subBlocksRequired = GetBlocksRequired( action );
         ActionSequenceItemPart part = ActionSequenceItemPart.Left;
            
         newInstance.Opt()?.Initialize( action, part, this );
         newInstance.Opt()?.transform.SetParent( ItemRootRT, false );
-        if( newInstance != null )
-            _items.Add( newInstance );
-        SizeBlock( newInstance, blocksRequired );
-        newInstance.CreateDividers( blocksRequired, part );
-        UpdateSpriteParts();
-
+        SizeBlock( newInstance, subBlocksRequired );
+        newInstance.CreateDividers( subBlocksRequired, part );
         return newInstance;
     }
 
@@ -196,8 +236,9 @@ public class UIActionSequence : UIPanel
         if( item == null )
             return;
         var rt = item.GetComponent<RectTransform>();
-        var rect = rt.rect;
-        rt.sizeDelta = new Vector2( _itemsWidth * widthCount, rect.height );
+
+        _itemsWidth = (_rootWidth + ItemsRoot.spacing) / (_maxActionBlocks);
+        rt.SetSizeWithCurrentAnchors( RectTransform.Axis.Horizontal, (_itemsWidth * widthCount) - ItemsRoot.spacing );// = new Vector2( , rect.height );
     }
 
 
@@ -213,16 +254,18 @@ public class UIActionSequence : UIPanel
 
     private ActionSequenceItemPart GetSpritePart( int index )
     {
-        if( _items.Count == 1 )
+        int itemsCount = _items.Count;
+
+        if( itemsCount == 1 )
             return ActionSequenceItemPart.Whole;
 
         if( index == 0 )
             return ActionSequenceItemPart.Left;
 
-        if( index > 0 && index < _items.Count - 1 )
+        if( index > 0 && index < itemsCount - 1 )
             return ActionSequenceItemPart.Center;
 
-        if( index == _items.Count - 1 )
+        if( index >= itemsCount - 1 )
             return ActionSequenceItemPart.Right;
 
         return ActionSequenceItemPart.Whole;

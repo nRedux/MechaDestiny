@@ -51,6 +51,7 @@ public class UIPickActionRequest : UIRequest<object, bool>
         UIManager.Instance.UserControls.Cancel.RemoveActivateListener( OnCancelInput );
     }
 
+
     private void OnCancelInput( InputActionEvent evt )
     {
         if( evt.Used )
@@ -60,6 +61,7 @@ public class UIPickActionRequest : UIRequest<object, bool>
         evt.Use();
         Cancel();
     }
+
 
     public override void Run()
     {

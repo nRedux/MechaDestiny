@@ -286,6 +286,7 @@ public class Actor : SimpleEntity<ActorAsset>
         return ActionHandler.HasActionsAvailable();
     }
 
+
     public bool ShouldEndActorTurn()
     {
         if( _team.IsPlayerTeam )

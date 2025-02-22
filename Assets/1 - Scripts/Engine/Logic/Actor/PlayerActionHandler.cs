@@ -1,15 +1,116 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
+using UnityEngine.UI;
+
+
+public class ActionSequence
+{
+    private const int INFINITE_COST = int.MaxValue;
+
+    public System.Action<SequenceAction> ActionAdded;
+    public System.Action<SequenceAction> ActionRemoved;
+
+    private Actor _actor;
+    private List<SequenceAction> _actions = new List<SequenceAction>();
+    private int _availableActionPoints;
+
+    private int FullSequenceCost => _actions?.Select( x => x.GetCost() ).Sum() ?? INFINITE_COST;
+    private int AvailableActionPoints => _availableActionPoints - FullSequenceCost;
+
+    public ActionSequence( Actor actor )
+    {
+        if( actor == null )
+            throw new System.ArgumentNullException( $"{nameof( actor )} argument cannot be null." );
+        _actor = actor;
+        _availableActionPoints = actor.GetStatisticValue( StatisticType.AbilityPoints );
+    }
+
+    public void ClearListeners()
+    {
+        ActionAdded = null;
+        ActionRemoved = null;
+    }
+
+    public bool AddAction( SequenceAction action )
+    {
+        if( action == null )
+            return false;
+        if( _actions.Contains( action ) )
+            return false;
+
+        _actions.Add( action );
+        ActionAdded?.Invoke( action );
+        return true;
+    }
+
+    public bool RemoveAction( SequenceAction action )
+    {
+        if( action == null )
+            return false;
+        if( _actions.Remove( action ) )
+        {
+            ActionRemoved?.Invoke( action );
+            return true;
+        }
+        return false;
+    }
+
+
+#if USE_ACTION_BLOCKS
+    private int GetBlockCostForAction( ActorAction action )
+    {
+        if( action == null )
+            return 1;
+        return Mathf.Max( action.BlocksUsed, 1 );
+    }
+#endif
+
+    public bool CanAddSequenceAction( SequenceAction action )
+    {
+        if( action == null )
+            return false;
+
+        bool canAffordAP = AvailableActionPoints - action.GetCost() >= 0;
+
+#if USE_ACTION_BLOCKS
+        bool canAffordBlocks = _maxActionBlocks - ( BlocksUsed + GetBlockCostForAction( action.Action ) ) >= 0;
+        return canAffordAP && canAffordBlocks;
+#else
+        return canAffordAP;
+#endif
+    }
+
+}
 
 
 public class SequenceAction
 {
+    public Actor Actor;
     public ActorAction Action;
     public SmartPoint Target;
     public MechComponentData UsedWeapon;
+
+    public SequenceAction() { }
+
+    public int GetCost()
+    {
+        int result = 1;
+        if( Action == null )
+            return 1;
+
+        if( UsedWeapon != null )
+        {
+            result = Mathf.Max( 1, UsedWeapon.GetStatisticValue( StatisticType.AbilityPointCost ) );
+            return result;
+        }
+
+        result = Mathf.Max( Action.APCost, 1 );
+        return result;
+    }
 }
 
 

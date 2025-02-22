@@ -70,7 +70,7 @@ public class MechComponentAsset : DataProviderAsset<MechComponentAsset, MechComp
     public override void SetupNewData( MechComponentData newData )
     {
         newData.Initialize();
-        newData.ID = DisplayName.TryGetLocalizedString();
+        newData.ID = this.name;
         newData.AOEShape = AOEShape;
     }
 

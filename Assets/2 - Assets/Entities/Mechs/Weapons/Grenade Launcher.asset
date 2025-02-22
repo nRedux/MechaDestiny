@@ -21,7 +21,7 @@ MonoBehaviour:
       m_EditorAssetChanged: 0
     ID: 
     Statistics:
-      _serializedKeys: 00010000100100002001000030010000310100000000000025010000
+      _serializedKeys: 0001000010010000200100003001000031010000000000002501000000050000
       _serializedValues:
       - _value: 10
         _startValue: 0
@@ -44,6 +44,12 @@ MonoBehaviour:
       - _value: 8
         _startValue: 8
         Type: 0
+      - _value: 4
+        _startValue: 4
+        Type: 0
+    Boosts:
+      _serializedKeys: 
+      _serializedValues: []
     Model:
       m_AssetGUID: 7e6659fff24d67543a0caa88c7bef944
       m_SubObjectName: 

@@ -217,7 +217,7 @@ public class SimpleEntity<TData> : DataObject<TData>, IEntity
         //TODO: Should I throw here?
         if( stat == null )
         {
-            Debug.LogWarning($"Requests statistic value which doesn't exist in entity. {stat.Entity.GetID()}");
+            Debug.LogWarning($"Requests statistic value which doesn't exist in entity. {GetID()}");
             return 0;
         }
         return stat.Value;

@@ -30,6 +30,8 @@ public enum StatisticType
     MaxAccuracy = 0x0131,
 
     Evasion = 0x0140,
+
+    AbilityPointCost = 0x0500
 }
 
 [Flags]

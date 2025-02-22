@@ -18,6 +18,7 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
     private MechComponentData _weapon;
     private Vector2Int _hoveredCell = new Vector2Int( -1000, -1000 );
 
+    public System.Action<object> OnHover;
 
     /// <summary>
     /// Was the weapon to calculate provided to the request or do we rely on the actor active weapon?
@@ -210,6 +211,12 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
     {
         _hoveredCell = cell;
         GameEngine.Instance.GfxBoard.GeneralOverlay.HighlightCell( cell );
+
+        var actor = GameEngine.Instance.Board.GetActorsAtCell( cell ).Where( x => !ShouldIgnoreActor( x ) ).FirstOrDefault();
+        if( actor != null )
+            OnHover?.Invoke( actor );
+        else
+            OnHover?.Invoke( cell );
 
         RenderAOE( cell );
     }

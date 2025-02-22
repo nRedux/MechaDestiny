@@ -14,10 +14,13 @@ public enum ActionSequenceItemPart
 
 public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
+    private const string ANIMATOR_PREVIEW_SHOW = "Show";
+
     [HideInInspector]
     public UIActionSequence UISequence;
     public GameObject PipDividerTemplate;
     public GameObject SpacerTemplate;
+    public Animator PreviewAnimator;
     public int OverlapStretch = 10;
 
     public Color HoveredTint;
@@ -46,13 +49,27 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
         PipDividerTemplate.Opt()?.SetActive( false );
         SpacerTemplate.Opt()?.SetActive( false );
         _startColor = MaskImage.Opt()?.color ?? Color.white;
+
+        if( PreviewAnimator == null )
+            PreviewAnimator = GetComponentInChildren<Animator>();
+        if( PreviewAnimator != null )
+            PreviewAnimator.enabled = false;
+    }
+
+    public void ShowAsPreview()
+    {
+        if( PreviewAnimator != null )
+        {
+            PreviewAnimator.enabled = true;
+            PreviewAnimator.Play( ANIMATOR_PREVIEW_SHOW, 0, 0 );
+        }
     }
 
     public void UpdateStretch( ActionSequenceItemPart part )
     {
         if( _layoutGroup == null )
             return;
-
+        /*
         switch( part )
         {
             case ActionSequenceItemPart.Left:
@@ -65,9 +82,9 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
 
             case ActionSequenceItemPart.Center:
                 _layoutGroup.padding.left = OverlapStretch;
-                _layoutGroup.padding.right = OverlapStretch;
                 break;
         }
+        */
     }
 
     public void CreateDividers( int subBlocks, ActionSequenceItemPart part )
@@ -163,6 +180,13 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
         hoverUI.Refresh( this );
         hoverUI.transform.position = this.transform.position;
         hoverUI.Show();
+    }
+
+
+    public void SetColor(Color color)
+    {
+        if( MaskImage != null )
+            MaskImage.color = color;
     }
 
 

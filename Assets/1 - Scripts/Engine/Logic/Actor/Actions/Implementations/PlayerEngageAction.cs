@@ -12,6 +12,8 @@ using Unity.VisualScripting;
 using UnityEngine.Localization.SmartFormat.Core.Parsing;
 using System.Linq;
 using static UnityEditor.FilePathAttribute;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
+using System.Runtime.CompilerServices;
 
 [System.Serializable]
 public class PlayerEngageAction : AttackAction
@@ -22,6 +24,7 @@ public class PlayerEngageAction : AttackAction
     private Actor _actor;
     private UIFindAttackTargetRequest _uiRequest = null;
     private bool _uiWantsToFire = false;
+    private ActionSequence _actionSequence;
 
 
     public override void Tick()
@@ -52,6 +55,7 @@ public class PlayerEngageAction : AttackAction
 
     public override void End()
     {
+        UsedWeapon = null;
         this.State = ActorActionState.Finished;
         UIManager.Instance.TryEndPickAction();
         UIManager.Instance.HideActionSequence();
@@ -65,8 +69,18 @@ public class PlayerEngageAction : AttackAction
     {
         //CancelUIRequests();
         //Start( _game, _actor );
+
+        PreviewSequenceAction();
     }
 
+    private void PreviewSequenceAction()
+    {
+        var attack = this._actor.GetActionsOfTypeStrict<PlayerAttackAction>().FirstOrDefault();
+        if( attack == null )
+            return;
+        SmartPoint targetLocation = new SmartPoint( Vector3.zero );
+        UIManager.Instance.ActionSequence.PreviewAction( new SequenceAction() { Actor = _actor, Action = attack, Target = targetLocation, UsedWeapon = this._actor.ActiveWeapon } );
+    }
 
     public override void Start( Game game, Actor actor )
     {
@@ -74,11 +88,17 @@ public class PlayerEngageAction : AttackAction
         SetupListeners();
         _game = game;
         _actor = actor;
+        _actionSequence = new ActionSequence( actor );
+        
 
         UIManager.Instance.TryPickAction( _actor, ActionPicked, () => { }, ActionCategory.Augment );
         //UIManager.Instance.ShowActionPicker( OnSelect, GetPickableActionCategory() );
-        UIManager.Instance.ShowSequenceSelector( actor, () => _uiWantsToFire = true );
+        UIManager.Instance.ShowSequenceSelector( actor, _actionSequence, () => _uiWantsToFire = true );
+        PreviewSequenceAction();
         UIManager.Instance.PlayerAttackUI.Opt()?.SetActive( true );
+
+        //Gotta subscribe after action sequence UI is shown above becuase otherwise we respond to removal before it does.
+        _actionSequence.ActionRemoved += SequenceActionRemoved;
 
         //Get valid move locations. Notify the UI we need to display a collection of move locations. Wait for UI to return a result. Execute move.
         this.State = ActorActionState.Executing;
@@ -89,6 +109,10 @@ public class PlayerEngageAction : AttackAction
         StartAttackLocationPick();
     }
 
+    private void SequenceActionRemoved( SequenceAction action )
+    {
+        PreviewSequenceAction();
+    }
 
     private void StartAttackLocationPick()
     {
@@ -103,9 +127,8 @@ public class PlayerEngageAction : AttackAction
     {
         var selected = result as ActorAction;
         
-
         //This sucker won't work. We need more info for the sequence action.
-        UIManager.Instance.ActionSequence.AddSequenceAction( new SequenceAction() { Action = selected, Target = null } );
+        UIManager.Instance.ActionSequence.AddSequenceAction( new SequenceAction() { Actor = _actor, Action = selected, Target = null } );
         //Realistically the only thing we should be doing when we pick actions this way is picking augmentations to the existing actual actions.
         
         
@@ -135,7 +158,7 @@ public class PlayerEngageAction : AttackAction
                 var location = (Vector2Int) selectedTarget;
 
                 SmartPoint targetLocation = new SmartPoint( new Vector3( location.x, 0, location.y ) );
-                UIManager.Instance.ActionSequence.AddSequenceAction( new SequenceAction() { Action = attack, Target = targetLocation, UsedWeapon = this._actor.ActiveWeapon } );
+                UIManager.Instance.ActionSequence.AddSequenceAction( new SequenceAction() { Actor = _actor, Action = attack, Target = targetLocation, UsedWeapon = this._actor.ActiveWeapon } );
             }
             else
             {
@@ -145,15 +168,18 @@ public class PlayerEngageAction : AttackAction
                 UIManager.Instance.ShowSideBMechInfo( actor, UIManager.MechInfoDisplayMode.Full );
 
                 SmartPoint targetLocation = new SmartPoint( actor );
-                UIManager.Instance.ActionSequence.AddSequenceAction( new SequenceAction() { Action = attack, Target = targetLocation, UsedWeapon = this._actor.ActiveWeapon } );
+                UIManager.Instance.ActionSequence.AddSequenceAction( new SequenceAction() { Actor = _actor, Action = attack, Target = targetLocation, UsedWeapon = this._actor.ActiveWeapon } );
             }
 
+            PreviewSequenceAction();
             StartAttackLocationPick();
         };
 
         UIRequestFailureCallback<bool> failure = moveTarget => { End(); _uiRequest = null; };
         UIRequestCancelResult cancel = () => { End(); _uiRequest = null; };
-        return new UIFindAttackTargetRequest( attackerAvatar.Actor, success, failure, cancel );
+        var request = new UIFindAttackTargetRequest( attackerAvatar.Actor, success, failure, cancel );
+
+        return request;
     }
 
 

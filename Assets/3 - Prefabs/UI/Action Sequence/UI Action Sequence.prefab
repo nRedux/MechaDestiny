@@ -186,8 +186,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 26.870403}
-  m_SizeDelta: {x: -14.326721, y: 39.0443}
+  m_AnchoredPosition: {x: 0, y: 49.8071}
+  m_SizeDelta: {x: -14.3267, y: 75.3554}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &673996910932991106
 CanvasRenderer:
@@ -605,6 +605,7 @@ MonoBehaviour:
   ItemPrefab: {fileID: -247123795595097737, guid: 4faa4280900293042b0a8b40ac7fc218, type: 3}
   ItemsRoot: {fileID: 2669914232658150390}
   ExhaustedAPBar: {fileID: 524722275777496282}
+  PreviewColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &4772859319236926815
 GameObject:
   m_ObjectHideFlags: 0

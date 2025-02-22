@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using UnityEngine.Localization;
 using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine.Serialization;
+using Sirenix.OdinInspector;
 
 public enum ResultType
 {
@@ -41,14 +42,42 @@ public enum ActionCategory
     NONE
 }
 
+public interface IAbilityCost
+{
+    int GetAPCost();
+}
+
+public interface ICatagorizedAbility
+{
+    ActionCategory Category { get; }
+}
+
+public interface IDescribedObject
+{
+    LocalizedString DisplayName { get; }
+    LocalizedString Description { get; }
+}
+
 public abstract class ActorAction
 {
     public ActionCategory Category;
+
+    [HideIf( nameof(HideAP) )]
     [FormerlySerializedAs("Cost")]
-    public int APCost;
+    [FormerlySerializedAs( "APCost" )]
+    [SerializeField]
+    private int _APCost;
+
+#if USE_ACTION_BLOCKS
     public int BlocksUsed;
+#endif
+
     public LocalizedString DisplayName;
     public LocalizedString Description;
+
+    public virtual bool HideAP => false;
+
+    public virtual int APCost => _APCost;
 
     public ActorActionState State
     {
@@ -86,7 +115,6 @@ public abstract class ActorAction
     {
         actor.SpendStatistic( StatisticType.AbilityPoints, cost );
     }
-
 }
 
 

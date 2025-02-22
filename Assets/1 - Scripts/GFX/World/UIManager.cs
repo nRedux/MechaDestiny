@@ -360,10 +360,10 @@ public class UIManager : Singleton<UIManager>
     }
 
 
-    public void ShowSequenceSelector( Actor actor, System.Action onClick = null )
+    public void ShowSequenceSelector( Actor actor, ActionSequence sequence, System.Action onClick = null )
     {
         if( ActionSequence == null ) return;
-        ActionSequence.Show( actor );
+        ActionSequence.Show( actor, sequence );
     }
 
 
