@@ -26,6 +26,22 @@ MonoBehaviour:
     m_Localized: Titra-1
     m_Metadata:
       m_Items: []
+  - m_Id: 6203664384000
+    m_Localized: Breaker
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8251109687296
+    m_Localized: Splitter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8290469036032
+    m_Localized: Cudgel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8469855223808
+    m_Localized: katach-7
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

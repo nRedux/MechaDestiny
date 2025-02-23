@@ -21,7 +21,7 @@ MonoBehaviour:
       m_EditorAssetChanged: 0
     ID: 
     Statistics:
-      _serializedKeys: 000100001001000020010000300100003101000000000000
+      _serializedKeys: 00010000100100002001000030010000310100000000000000050000
       _serializedValues:
       - _value: 1
         _startValue: 0
@@ -41,6 +41,9 @@ MonoBehaviour:
       - _value: 1
         _startValue: 1
         Type: 0
+      - _value: 3
+        _startValue: 3
+        Type: 0
     Boosts:
       _serializedKeys: 
       _serializedValues: []
@@ -58,9 +61,9 @@ MonoBehaviour:
     AOEShape: {fileID: 0}
   DisplayName:
     m_TableReference:
-      m_TableCollectionName: GUID:c9f6f54132f444c459cb15fcd0afa795
+      m_TableCollectionName: GUID:33fb2ade7c30bcd4e9e6197775cc4251
     m_TableEntryReference:
-      m_KeyId: 112343412110671872
+      m_KeyId: 8290469036032
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
