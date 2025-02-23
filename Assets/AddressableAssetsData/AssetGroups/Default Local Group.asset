@@ -44,6 +44,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1399b75d497c49a448595ecc102457ec
+    m_Address: Assets/2 - Assets/Entities/Mechs/Weapons/Core Weapons/Machine Guns/Bizon-1.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 19f517940b291084caac4da5afe38bf6
     m_Address: Assets/2 - Assets/Data/Mech Asset.asset
     m_ReadOnly: 0
@@ -66,6 +71,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 21a1e8dd213676b4185f14ab2242b473
+    m_Address: Assets/2 - Assets/Entities/Mechs/Weapons/Core Weapons/Machine Guns/Titra-1.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 25cf1dd3425cc0843a00500cc80c4a4a
     m_Address: Assets/3 - Prefabs/Meta/Caravan.prefab
@@ -123,7 +133,7 @@ MonoBehaviour:
     - default
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 654450a8e45214f4c957879c2796dd17
-    m_Address: Assets/2 - Assets/Entities/Mechs/Test Mech/Fist.asset
+    m_Address: Assets/2 - Assets/Entities/Mechs/Test Mech/Cudgel.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
@@ -168,6 +178,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8309d7d0373465645bdf4c1f058c599c
+    m_Address: Assets/2 - Assets/Entities/Mechs/Weapons/Core Weapons/Melee Weapons/Splitter.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 849cc63c6059b2c4a8ef0904f34d1b05
     m_Address: Assets/2 - Assets/Data/Player End Actor.asset

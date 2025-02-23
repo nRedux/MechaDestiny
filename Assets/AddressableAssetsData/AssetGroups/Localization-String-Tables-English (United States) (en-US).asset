@@ -29,6 +29,12 @@ MonoBehaviour:
     - Locale-en-US
     - Preload
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d2902c6ae94c04b41bc1b51a89da5b6f
+    m_Address: Weapons_en-US
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-US
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 3a8d356ceb2f93143b324ebf12aae8aa, type: 2}
   m_SchemaSet:

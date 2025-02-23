@@ -23,9 +23,12 @@ MonoBehaviour:
     Statistics:
       _serializedKeys: 00000000
       _serializedValues:
-      - _value: 10
+      - _value: 130
         _startValue: 0
         Type: 0
+    Boosts:
+      _serializedKeys: 
+      _serializedValues: []
     Model:
       m_AssetGUID: 
       m_SubObjectName: 
@@ -33,6 +36,7 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     Type: 3
+    WeaponType: 16
     AttachmentType: {fileID: 0}
     Attachments:
     - SlotType:
@@ -42,7 +46,7 @@ MonoBehaviour:
         m_SubObjectType: 
         m_EditorAssetChanged: 0
       DefaultComponent:
-        m_AssetGUID: 6d2c5b9d83c7de94fa4d28a262700c50
+        m_AssetGUID: 8309d7d0373465645bdf4c1f058c599c
         m_SubObjectName: 
         m_SubObjectGUID: 
         m_SubObjectType: 
@@ -58,6 +62,9 @@ MonoBehaviour:
         Statistics:
           _serializedKeys: 
           _serializedValues: []
+        Boosts:
+          _serializedKeys: 
+          _serializedValues: []
         Model:
           m_AssetGUID: 
           m_SubObjectName: 
@@ -65,6 +72,7 @@ MonoBehaviour:
           m_SubObjectType: 
           m_EditorAssetChanged: 0
         Type: 0
+        WeaponType: 16
         AttachmentType: {fileID: 0}
         Attachments: []
         Flags: 0

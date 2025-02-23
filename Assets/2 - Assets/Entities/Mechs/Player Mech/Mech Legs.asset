@@ -16,25 +16,34 @@ MonoBehaviour:
     AssetReference:
       m_AssetGUID: 1b94ecdd1d930fc408545dde50568766
       m_SubObjectName: 
+      m_SubObjectGUID: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     ID: 
     Statistics:
       _serializedKeys: 0000000000010000
       _serializedValues:
-      - _value: 1
+      - _value: 150
         _startValue: 0
+        Type: 0
       - _value: 5
         _startValue: 0
+        Type: 0
+    Boosts:
+      _serializedKeys: 
+      _serializedValues: []
     Model:
       m_AssetGUID: 
       m_SubObjectName: 
+      m_SubObjectGUID: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     Type: 1
+    WeaponType: 16
     AttachmentType: {fileID: 0}
     Attachments: []
     Flags: 0
+    AOEShape: {fileID: 0}
   DisplayName:
     m_TableReference:
       m_TableCollectionName: GUID:c9f6f54132f444c459cb15fcd0afa795
@@ -44,6 +53,7 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
+  AOEShape: {fileID: 0}
   references:
     version: 2
     RefIds: []
