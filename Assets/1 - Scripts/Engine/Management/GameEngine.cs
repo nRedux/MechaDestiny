@@ -69,9 +69,15 @@ public class GameEngine : Singleton<GameEngine>
         CollectSpawnLocations();
     }
 
+
     private void CollectSpawnLocations()
     {
         _spawnLocations = FindObjectsByType<SpawnLocation>( FindObjectsSortMode.None ).ToList();
+    }
+
+    private List<SpawnLocation> GetSpawnLocations( PlayerType playerType )
+    {
+        return FindObjectsByType<SpawnLocation>( FindObjectsSortMode.None ).Where( x => x.PlayerType == playerType ).ToList();
     }
 
     private void AwakeGfxBoard()
@@ -168,7 +174,11 @@ public class GameEngine : Singleton<GameEngine>
     {
         TurnPhase aiPhase = new AITurnPhase();
 
-        List<SpawnLocation> spawns = _spawnLocations.ToList();
+        List<SpawnLocation> spawns = GetSpawnLocations(PlayerType.Enemy).ToList();
+        if( spawns.Count == 0 )
+        {
+            Debug.LogError( "No enemy spawn points exist." );
+        }
 
         Team aiTeam = new Team( false );
         aiTeam.SetTurnPhases( new TurnPhase[] { aiPhase } );

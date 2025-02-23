@@ -27,3 +27,10 @@ public enum EffectSurfaceType
 {
     Metal
 }
+
+
+public enum PlayerType
+{
+    Ally,
+    Enemy
+}
