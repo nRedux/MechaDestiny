@@ -19,6 +19,8 @@ public class MechData: SimpleEntity<MechAsset>
     [HideInInspector]
     public List<MechComponentData> ComponentData;
 
+    public System.Action<MechComponentData> ActiveWeaponChanged;
+
     [HideInInspector]
     public MechComponentData Torso;
     [HideInInspector]
@@ -48,7 +50,12 @@ public class MechData: SimpleEntity<MechAsset>
         } 
         set 
         {
+            var prevActive = _activeWeapon;
             _activeWeapon = value;
+            if( prevActive != value )
+            {
+                ActiveWeaponChanged?.Invoke( value );
+            }
         } 
     }
 

@@ -61,7 +61,6 @@ public class MechComponentAsset : DataProviderAsset<MechComponentAsset, MechComp
     [ShowIf(nameof( Editor_ShowAOE ) )]
     public GridShape AOEShape;
 
-
     public bool Editor_ShowAOE()
     {
         return (this.Data.Flags & WeaponFlags.AOE) == WeaponFlags.AOE;

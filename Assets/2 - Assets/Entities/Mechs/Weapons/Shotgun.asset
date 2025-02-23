@@ -41,6 +41,9 @@ MonoBehaviour:
       - _value: 1
         _startValue: 1
         Type: 0
+    Boosts:
+      _serializedKeys: 
+      _serializedValues: []
     Model:
       m_AssetGUID: b7c7f0be105776540adcfb3b44a65ebe
       m_SubObjectName: 
@@ -48,6 +51,7 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     Type: 4
+    WeaponType: 48
     AttachmentType: {fileID: 11400000, guid: a76bed771f181044dbef4e4b9338e7b9, type: 2}
     Attachments: []
     Flags: 1

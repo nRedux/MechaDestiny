@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIWeaponInfo : MonoBehaviour
 {
+    public Image WeaponTypeImage;
+
     [HideInInspector]
     public string ShotCount;
     [HideInInspector]
@@ -16,13 +19,17 @@ public class UIWeaponInfo : MonoBehaviour
         _locRefresher = new LocalizedStringsRefresher( gameObject );
     }
 
-    public void Refresh( MechData mechData )
+    public void Refresh( MechComponentData weapon )
     {
-        if( mechData == null ) return;
+        if( weapon == null ) return;
 
-        var activeWeapon = mechData.ActiveWeapon;
-        ShotCount = activeWeapon.GetStatistic( StatisticType.ShotCount )?.Value.ToString() ?? "0";
-        Damage = activeWeapon.GetStatistic( StatisticType.Damage )?.Value.ToString() ?? "0";
+        var wepInfo = weapon.WeaponTypeInfo;
+
+        if( WeaponTypeImage && wepInfo != null )
+            WeaponTypeImage.sprite = wepInfo.WeaponTypeSprite;
+
+        ShotCount = weapon.GetStatistic( StatisticType.ShotCount )?.Value.ToString() ?? "0";
+        Damage = weapon.GetStatistic( StatisticType.Damage )?.Value.ToString() ?? "0";
         _locRefresher?.RefreshLocalizedStrings();
     }
 

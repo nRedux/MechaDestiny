@@ -43,10 +43,6 @@ MonoBehaviour:
     m_Localized: Defeated!
     m_Metadata:
       m_Items: []
-  - m_Id: 1687686636519424
-    m_Localized: Rifle
-    m_Metadata:
-      m_Items: []
   - m_Id: 1717553943953408
     m_Localized: Shotgun
     m_Metadata:
@@ -131,16 +127,48 @@ MonoBehaviour:
     m_Localized: Engage
     m_Metadata:
       m_Items: []
-  - m_Id: 90921714664751104
-    m_Localized: Grenade Launcher
-    m_Metadata:
-      m_Items: []
   - m_Id: 108645643252547584
     m_Localized: Evade
     m_Metadata:
       m_Items: []
   - m_Id: 108645788065087488
     m_Localized: Boosts evasion.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112343274449420288
+    m_Localized: Grenade Launcher
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112343412110671872
+    m_Localized: Melee
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112343536597614592
+    m_Localized: "Powerful  close combat\t weapon."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112343621892980736
+    m_Localized: Automatic medium range assault weapon.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112343804294873088
+    m_Localized: Rifle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112343871806390272
+    m_Localized: Short range spread shot weapon.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112344034075623424
+    m_Localized: Long range single shot high damage weapon.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112344231912554496
+    m_Localized: Medium range area damage weapon. (Requires line of sight)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112351638713679872
+    m_Localized: Machine Gun
     m_Metadata:
       m_Items: []
   references:

@@ -57,6 +57,7 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 1
     Type: 4
+    WeaponType: 80
     AttachmentType: {fileID: 11400000, guid: a76bed771f181044dbef4e4b9338e7b9, type: 2}
     Attachments: []
     Flags: 4
@@ -65,7 +66,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:c9f6f54132f444c459cb15fcd0afa795
     m_TableEntryReference:
-      m_KeyId: 90921714664751104
+      m_KeyId: 112343274449420288
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0

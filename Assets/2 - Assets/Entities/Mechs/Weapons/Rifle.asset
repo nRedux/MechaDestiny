@@ -41,6 +41,9 @@ MonoBehaviour:
       - _value: 1
         _startValue: 1
         Type: 0
+    Boosts:
+      _serializedKeys: 
+      _serializedValues: []
     Model:
       m_AssetGUID: 814cb73cd9c6bad4597f4eb4e28d5357
       m_SubObjectName: 
@@ -48,6 +51,7 @@ MonoBehaviour:
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     Type: 4
+    WeaponType: 32
     AttachmentType: {fileID: 11400000, guid: a76bed771f181044dbef4e4b9338e7b9, type: 2}
     Attachments: []
     Flags: 0
@@ -56,7 +60,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:c9f6f54132f444c459cb15fcd0afa795
     m_TableEntryReference:
-      m_KeyId: 1687686636519424
+      m_KeyId: 112343804294873088
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0

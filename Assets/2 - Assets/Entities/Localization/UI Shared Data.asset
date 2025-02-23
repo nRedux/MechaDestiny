@@ -39,14 +39,6 @@ MonoBehaviour:
     m_Key: ui_defeat
     m_Metadata:
       m_Items: []
-  - m_Id: 1687686636519424
-    m_Key: wpn_rifle
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1717553943953408
-    m_Key: wpn_shotgun
-    m_Metadata:
-      m_Items: []
   - m_Id: 74399972475682816
     m_Key: combat_turn
     m_Metadata:
@@ -119,18 +111,54 @@ MonoBehaviour:
     m_Key: ui_engage
     m_Metadata:
       m_Items: []
-  - m_Id: 90921714664751104
-    m_Key: 'wpn_grenade_Launcher
-
-'
-    m_Metadata:
-      m_Items: []
   - m_Id: 108645643252547584
     m_Key: ui_action_evade
     m_Metadata:
       m_Items: []
   - m_Id: 108645788065087488
     m_Key: ui_action_evade_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1717553943953408
+    m_Key: wpn_shotgun
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112343274449420288
+    m_Key: wpn_grenade_launcher
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112351638713679872
+    m_Key: wpn_machinegun
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112343412110671872
+    m_Key: wpn_melee
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112343804294873088
+    m_Key: 'wpn_rifle
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112343536597614592
+    m_Key: wpn_desc_melee
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112343621892980736
+    m_Key: wpn_desc_machinegun
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112343871806390272
+    m_Key: wpn_desc_shotgun
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112344034075623424
+    m_Key: wpn_desc_rifle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 112344231912554496
+    m_Key: wpn_desc_grenade_launcher
     m_Metadata:
       m_Items: []
   m_Metadata:

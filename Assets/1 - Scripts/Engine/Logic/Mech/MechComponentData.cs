@@ -1,3 +1,4 @@
+using System.Linq;
 using Newtonsoft.Json;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -32,6 +33,9 @@ public class MechComponentData : SimpleEntity<MechComponentAsset>
 
     public MechComponentType Type;
 
+    [ShowIf(nameof( ShowAsWeapon ) )]
+    public WeaponType WeaponType = WeaponType.Melee;
+
     public AttachmentSlotType AttachmentType;
 
     public AttachmentSlot[] Attachments;
@@ -49,6 +53,21 @@ public class MechComponentData : SimpleEntity<MechComponentAsset>
 
     [JsonProperty]
     private bool _initialized = false;
+
+    [JsonIgnore]
+    public WeaponTypeInfo WeaponTypeInfo
+    {
+        get
+        {
+            return GlobalSettings.Instance.WeaponTypes.FirstOrDefault( x => x.Type == WeaponType );
+        }
+    }
+
+
+    public bool ShowAsWeapon()
+    {
+        return Type == MechComponentType.Weapon;
+    }
 
 
     /// <summary>

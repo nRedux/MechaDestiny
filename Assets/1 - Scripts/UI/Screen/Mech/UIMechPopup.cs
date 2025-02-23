@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.EventSystems.EventTrigger;
+
 
 public class UIMechPopup : UIPanel
 {
@@ -22,8 +25,41 @@ public class UIMechPopup : UIPanel
             return;
         AssignThisEntity( entity );
         MechInfo.AssignEntity( entity );
-        RefreshWeaponInfo( entity );
+        if( entity is Actor actor )
+            RefreshWeaponInfo( actor.ActiveWeapon );
+        
         UpdateVanityUI( entity );
+    }
+
+    public override void OnHide()
+    {
+        base.OnHide();
+        //Stop listening to whatever was assigned previously, safety
+        StopListeningWeaponChange( _thisEntity?.Entity );
+    }
+
+
+    private void StartListeningWeaponChange(IEntity entity)
+    {
+        if( entity is Actor actor )
+        {
+            var mechData = actor.GetMechData();
+            if( mechData != null && mechData.ActiveWeaponChanged != WeaponChanged )
+                mechData.ActiveWeaponChanged += WeaponChanged;
+        }
+    }
+
+    private void StopListeningWeaponChange( IEntity entity )
+    {
+        if( entity is Actor actor )
+        {
+            actor.GetMechData().ActiveWeaponChanged -= WeaponChanged;
+        }
+    }
+
+    private void WeaponChanged( MechComponentData data )
+    {
+        RefreshWeaponInfo( data );
     }
 
     private void UpdateVanityUI( IEntity entity )
@@ -40,16 +76,17 @@ public class UIMechPopup : UIPanel
 
     private void AssignThisEntity( IEntity entity )
     {
+        //Stop listening to whatever was assigned previously, safety
+        StopListeningWeaponChange( _thisEntity?.Entity );
         _thisEntity = _thisEntity ?? gameObject.GetOrAddComponent<UIEntity>();
         _thisEntity.AssignEntity( entity );
+        StartListeningWeaponChange( entity );
     }
 
-    private void RefreshWeaponInfo( IEntity entity )
+    private void RefreshWeaponInfo( MechComponentData weapon )
     {
-        if( entity == null ) return;
-
-        var mechData = entity.GetSubEntities()[0] as MechData;
-        WeaponInfo.Opt()?.Refresh( mechData );
+        if( weapon == null ) return;
+        WeaponInfo.Opt()?.Refresh( weapon );
     }
 
 
