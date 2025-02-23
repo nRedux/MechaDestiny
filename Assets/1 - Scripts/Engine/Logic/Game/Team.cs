@@ -44,6 +44,7 @@ public class Team
     {
         if( actor == null )
             return;
+        actor.SetIsPlayer( this.IsPlayerTeam );
         actor.SetTeam( this );
         _members.Add( actor );
     }

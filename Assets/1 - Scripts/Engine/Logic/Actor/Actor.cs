@@ -138,7 +138,7 @@ public class Actor : SimpleEntity<ActorAsset>
 
         if( game.Board.IsBlocked( newWorldPosition ) )
         {
-            throw new System.Exception("Invlid position request.");
+            throw new System.Exception("Invalid position request.");
         }
 
         GameEngine.Instance.Board.Unblock( curWorldPosition );

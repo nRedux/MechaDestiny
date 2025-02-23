@@ -7,6 +7,8 @@ using ScriptableObjectArchitecture;
 using Sirenix.OdinInspector;
 using System.Threading.Tasks;
 using Pathfinding;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
+
 
 
 
@@ -23,6 +25,7 @@ public class GameEngine : Singleton<GameEngine>
     public Color[] TeamColors = new Color[] { Color.red, Color.blue };
 
     public ActorReference TestActor1;
+    public List<ActorReference> PlayerActors;
     public List<ActorReference> AIActors;
 
     public GfxCamera Camera;
@@ -170,24 +173,44 @@ public class GameEngine : Singleton<GameEngine>
         CreateAITeam();
     }
 
+
+    private void CreatePlayerTeam()
+    {
+        TurnPhase playerPhase = new PlayerPhase( EndTurnButtonEvent );
+
+        Team playerTeam = new Team( true );
+        playerTeam.SetTurnPhases( new TurnPhase[] { playerPhase } );
+        _game.AddTeam( playerTeam );
+
+        CreateTeamActors( playerTeam, PlayerType.Ally, PlayerActors );
+    }
+
+
     private void CreateAITeam()
     {
         TurnPhase aiPhase = new AITurnPhase();
-
-        List<SpawnLocation> spawns = GetSpawnLocations(PlayerType.Enemy).ToList();
-        if( spawns.Count == 0 )
-        {
-            Debug.LogError( "No enemy spawn points exist." );
-        }
-
         Team aiTeam = new Team( false );
         aiTeam.SetTurnPhases( new TurnPhase[] { aiPhase } );
         _game.AddTeam( aiTeam );
 
-        if( AIActors.Count() == 0 )
+        CreateTeamActors( aiTeam, PlayerType.Enemy, AIActors );
+    }
+
+
+
+    public void CreateTeamActors( Team team, PlayerType type, List<ActorReference> actors )
+    {
+        if( actors.Count() == 0 )
             return;
 
-        IEnumerator actorEnum = AIActors.GetEnumerator();
+        List<SpawnLocation> spawns = GetSpawnLocations( type ).ToList();
+        if( spawns.Count == 0 )
+        {
+            Debug.LogError( "No spawn points exist." );
+            return;
+        }
+
+        IEnumerator actorEnum = actors.GetEnumerator();
 
         while( spawns.Count > 0 )
         {
@@ -197,39 +220,18 @@ public class GameEngine : Singleton<GameEngine>
 
             if( !actorEnum.MoveNext() )
             {
-                actorEnum = AIActors.GetEnumerator();
+                actorEnum = actors.GetEnumerator();
                 actorEnum.MoveNext();
             }
 
             var currentActor = actorEnum.Current as ActorReference;
 
             var actor = currentActor.GetDataSync();
-            actor.SetIsPlayer( false );
-            aiTeam.AddMember( actor );
+            team.AddMember( actor );
             actor.SetPosition( new Vector2Int( (int) spawnPosition.x, (int) spawnPosition.z ), Game );
         }
     }
 
-
-    private void CreatePlayerTeam()
-    {
-        TurnPhase playerPhase = new PlayerPhase( EndTurnButtonEvent );
-
-        Team team1 = new Team( true );
-        team1.SetTurnPhases( new TurnPhase[] { playerPhase } );
-        _game.AddTeam( team1 );
-
-        var actor = TestActor1.GetDataSync();
-        actor.SetIsPlayer( true );
-        team1.AddMember( actor );
-        actor.SetPosition( new Vector2Int( 1, 1 ), Game );
-        /*
-        var actor2 = TestActor1.GetDataSync();
-        actor2.SetIsPlayer( true );
-        team1.AddMember( actor2 );
-        actor2.SetPosition( new Vector2Int( 2, 1 ), Game );
-        */
-    }
 
 
     public void Update()
