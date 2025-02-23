@@ -14,22 +14,18 @@ public class UIActionSequenceItemHover : UIPanel
 
     public void Refresh( UIActionSequenceItem content )
     {
-        var action = content.SequenceAction;
-
-        Title.Opt()?.SetText( action.Action.DisplayName.TryGetLocalizedString() );
-        ActionDescription.Opt()?.SetText( action.Action.Description.TryGetLocalizedString() );
-        ActionCost.Opt()?.SetText( action.Action.APCost.ToString() );
-        UpdateLocalization( action.Actor, action.Action );
+        var sequenceAction = content.SequenceAction;
+        UpdateLocalization( sequenceAction.Actor, sequenceAction );
     }
 
-    private void UpdateLocalization( Actor actor, ActorAction action )
+    private void UpdateLocalization( Actor actor, SequenceAction action )
     {
         var titleEvent = Title.GetComponent<LocalizeStringEvent>();
         var descEvent = ActionDescription.GetComponent<LocalizeStringEvent>();
 
-        titleEvent.StringReference = action.DisplayName;
-        descEvent.StringReference = action.Description;
-        Cost = action.APCost;
+        titleEvent.StringReference = action.Action.DisplayName;
+        descEvent.StringReference = action.Action.Description;
+        Cost = action.GetCost();
         RefreshLocalizedStrings();
     }
 
