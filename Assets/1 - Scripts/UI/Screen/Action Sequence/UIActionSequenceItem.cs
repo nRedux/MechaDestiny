@@ -159,6 +159,13 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
     }
 
 
+    public void SetColor( Color color )
+    {
+        if( MaskImage != null )
+            MaskImage.color = color;
+    }
+
+
     public void OnPointerClick( PointerEventData eventData )
     {
         if( eventData.button == PointerEventData.InputButton.Right )
@@ -177,16 +184,13 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
         if( MaskImage != null )
             MaskImage.CrossFadeColor( HoveredTint, .1f, true, true );
 
+        var indicator = UIManager.Instance.WorldIndicators.GetIndicator( SequenceAction.Target );
+        indicator.Opt()?.StartHighlight();
+
+
         hoverUI.Refresh( this );
         hoverUI.transform.position = this.transform.position;
         hoverUI.Show();
-    }
-
-
-    public void SetColor(Color color)
-    {
-        if( MaskImage != null )
-            MaskImage.color = color;
     }
 
 
@@ -194,6 +198,10 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
     {
         if( MaskImage != null )
             MaskImage.CrossFadeColor( _startColor, .1f, true, true );
+
+        var indicator = UIManager.Instance.WorldIndicators.GetIndicator( SequenceAction.Target );
+        indicator.Opt()?.StopHighlight();
+
         UIManager.Instance.ActionSequenceHover.Opt()?.Hide();
     }
 }

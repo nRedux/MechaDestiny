@@ -1,10 +1,14 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GfxWorldIndicator: MonoBehaviour
 {
 
     public float TransitionDuration = .1f;
+    public UnityEvent OnStartHighlight;
+    public UnityEvent OnStopHighlight;
+
     private Animator _animator;
 
     private bool _destroyAfterHide = false;
@@ -24,6 +28,16 @@ public class GfxWorldIndicator: MonoBehaviour
     {
         _animator.Opt()?.Play( "Show", 0, 0f );
         HandleShowData( data );
+    }
+
+    public void StartHighlight()
+    {
+        OnStartHighlight.Invoke();
+    }
+
+    public void StopHighlight()
+    {
+        OnStopHighlight.Invoke();
     }
 
     public void Hide( bool destroyAfterHide = false )

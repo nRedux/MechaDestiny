@@ -104,6 +104,22 @@ public class GfxWorldIndicators
     }
 
 
+    public GfxWorldIndicator GetIndicator( SmartPoint smartPoint )
+    {
+        GfxWorldIndicator indicator = null;
+        if( smartPoint.Actor != null )
+        {
+            _actorIndicators.TryGetValue( smartPoint.Actor, out indicator );
+        }
+        else
+        {
+            _cellIndicators.TryGetValue( smartPoint.Position.ToVector2Int(), out indicator );
+        }
+
+        return indicator;
+    }
+
+
     public GfxWorldIndicator CreateIndicatorOnCell( string indicatorType, Vector2Int cell )
     {
         GfxWorldIndicator indicatorPrefab = FindIndicator( indicatorType );

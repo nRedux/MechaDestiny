@@ -47,6 +47,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TransitionDuration: 0.2
+  OnStartHighlight:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8786912500710308474}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  OnStopHighlight:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8786912500710308474}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!95 &1959876086033085690
 Animator:
   serializedVersion: 7
@@ -121,9 +151,21 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: fcbfb3e3accd4ba428d2c3c6efb910a4, type: 2}
+    - target: {fileID: -4265834955447210506, guid: 6784829fd2fcab94d991cc8de7c9690b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6784829fd2fcab94d991cc8de7c9690b, type: 3}
       propertyPath: m_Name
       value: AttackSword
+      objectReference: {fileID: 0}
+    - target: {fileID: 2660025798417261769, guid: 6784829fd2fcab94d991cc8de7c9690b, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3d1e09b033c9c1341a46ec9d94af3140, type: 2}
+    - target: {fileID: 8817407217473512265, guid: 6784829fd2fcab94d991cc8de7c9690b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -133,5 +175,10 @@ PrefabInstance:
 --- !u!4 &299034203016855256 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6784829fd2fcab94d991cc8de7c9690b, type: 3}
+  m_PrefabInstance: {fileID: 264827788836444467}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8786912500710308474 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8817407217473512265, guid: 6784829fd2fcab94d991cc8de7c9690b, type: 3}
   m_PrefabInstance: {fileID: 264827788836444467}
   m_PrefabAsset: {fileID: 0}
