@@ -228,7 +228,7 @@ public class GameEngine : Singleton<GameEngine>
 
             var actor = currentActor.GetDataSync();
             team.AddMember( actor );
-            actor.SetPosition( new Vector2Int( (int) spawnPosition.x, (int) spawnPosition.z ), Game );
+            spawn.UseMe( actor, Game );
         }
     }
 

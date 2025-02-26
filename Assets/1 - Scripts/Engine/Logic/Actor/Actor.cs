@@ -23,6 +23,12 @@ public enum SequencePos
     SequenceEnd
 }
 
+public enum ActorStatus
+{
+    Inactive,
+    Active
+}
+
 public class ResultDisplayProps
 {
     public bool IsSequenceStart;
@@ -56,6 +62,16 @@ public class Actor : SimpleEntity<ActorAsset>
     private ActorActionHandler ActionHandler;
     private bool _diePerformed = false;
 
+
+    public ActorStatus Status
+    {
+        get;
+        set;
+    } = ActorStatus.Active;
+
+    public int SpawnPriority;
+
+    public LuaBehavior LuaScript;
 
     //Actor needs to be able to perform actions such as moving, attacking, executing abilities, etc.
     //Actor needs to be able to track it's statistics and have values be applied

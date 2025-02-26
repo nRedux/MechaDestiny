@@ -6,8 +6,26 @@ using UnityEngine;
 
 public class SpawnLocation : MonoBehaviour
 {
-
     public PlayerType PlayerType;
+    public TextAsset ScriptForActor;
+    public int Priority;
+
+    public void UseMe( Actor actor, Game game )
+    {
+        actor.SpawnPriority = Priority;
+        actor.SetPosition( this.transform.position.ToVector2Int(), game );
+
+        if( ScriptForActor != null ) {
+            Dictionary<string, object> props = new Dictionary<string, object> { { "thisActor", actor } };
+            actor.LuaScript = new LuaBehavior( ScriptForActor, null );
+            actor.LuaScript.AssignActor( actor );
+            actor.LuaScript.CallStart();
+            //actor.LuaScript.AssignActor( actor );
+            //actor.LuaScript.CallStart();
+            Debug.Log(actor.Status.ToString());
+            //LuaBehaviorManager.Instance.RegisterBehavior( actor.LuaScript );
+        }
+    }
 
 #if UNITY_EDITOR
     private void OnDrawGizmos()

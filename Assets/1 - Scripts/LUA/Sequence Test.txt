@@ -1,0 +1,14 @@
+
+
+log("Script running!")
+
+function update()
+	log("I'm here")
+end
+
+function start()
+	--log(thisActor.name)
+	thing = thisActor.OtherStatus
+	thisActor.Status = ActorStatus.Inactive
+	log( thisActor.Status )
+end

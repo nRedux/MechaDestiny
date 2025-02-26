@@ -75,7 +75,7 @@ public class ActorTurnPhase: TurnPhase
     {
         //Find first member in team which hasn't performed it's turn actions yet.
         var members = _team.GetMembers();
-        var nextMember = members.Where( x => !x.TurnComplete && !x.IsDead() ).FirstOrDefault();
+        var nextMember = members.Where( x => x.Status == ActorStatus.Active && !x.TurnComplete && !x.IsDead() ).FirstOrDefault();
 
         //Turn phase complete?
         if( nextMember == null )
