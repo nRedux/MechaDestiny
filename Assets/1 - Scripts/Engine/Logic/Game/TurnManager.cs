@@ -67,6 +67,9 @@ public class TurnManager
 
         StartNextPhase();
 
+        if( LuaBehaviorManager.Instance != null )
+            LuaBehaviorManager.Instance.OnTurnChanged( this );
+
         if( !ActiveTeam.IsPlayerTeam )
             _aiPlayerHandler = new AIPlayerHandler( _game );
     }

@@ -169,12 +169,17 @@ public class GameEngine : Singleton<GameEngine>
 
     private void CreateTeams()
     {
-        CreatePlayerTeam();
-        CreateAITeam();
+        var playerTeam = CreatePlayerTeam();
+        var enemyTeam = CreateAITeam();
+
+        //Lets send the info about these starting actor groups to the lua environment so we can reference it later
+        LuaBehaviorManager.Instance.SetSuperGlobal( "playerTeam", playerTeam );
+        LuaBehaviorManager.Instance.SetSuperGlobal( "enemyTeam", enemyTeam );
+        LuaBehaviorManager.Instance.OnTeamsCreated();
     }
 
 
-    private void CreatePlayerTeam()
+    private Team CreatePlayerTeam()
     {
         TurnPhase playerPhase = new PlayerPhase( EndTurnButtonEvent );
 
@@ -183,10 +188,11 @@ public class GameEngine : Singleton<GameEngine>
         _game.AddTeam( playerTeam );
 
         CreateTeamActors( playerTeam, PlayerType.Ally, PlayerActors );
+        return playerTeam;
     }
 
 
-    private void CreateAITeam()
+    private Team CreateAITeam()
     {
         TurnPhase aiPhase = new AITurnPhase();
         Team aiTeam = new Team( false );
@@ -194,6 +200,7 @@ public class GameEngine : Singleton<GameEngine>
         _game.AddTeam( aiTeam );
 
         CreateTeamActors( aiTeam, PlayerType.Enemy, AIActors );
+        return aiTeam;
     }
 
 
@@ -239,7 +246,7 @@ public class GameEngine : Singleton<GameEngine>
         if( !_initializationDone )
             return;
         TickGame();
-
+        LuaBehaviorManager.Instance.Update();
         //RenderGridAtMouse();
     }
 

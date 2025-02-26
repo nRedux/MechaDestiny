@@ -1,0 +1,8 @@
+
+function update()
+	if Input.GetKeyDown( KeyCode.A ) then
+		log("Poop")
+		thisActor.Die()
+	end
+	--log("I'm here")
+end

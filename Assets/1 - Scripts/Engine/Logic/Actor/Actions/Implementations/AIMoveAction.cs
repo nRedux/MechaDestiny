@@ -114,7 +114,7 @@ public class AIMoveAction : MoveAction
         if( requester.AIPersonality != null )
             desiredRange = requester.AIPersonality.GetIdealAttackRange( requester );
 
-        Debug.Log( desiredRange );
+        //Debug.Log( desiredRange );
         int maxDistance = GameEngine.Instance.Board.Width * GameEngine.Instance.Board.Height;
         float cellScore = 0f;
         GameEngine.Instance.Game.Teams.Do( team =>

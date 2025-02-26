@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
+
+
 public class SpawnLocation : MonoBehaviour
 {
     public PlayerType PlayerType;
@@ -17,13 +19,8 @@ public class SpawnLocation : MonoBehaviour
 
         if( ScriptForActor != null ) {
             Dictionary<string, object> props = new Dictionary<string, object> { { "thisActor", actor } };
-            actor.LuaScript = new LuaBehavior( ScriptForActor, null );
+            actor.LuaScript = new LuaBehavior( ScriptForActor, props );
             actor.LuaScript.AssignActor( actor );
-            actor.LuaScript.CallStart();
-            //actor.LuaScript.AssignActor( actor );
-            //actor.LuaScript.CallStart();
-            Debug.Log(actor.Status.ToString());
-            //LuaBehaviorManager.Instance.RegisterBehavior( actor.LuaScript );
         }
     }
 

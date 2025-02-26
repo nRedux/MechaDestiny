@@ -1495,7 +1495,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerType: 1
-  ScriptForActor: {fileID: 0}
+  ScriptForActor: {fileID: 4900000, guid: 6601117d82762fa498b42ea9163f2b8e, type: 3}
   Priority: 0
 --- !u!4 &615466890
 Transform:
