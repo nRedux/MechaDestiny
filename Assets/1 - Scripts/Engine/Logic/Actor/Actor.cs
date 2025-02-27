@@ -357,4 +357,25 @@ public class Actor : SimpleEntity<ActorAsset>
         stat.SetValue( Mathf.Max( 0, stat.Value - amount ) );
         return true;
     }
+
+    public List<Actor> MembersAdjacentPriority( int offset )
+    {
+        if( _team == null )
+            return new List<Actor>();
+        return _team.MembersAdjacentPriority( this, offset );
+    }
+
+    public List<Actor> MembersGreaterPriority( int offset )
+    {
+        if( _team == null )
+            return new List<Actor>();
+        return _team.MembersGreaterPriority( this );
+    }
+
+    public List<Actor> MembersLowerPriority( int offset )
+    {
+        if( _team == null )
+            return new List<Actor>();
+        return _team.MembersLowerPriority( this );
+    }
 }

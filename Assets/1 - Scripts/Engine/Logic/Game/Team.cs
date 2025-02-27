@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Team
@@ -101,6 +102,21 @@ public class Team
     {
         int livingCount = this._members.Count( x => !x.IsDead() );
         return livingCount != 0;
+    }
+
+    public List<Actor> MembersAdjacentPriority( Actor actor, int offset )
+    {
+        return _members.Where( x => x.SpawnPriority == actor.SpawnPriority + offset ).ToList();
+    }
+
+    public List<Actor> MembersGreaterPriority( Actor actor )
+    {
+        return _members.Where( x => x.SpawnPriority > actor.SpawnPriority ).ToList();
+    }
+
+    public List<Actor> MembersLowerPriority( Actor actor )
+    {
+        return _members.Where( x => x.SpawnPriority < actor.SpawnPriority ).ToList();
     }
 
 }

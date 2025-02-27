@@ -1,0 +1,28 @@
+
+function allActorsDead( actorList )
+	--validate table contains desired elements
+	if listContainsOnlyType(actorList, type(Actor) ) == false then
+		log("Invalid entries")
+		return false;
+	end
+
+	--Now check if everything is dead
+	local allDead = true
+	for i = 1, #actorList do
+		if actorList[i-1].IsDead() == false then
+			return false
+		end
+	end
+
+	return true
+end
+
+
+function listContainsOnlyType( list, type )
+	for i = 1, #list do
+		if type(list[i-1]) ~= type then
+			return false
+		end
+	end
+	return true
+end

@@ -1,8 +1,8 @@
 
 function update()
+	-- Just calling DIE if the A key is hit.
 	if Input.GetKeyDown( KeyCode.A ) then
 		log("Poop")
 		thisActor.Die()
 	end
-	--log("I'm here")
 end

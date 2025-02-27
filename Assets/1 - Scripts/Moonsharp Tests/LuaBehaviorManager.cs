@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using MoonSharp.Interpreter;
+using MoonSharp.Interpreter.Loaders;
 using UnityEngine;
 
 public enum LuaEvent
@@ -65,6 +67,17 @@ public class LuaBehaviorManager : SingletonScriptableObject<LuaBehaviorManager>
 
         UserData.RegisterType<ActorStatus>();
         UserData.RegisterType<KeyCode>();
+
+        //Script.DefaultOptions.ScriptLoader = new UnityAssetsScriptLoader("LUA Common");
+        Dictionary<string, string> scripts = new Dictionary<string, string>();
+        object[] result = Resources.LoadAll( "MoonSharp/Scripts", typeof( TextAsset ) );
+        foreach( TextAsset ta in result.OfType<TextAsset>() )
+        {
+            scripts.Add( ta.name, ta.text );
+        }
+
+        ( (ScriptLoaderBase) Script.DefaultOptions.ScriptLoader ).ModulePaths = new string[] { "Lua/?", "Lua/?.txt" };
+
     }
 
     public void RegisterBehavior( LuaBehavior behavior )

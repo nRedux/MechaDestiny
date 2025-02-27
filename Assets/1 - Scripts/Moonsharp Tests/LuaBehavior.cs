@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using MoonSharp.Interpreter;
 using Sirenix.OdinInspector;
 using Unity.VisualScripting;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 using static Pathfinding.AdvancedSmooth;
 
@@ -57,7 +58,21 @@ public class LuaBehavior
         if( properties != null )
             properties.Do( x => _scriptObject.Globals[x.Key] = x.Value );
         SetupBindings();
-        _scriptObject.DoString( script );
+
+        try
+        {
+            _scriptObject.DoString( script );
+        }
+        catch( SyntaxErrorException synEx)
+        {
+            Debug.LogError( $"Lua Error: {synEx.Message}" );
+            Debug.LogError( $"Line Number: {synEx.DecoratedMessage}" );
+        }
+        catch( ScriptRuntimeException ex )
+        {
+            Debug.LogError( $"Lua Error: {ex.Message}" );
+            Debug.LogError( $"Line Number: {ex.DecoratedMessage}" );
+        }
     }
 
 
