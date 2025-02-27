@@ -264,14 +264,14 @@ public class UIFindAttackTargetRequest : UIRequest<object, bool>
     {
         if( ShouldIgnoreActor( hoveredActor ) )
             return;
-        UIManager.Instance.ShowSideBMechInfo( hoveredActor, UIManager.MechInfoDisplayMode.Full );
+        //UIManager.Instance.ShowSideBMechInfo( hoveredActor, UIManager.MechInfoDisplayMode.Full );
         UIManager.Instance.AttackHoverInfo.Opt()?.Show( _requestingActor, hoveredActor );
     }
 
 
     public override void ActorHoverEnd( Actor hoveredActor )
     {
-        UIManager.Instance.HideSideBMechInfo( );
+        //UIManager.Instance.HideSideBMechInfo( );
         UIManager.Instance.AttackHoverInfo.Opt()?.Hide();
     }
 

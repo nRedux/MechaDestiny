@@ -148,10 +148,11 @@ public class AIAttackAction : AttackAction
             targetLocation = new SmartPoint( targetActor );
         }
 
+        UIManager.Instance.ShowSideBMechInfo( targetActor, UIManager.MechInfoDisplayMode.Full, true );
         this.State = ActorActionState.Executing;
         AttackActionResult res = new AttackActionResult( attackerAvatar, targetLocation, actor.ActiveWeapon );
         res.OnComplete = () => {
-            UIManager.Instance.HideSideBMechInfo();
+            UIManager.Instance.HideSideBMechInfo( true );
             End();
         };
 

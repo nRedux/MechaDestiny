@@ -112,7 +112,8 @@ public class ActorTurnPhase: TurnPhase
         _selectedActor = actor;
         _selectedActor?.ResetOnSelect();
         _selectedActor?.Selected();
-        Events.Instance.Raise( new CurrentActorEvent() { Actor = actor } );
+
+        UIManager.Instance.SetSelectedActor( actor );
     }
 
 

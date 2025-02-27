@@ -67,6 +67,9 @@ public class UIManager : Singleton<UIManager>
     public UIMechPopup SideA_FocusMechInfoFull;
     public UIMechPopup SideB_FocusMechInfoFull;
 
+    private bool _sideAMechUILocked = false;
+    private bool _sideBMechUILocked = false;
+
     public UIWeaponPicker WeaponPicker;
     public UIActionPicker ActionPicker;
 
@@ -284,8 +287,11 @@ public class UIManager : Singleton<UIManager>
         Full
     }
 
-    public void ShowSideAMechInfo( Actor actor, MechInfoDisplayMode mode)
+    public void ShowSideAMechInfo( Actor actor, MechInfoDisplayMode mode, bool locked )
     {
+        if( _sideAMechUILocked && !locked )
+            return;
+        _sideAMechUILocked = locked;
         switch( mode )
         {
             case MechInfoDisplayMode.Mini:
@@ -303,8 +309,11 @@ public class UIManager : Singleton<UIManager>
     }
 
 
-    public void ShowSideBMechInfo( Actor actor, MechInfoDisplayMode mode )
+    public void ShowSideBMechInfo( Actor actor, MechInfoDisplayMode mode, bool locked )
     {
+        if( _sideBMechUILocked && !locked )
+            return;
+        _sideBMechUILocked = locked;
         switch( mode )
         {
             case MechInfoDisplayMode.Mini:
@@ -322,15 +331,23 @@ public class UIManager : Singleton<UIManager>
     }
 
 
-    public void HideSideAMechInfo()
+    public void HideSideAMechInfo( bool unlock )
     {
+        if( _sideAMechUILocked && !unlock )
+            return;
+        if( unlock )
+            _sideAMechUILocked = false;
         SideA_FocusMechInfo.Opt()?.Hide();
         SideA_FocusMechInfoFull.Opt()?.Hide();
     }
 
 
-    public void HideSideBMechInfo()
+    public void HideSideBMechInfo( bool unlock )
     {
+        if( _sideBMechUILocked && !unlock )
+            return;
+        if( unlock )
+            _sideBMechUILocked = false;
         SideB_FocusMechInfo.Opt()?.Hide();
         SideB_FocusMechInfoFull.Opt()?.Hide();
     }
@@ -355,8 +372,8 @@ public class UIManager : Singleton<UIManager>
 
     public void HideMechInfos()
     {
-        HideSideAMechInfo();
-        HideSideBMechInfo();
+        HideSideAMechInfo( true );
+        HideSideBMechInfo( true );
     }
 
 
@@ -383,7 +400,6 @@ public class UIManager : Singleton<UIManager>
     private void SetupListeners()
     {
         Events.Instance.AddListener<GameOverEvent>( OnGameOverEvent );
-        Events.Instance.AddListener<CurrentActorEvent>( OnCurrentActorEvent );
         Events.Instance.AddListener<GameTurnChangeEvent>( OnGameTurnChange );
     }
 
@@ -391,7 +407,6 @@ public class UIManager : Singleton<UIManager>
     private void TeardownListeners()
     {
         Events.Instance.RemoveListener<GameOverEvent>( OnGameOverEvent );
-        Events.Instance.RemoveListener<CurrentActorEvent>( OnCurrentActorEvent );
         Events.Instance.RemoveListener<GameTurnChangeEvent>( OnGameTurnChange );
     }
 
@@ -413,17 +428,6 @@ public class UIManager : Singleton<UIManager>
         await TurnChange.Run();
         e.Game.RunGameLogic = true;
     }
-
-    private void OnCurrentActorEvent( CurrentActorEvent e )
-    {
-        _activeActor = e.Actor;
-        if( e.Actor == null )
-            return;
-        var avatar = GameEngine.Instance.AvatarManager.GetAvatar( e.Actor );
-        CombatCamera.MoveToTransform( avatar.transform, 1f );
-        CombatCamera.LockedTargetActor = e.Actor.IsPlayer ? null : e.Actor;
-    }
-
 
     private void OnGameOverEvent( GameOverEvent e )
     {
@@ -766,13 +770,18 @@ public class UIManager : Singleton<UIManager>
         var lastActor = _hoveredActor;
         if( UserControls.HoveredActorChanged )
         {
+
             //Old hover ended.
             if( UserControls.LastHoveredActor != null )
             {
+                if( GameEngine.Instance.IsPlayerTurn )
+                    UIManager.Instance.HideSideBMechInfo( false );
                 UpdateRequestActorHover( UserControls.LastHoveredActor, false );
             }
             if( UserControls.HoveredActor != null )
             {
+                if( GameEngine.Instance.IsPlayerTurn )
+                    UIManager.Instance.ShowSideBMechInfo( UserControls.HoveredActor, UIManager.MechInfoDisplayMode.Full, false );
                 UpdateRequestActorHover( UserControls.HoveredActor, true );
             }
         }
@@ -919,5 +928,18 @@ public class UIManager : Singleton<UIManager>
         terminationTargets.Do( x => _pendingRequests.Remove( x ) );
     }
 
+    internal void SetSelectedActor( Actor actor )
+    {
+        _activeActor = actor;
+        if( actor == null )
+        {
+            HideSideAMechInfo( true );
+            return;
+        }
+        var avatar = GameEngine.Instance.AvatarManager.GetAvatar( actor );
+        CombatCamera.MoveToTransform( avatar.transform, 1f );
+        CombatCamera.LockedTargetActor = actor.IsPlayer ? null : actor;
 
+        ShowSideAMechInfo( actor, MechInfoDisplayMode.Full, true );
+    }
 }

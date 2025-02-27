@@ -165,8 +165,6 @@ public class PlayerEngageAction : AttackAction
                 var actor = (Actor)selectedTarget;
                 var targetAvatar = GameEngine.Instance.AvatarManager.GetAvatar( actor );
 
-                UIManager.Instance.ShowSideBMechInfo( actor, UIManager.MechInfoDisplayMode.Full );
-
                 SmartPoint targetLocation = new SmartPoint( actor );
                 UIManager.Instance.ActionSequence.AddSequenceAction( new SequenceAction() { Actor = _actor, Action = attack, Target = targetLocation, UsedWeapon = this._actor.ActiveWeapon } );
             }

@@ -181,7 +181,6 @@ public class Actor : SimpleEntity<ActorAsset>
 
     public void Selected()
     {
-        GameEngine.Instance.UIManager.ShowSideAMechInfo( this, UIManager.MechInfoDisplayMode.Full );
         ActionHandler.Selected();
     }
 
