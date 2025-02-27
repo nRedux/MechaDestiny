@@ -105,7 +105,6 @@ public class PlayerAttackAction : AttackAction
         DoAttack( attackerAvatar );
         if( DisplayProps.IsSequenceStart )
         {
-            UIManager.Instance.ShowSideAMechInfo( actor, UIManager.MechInfoDisplayMode.Mini );
             if( actor.Target?.GfxActor != null )
                 UIManager.Instance.ShowSideBMechInfo( actor.Target.GfxActor.Actor, UIManager.MechInfoDisplayMode.Mini );
         }
@@ -129,7 +128,6 @@ public class PlayerAttackAction : AttackAction
         {
             if( res.DisplayProps.IsSequenceEnd )
             {
-                UIManager.Instance.ShowSideAMechInfo( attackerAvatar.Actor, UIManager.MechInfoDisplayMode.Full );
                 UIManager.Instance.HideSideBMechInfo();
             }
             _uiRequest = null;

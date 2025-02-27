@@ -148,16 +148,10 @@ public class AIAttackAction : AttackAction
             targetLocation = new SmartPoint( targetActor );
         }
 
-        UIManager.Instance.ShowSideAMechInfo( actor, UIManager.MechInfoDisplayMode.Mini );
-        if( !activeWep.IsAOE() )
-            UIManager.Instance.ShowSideBMechInfo( targetActor, UIManager.MechInfoDisplayMode.Mini );
-
         this.State = ActorActionState.Executing;
         AttackActionResult res = new AttackActionResult( attackerAvatar, targetLocation, actor.ActiveWeapon );
         res.OnComplete = () => {
             UIManager.Instance.HideSideBMechInfo();
-            if( !activeWep.IsAOE() )
-                UIManager.Instance.ShowSideAMechInfo( actor, UIManager.MechInfoDisplayMode.Full );
             End();
         };
 

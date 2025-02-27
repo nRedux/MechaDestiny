@@ -122,6 +122,7 @@ public class Game
         bool turnFinished = TurnManager.Tick();
         if( turnFinished )
         {
+            TurnManager.EndTurn();
             _startNewTurn = true;
             var turnChangeEvent = new GameTurnChangeEvent( this );
             Events.Instance.Raise( turnChangeEvent );

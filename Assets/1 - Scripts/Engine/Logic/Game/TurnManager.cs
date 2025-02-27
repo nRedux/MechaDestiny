@@ -60,8 +60,6 @@ public class TurnManager
 
     public void StartNextTurn()
     {
-        EndTurn();
-
         _activePhaseIndex = -1;
         _turnNumber++;
 
@@ -75,7 +73,7 @@ public class TurnManager
     }
 
 
-    private void EndTurn()
+    public void EndTurn()
     {
         if( _turnNumber < 0 )
             return;
