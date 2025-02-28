@@ -12,6 +12,8 @@ public class UIActorCollection: MonoBehaviour
     public Object DisplayTarget;
     public UIActor ActorPrefab;
 
+    public System.Action<UIActor> ActorClicked;
+
     private ActorCollection _collection;
 
 
@@ -80,6 +82,14 @@ public class UIActorCollection: MonoBehaviour
             throw new UIActorCollectionException( $"{nameof( ActorPrefab )} is null. Cannot create actor instances." );
         var newActorUI = Instantiate<UIActor>( ActorPrefab );
         newActorUI.Refresh( actor );
+        newActorUI.Clicked += ActorUIClicked;
+
         return newActorUI;
     }
+
+    private void ActorUIClicked( UIActor actor )
+    {
+        ActorClicked?.Invoke( actor );
+    }
+
 }

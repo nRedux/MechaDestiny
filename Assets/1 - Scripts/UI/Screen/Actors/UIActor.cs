@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
+
+
 public class UIActor : MonoBehaviour
 {
 
@@ -8,7 +11,28 @@ public class UIActor : MonoBehaviour
     public TMP_Text Class;
     public Image Portrait;
 
+    public System.Action<UIActor> Clicked;
+
     private Actor _actor;
+
+    private Button _button;
+
+    public Actor Actor
+    {
+        get => _actor;
+    }
+
+    private void Awake()
+    {
+        _button = GetComponent<Button>();
+        _button.Opt()?.onClick.AddListener( OnClicked );
+    }
+
+
+    private void OnClicked()
+    {
+        Clicked?.Invoke( this );
+    }
 
 
     public void Refresh( Actor actor )
