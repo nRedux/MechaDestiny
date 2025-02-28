@@ -10,9 +10,6 @@ public class EvadeAction : ActorAction
     /// </summary>
     public int EvadeChance;
 
-    [NonSerialized]
-    public UIInfoPop InfoPop;
-
     public override void Start( Game game, Actor actor )
     {
         base.Start( game, actor );

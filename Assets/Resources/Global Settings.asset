@@ -113,6 +113,17 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
+  PlayerActors:
+  - m_AssetGUID: 8088efe2bbee2d34d88d319711641d90
+    m_SubObjectName: 
+    m_SubObjectGUID: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 1
+  - m_AssetGUID: dace928b0ce9dad4fa18643bbc49203c
+    m_SubObjectName: 
+    m_SubObjectGUID: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 1
   references:
     version: 2
     RefIds: []

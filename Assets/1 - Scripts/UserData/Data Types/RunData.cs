@@ -16,12 +16,12 @@ public class RunData
     public string Scene;
 
     public MapData MapData;
-
+    public CompanyData CompanyData = new CompanyData();
     public MapObjectData Caravan = new MapObjectData();
 
     private bool _warmupScene = true;
 
-    public RunData(  )
+    public RunData()
     {
         _isValid = false;
     }

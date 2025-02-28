@@ -20,7 +20,6 @@ public class GfxWorld : MonoBehaviour
         if( Light )
             _lightEulerStart = Light.transform.eulerAngles;
         AddListeners();
-
     }
 
     private void Start()
@@ -73,5 +72,6 @@ public class GfxWorld : MonoBehaviour
         _caravanGfx.Initialize( runData.Caravan );
         _caravanGfx.Data = runData.Caravan;
     }
+
 
 }

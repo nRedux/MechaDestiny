@@ -4,20 +4,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 
+
 public static class DataHandler<TData> where TData : class, new ()
 {
 
+    public static System.Action<TData> OnDataCreated;
+
     private static JsonSerializerSettings _defaultSerializerSettings;
 
-    public static TData Data { get; private set; }
+    private static TData _data;
 
-    static DataHandler()
+    public static TData Data 
     {
-        Data = LoadData();
-        if( Data == null )
-            Data = CreateNewData();
+        get
+        {
+            if( _data == null )
+            {
+                _data = LoadData();
+                if( _data == null )
+                    _data = CreateNewData();
+            }
+            return _data;
+        }
+        private set
+        {
+            _data = value;
+        } 
     }
 
+    public static void Clear()
+    {
+        _data = null;
+    }
 
     public static JsonSerializerSettings SerializationSettings
     {
@@ -67,13 +85,18 @@ public static class DataHandler<TData> where TData : class, new ()
             return null;
 
         var result = JsonConvert.DeserializeObject<TData>( json, SerializationSettings );
+
+
+
         return result;
     }
 
 
     public static TData CreateNewData()
     {
-        return new TData();
+        var result = new TData();
+        OnDataCreated?.Invoke( result );
+        return result;
     }
 
 

@@ -32,10 +32,12 @@ public class StatisticCollection: Dictionary<StatisticType, Statistic>, IStatist
     }
 
 
-    public Statistic GetStatistic( StatisticType statistic )
+    public Statistic GetStatistic( StatisticType statistic, bool createIfMissing = false )
     {
         if( ContainsKey( statistic ) )
             return this[statistic];
+        else if( createIfMissing )
+            return AddStatistic( statistic, 0 );
         else
             return null;
     }
