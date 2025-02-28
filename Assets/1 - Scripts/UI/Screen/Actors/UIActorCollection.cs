@@ -21,6 +21,11 @@ public class UIActorCollection: MonoBehaviour
             Refresh( RunManager.Instance.RunData.CompanyData.Employees );
     }
 
+    private void OnEnable()
+    {
+        Refresh( RunManager.Instance.RunData.CompanyData.Employees );
+    }
+
     public void Refresh(ActorCollection collection )
     {
         if( collection == null )

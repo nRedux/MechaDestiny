@@ -1,14 +1,57 @@
 using UnityEngine;
 
+public enum UIRunInfoPage
+{
+    EmployeeInfo
+}
+
 public class UIRunInfo : MonoBehaviour
 {
+    public GameObject OpenButton;
+    public GameObject MainWindow;
+
+    public GameObject EmployeeInfoPage;
+    public GameObject EmployeeInfoBtn;
+
+
     private void Awake()
     {
-        ShowEmployeeInfo();
+        ShowPage( UIRunInfoPage.EmployeeInfo );
+        Close();
     }
 
-    public void ShowEmployeeInfo()
-    {
 
+    public void ShowPage( UIRunInfoPage page )
+    {
+        EmployeeInfoPage.Opt()?.SetActive( false );
+
+        switch( page )
+        {
+            case UIRunInfoPage.EmployeeInfo:
+                EmployeeInfoPage.Opt()?.SetActive( true );
+                break;
+
+        }
+    }
+
+
+    public void UI_ShowEmployeeInfo()
+    {
+        ShowPage( UIRunInfoPage.EmployeeInfo );
+    }
+
+
+    public void Close()
+    {
+        MainWindow.Opt()?.SetActive( false );
+        OpenButton.Opt()?.SetActive( true );
+    }
+
+
+    public void Open()
+    {
+        ShowPage( UIRunInfoPage.EmployeeInfo );
+        MainWindow.Opt()?.SetActive( true );
+        OpenButton.Opt()?.SetActive( false );
     }
 }
