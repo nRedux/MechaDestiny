@@ -233,7 +233,7 @@ public class GameEngine : Singleton<GameEngine>
 
             var currentActor = actorEnum.Current as ActorReference;
 
-            var actor = currentActor.GetDataSync();
+            var actor = currentActor.GetDataCopySync();
             team.AddMember( actor );
             spawn.UseMe( actor, Game );
         }

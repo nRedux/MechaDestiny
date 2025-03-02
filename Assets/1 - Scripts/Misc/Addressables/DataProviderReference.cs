@@ -11,7 +11,7 @@ public class DataProviderReference<TAsset, TData> : AssetReferenceT<TAsset> wher
 
     private System.Action<TAsset> _onComplete;
 
-    public TData GetDataSync( )
+    public TData GetDataCopySync( )
     {
         var asset = GetAssetSync();
         var data = asset.GetDataCopy();

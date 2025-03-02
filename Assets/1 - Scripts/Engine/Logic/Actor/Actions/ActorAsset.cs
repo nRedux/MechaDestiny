@@ -22,8 +22,11 @@ public class ActorAsset : DataProviderAsset<ActorAsset, Actor>
     public override void SetupNewData( Actor newData )
     {
         newData.ID = this.name;
+
+        var mechData = GetMechData();
+        newData.StartPilotingMech( mechData );
         newData.Actions = new ActorAction[Actions.Length];
-        newData.AddSubEntity( GetMechData() );
+        newData.AddSubEntity( newData.PilotedMech );
         newData.InitializeAIPersonality( AI_Personality );
         for( int i = 0; i < Actions.Length; i++ )
         {
@@ -54,7 +57,7 @@ public class ActorAsset : DataProviderAsset<ActorAsset, Actor>
     {
         if( !MechReference.RuntimeKeyIsValid() )
             return null;
-        return MechReference.GetDataSync();
+        return MechReference.GetDataCopySync();
     }
 
 }

@@ -54,6 +54,39 @@ public class GfxAvatarManager
         return null;
     }
 
+    public async Task<GfxActor> CreateGfxActor( MechData mech, System.Action<GfxActor> onReady )
+    {
+        try
+        {
+            var avatarGO = await mech.Avatar.GetAssetAsync();
+
+            var gfxActor = avatarGO.GetComponent<GfxActor>();
+            if( gfxActor == null )
+            {
+                Debug.LogError( $"Failed to Create GfxActor. No GfxActor component {avatarGO.name}" );
+                return null;
+            }
+
+            var avatarInstance = GameObject.Instantiate<GameObject>( avatarGO );
+            var gfxActorInstance = avatarInstance.GetComponent<GfxActor>();
+
+            BuildMech( null, gfxActorInstance );
+            gfxActorInstance.CalculateBounds();
+
+            ActorCreated?.Invoke( gfxActorInstance );
+            onReady?.Invoke( gfxActorInstance );
+
+            return gfxActorInstance;
+        }
+        catch( System.Exception e )
+        {
+            Debug.LogException( e );
+            Debug.LogError( "Failed to create GFX Actor" );
+        }
+
+        return null;
+    }
+
 
     public void BuildMech( Actor actor, GfxActor gfxActor )
     {
@@ -64,11 +97,10 @@ public class GfxAvatarManager
         BuildComponent( mechData.RightArm, gfxActor.RightArm );
 
         //Make sure the data is linked between graphics and the runtime data.
-        var mech = actor.GetSubEntities()[0] as MechData;
-        gfxActor.Torso.Opt()?.Initialize( mech.Torso );
-        gfxActor.Legs.Opt()?.Initialize( mech.Legs );
-        gfxActor.LeftArm.Opt()?.Initialize( mech.LeftArm );
-        gfxActor.RightArm.Opt()?.Initialize( mech.RightArm );
+        gfxActor.Torso.Opt()?.Initialize( mechData.Torso );
+        gfxActor.Legs.Opt()?.Initialize( mechData.Legs );
+        gfxActor.LeftArm.Opt()?.Initialize( mechData.LeftArm );
+        gfxActor.RightArm.Opt()?.Initialize( mechData.RightArm );
 
         gfxActor.Initialize( actor );
     }

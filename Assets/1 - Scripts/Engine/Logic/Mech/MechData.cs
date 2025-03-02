@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using UnityEngine;
 using Newtonsoft.Json;
+using System;
 
 [System.Serializable]
 public class MechData: SimpleEntity<MechAsset>
 {
+    public GameObjectReference Avatar;
 
     public Color MechColor;
 
@@ -21,6 +23,7 @@ public class MechData: SimpleEntity<MechAsset>
 
     public System.Action<MechComponentData> ActiveWeaponChanged;
 
+
     [HideInInspector]
     public MechComponentData Torso;
     [HideInInspector]
@@ -31,10 +34,20 @@ public class MechData: SimpleEntity<MechAsset>
     public MechComponentData RightArm;
 
     [JsonProperty]
+    [NonSerialized]
     private bool _initialized = false;
 
     [JsonProperty]
+    [NonSerialized]
+    private Actor _pilot = null;
+
+    [JsonProperty]
     private MechComponentData _activeWeapon = null;
+
+
+    [JsonIgnore]
+    public Actor Pilot { get => _pilot; }
+
 
     [JsonIgnore]
     public MechComponentData ActiveWeapon 
@@ -56,7 +69,26 @@ public class MechData: SimpleEntity<MechAsset>
             {
                 ActiveWeaponChanged?.Invoke( value );
             }
-        } 
+        }
+    }
+
+
+    public bool HasPilot
+    {
+        get => _pilot != null;
+    }
+
+
+    public void SetPilot( Actor pilot )
+    {
+        if( pilot == null )
+            throw new System.ArgumentNullException( $"Argument '{nameof( pilot )}' can't be null." );
+        _pilot = pilot;
+    }
+
+    public void RemovePilot()
+    {
+        _pilot = null;
     }
 
 
@@ -108,7 +140,7 @@ public class MechData: SimpleEntity<MechAsset>
     {
         if( !reference.RuntimeKeyIsValid() )
             return null;
-        MechComponentData compData = reference.GetDataSync();
+        MechComponentData compData = reference.GetDataCopySync();
         return compData;
     }
 

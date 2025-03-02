@@ -23,6 +23,15 @@ MonoBehaviour:
     Statistics:
       _serializedKeys: 
       _serializedValues: []
+    Boosts:
+      _serializedKeys: 
+      _serializedValues: []
+    Avatar:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectGUID: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
     MechColor: {r: 0.29369885, g: 0.5360936, b: 0.8301887, a: 1}
     TorsoAsset:
       m_AssetGUID: 8a289ba85b3167b429167d1e9e952c22
@@ -60,6 +69,9 @@ MonoBehaviour:
       Statistics:
         _serializedKeys: 
         _serializedValues: []
+      Boosts:
+        _serializedKeys: 
+        _serializedValues: []
       Model:
         m_AssetGUID: 
         m_SubObjectName: 
@@ -67,6 +79,7 @@ MonoBehaviour:
         m_SubObjectType: 
         m_EditorAssetChanged: 0
       Type: 0
+      WeaponType: 16
       AttachmentType: {fileID: 0}
       Attachments: []
       Flags: 0
@@ -82,6 +95,9 @@ MonoBehaviour:
       Statistics:
         _serializedKeys: 
         _serializedValues: []
+      Boosts:
+        _serializedKeys: 
+        _serializedValues: []
       Model:
         m_AssetGUID: 
         m_SubObjectName: 
@@ -89,6 +105,7 @@ MonoBehaviour:
         m_SubObjectType: 
         m_EditorAssetChanged: 0
       Type: 0
+      WeaponType: 16
       AttachmentType: {fileID: 0}
       Attachments: []
       Flags: 0
@@ -104,6 +121,9 @@ MonoBehaviour:
       Statistics:
         _serializedKeys: 
         _serializedValues: []
+      Boosts:
+        _serializedKeys: 
+        _serializedValues: []
       Model:
         m_AssetGUID: 
         m_SubObjectName: 
@@ -111,6 +131,7 @@ MonoBehaviour:
         m_SubObjectType: 
         m_EditorAssetChanged: 0
       Type: 0
+      WeaponType: 16
       AttachmentType: {fileID: 0}
       Attachments: []
       Flags: 0
@@ -126,6 +147,9 @@ MonoBehaviour:
       Statistics:
         _serializedKeys: 
         _serializedValues: []
+      Boosts:
+        _serializedKeys: 
+        _serializedValues: []
       Model:
         m_AssetGUID: 
         m_SubObjectName: 
@@ -133,7 +157,20 @@ MonoBehaviour:
         m_SubObjectType: 
         m_EditorAssetChanged: 0
       Type: 0
+      WeaponType: 16
       AttachmentType: {fileID: 0}
       Attachments: []
       Flags: 0
       AOEShape: {fileID: 0}
+  DisplayName:
+    m_TableReference:
+      m_TableCollectionName: GUID:a106004198b73894f85ff8b2be73adc3
+    m_TableEntryReference:
+      m_KeyId: 118974988288
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []

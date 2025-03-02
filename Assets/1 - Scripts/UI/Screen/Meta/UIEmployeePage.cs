@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class UIEmployeePage : MonoBehaviour
@@ -13,6 +15,14 @@ public class UIEmployeePage : MonoBehaviour
     {
         if( ActorList != null )
             ActorList.ActorClicked += ActorClicked;
+    }
+
+    private void Start()
+    {
+        if( ActorList.ActorCollection != null )
+            SelectActor( ActorList.GetActorUIs().FirstOrDefault() );
+        else
+            SelectActor( null );
     }
 
     private void ActorClicked( UIActor actor )

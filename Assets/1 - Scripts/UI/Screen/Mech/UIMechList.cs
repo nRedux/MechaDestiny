@@ -3,42 +3,42 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class UIActorCollectionException: System.Exception
+public class UIMechListException: System.Exception
 {
-    public UIActorCollectionException() : base() { }
-    public UIActorCollectionException(string message) : base(message) { }
-    public UIActorCollectionException( string message, System.Exception innerException ) : base( message, innerException ) { }
+    public UIMechListException() : base() { }
+    public UIMechListException( string message) : base(message) { }
+    public UIMechListException( string message, System.Exception innerException ) : base( message, innerException ) { }
 }
 
-public class UIActorCollection: MonoBehaviour
+public class UIMechList: MonoBehaviour
 {
     public Object DisplayTarget;
-    public UIActor ActorPrefab;
+    public UIMech MechPrefab;
 
-    public System.Action<UIActor> ActorClicked;
+    public System.Action<UIMech> ActorClicked;
 
-    public ActorCollection ActorCollection { get => _collection; }
+    public List<MechData> MechCollection { get => _collection; }
 
-    private ActorCollection _collection;
+    private List<MechData> _collection;
 
-    public List<UIActor> GetActorUIs()
+    public List<UIMech> GetActorUIs()
     {
-        return transform.GetComponentsInChildren<UIActor>().ToList();
+        return transform.GetComponentsInChildren<UIMech>().ToList();
     }
 
 
     private void Update()
     {
         if( Input.GetKeyDown( KeyCode.U ) )
-            Refresh( RunManager.Instance.RunData.CompanyData.Employees );
+            Refresh( RunManager.Instance.RunData.CompanyData.Mechs );
     }
 
     private void OnEnable()
     {
-        Refresh( RunManager.Instance.RunData.CompanyData.Employees );
+        Refresh( RunManager.Instance.RunData.CompanyData.Mechs );
     }
 
-    public void Refresh(ActorCollection collection )
+    public void Refresh(List<MechData> collection )
     {
         if( collection == null )
             throw new System.ArgumentNullException( $"{nameof(collection)} cannot be null.");
@@ -66,12 +66,12 @@ public class UIActorCollection: MonoBehaviour
     }
 
 
-    public void AddEntry( ActorCollectionEntry entry )
+    public void AddEntry( MechData mechData )
     {
         if( DisplayTarget == null )
             throw new UIActorCollectionException( $"{nameof( DisplayTarget )} not set." );
 
-        UIActor instance = NewUIActor( entry.Actor );
+        UIMech instance = NewUIMech( mechData );
 
         if( DisplayTarget is UIGrid grid )
         {
@@ -86,18 +86,18 @@ public class UIActorCollection: MonoBehaviour
     }
 
 
-    private UIActor NewUIActor( Actor actor )
+    private UIMech NewUIMech( MechData mechData )
     {
-        if( ActorPrefab == null )
-            throw new UIActorCollectionException( $"{nameof( ActorPrefab )} is null. Cannot create actor instances." );
-        var newActorUI = Instantiate<UIActor>( ActorPrefab );
-        newActorUI.Refresh( actor );
-        newActorUI.Clicked += ActorUIClicked;
+        if( MechPrefab == null )
+            throw new UIMechListException( $"{nameof( MechPrefab )} is null. Cannot create actor instances." );
+        var newMechUI = Instantiate<UIMech>( MechPrefab );
+        newMechUI.Refresh( mechData );
+        newMechUI.Clicked += ActorUIClicked;
 
-        return newActorUI;
+        return newMechUI;
     }
 
-    private void ActorUIClicked( UIActor actor )
+    private void ActorUIClicked( UIMech actor )
     {
         ActorClicked?.Invoke( actor );
     }

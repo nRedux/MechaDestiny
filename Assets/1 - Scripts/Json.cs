@@ -10,7 +10,7 @@ public static class Json
     {
         ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
         ConstructorHandling = ConstructorHandling.Default,
-        DefaultValueHandling = DefaultValueHandling.Ignore,
+        DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
         Formatting = Formatting.None,
         NullValueHandling = NullValueHandling.Ignore,
         Converters = new List<JsonConverter>() { new AssetReferenceConverter(), new LocalizedStringConverter(), new ColorConverter() }

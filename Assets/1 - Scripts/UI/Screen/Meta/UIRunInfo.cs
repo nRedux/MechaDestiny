@@ -2,7 +2,8 @@ using UnityEngine;
 
 public enum UIRunInfoPage
 {
-    EmployeeInfo
+    EmployeeInfo,
+    MechInfo
 }
 
 public class UIRunInfo : MonoBehaviour
@@ -11,7 +12,7 @@ public class UIRunInfo : MonoBehaviour
     public GameObject MainWindow;
 
     public GameObject EmployeeInfoPage;
-    public GameObject EmployeeInfoBtn;
+    public GameObject MechInfoPage;
 
 
     private void Awake()
@@ -24,11 +25,15 @@ public class UIRunInfo : MonoBehaviour
     public void ShowPage( UIRunInfoPage page )
     {
         EmployeeInfoPage.Opt()?.SetActive( false );
+        MechInfoPage.Opt()?.SetActive( false );
 
         switch( page )
         {
             case UIRunInfoPage.EmployeeInfo:
                 EmployeeInfoPage.Opt()?.SetActive( true );
+                break;
+            case UIRunInfoPage.MechInfo:
+                MechInfoPage.Opt()?.SetActive( true );
                 break;
 
         }
@@ -40,6 +45,10 @@ public class UIRunInfo : MonoBehaviour
         ShowPage( UIRunInfoPage.EmployeeInfo );
     }
 
+    public void UI_ShowMechsInfo()
+    {
+        ShowPage( UIRunInfoPage.MechInfo );
+    }
 
     public void Close()
     {

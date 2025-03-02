@@ -44,12 +44,13 @@ public class ResultDisplayProps
 
 
 [System.Serializable]
-public class Actor : SimpleEntity<ActorAsset>
+public partial class Actor : SimpleEntity<ActorAsset>
 {
     private const int MAX_PHASE_ACTIONS = 10;
 
     public ActorAction[] Actions = null;
     public GameObjectReference Avatar;
+
 
     /// <summary>
     /// Run all actions automatically - for NPCs

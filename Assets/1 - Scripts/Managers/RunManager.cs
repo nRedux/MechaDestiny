@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -11,9 +13,10 @@ public class RunManager : SingletonScriptableObject<RunManager>
 {
 
     public ScriptGraphAssetReference DefaultCombatEndGraph;
-    public RunData RunData { 
-        get => DataHandler<RunData>.Data; 
+    public RunData RunData {
+        get => DataHandler<RunData>.Data;
     }
+
     public MapData MapData { get => RunData.MapData; }
 
     static RunManager()
@@ -37,6 +40,7 @@ public class RunManager : SingletonScriptableObject<RunManager>
     public static void RunDataCreated(RunData data)
     {
         data.CompanyData.Employees = GlobalSettings.Instance.GetStarterActorsCollection();
+        data.CompanyData.Mechs = data.CompanyData.Employees.Select( x => x.Actor.PilotedMech ).ToList();
     }
 
     public void SetScene( string scene, bool doSceneWarmup )

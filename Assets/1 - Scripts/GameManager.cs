@@ -75,7 +75,7 @@ public class GameManager : Singleton<GameManager>
 
     private void InitializeCaravan()
     {
-        _playerHarvester = Harvester.GetDataSync();
+        _playerHarvester = Harvester.GetDataCopySync();
         ValidateData( _playerHarvester );
     }
 

@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Mechs Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: Mechs
+  m_TableCollectionNameGuidString: a106004198b73894f85ff8b2be73adc3
+  m_Entries:
+  - m_Id: 11273650176
+    m_Key: mech_thorin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 65522778112
+    m_Key: mech_icthial
+    m_Metadata:
+      m_Items: []
+  - m_Id: 118974988288
+    m_Key: mech_ballisat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 236683935744
+    m_Key: mech_nassus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 344326553600
+    m_Key: mech_saris
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 3512639524420976721
+  references:
+    version: 2
+    RefIds:
+    - rid: 3512639524420976721
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1740888817523

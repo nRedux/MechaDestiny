@@ -139,7 +139,7 @@ public class MechComponentData : SimpleEntity<MechComponentAsset>
     {
         if( !reference.RuntimeKeyIsValid() )
             return null;
-        MechComponentData compData = reference.GetDataSync();
+        MechComponentData compData = reference.GetDataCopySync();
         
         compData.ClearAllFlags();
         compData.SetFeatureFlags( (int) Flags );

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -12,8 +13,9 @@ public class CompanyData
         set;
     } = new ActorCollection();
 
-
-
-
-
+    public List<MechData> Mechs
+    {
+        get;
+        set;
+    } = new List<MechData>();
 }

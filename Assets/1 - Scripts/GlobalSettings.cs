@@ -16,7 +16,7 @@ public class GlobalSettings:SingletonScriptableObject<GlobalSettings>
             return new ActorCollection();
 
         var result = new ActorCollection();
-        PlayerActors.Do( x => result.Add( x.GetAssetSync().GetDataCopy() ) );
+        PlayerActors.Do( x => result.Add( x.GetDataCopySync() ) );
         return result;
     }
 }
