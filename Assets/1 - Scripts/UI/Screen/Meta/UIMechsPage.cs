@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class UIMechsPage : MonoBehaviour
@@ -14,7 +15,7 @@ public class UIMechsPage : MonoBehaviour
     private void Awake()
     {
         if( MechList != null )
-            MechList.ActorClicked += ActorClicked;
+            MechList.MechClicked += ActorClicked;
     }
 
     private void Start()
@@ -22,7 +23,7 @@ public class UIMechsPage : MonoBehaviour
         if( MechList.MechCollection != null )
             SelectMech( MechList.GetActorUIs().FirstOrDefault() );
         else
-            SelectMech( null );
+            SelectMech( (UIMech)null );
     }
 
     private void ActorClicked( UIMech mech )
@@ -30,9 +31,19 @@ public class UIMechsPage : MonoBehaviour
         SelectMech( mech );
     }
 
+    public void SelectMech( MechData mechData )
+    {
+        var ui = MechList.GetActorUIs().FirstOrDefault( x => x.MechData == mechData );
+        SelectMech( ui );
+    }
+
     private void SelectMech( UIMech mech )
     {
         _selectedActor = mech;
+
+        var renderer = MechRendererSingleton.Instance.GetRenderer();
+        if( renderer != null )
+            renderer.StartRenderingMech( mech.MechData );
 
         if( SelectedMech != null && _selectedActor != null )
         {

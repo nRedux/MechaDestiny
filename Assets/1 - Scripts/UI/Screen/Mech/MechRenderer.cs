@@ -15,8 +15,9 @@ public class MechRenderer : MonoBehaviour
         if( _avatarManager == null )
             _avatarManager = new GfxAvatarManager();
 
-        var actor = await _avatarManager.CreateGfxActor( mechData, null );
-        actor.transform.position = Target.position;
+        _actor = await _avatarManager.CreateGfxActor( mechData, null );
+        _actor.transform.position = Target.position;
+        _actor.transform.Rotate( Vector3.up * 180f );
     }
 
 

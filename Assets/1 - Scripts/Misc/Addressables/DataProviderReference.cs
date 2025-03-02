@@ -15,6 +15,7 @@ public class DataProviderReference<TAsset, TData> : AssetReferenceT<TAsset> wher
     {
         var asset = GetAssetSync();
         var data = asset.GetDataCopy();
+        data.InitDataID();
         data.SetGUID( this.AssetGUID );
         return data;
     }

@@ -15,7 +15,7 @@ public class UIMechList: MonoBehaviour
     public Object DisplayTarget;
     public UIMech MechPrefab;
 
-    public System.Action<UIMech> ActorClicked;
+    public System.Action<UIMech> MechClicked;
 
     public List<MechData> MechCollection { get => _collection; }
 
@@ -99,7 +99,7 @@ public class UIMechList: MonoBehaviour
 
     private void ActorUIClicked( UIMech actor )
     {
-        ActorClicked?.Invoke( actor );
+        MechClicked?.Invoke( actor );
     }
 
 }

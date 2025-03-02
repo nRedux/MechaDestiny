@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 using Sirenix.Utilities;
 using UnityEngine;
@@ -140,6 +141,17 @@ public class ActorCollection: IEnumerable<ActorCollectionEntry>
     {
         ActorCollectionEntry toBeRemoved = new ActorCollectionEntry( actor );
         return _entries.Remove( toBeRemoved );
+    }
+
+
+    public bool ContainsActor( Actor actor )
+    {
+        foreach( var entry in _entries )
+        {
+            if( entry.Actor == actor )
+                return true;
+        }
+        return false;
     }
 
 

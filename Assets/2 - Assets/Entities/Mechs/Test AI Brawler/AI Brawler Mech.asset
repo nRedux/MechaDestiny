@@ -27,11 +27,11 @@ MonoBehaviour:
       _serializedKeys: 
       _serializedValues: []
     Avatar:
-      m_AssetGUID: 
+      m_AssetGUID: eb4c868af97a1aa40b03688adf15e685
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 
-      m_EditorAssetChanged: 0
+      m_EditorAssetChanged: 1
     MechColor: {r: 0.38628775, g: 0.6603774, b: 0.07164473, a: 1}
     TorsoAsset:
       m_AssetGUID: d86ff5662c57c5d4fad4c8fb68981ce5

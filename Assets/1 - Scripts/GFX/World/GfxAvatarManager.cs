@@ -36,7 +36,8 @@ public class GfxAvatarManager
             var gfxActorInstance = avatarInstance.GetComponent<GfxActor>();
             avatarInstance.name += "__" + actor.GetTeamID().ToString();
 
-            BuildMech( actor, gfxActorInstance );
+            BuildMech( actor.GetMechData(), gfxActorInstance );
+            gfxActorInstance.Initialize( actor );
             gfxActorInstance.CalculateBounds();
 
             _actors.Add( actor, gfxActorInstance );
@@ -70,7 +71,7 @@ public class GfxAvatarManager
             var avatarInstance = GameObject.Instantiate<GameObject>( avatarGO );
             var gfxActorInstance = avatarInstance.GetComponent<GfxActor>();
 
-            BuildMech( null, gfxActorInstance );
+            BuildMech( mech, gfxActorInstance );
             gfxActorInstance.CalculateBounds();
 
             ActorCreated?.Invoke( gfxActorInstance );
@@ -88,10 +89,8 @@ public class GfxAvatarManager
     }
 
 
-    public void BuildMech( Actor actor, GfxActor gfxActor )
+    public void BuildMech( MechData mechData, GfxActor gfxActor )
     {
-        var mechData = actor.GetSubEntities()[0] as MechData;
-
         //Build attachments
         BuildComponent( mechData.LeftArm, gfxActor.LeftArm );
         BuildComponent( mechData.RightArm, gfxActor.RightArm );
@@ -101,8 +100,6 @@ public class GfxAvatarManager
         gfxActor.Legs.Opt()?.Initialize( mechData.Legs );
         gfxActor.LeftArm.Opt()?.Initialize( mechData.LeftArm );
         gfxActor.RightArm.Opt()?.Initialize( mechData.RightArm );
-
-        gfxActor.Initialize( actor );
     }
 
 

@@ -14,7 +14,7 @@ public class UIMechsInfo : MonoBehaviour
     private void Awake()
     {
         if( MechList != null )
-            MechList.ActorClicked += echClicked;
+            MechList.MechClicked += echClicked;
     }
 
     private void Start()

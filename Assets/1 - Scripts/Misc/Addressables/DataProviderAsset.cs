@@ -13,6 +13,7 @@ public abstract class DataProviderAsset<TAssetType, TData> : ScriptableObject wh
     public TData GetDataCopy()
     {
         TData newData = Json.Clone<TData>( Data );
+        newData.InitDataID();
         SetupNewData( newData );
         return newData;
     }

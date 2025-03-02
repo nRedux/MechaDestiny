@@ -6,26 +6,26 @@ public enum UIRunInfoPage
     MechInfo
 }
 
-public class UIRunInfo : MonoBehaviour
+public class UIRunInfo : Singleton<UIRunInfo>
 {
     public GameObject OpenButton;
     public GameObject MainWindow;
 
     public GameObject EmployeeInfoPage;
-    public GameObject MechInfoPage;
+    public UIMechsPage MechInfoPage;
 
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         ShowPage( UIRunInfoPage.EmployeeInfo );
         Close();
     }
 
-
     public void ShowPage( UIRunInfoPage page )
     {
         EmployeeInfoPage.Opt()?.SetActive( false );
-        MechInfoPage.Opt()?.SetActive( false );
+        MechInfoPage.Opt()?.gameObject.SetActive( false );
 
         switch( page )
         {
@@ -33,12 +33,16 @@ public class UIRunInfo : MonoBehaviour
                 EmployeeInfoPage.Opt()?.SetActive( true );
                 break;
             case UIRunInfoPage.MechInfo:
-                MechInfoPage.Opt()?.SetActive( true );
+                MechInfoPage.Opt()?.gameObject.SetActive( true );
                 break;
-
         }
     }
 
+    public void SelectMech( MechData data )
+    {
+        ShowPage( UIRunInfoPage.MechInfo );
+        MechInfoPage.Opt()?.SelectMech( data );
+    }
 
     public void UI_ShowEmployeeInfo()
     {

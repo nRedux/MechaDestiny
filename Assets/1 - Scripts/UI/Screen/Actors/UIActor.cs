@@ -2,10 +2,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using UnityEditor.VersionControl;
+using Edgeflow.UI;
 
 
 public class UIActor : MonoBehaviour
 {
+
+    public GameObject MechFieldRoot;
 
     public TMP_Text Name;
     public TMP_Text Class;
@@ -16,7 +20,7 @@ public class UIActor : MonoBehaviour
     public System.Action<UIActor> Clicked;
 
     private Actor _actor;
-
+    private TMProLinkHandler _mechLinkHandler;
     private Button _button;
 
     public Actor Actor
@@ -28,6 +32,16 @@ public class UIActor : MonoBehaviour
     {
         _button = GetComponent<Button>();
         _button.Opt()?.onClick.AddListener( OnClicked );
+        _mechLinkHandler = MechName.GetComponent<TMProLinkHandler>();
+        if( _mechLinkHandler != null )
+        {
+            _mechLinkHandler.Click = MechNameClicked;
+        }
+    }
+
+    private void MechNameClicked( string id )
+    {
+        UIRunInfo.Instance.SelectMech( Actor.PilotedMech );
     }
 
 
@@ -56,12 +70,16 @@ public class UIActor : MonoBehaviour
             var asset = actor.PilotedMech.GetAssetSync();
             if( asset != null )
             {
-                MechName.Opt()?.gameObject.SetActive( true );
-                MechName.Opt()?.SetText( asset.name );
+                MechFieldRoot.Opt()?.SetActive( true );
+                MechName.Opt()?.SetText( GetMechNameText( actor.PilotedMech.DataID, asset.name ) );
             }
         }
         else
-            MechName.Opt()?.gameObject.SetActive( false );
+            MechFieldRoot.Opt()?.SetActive( false );
+    }
 
+    private string GetMechNameText( string linkID, string mechName )
+    {
+        return $"<link=\"{linkID}\">{mechName}</link>";
     }
 }
