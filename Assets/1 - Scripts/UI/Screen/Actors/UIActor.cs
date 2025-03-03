@@ -4,10 +4,19 @@ using TMPro;
 using UnityEngine.EventSystems;
 using UnityEditor.VersionControl;
 using Edgeflow.UI;
+using Sirenix.OdinInspector;
 
+
+public enum UIACtorMode
+{
+    Small,
+    Full
+}
 
 public class UIActor : MonoBehaviour
 {
+
+    public UIACtorMode Mode;
 
     public GameObject MechFieldRoot;
 
@@ -16,6 +25,9 @@ public class UIActor : MonoBehaviour
     public TMP_Text Activity;
     public TMP_Text MechName;
     public Image Portrait;
+
+    [ShowIf(nameof(ShowIfFull))]
+    public GameObject MechUIRoot;
 
     public System.Action<UIActor> Clicked;
 
@@ -26,6 +38,11 @@ public class UIActor : MonoBehaviour
     public Actor Actor
     {
         get => _actor;
+    }
+
+    public bool ShowIfFull()
+    {
+        return Mode == UIACtorMode.Full;
     }
 
     private void Awake()
@@ -81,5 +98,55 @@ public class UIActor : MonoBehaviour
     private string GetMechNameText( string linkID, string mechName )
     {
         return $"<link=\"{linkID}\">{mechName}</link>";
+    }
+
+    public void PickMechToPilot()
+    {
+        UIRunInfo.Instance.MechSelector.SelectFromPlayerMechs( targetMech =>
+        {
+            if( _actor.PilotedMech != null )
+            {
+                if( targetMech.Pilot != null )
+                {
+                    //we HAVE a mech, AND the target mech has a pilot. We're swapping?
+                    UIRunInfo.Instance.OptionDialog.ShowAcceptCancel( "Pilots swap", "Pilots will be swapping mechs.", () => {
+                        //Swap pilots. Make both exit their mechs, and then assign to the mechs.
+                        var otherPilot = targetMech.Pilot;
+                        otherPilot.StopPilotingMech();
+                        var myOldMech = _actor.PilotedMech;
+                        _actor.StopPilotingMech();
+
+                        _actor.StartPilotingMech( targetMech );
+                        otherPilot.StartPilotingMech( myOldMech );
+
+                    }, () => {
+                        //Cancel, nothing to do.
+                    } );
+                }
+                else
+                {
+                    //Ez mode again, target mech isn't piloted, but we do have to stop piloting the mech we're in.
+                    _actor.StartPilotingMech( targetMech );
+                }
+            }
+            else
+            {
+                if( targetMech.Pilot != null )
+                {
+                    //we have no mech, but target mech has a pilot. We just kicking them out of their mech?
+                    UIRunInfo.Instance.OptionDialog.ShowAcceptCancel( "Mech occupied", "Mech is piloted. If you accept, they won't have a mech.", () => {
+                        //Target pilot has to leave their mech.
+                        targetMech.Pilot.StopPilotingMech();
+                        _actor.StartPilotingMech( targetMech );
+
+                    }, () => { } );
+                }
+                else
+                {
+                    //EZ mode, mech is unpiloted, lets take it. We're also not piloting a mech atm.
+                    _actor.StartPilotingMech( targetMech );
+                }
+            }
+        } );
     }
 }

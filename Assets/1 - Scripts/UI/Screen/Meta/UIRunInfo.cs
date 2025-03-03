@@ -14,12 +14,17 @@ public class UIRunInfo : Singleton<UIRunInfo>
     public GameObject EmployeeInfoPage;
     public UIMechsPage MechInfoPage;
 
+    public UIMechSelector MechSelector;
+    public UIOptionDialog OptionDialog;
 
     protected override void Awake()
     {
         base.Awake();
         ShowPage( UIRunInfoPage.EmployeeInfo );
         Close();
+
+        MechSelector.Opt()?.gameObject.SetActive( false );
+        OptionDialog.Opt()?.gameObject.SetActive( false );
     }
 
     public void ShowPage( UIRunInfoPage page )

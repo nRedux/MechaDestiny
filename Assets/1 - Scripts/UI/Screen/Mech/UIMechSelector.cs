@@ -20,9 +20,17 @@ public class UIMechSelector : UIPanel
         Hide();
     }
 
+    public void SelectFromPlayerMechs( System.Action<MechData> selected )
+    {
+        var data = DataHandler<RunData>.Data;
+        MechSelected += mech => { selected?.Invoke( mech.MechData ); };
+        Show( data.CompanyData.Mechs );
+    }
+
     public void Show( List<MechData> mechData )
     {
         MechList.Opt()?.Refresh( mechData );
+        Show();
     }
 
     private void OnSelect( UIMech mech )
