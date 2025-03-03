@@ -11,7 +11,7 @@ public class UIRunInfo : Singleton<UIRunInfo>
     public GameObject OpenButton;
     public GameObject MainWindow;
 
-    public GameObject EmployeeInfoPage;
+    public UIEmployeePage EmployeeInfoPage;
     public UIMechsPage MechInfoPage;
 
     public UIMechSelector MechSelector;
@@ -29,13 +29,13 @@ public class UIRunInfo : Singleton<UIRunInfo>
 
     public void ShowPage( UIRunInfoPage page )
     {
-        EmployeeInfoPage.Opt()?.SetActive( false );
+        EmployeeInfoPage.Opt()?.gameObject.SetActive( false );
         MechInfoPage.Opt()?.gameObject.SetActive( false );
 
         switch( page )
         {
             case UIRunInfoPage.EmployeeInfo:
-                EmployeeInfoPage.Opt()?.SetActive( true );
+                EmployeeInfoPage.Opt()?.gameObject.SetActive( true );
                 break;
             case UIRunInfoPage.MechInfo:
                 MechInfoPage.Opt()?.gameObject.SetActive( true );

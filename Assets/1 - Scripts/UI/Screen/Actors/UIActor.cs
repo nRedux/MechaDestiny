@@ -5,6 +5,8 @@ using UnityEngine.EventSystems;
 using UnityEditor.VersionControl;
 using Edgeflow.UI;
 using Sirenix.OdinInspector;
+using System;
+using JetBrains.Annotations;
 
 
 public enum UIACtorMode
@@ -73,26 +75,8 @@ public class UIActor : MonoBehaviour
         if( actor == null )
             throw new System.ArgumentNullException( $"Argument '{nameof( actor )}' cannot be null" );
         _actor = actor;
-        var actorAsset = actor.GetAssetSync();
-        if( Name != null )
-            Name.text = actorAsset.DisplayName.GetLocalizedString();
 
-        if( Portrait != null )
-            Portrait.sprite = actorAsset.PortraitImage;
-
-        Activity.Opt()?.SetText( actor.Activity.ToString() );
-
-        if( actor.PilotedMech != null )
-        {
-            var asset = actor.PilotedMech.GetAssetSync();
-            if( asset != null )
-            {
-                MechFieldRoot.Opt()?.SetActive( true );
-                MechName.Opt()?.SetText( GetMechNameText( actor.PilotedMech.DataID, asset.name ) );
-            }
-        }
-        else
-            MechFieldRoot.Opt()?.SetActive( false );
+        RefreshContent();
     }
 
     private string GetMechNameText( string linkID, string mechName )
@@ -118,6 +102,7 @@ public class UIActor : MonoBehaviour
 
                         _actor.StartPilotingMech( targetMech );
                         otherPilot.StartPilotingMech( myOldMech );
+                        UIRunInfo.Instance.EmployeeInfoPage.RefreshContent();
 
                     }, () => {
                         //Cancel, nothing to do.
@@ -147,6 +132,32 @@ public class UIActor : MonoBehaviour
                     _actor.StartPilotingMech( targetMech );
                 }
             }
+            UIRunInfo.Instance.EmployeeInfoPage.RefreshContent();
         } );
+    }
+
+    internal void RefreshContent()
+    {
+        var actorAsset = _actor.GetAssetSync();
+        if( Name != null )
+            Name.text = actorAsset.DisplayName.GetLocalizedString();
+
+        if( Portrait != null )
+            Portrait.sprite = actorAsset.PortraitImage;
+
+        Activity.Opt()?.SetText( _actor.Activity.ToString() );
+
+        if( _actor.PilotedMech != null )
+        {
+            var mechAsset = _actor.PilotedMech.GetAssetSync();
+            if( mechAsset != null )
+            {
+                MechFieldRoot.Opt()?.SetActive( true );
+                string mechName = mechAsset.DisplayName.TryGetLocalizedString();
+                MechName.Opt()?.SetText( GetMechNameText( _actor.PilotedMech.DataID, mechName ) );
+            }
+        }
+        else
+            MechFieldRoot.Opt()?.SetActive( false );
     }
 }

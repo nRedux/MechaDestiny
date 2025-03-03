@@ -44,4 +44,10 @@ public class UIEmployeePage : MonoBehaviour
             SelectedActorUI.Opt()?.gameObject.SetActive( false );
         }
     }
+
+    public void RefreshContent()
+    {
+        SelectedActorUI.Opt()?.RefreshContent();
+        ActorList.Opt()?.RefreshElementsContent();
+    }
 }

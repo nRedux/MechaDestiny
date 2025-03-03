@@ -1277,7 +1277,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OpenButton: {fileID: 365145688}
   MainWindow: {fileID: 356388850}
-  EmployeeInfoPage: {fileID: 601189244}
+  EmployeeInfoPage: {fileID: 601189248}
   MechInfoPage: {fileID: 1395391996}
   MechSelector: {fileID: 442956774}
   OptionDialog: {fileID: 962837385}

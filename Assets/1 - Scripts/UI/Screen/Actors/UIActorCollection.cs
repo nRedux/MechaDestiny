@@ -21,11 +21,18 @@ public class UIActorCollection: MonoBehaviour
 
     private ActorCollection _collection;
 
+    private List<UIActor> _uiActors = new List<UIActor>();
+
     public List<UIActor> GetActorUIs()
     {
         return transform.GetComponentsInChildren<UIActor>().ToList();
     }
 
+
+    public List<UIActor> GetUIActors()
+    {
+        return new List<UIActor>( _uiActors );
+    }
 
     private void Update()
     {
@@ -36,6 +43,11 @@ public class UIActorCollection: MonoBehaviour
     private void OnEnable()
     {
         Refresh( RunManager.Instance.RunData.CompanyData.Employees );
+    }
+
+    public void RefreshElementsContent()
+    {
+        _uiActors.Do( x => x.RefreshContent() );
     }
 
     public void Refresh(ActorCollection collection )
@@ -63,6 +75,8 @@ public class UIActorCollection: MonoBehaviour
         }
         else
             throw new UIActorCollectionException( $"{nameof( DisplayTarget )} invalid type" );
+
+        _uiActors.Clear();
     }
 
 
@@ -93,7 +107,7 @@ public class UIActorCollection: MonoBehaviour
         var newActorUI = Instantiate<UIActor>( ActorPrefab );
         newActorUI.Refresh( actor );
         newActorUI.Clicked += ActorUIClicked;
-
+        _uiActors.Add( newActorUI );
         return newActorUI;
     }
 
