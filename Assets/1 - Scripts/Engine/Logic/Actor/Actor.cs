@@ -277,6 +277,16 @@ public partial class Actor : SimpleEntity<ActorAsset>
         return true;
     }
 
+    public void Kill()
+    {
+        var mech = GetMechData();
+        var health = mech.Torso.GetStatistic( StatisticType.Health );
+        if( health == null )
+            return;
+        health.EmitUIChangeImmediate = true;
+        health.SetValue( 0 );
+    }
+
 
     public void Cleanup()
     {
