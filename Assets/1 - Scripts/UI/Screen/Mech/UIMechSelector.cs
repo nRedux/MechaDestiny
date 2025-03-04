@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class UIMechSelector : UIPanel
@@ -20,11 +21,18 @@ public class UIMechSelector : UIPanel
         Hide();
     }
 
-    public void SelectFromPlayerMechs( System.Action<MechData> selected )
+    public void SelectFromPlayerMechs( System.Action<MechData> selected, List<Actor> excludeActors = null )
     {
         var data = DataHandler<RunData>.Data;
+
+        List<MechData> filteredMechs = new List<MechData>( data.CompanyData.Mechs );
+        if( excludeActors != null )
+        {
+            filteredMechs = filteredMechs.Where( x => !excludeActors.Contains( x.Pilot ) ).ToList();
+        }
+
         MechSelected += mech => { selected?.Invoke( mech.MechData ); };
-        Show( data.CompanyData.Mechs );
+        Show( filteredMechs );
     }
 
     public void Show( List<MechData> mechData )
@@ -49,6 +57,5 @@ public class UIMechSelector : UIPanel
     {
         base.OnShow();
         var data = DataHandler<RunData>.Data;
-        MechList.Opt()?.Refresh( data.CompanyData.Mechs );
     }
 }

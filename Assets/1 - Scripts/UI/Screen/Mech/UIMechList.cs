@@ -33,11 +33,7 @@ public class UIMechList: MonoBehaviour
             Refresh( RunManager.Instance.RunData.CompanyData.Mechs );
     }
 
-    private void OnEnable()
-    {
-        Refresh( RunManager.Instance.RunData.CompanyData.Mechs );
-    }
-
+    
     public void Refresh(List<MechData> collection )
     {
         if( collection == null )

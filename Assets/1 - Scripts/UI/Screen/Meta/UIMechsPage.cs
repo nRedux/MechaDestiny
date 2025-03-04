@@ -20,6 +20,7 @@ public class UIMechsPage : MonoBehaviour
 
     private void Start()
     {
+        MechList.Refresh( DataHandler<RunData>.Data.CompanyData.Mechs );
         if( MechList.MechCollection != null )
             SelectMech( MechList.GetActorUIs().FirstOrDefault() );
         else

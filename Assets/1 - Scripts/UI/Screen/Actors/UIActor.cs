@@ -1,12 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.EventSystems;
-using UnityEditor.VersionControl;
 using Edgeflow.UI;
 using Sirenix.OdinInspector;
-using System;
-using JetBrains.Annotations;
+using System.Collections.Generic;
 
 
 public enum UIACtorMode
@@ -133,7 +130,7 @@ public class UIActor : MonoBehaviour
                 }
             }
             UIRunInfo.Instance.EmployeeInfoPage.RefreshContent();
-        } );
+        }, excludeActors: new List<Actor>() { _actor } );
     }
 
     internal void RefreshContent()

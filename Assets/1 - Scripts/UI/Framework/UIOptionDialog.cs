@@ -35,11 +35,15 @@ public class UIOptionDialog : MonoBehaviour
         MessageText.Opt()?.gameObject.SetActive( messageText != null );
         AcceptButton.Opt()?.gameObject.SetActive( true );
         CancelButton.Opt()?.gameObject.SetActive( true );
-        _acceptText.Opt()?.SetText( "Accept" );
-        _cancelText.Opt()?.SetText( "Cancel" );
+
         _accept = accept;
         _cancel = cancel;
         gameObject.SetActive( true );
+
+        HeaderText.Opt()?.SetText( headerText );
+        MessageText.Opt()?.SetText( messageText );
+        _acceptText.Opt()?.SetText( "Accept" );
+        _cancelText.Opt()?.SetText( "Cancel" );
     }
 
     public void ShowAccept( string headerText, string messageText, System.Action accept )
@@ -49,10 +53,13 @@ public class UIOptionDialog : MonoBehaviour
         AcceptButton.Opt()?.gameObject.SetActive( true );
         CancelButton.Opt()?.gameObject.SetActive( false );
 
-        _acceptText.Opt()?.SetText( "Accept" );
         _accept = accept;
         _cancel = null;
         gameObject.SetActive( true );
+
+        HeaderText.Opt()?.SetText( headerText );
+        MessageText.Opt()?.SetText( messageText );
+        _acceptText.Opt()?.SetText( "Accept" );
     }
 
     private void AcceptClicked()
