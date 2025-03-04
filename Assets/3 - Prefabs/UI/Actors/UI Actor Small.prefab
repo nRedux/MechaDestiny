@@ -92,12 +92,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8c834244d88d6344ac99cf15a6491b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Mode: 0
   MechFieldRoot: {fileID: 5244470469437235685}
   Name: {fileID: 5154512558068615801}
   Class: {fileID: 2202629529964947994}
   Activity: {fileID: 8901656321102911051}
   MechName: {fileID: 3003409397944229504}
   Portrait: {fileID: 5228441377058596463}
+  MechUIRoot: {fileID: 0}
 --- !u!114 &-5078072846443571485
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -618,7 +620,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -628,7 +630,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
+  m_TextWrappingMode: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
