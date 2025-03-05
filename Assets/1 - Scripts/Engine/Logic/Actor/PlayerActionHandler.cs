@@ -169,6 +169,7 @@ public class PlayerActionHandler : ActorActionHandler
 
     public override void SetupForTurn()
     {
+        _canRightClickActionPick = true;
         _forceEndActorTurn = false;
         _activeAction = null;
         _moveAction = _actor.GetActionsOfType<MoveAction>().FirstOrDefault();
@@ -457,7 +458,7 @@ public class PlayerActionHandler : ActorActionHandler
 
     public override void Selected()
     {
-        _canRightClickActionPick = false;
+        _canRightClickActionPick = true;
         SetupInput();
     }
 
@@ -465,6 +466,7 @@ public class PlayerActionHandler : ActorActionHandler
     public override void Deselected()
     {
         _canRightClickActionPick = false;
+        UIManager.Instance.TryEndActionPick();
         ShutdownInput();
     }
 

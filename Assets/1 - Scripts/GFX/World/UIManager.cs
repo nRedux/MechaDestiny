@@ -236,7 +236,7 @@ public class UIManager : Singleton<UIManager>
         UIManager.Instance.RequestUI( _actionPickRequest, false );
     }
 
-    public bool TryEndPickAction()
+    public bool TryEndActionPick()
     {
         if( _actionPickRequest != null )
         {

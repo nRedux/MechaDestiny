@@ -156,6 +156,19 @@ public class MechData: SimpleEntity<MechAsset>
         return health.Value <= 0;
     }
 
+    public List<MechComponentData> GetAttackTargets()
+    {
+        var attackTargets = new List<MechComponentData>();
+        attackTargets.Add( Torso );
+        if( !LeftArm.IsBroken() )
+            attackTargets.Add( LeftArm );
+        if( !RightArm.IsBroken() )
+            attackTargets.Add( RightArm );
+        if( !Legs.IsBroken() )
+            attackTargets.Add( Legs );
+        return attackTargets;
+    }
+
     public override bool IsDead()
     {
         return Torso.IsDead();

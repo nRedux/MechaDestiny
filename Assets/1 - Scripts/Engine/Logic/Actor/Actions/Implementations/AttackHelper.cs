@@ -32,7 +32,7 @@ public static class AttackHelper
             return data.RightArm;
         }
 
-        return data.GetSubEntities().Random() as MechComponentData;
+        return data.GetAttackTargets().Random();
     }
 
     public static void CalculateAttackDamage( AttackActionResult res )

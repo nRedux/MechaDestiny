@@ -57,7 +57,7 @@ public class PlayerEngageAction : AttackAction
     {
         UsedWeapon = null;
         this.State = ActorActionState.Finished;
-        UIManager.Instance.TryEndPickAction();
+        UIManager.Instance.TryEndActionPick();
         UIManager.Instance.HideActionSequence();
         UIManager.Instance.PlayerAttackUI.Opt()?.SetActive( false );
         CancelUIRequests();
