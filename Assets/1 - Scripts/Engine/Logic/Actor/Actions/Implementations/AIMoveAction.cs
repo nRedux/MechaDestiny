@@ -48,7 +48,7 @@ public class AIMoveAction : MoveAction
         //CalculateThreatValue( game, actor, utility );
 
         var record = AITools.Instance.Opt()?.RecordWindow( utility, "Movement", "Attack Potentials" );
-        if( record != null )
+        if( record != null && actor.ActiveWeapon != null )
         {
             Debug.Log( actor.ActiveWeapon.GetAssetSync().name );
             record.Note( $"Active Weapon: {actor.ActiveWeapon.GetAssetSync().name}" );
@@ -78,7 +78,7 @@ public class AIMoveAction : MoveAction
                 //Get all cells the action can effect
                 if( action is AttackAction aiAction )
                 {
-                    utility[iter.local] += aiAction.GetUtilityAtLocation( game, actor, iter.world, _range );
+                    utility[iter.local] += aiAction.GetDmgUtilityAtLocation( game, actor, iter.world, _range );
                 }
             }
         },

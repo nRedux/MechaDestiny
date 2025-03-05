@@ -56,19 +56,24 @@ public class MechData: SimpleEntity<MechAsset>
         {
             if( _activeWeapon == null || _activeWeapon.IsBroken() )
             {
-                List<IEntity> weps = FindWeaponEntities();
-                ActiveWeapon = weps.FirstOrDefault() as MechComponentData;
+                ActiveWeapon = FindFunctionalWeaponEntities().FirstOrDefault() as MechComponentData;
             }
             return _activeWeapon;
         } 
         set 
         {
             var prevActive = _activeWeapon;
+            if( value != null && value.IsBroken() )
+            {
+                _activeWeapon = null;
+                if( prevActive != value )
+                    ActiveWeaponChanged?.Invoke( value );
+                return;
+            }
+
             _activeWeapon = value;
             if( prevActive != value )
-            {
                 ActiveWeaponChanged?.Invoke( value );
-            }
         }
     }
 

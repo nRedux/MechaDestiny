@@ -178,7 +178,7 @@ public class SimpleEntity<TData> : DataObject<TData>, IEntity
         return null;
     }
 
-    public void FindWeaponEntities( IEntity entity, ref List<IEntity> results, System.Func<MechComponentData, bool> predicate = null )
+    public void FindWeaponEntities( IEntity entity, ref List<IEntity> results, System.Func<MechComponentData, bool> predicate )
     {
         if( entity is MechComponentData component && component.Type == MechComponentType.Weapon )
         {
@@ -189,7 +189,7 @@ public class SimpleEntity<TData> : DataObject<TData>, IEntity
         var subEntities = entity.GetSubEntities();
         foreach( var subEnt in subEntities )
         {
-            FindWeaponEntities( subEnt, ref results );
+            FindWeaponEntities( subEnt, ref results, predicate );
         }
     }
 
@@ -200,9 +200,14 @@ public class SimpleEntity<TData> : DataObject<TData>, IEntity
         return results;
     }
 
+    public List<IEntity> FindFunctionalWeaponEntities()
+    {
+        return FindWeaponEntities( c => !c.IsBroken() );
+    }
+
     public bool HasUsableWeapons( )
     {
-        List<IEntity> weapons = FindWeaponEntities( c => !c.IsBroken() );
+        List<IEntity> weapons = FindFunctionalWeaponEntities();
         return weapons.Count > 0;
     }
 

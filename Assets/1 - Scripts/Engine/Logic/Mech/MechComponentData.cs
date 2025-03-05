@@ -150,6 +150,11 @@ public class MechComponentData : SimpleEntity<MechComponentAsset>
 
     public bool IsBroken()
     {
+        if( GetParent() != null && GetParent() is MechComponentData component )
+        {
+            if( component.IsBroken() )
+                return true;
+        }
         var health = GetStatistic( StatisticType.Health );
         if( health == null )
             return false;

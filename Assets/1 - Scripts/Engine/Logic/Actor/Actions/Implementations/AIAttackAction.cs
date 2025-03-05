@@ -95,11 +95,17 @@ public class AIAttackAction : AttackAction
     public override void Start( Game game, Actor actor )
     {
         base.Start( game, actor );
-        
+
+        if( actor.ActiveWeapon == null )
+        {
+            End();
+            return;
+        }
+
         //Select ideal weapon based on range.
         if( actor.AIPersonality != null )
             actor.AIPersonality.SelectForAttack( game, actor, this );
-        
+
         var activeWep = actor.ActiveWeapon;
         var range = activeWep.GetStatistic( StatisticType.Range ).Value;
 

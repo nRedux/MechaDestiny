@@ -29,6 +29,8 @@ public class AttackActionResult : ActionResult
     {
         Attacker = attacker;
         AttackerWeapon = weapon;
+        if( AttackerWeapon != null && AttackerWeapon.IsBroken() )
+            Debug.Log( "Attacking with broken weapon" );
         AttackerMechComponent = AttackerWeapon.GetParent() as MechComponentData;
         Count = AttackerWeapon.GetStatisticValue( StatisticType.ShotCount );
         Target = target;

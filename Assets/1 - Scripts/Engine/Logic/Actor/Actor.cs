@@ -285,6 +285,7 @@ public partial class Actor : SimpleEntity<ActorAsset>
             return;
         health.EmitUIChangeImmediate = true;
         health.SetValue( 0 );
+        Die();
     }
 
 

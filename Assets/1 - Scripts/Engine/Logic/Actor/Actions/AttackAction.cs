@@ -61,10 +61,13 @@ public abstract class AttackAction : ActorAction
 
 
     //Gets how much the AI thinks being at a given coordinate will be good for attacking.
-    public virtual float GetUtilityAtLocation( Game game, Actor actor, Vector2Int coord, int range )
+    public virtual float GetDmgUtilityAtLocation( Game game, Actor actor, Vector2Int coord, int range )
     {
-        var mech = actor.GetMechData();
-        var wep = mech.ActiveWeapon;
+        var wep = actor.ActiveWeapon;
+
+        if( wep == null )
+            return 0f;
+
         var wepRange = actor.ActiveWeapon.GetStatisticValue( StatisticType.Range );
 
         FloatWindow rangeWindow = new FloatWindow( wepRange * 2, game.Board );
