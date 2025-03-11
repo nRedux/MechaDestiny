@@ -36,6 +36,12 @@ MonoBehaviour:
       m_SubObjectGUID: 
       m_SubObjectType: 
       m_EditorAssetChanged: 1
+    ScriptOnInteract:
+      m_AssetGUID: a767a77c4df28264bbc0f46d2b88eee2
+      m_SubObjectName: 
+      m_SubObjectGUID: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 1
   DisplayName:
     m_TableReference:
       m_TableCollectionName: 

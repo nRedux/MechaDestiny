@@ -54,6 +54,8 @@ public class StatisticWatcher
 public class UIStatisticListener : UIEntityElement
 {
 
+    public bool ClampToPositive = true;
+
     [Tooltip("What statistic we display values for.")]
     public StatisticType StatisticType;
 
@@ -91,11 +93,19 @@ public class UIStatisticListener : UIEntityElement
             Debug.LogError($"Statistic {StatisticType} not present in watched entity.", gameObject);
             return;
         }
-        Value = statistic.Value;
+        Value = ClampIfNeeded( statistic.Value );
         this._statistic = statistic;
         this._statistic.OnUIValueUpdate += StatisticChanged;
 
         StatisticChanged( new StatisticChange(null, _statistic, _statistic.Value, _statistic.Value));
+    }
+
+
+    private int ClampIfNeeded( int value )
+    {
+        if( ClampToPositive )
+            return Mathf.Max( 0, value );
+        return value;
     }
 
 
@@ -118,12 +128,13 @@ public class UIStatisticListener : UIEntityElement
     }
 
 
-    protected virtual void StatisticChanged( StatisticChange stat )
+    protected virtual void StatisticChanged( StatisticChange statChange )
     {
-        Value = stat.Value;
-        StringValueChanged.Invoke( stat.Value.ToString() );
-        ValueChanged.Invoke( stat.Value );
-        NormalizedValueChanged.Invoke( stat.Value / (float) stat.Statistic.StartValue );
+        int value = ClampIfNeeded( statChange.Value );
+        Value = value;
+        StringValueChanged.Invoke( value.ToString() );
+        ValueChanged.Invoke( value );
+        NormalizedValueChanged.Invoke( value / (float) statChange.Statistic.StartValue );
     }
 
 

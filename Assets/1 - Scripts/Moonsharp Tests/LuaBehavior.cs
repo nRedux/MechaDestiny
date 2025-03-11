@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using MoonSharp.Interpreter;
-using Sirenix.OdinInspector;
-using Unity.VisualScripting;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
-using static Pathfinding.AdvancedSmooth;
 
-
+public class LuaBehaviorException: System.Exception
+{
+    public LuaBehaviorException() : base() { }
+    public LuaBehaviorException( string message) : base(message) { }
+    public LuaBehaviorException( string message, System.Exception inner ) : base(message, inner) { }
+}
 
 public class LuaBehavior
 {
@@ -18,13 +19,15 @@ public class LuaBehavior
     private const string LUA_AWAKE_SIGNATURE = "awake";
     private const string LUA_COMBATSTART_SIGNATURE = "combatStart";
     private const string LUA_TEAMSCREATED_SIGNATURE = "teamsCreated";
+    private const string LUA_THIS_SCRIPT = "thisScript";
 
     private const string ACTOR_KEY = "thisActor";
 
 
     private Script _scriptObject = null;
     private Dictionary<string, object> _methods = new Dictionary<string, object>();
-
+    private List<DynValue> _coroutines = new List<DynValue>();
+    private List<DynValue> _deadCoroutines = new List<DynValue>();
 
     public string ScriptName
     {
@@ -55,8 +58,14 @@ public class LuaBehavior
     public void InitializeScript( string script, Dictionary<string, object> properties = null )
     {
         _scriptObject = new Script();
-        if( properties != null )
-            properties.Do( x => _scriptObject.Globals[x.Key] = x.Value );
+        if( properties == null )
+            properties = new Dictionary<string, object>();
+        if( properties.ContainsKey( LUA_THIS_SCRIPT ) )
+            throw new LuaBehaviorException( $"Invalid script property {LUA_THIS_SCRIPT} in property dictionary" );
+        properties.Add( LUA_THIS_SCRIPT, this );
+        properties.Do( x => _scriptObject.Globals[x.Key] = x.Value );
+
+
         SetupBindings();
 
         try
@@ -110,6 +119,8 @@ public class LuaBehavior
         _scriptObject.Globals[nameof( ActorStatus )] = typeof( ActorStatus );
         _scriptObject.Globals[nameof( KeyCode )] = typeof( KeyCode );
         _scriptObject.Globals[nameof( UnityEngine.Input )] = typeof( UnityEngine.Input );
+        _scriptObject.Globals[nameof( TimeManager )] = typeof( TimeManager );
+        _scriptObject.Globals[nameof( MetaGame )] = typeof( MetaGame );
     }
 
 
@@ -162,6 +173,26 @@ public class LuaBehavior
                 Debug.LogError( $"Line Number: {ex.DecoratedMessage}" );
             }
         }
+    }
+
+    public void CreateCoroutine( DynValue function )
+    {
+        var coroutine = _scriptObject.CreateCoroutine( function );
+        _coroutines.Add( coroutine );
+    }
+
+    public void ExecuteCoroutines()
+    {
+        _deadCoroutines = new List<DynValue>();
+        _coroutines.Do( x => {
+            if( x.Coroutine.State == CoroutineState.Suspended ||
+                x.Coroutine.State == CoroutineState.NotStarted )
+                x.Coroutine.Resume();
+            if( x.Coroutine.State == CoroutineState.Dead )
+                _deadCoroutines.Add( x );
+        } );
+
+        _deadCoroutines.Do( x => _coroutines.Remove( x ) );
     }
 
 

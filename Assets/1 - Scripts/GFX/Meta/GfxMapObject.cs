@@ -13,6 +13,8 @@ public class GfxMapObject : MonoBehaviour
 
     public GfxMapObjectAction SelectedAction = null;
 
+    public LuaBehavior LuaBehavior { get; private set; }
+
     public void Initialize( MapObjectData data )
     {
         this.Data = data;
@@ -46,6 +48,12 @@ public class GfxMapObject : MonoBehaviour
     public virtual MapObjectData GetData()
     {
         return Data;
+    }
+
+    public void RunLuaBehavior( TextAsset asset )
+    {
+        //Dictionary<string, object> props = new Dictionary<string, object> { { "thisMapObject", this } };
+        this.LuaBehavior = new LuaBehavior( asset, null );
     }
 
     private void CollectActions()

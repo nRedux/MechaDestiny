@@ -1,0 +1,17 @@
+require 'Core'
+
+function doEvent()
+
+	yieldWait(3)
+	TimeManager.PauseTime()
+	yieldWait(.1)
+
+	showDialogBox( "Hi!", "Hi 2!" )
+	showDialogBox( "Oh noes!", "Yo you got mad baddies trying to penetrate your soft back side!" )
+	changeScene( "SampleScene", false )
+
+end
+
+function awake()
+	thisScript.CreateCoroutine( doEvent )
+end

@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1487655848666937610, guid: 93afcb2ccc918d44e8a0b96b29bb74f5, type: 3}
+      propertyPath: ClampToPositive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1707143936488635166, guid: 93afcb2ccc918d44e8a0b96b29bb74f5, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4278190080

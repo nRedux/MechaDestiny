@@ -15,6 +15,11 @@ public class CoroutineUtils : Singleton<CoroutineUtils> {
         DoInstantiate = HandleInstatiate;
     }
 
+    public void Update()
+    {
+        LuaBehaviorManager.Instance.Update();
+    }
+
     public void LateUpdate()
     {
         OnLateUpdate?.Invoke();

@@ -82,6 +82,9 @@ public static class AttackHelper
         }
         else
         {
+            if( res.Target.Actor == null )
+                Debug.Log( res.Target.ToString() );
+
             res.Evaded = AttackHelper.CalculateAttackEvaded( actor, res.Target.Actor );
             for( int i = 0; i < shotCount; i++ )
             {

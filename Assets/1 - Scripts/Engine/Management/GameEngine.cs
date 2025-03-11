@@ -64,6 +64,8 @@ public class GameEngine : Singleton<GameEngine>
     protected override void Awake()
     {
         base.Awake();
+        //Make sure it's alive
+        var co = CoroutineUtils.Instance;
 
         AwakeUIManager();
         AwakeAvatarManager();
@@ -246,7 +248,6 @@ public class GameEngine : Singleton<GameEngine>
         if( !_initializationDone )
             return;
         TickGame();
-        LuaBehaviorManager.Instance.Update();
         //RenderGridAtMouse();
     }
 

@@ -175,6 +175,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI Mech Info
       objectReference: {fileID: 0}
+    - target: {fileID: 1655920505697215134, guid: a29fbe88c9e592b4cab61b8ae849973a, type: 3}
+      propertyPath: ClampToPositive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4226560883330213025, guid: a29fbe88c9e592b4cab61b8ae849973a, type: 3}
+      propertyPath: ClampToPositive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5578458785110424806, guid: a29fbe88c9e592b4cab61b8ae849973a, type: 3}
+      propertyPath: ClampToPositive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5578458785275920456, guid: a29fbe88c9e592b4cab61b8ae849973a, type: 3}
+      propertyPath: ClampToPositive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5578458786133736241, guid: a29fbe88c9e592b4cab61b8ae849973a, type: 3}
+      propertyPath: ClampToPositive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7004903789375470862, guid: a29fbe88c9e592b4cab61b8ae849973a, type: 3}
+      propertyPath: ClampToPositive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7004903789897310162, guid: a29fbe88c9e592b4cab61b8ae849973a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -190,6 +214,14 @@ PrefabInstance:
     - target: {fileID: 7004903789897310162, guid: a29fbe88c9e592b4cab61b8ae849973a, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7004903790633728729, guid: a29fbe88c9e592b4cab61b8ae849973a, type: 3}
+      propertyPath: ClampToPositive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7004903790737098359, guid: a29fbe88c9e592b4cab61b8ae849973a, type: 3}
+      propertyPath: ClampToPositive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7004903791189055493, guid: a29fbe88c9e592b4cab61b8ae849973a, type: 3}
       propertyPath: m_AnchorMax.y

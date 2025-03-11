@@ -30,6 +30,9 @@ public class GameManager : Singleton<GameManager>
 
     protected override void Awake()
     {
+        //Make sure it's alive
+        var co = CoroutineUtils.Instance;
+
         base.Awake();
         DontDestroyOnLoad( gameObject );
         //Get the system UI fired up

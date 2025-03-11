@@ -251,6 +251,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a767a77c4df28264bbc0f46d2b88eee2
+    m_Address: Assets/1 - Scripts/LUA/Event Test.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a76bed771f181044dbef4e4b9338e7b9
     m_Address: Assets/2 - Assets/Data/Mechs/Attachment Types/Single Hand Weapon.asset
     m_ReadOnly: 0

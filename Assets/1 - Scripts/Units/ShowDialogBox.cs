@@ -46,5 +46,4 @@ public class ShowDialogBox : Unit
     {
         Flow.New( _graphRef ).Invoke( Exit );
     }
-
 }

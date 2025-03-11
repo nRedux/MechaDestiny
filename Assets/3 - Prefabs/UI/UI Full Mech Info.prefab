@@ -420,6 +420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d981b3479e898524c846fd0926f0774b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ClampToPositive: 1
   StatisticType: 17
   Value: 0
   ValueChanged:
@@ -750,6 +751,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d981b3479e898524c846fd0926f0774b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ClampToPositive: 1
   StatisticType: 16
   Value: 0
   ValueChanged:
@@ -1489,17 +1491,33 @@ PrefabInstance:
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
       objectReference: {fileID: 0}
+    - target: {fileID: 2311441647067746662, guid: 4ea98c3d9ec6c584f8e3050806f0a14f, type: 3}
+      propertyPath: ClampToPositive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2849314989210952866, guid: 4ea98c3d9ec6c584f8e3050806f0a14f, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 3124374960554776476, guid: 4ea98c3d9ec6c584f8e3050806f0a14f, type: 3}
+      propertyPath: ClampToPositive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3522983323281337270, guid: 4ea98c3d9ec6c584f8e3050806f0a14f, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
       objectReference: {fileID: 0}
+    - target: {fileID: 3627594310958813282, guid: 4ea98c3d9ec6c584f8e3050806f0a14f, type: 3}
+      propertyPath: ClampToPositive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4046554397438634492, guid: 4ea98c3d9ec6c584f8e3050806f0a14f, type: 3}
       propertyPath: m_Name
       value: UI L Arm Squashed
+      objectReference: {fileID: 0}
+    - target: {fileID: 4337784689338898568, guid: 4ea98c3d9ec6c584f8e3050806f0a14f, type: 3}
+      propertyPath: ClampToPositive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5111859216512719875, guid: 4ea98c3d9ec6c584f8e3050806f0a14f, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
@@ -1585,6 +1603,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7249886071908102464, guid: 4ea98c3d9ec6c584f8e3050806f0a14f, type: 3}
+      propertyPath: ClampToPositive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7363156264479672980, guid: 4ea98c3d9ec6c584f8e3050806f0a14f, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
@@ -1593,6 +1615,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI R Arm Squashed
       objectReference: {fileID: 0}
+    - target: {fileID: 8057825320899196858, guid: 4ea98c3d9ec6c584f8e3050806f0a14f, type: 3}
+      propertyPath: ClampToPositive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8354791595915099732, guid: 4ea98c3d9ec6c584f8e3050806f0a14f, type: 3}
+      propertyPath: ClampToPositive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8388800639004117904, guid: 4ea98c3d9ec6c584f8e3050806f0a14f, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
@@ -1600,6 +1630,10 @@ PrefabInstance:
     - target: {fileID: 8758899526233901002, guid: 4ea98c3d9ec6c584f8e3050806f0a14f, type: 3}
       propertyPath: m_Name
       value: UI Legs Squashed
+      objectReference: {fileID: 0}
+    - target: {fileID: 9049714413563672254, guid: 4ea98c3d9ec6c584f8e3050806f0a14f, type: 3}
+      propertyPath: ClampToPositive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

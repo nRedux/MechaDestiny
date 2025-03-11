@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data:
     AssetReference:
-      m_AssetGUID: a60ee5734704dc543b6f959a7fa7e5a3
+      m_AssetGUID: a3d88fa4fffc6b74188e71771febbb8a
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 
@@ -23,7 +23,7 @@ MonoBehaviour:
     Statistics:
       _serializedKeys: 00000000
       _serializedValues:
-      - _value: 80
+      - _value: 1
         _startValue: 0
         Type: 0
     Boosts:

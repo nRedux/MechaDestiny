@@ -8,7 +8,13 @@ public class GlobalSettings:SingletonScriptableObject<GlobalSettings>
 
     public List<WeaponTypeInfo> WeaponTypes;
 
+    [Space]
     public List<ActorReference> PlayerActors;
+
+    [Space]
+    public GameObject DefaultCompDestroyExplosion;
+
+    public GameObject AttackCameraPrefab;
 
     public ActorCollection GetStarterActorsCollection()
     {

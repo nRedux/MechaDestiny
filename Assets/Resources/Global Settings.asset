@@ -124,6 +124,7 @@ MonoBehaviour:
     m_SubObjectGUID: 
     m_SubObjectType: 
     m_EditorAssetChanged: 1
+  DefaultCompDestroyExplosion: {fileID: 1111592506786644, guid: 015e1db5d4d0b494fa73c95f923d4422, type: 3}
   references:
     version: 2
     RefIds: []

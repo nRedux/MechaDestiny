@@ -26,3 +26,37 @@ function listContainsOnlyType( list, type )
 	end
 	return true
 end
+
+-- Function to create a delay in seconds
+function yieldWait(seconds)
+    local start = os.time()
+    while os.time() - start < seconds do
+        coroutine.yield()
+	end
+end
+
+
+function showDialogBox( title, content )
+	local canContinue = false
+	function waitDialogBox()
+		canContinue = true
+	end
+
+	MetaGame.ShowDialogBox( title, content, waitDialogBox )
+	while canContinue == false do
+		coroutine.yield()
+	end
+end
+
+
+function changeScene( scene, doWarmup )
+	local canContinue = false
+	function onSceneChanged()
+		canContinue = true
+	end
+
+	MetaGame.ChangeScene( scene, doWarmup, onSceneChanged )
+	while canContinue == false do
+		coroutine.yield()
+	end
+end

@@ -7,7 +7,6 @@ public class MechComponentDestroyed : AwaitableBehavior
     private GfxComponent _component;
     public int NumExplosionsMin = 1;
     public int NumExplosionsMax = 3;
-
     public float InterExplosionDelay = .1f;
     public float AfterExplosionsDelay = .5f;
     public float AfterDeathAnimDelay = .5f;

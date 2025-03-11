@@ -139,8 +139,8 @@ public class GfxObjectInteractAction : GfxMapObjectAction
         Debug.Log( "Doing interact action after move!" );
 
 
-        RunAction( target.GraphOnInteract );
-
+        //RunAction( target.GraphOnInteract );
+        RunScript( target.ScriptOnInteract );
 
     }
 
@@ -149,5 +149,12 @@ public class GfxObjectInteractAction : GfxMapObjectAction
         var thing = reference.LoadAssetAsync<ScriptGraphAsset>();
         await thing.Task;
         VisualScriptingUtility.RunGraph( thing.Task.Result, null );
+    }
+
+    public async void RunScript( TextAssetReference reference )
+    {
+        var thing = reference.LoadAssetAsync<TextAsset>();
+        await thing.Task;
+        MapObject.RunLuaBehavior( thing.Task.Result );
     }
 }

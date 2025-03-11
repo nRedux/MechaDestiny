@@ -21,6 +21,7 @@ public class LuaBehaviorManager : SingletonScriptableObject<LuaBehaviorManager>
 
     public void SetSuperGlobal( string key, object value )
     {
+        Script s;
         _superGlobals.Add( key, value );
     }
 
@@ -57,6 +58,10 @@ public class LuaBehaviorManager : SingletonScriptableObject<LuaBehaviorManager>
 
     public void SetupLUAEnv()
     {
+        SetupMetaGameEnv();
+
+        UserData.RegisterType<LuaBehavior>();
+
         UserData.RegisterType<Actor>();
         UserData.RegisterType<SpawnLocation>();
         UserData.RegisterType<Team>();
@@ -80,6 +85,13 @@ public class LuaBehaviorManager : SingletonScriptableObject<LuaBehaviorManager>
 
     }
 
+    private void SetupMetaGameEnv()
+    {
+        UserData.RegisterType<TimeManager>();
+
+        UserData.RegisterType<MetaGame>();
+    }
+
     public void RegisterBehavior( LuaBehavior behavior )
     {
         _behaviors.Add( behavior );
@@ -88,6 +100,7 @@ public class LuaBehaviorManager : SingletonScriptableObject<LuaBehaviorManager>
 
     public void Update()
     {
+        _behaviors.Do( x => x.ExecuteCoroutines() );
         _behaviors.Do( x => x.CallUpdate() );
     }
 
