@@ -91,6 +91,7 @@ public class UIStatisticListener : UIEntityElement
             Debug.LogError($"Statistic {StatisticType} not present in watched entity.", gameObject);
             return;
         }
+        Value = statistic.Value;
         this._statistic = statistic;
         this._statistic.OnUIValueUpdate += StatisticChanged;
 

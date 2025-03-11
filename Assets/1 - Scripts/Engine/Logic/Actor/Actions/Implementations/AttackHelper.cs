@@ -135,6 +135,10 @@ public static class AttackHelper
 
     public static bool CalculateAttackEvaded( Actor attackActor, Actor targetActor )
     {
+        Debug.Assert( targetActor != null, "Target Actor Null" );
+        Debug.Assert( attackActor != null, "Attack Actor Null" );
+        Debug.Assert( targetActor.Boosts != null, "TargetActor boosts null" );
+
         var actor = attackActor;
         var weapon = actor.ActiveWeapon;
         var evasion = targetActor.Boosts.GetStatistic( StatisticType.Evasion );

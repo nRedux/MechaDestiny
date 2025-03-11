@@ -88,6 +88,7 @@ public class CombatUserControls
 
     private void UpdateHoveredActor( GameEngine engine )
     {
+        HoveredActorChanged = false;
         if( _frameRaycast == null || !_frameRaycast.HasValue )
         {
             return;

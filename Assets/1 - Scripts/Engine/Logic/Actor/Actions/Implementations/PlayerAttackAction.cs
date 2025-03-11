@@ -99,20 +99,16 @@ public class PlayerAttackAction : AttackAction
 
     public void BeginBehavior( Game game, Actor actor )
     {
-        //Get valid move locations. Notify the UI we need to display a collection of move locations. Wait for UI to return a result. Execute move.
-        State = ActorActionState.Started;
-        GfxActor attackerAvatar = GameEngine.Instance.AvatarManager.GetAvatar( actor );
-        DoAttack( attackerAvatar );
         if( DisplayProps.IsSequenceStart )
         {
             if( actor.Target?.GfxActor != null )
                 UIManager.Instance.ShowSideBMechInfo( actor.Target.GfxActor.Actor, UIManager.MechInfoDisplayMode.Full, true );
         }
-        
-        /*_uiRequest = CreateFindAttackTargetRequest( attackerAvatar, attackOptions );
-        //Don't target actors on the same team
-        _uiRequest.MarkInvalidTeams( actor.GetTeamID() );*/
-        //UIManager.Instance.RequestUI( _uiRequest );
+
+        //Get valid move locations. Notify the UI we need to display a collection of move locations. Wait for UI to return a result. Execute move.
+        State = ActorActionState.Started;
+        GfxActor attackerAvatar = GameEngine.Instance.AvatarManager.GetAvatar( actor );
+        DoAttack( attackerAvatar );
     }
 
     private void DoAttack( GfxActor attackerAvatar )
