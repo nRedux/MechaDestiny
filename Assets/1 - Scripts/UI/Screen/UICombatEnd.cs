@@ -45,7 +45,11 @@ public class UICombatEnd : UIPanel
         this.CreateBackground();
         this.PanelBackground.OnClick += () =>
         {
-            RunManager.Instance.RunCombatEndGraph( null );
+            //Need to handle what to do when combat ends
+            //LUA script?
+
+
+            //RunManager.Instance.RunCombatEndGraph( null );
             /*SceneLoadManager.LoadScene( "Terrain", true, false, () => {
 
             }, null );*/

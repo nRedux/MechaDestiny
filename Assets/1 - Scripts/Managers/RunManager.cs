@@ -12,7 +12,7 @@ using UnityEditor;
 public class RunManager : SingletonScriptableObject<RunManager>
 {
 
-    public ScriptGraphAssetReference DefaultCombatEndGraph;
+//    public ScriptGraphAssetReference DefaultCombatEndGraph;
     public RunData RunData {
         get => DataHandler<RunData>.Data;
     }
@@ -51,6 +51,7 @@ public class RunManager : SingletonScriptableObject<RunManager>
 
     public async void RunCombatEndGraph( EncounterData encounter )
     {
+        /*
         bool runDefault = true;
 
         if( runDefault && DefaultCombatEndGraph.RuntimeKeyIsValid() )
@@ -58,6 +59,7 @@ public class RunManager : SingletonScriptableObject<RunManager>
             var combatEndGraph = await DefaultCombatEndGraph.GetAssetAsync();
             combatEndGraph.Run( null );
         }
+        */
 
     }
 

@@ -4,8 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Cinemachine;
+using Unity.VisualScripting;
 
-public class AttackCamera : MonoBehaviour
+
+
+public class AttackCamera : AvatarCamera
 {
 
     public CinemachineCamera Camera;
@@ -25,7 +28,7 @@ public class AttackCamera : MonoBehaviour
         return go;
     }
 
-    public void SetTargets( Transform attacker, SmartPoint target )
+    protected override void InternalBegin( Transform attacker, SmartPoint target )
     {
         transform.rotation = Quaternion.identity;
 
@@ -62,11 +65,8 @@ public class AttackCamera : MonoBehaviour
         {
             //Debug.LogError( "Found no good view angle." );
         }
-    }
 
-    internal void SetActive( bool active )
-    {
-        gameObject.SetActive( active );
+        gameObject.SetActive( true );
     }
 
     private void LateUpdate()
@@ -141,5 +141,11 @@ public class AttackCamera : MonoBehaviour
     {
         _tempTargets.Do( x => Destroy( x ) );
         _tempTargets.Clear();
+    }
+
+    protected override void InternalEnd()
+    {
+        gameObject.SetActive( false );
+        ClearTempTargets();
     }
 }

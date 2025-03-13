@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data:
     Category: 3
-    Cost: 1
+    _APCost: 1
     DisplayName:
       m_TableReference:
         m_TableCollectionName: GUID:c9f6f54132f444c459cb15fcd0afa795
@@ -33,7 +33,7 @@ MonoBehaviour:
       m_FallbackState: 0
       m_WaitForCompletion: 0
       m_LocalVariables: []
-    EvadeChance: 100
+    EvadeChance: 30
   references:
     version: 2
     RefIds: []

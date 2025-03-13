@@ -13,18 +13,8 @@ MonoBehaviour:
   m_Name: Run Manager
   m_EditorClassIdentifier: 
   DefaultCombatEndGraph:
-    m_AssetGUID: a21dc18a742506146ac6e1f798b0c91e
+    m_AssetGUID: 
     m_SubObjectName: 
+    m_SubObjectGUID: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  Data:
-    Scene: 
-    Caravan:
-      CaravanGraphics:
-        m_AssetGUID: 
-        m_SubObjectName: 
-        m_SubObjectType: 
-        m_EditorAssetChanged: 0
-      Position: {x: 0, y: 0, z: 0}
-      Heading: {x: 0, y: 0, z: 0}
-      Speed: 0

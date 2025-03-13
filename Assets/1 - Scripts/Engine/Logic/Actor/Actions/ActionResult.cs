@@ -59,7 +59,10 @@ public abstract class ActionResult
     public abstract ActionResultStatus Update();
     
     
-    public abstract void Start();
+    public virtual void Start()
+    {
+
+    }
 
 
     /// <summary>

@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
-using UnityEngine.Rendering.HighDefinition;
 
-public class AttackActionResult : ActionResult
+public class ActionResultBase : ActionResult
 {
     public GfxActor Attacker;
     public MechComponentData AttackerMechComponent;
@@ -21,14 +20,12 @@ public class AttackActionResult : ActionResult
 
     private ActionResultStatus _status = ActionResultStatus.Running;
 
-    private ICameraBehavior _camera;
 
-
-    public AttackActionResult()
+    public ActionResultBase()
     {
     }
 
-    public AttackActionResult( GfxActor attacker, SmartPoint target, MechComponentData weapon )
+    public ActionResultBase( GfxActor attacker, SmartPoint target, MechComponentData weapon )
     {
         Attacker = attacker;
         AttackerWeapon = weapon;
@@ -37,7 +34,6 @@ public class AttackActionResult : ActionResult
         AttackerMechComponent = AttackerWeapon.GetParent() as MechComponentData;
         Count = AttackerWeapon.GetStatisticValue( StatisticType.ShotCount );
         Target = target;
-        _camera = new AttackCameraBehavior( attacker.Actor, target );
     }
 
     public string GetAnimationParam()
@@ -61,10 +57,20 @@ public class AttackActionResult : ActionResult
 
     public override async void Start()
     {
+        bool camDone = false;
 
+        /*
         if( this.DisplayProps.IsSequenceStart )
         {
-            await _camera.Begin();
+            Attacker.StartAttackCamera( () =>
+            {
+                camDone = true;
+            }, Attacker, Target );
+
+            while( !camDone )
+            {
+                await Task.Yield();
+            }
         }
 
         if( Evaded )
@@ -79,7 +85,9 @@ public class AttackActionResult : ActionResult
         } );
 
         if( this.DisplayProps.IsSequenceEnd )
-            await _camera.End();
+            Attacker.StopAttackCamera();
+        */
+
     }
 
 

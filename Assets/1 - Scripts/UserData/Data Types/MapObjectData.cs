@@ -110,7 +110,6 @@ public class MapObjectData: DataObject<MapObjectAsset>
     public MapObjectData TargetOnComplete = null;
     public string ActionOnPathComplete;
 
-    public ScriptGraphAssetReference GraphOnInteract;
     public TextAssetReference ScriptOnInteract;
 
     private NavMeshPath _navPath;

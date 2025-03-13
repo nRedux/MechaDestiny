@@ -114,12 +114,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 5ae462e3049984b409f5c980e78005ee
-    m_Address: Assets/2 - Assets/Encounter Graphs/Test Graph.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5cead5d9554312a45a58c913aa4ca7d8
     m_Address: Assets/2 - Assets/Entities/Mechs/Kale Mech/Mech Right Arm.asset
     m_ReadOnly: 0
@@ -223,12 +217,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a21dc18a742506146ac6e1f798b0c91e
-    m_Address: Assets/2 - Assets/Encounter Graphs/Combat End.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a3d88fa4fffc6b74188e71771febbb8a
     m_Address: Assets/2 - Assets/Entities/Mechs/Test AI Brawler/AI Left Arm.asset
     m_ReadOnly: 0
@@ -320,12 +308,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f0cc40bbd6ea05e479eab6b5a084f791
     m_Address: Assets/2 - Assets/Data/Mechs/Test Mech/Mech Right Arm.asset
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f8808b9b1df17634d9ab5bb706e8984a
-    m_Address: Assets/2 - Assets/Encounter Graphs/Harvest Patch Test Graph.asset
     m_ReadOnly: 0
     m_SerializedLabels:
     - default

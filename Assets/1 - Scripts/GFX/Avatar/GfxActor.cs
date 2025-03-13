@@ -414,8 +414,6 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
 
     #region CAMERA
-
-    private System.Action _cameraBlendDone = null;
     public void StartAttackCamera( System.Action cameraDone, GfxActor attacker, SmartPoint target )
     {
         if( !AttackCamera )
@@ -423,25 +421,16 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             cameraDone?.Invoke();
             return;
         }
-        _cameraBlendDone = cameraDone;
-        AttackCamera.SetTargets( attacker.transform, target);
-        AttackCamera.SetActive( true );
+        AttackCamera.Begin( cameraDone, attacker.transform, target);
     }
 
     public void StopAttackCamera()
     {
-        if( !AttackCamera )
-        {
-            return;
-        }
-        AttackCamera.SetActive( false );
-        AttackCamera.ClearTempTargets();
+        AttackCamera.Opt()?.End();
     }
 
     public void AttackCameraRunning( ICinemachineMixer mixer, ICinemachineCamera camera )
     {
-        _cameraBlendDone?.Invoke();
-        _cameraBlendDone = null;
     }
 
     #endregion CAMERA
