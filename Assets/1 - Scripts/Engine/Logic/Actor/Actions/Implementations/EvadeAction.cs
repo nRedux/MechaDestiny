@@ -86,28 +86,9 @@ public class EvadeAction : ActorAction
         End();
     }
 
-    private void CreatePopup( Actor actor, string popupType )
-    {
-        if( string.IsNullOrEmpty( popupType ) )
-            return;
-
-        var avatar = GameEngine.Instance.AvatarManager.GetAvatar( actor );
-        if( avatar == null )
-        {
-            Debug.LogError("Avatar null");
-            return;
-        }
-        var torso = avatar.Torso;
-        if( torso == null )
-        {
-            Debug.LogError("Avatar has no torso");
-            return;
-        }
-        UIInfoPopups.Instance.CreatePop( popupType, "Evade UP", torso.transform.position );
-    }
-
     public override void TriggerEvent( Actor actor, Actor source, ActorEvent evt )
     {
+        /*
         switch( evt )
         {
             case ActorEvent.Attacked:
@@ -119,5 +100,6 @@ public class EvadeAction : ActorAction
                 GameEngine.Instance.Game.WantsAct.Add( new ActorWantsAct() { actor = actor, action = attack, target = new SmartPoint( source ) } );
                 break;
         }
+        */
     }
 }

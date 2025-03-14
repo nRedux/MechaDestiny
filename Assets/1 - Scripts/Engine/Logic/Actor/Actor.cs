@@ -200,6 +200,7 @@ public partial class Actor : SimpleEntity<ActorAsset>
     {
         TurnComplete = false;
         ActionHandler.SetupForTurn();
+        Actions.Do( x => x.ResetForPhase() );
         DoStatisticsResetForTurn();
     }
 

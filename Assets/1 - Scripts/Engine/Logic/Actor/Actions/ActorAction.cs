@@ -88,8 +88,10 @@ public abstract class ActorAction
         protected set;
     } = ActorActionState.Started;
 
+    
     public virtual void Start( Game game, Actor actor ) { }
     public virtual void Tick() { }
+    public virtual void ResetForPhase() { }
     public virtual void TurnEnded() { }
     public virtual void End() { State = ActorActionState.Finished; }
 

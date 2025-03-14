@@ -161,6 +161,14 @@ MonoBehaviour:
     m_Key: wpn_desc_grenade_launcher
     m_Metadata:
       m_Items: []
+  - m_Id: 119286453761359872
+    m_Key: ui_action_counter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 119286527946014720
+    m_Key: ui_action_counter_desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

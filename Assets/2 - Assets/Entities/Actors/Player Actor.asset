@@ -40,6 +40,7 @@ MonoBehaviour:
       m_EditorAssetChanged: 0
     RunActionsAutomatically: 0
     TurnComplete: 0
+    SpawnPriority: 0
   PortraitImage: {fileID: 21300000, guid: 086aff097f81f6649bacc742fbbdd7b6, type: 3}
   DisplayName:
     m_TableReference:
@@ -62,6 +63,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 909baa77636579e4da6340fba6992660, type: 2}
   - {fileID: 11400000, guid: 849cc63c6059b2c4a8ef0904f34d1b05, type: 2}
   - {fileID: 11400000, guid: 9e680f75029cb494fa331ea4485287db, type: 2}
+  - {fileID: 11400000, guid: f41a5e2abe7624d40b1b72dca97a4446, type: 2}
   AI_Personality: {fileID: 0}
   references:
     version: 2
