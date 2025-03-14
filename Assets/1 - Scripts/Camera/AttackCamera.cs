@@ -65,8 +65,6 @@ public class AttackCamera : AvatarCamera
         {
             //Debug.LogError( "Found no good view angle." );
         }
-
-        gameObject.SetActive( true );
     }
 
     private void LateUpdate()
@@ -145,7 +143,6 @@ public class AttackCamera : AvatarCamera
 
     protected override void InternalEnd()
     {
-        gameObject.SetActive( false );
         ClearTempTargets();
     }
 }

@@ -336,7 +336,6 @@ public class PlayerActionHandler : ActorActionHandler
 
 
                     attack.DisplayProps = displayProps;
-                    attack.SequencePos = seqPos;
 
                     //If this kills the target, break out of the sequence so we don't fire on something dead.
                     attack.OnKillTarget = () =>
@@ -470,4 +469,8 @@ public class PlayerActionHandler : ActorActionHandler
         ShutdownInput();
     }
 
+    public override bool CanBeInterrupted()
+    {
+        return _sequence == null;
+    }
 }

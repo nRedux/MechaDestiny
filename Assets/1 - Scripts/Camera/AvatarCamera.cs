@@ -5,6 +5,8 @@ using UnityEngine;
 public abstract class AvatarCamera : MonoBehaviour
 {
 
+    public string ID;
+
     private System.Action _startBlendFinished = null;
 
     public void StartBlendFinished( ICinemachineMixer mixer, ICinemachineCamera camera )
@@ -13,15 +15,17 @@ public abstract class AvatarCamera : MonoBehaviour
         _startBlendFinished = null;
     }
 
-    public void Begin(System.Action startFinished, Transform attacker, SmartPoint target )
+    public void Activate(System.Action startFinished, Transform attacker, SmartPoint target )
     {
         _startBlendFinished = startFinished;
         InternalBegin( attacker, target );
+        gameObject.SetActive( true );
     }
 
-    public void End()
+    public void Deactivate()
     {
         InternalEnd();
+        gameObject.SetActive( false );
     }
 
     protected abstract void InternalBegin( Transform attacker, SmartPoint target );

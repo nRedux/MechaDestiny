@@ -75,6 +75,9 @@ public abstract class ActorAction
     public LocalizedString DisplayName;
     public LocalizedString Description;
 
+    [HideInInspector]
+    public bool RespondToEvents = true;
+
     public virtual bool HideAP => false;
 
     public virtual int APCost => _APCost;
@@ -89,6 +92,11 @@ public abstract class ActorAction
     public virtual void Tick() { }
     public virtual void TurnEnded() { }
     public virtual void End() { State = ActorActionState.Finished; }
+
+    public virtual void TriggerEvent(Actor actor, Actor source, ActorEvent evt)
+    {
+
+    }
 
     public bool AllowActionSelect { get; protected set; } = true;
 

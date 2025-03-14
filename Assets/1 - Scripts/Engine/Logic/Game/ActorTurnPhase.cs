@@ -34,6 +34,7 @@ public class ActorTurnPhase: TurnPhase
         _game = game;
         _team = team;
         _isComplete = false;
+        _actorInterrupt = null;
 
         SetUpInput();
         SelectActiveActor( null );
@@ -138,13 +139,27 @@ public class ActorTurnPhase: TurnPhase
 
     }
 
+    private ActorWantsAct _actorInterrupt;
 
     private void RunActorActions()
     {
         _delayAIActionsTimer -= Time.deltaTime;
         if( _delayAIActionsTimer > 0 )
             return;
-        
+
+        if( _selectedActor.CanBeInterrupted() )
+        {
+            if( _actorInterrupt == null && this._game.WantsAct.Count > 0 ) {
+                _actorInterrupt = this._game.WantsAct.First();
+                this._game.WantsAct.Remove( _actorInterrupt );
+                _actorInterrupt.ExecuteAction( _game );
+            }
+        }
+        if( _actorInterrupt != null && !_actorInterrupt.Finished )
+        {
+            _actorInterrupt = null;
+            return;
+        }
 
         if( _selectedActor.ShouldEndActorTurn() )
         {

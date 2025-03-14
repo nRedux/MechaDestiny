@@ -56,7 +56,7 @@ public class UIActionSequence : UIPanel
 
     public List<SequenceAction> GetSelectedSequence()
     {
-        return _items.Select( x => x.SequenceAction ).ToList();
+        return _items.Where( x => !x.IsPreview ).Select( x => x.SequenceAction ).ToList();
     }
 
 

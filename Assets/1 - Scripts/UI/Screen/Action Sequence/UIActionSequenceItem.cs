@@ -40,6 +40,8 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
     private HorizontalLayoutGroup _layoutGroup;
     private GameObject _spacer = null;
 
+    public bool IsPreview { get; private set; }
+
 
     private void Awake()
     {
@@ -58,6 +60,7 @@ public class UIActionSequenceItem: MonoBehaviour, IPointerClickHandler, IPointer
 
     public void ShowAsPreview()
     {
+        IsPreview = true;
         if( PreviewAnimator != null )
         {
             PreviewAnimator.enabled = true;

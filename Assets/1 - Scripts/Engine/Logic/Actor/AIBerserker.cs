@@ -39,9 +39,9 @@ public class AIBerserker: AIPersonality
         var ordered = GetRangeOrderedWeapons( actor );
         float bestUtility = float.MinValue;
         MechComponentData bestWeapon = null;
-        foreach( var item in ordered )
+        foreach( var weapon in ordered )
         {
-            actor.ActiveWeapon = item as MechComponentData;
+            actor.ActiveWeapon = weapon;
             if( actor.ActiveWeapon == null )
                 continue;
             var range = actor.ActiveWeapon.GetStatisticValue( StatisticType.Range );
@@ -53,7 +53,7 @@ public class AIBerserker: AIPersonality
             if( utility > bestUtility )
             {
                 bestUtility = utility;
-                bestWeapon = item as MechComponentData;
+                bestWeapon = weapon;
             }
         }
 
@@ -63,9 +63,9 @@ public class AIBerserker: AIPersonality
     }
 
 
-    private List<IEntity> GetRangeOrderedWeapons( Actor actor )
+    private List<MechComponentData> GetRangeOrderedWeapons( Actor actor )
     {
-        var weapons = actor.FindFunctionalWeaponEntities();
+        var weapons = actor.FindFunctionalWeapons();
         return weapons.OrderBy( x => x.GetStatistic( StatisticType.Range )?.Value ?? 0 ).ToList();
     }
 

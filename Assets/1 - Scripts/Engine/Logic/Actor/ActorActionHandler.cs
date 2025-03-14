@@ -14,6 +14,7 @@ public abstract class ActorActionHandler
 
     public abstract bool HasActionsAvailable();
     public abstract void Tick( Game game );
+    public abstract bool CanBeInterrupted();
     public abstract void SetupForTurn();
     public abstract bool ShouldEndActorTurn();
     public abstract ActorAction ActiveAction { get; }

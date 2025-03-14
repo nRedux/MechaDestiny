@@ -27,36 +27,6 @@ public class PlayerAttackAction : AttackAction
     }
 
 
-    private void TryRequestWeaponPick()
-    {
-        if( !UIPickWeaponRequest.CanExecute( _actor ) )
-            return;
-        if( !Input.GetKeyDown( KeyCode.Q ) )
-            return;
-
-        if( _weaponPickRequest != null )
-            return;
-
-        _weaponPickRequest = new UIPickWeaponRequest( _actor,
-        x =>
-        {
-            AllowActionSelect = true;
-            _weaponPickRequest = null;
-        },
-        y =>
-        {
-            AllowActionSelect = true;
-            _weaponPickRequest = null;
-        },
-        () =>
-        {
-            AllowActionSelect = true;
-            _weaponPickRequest = null;
-        } );
-        AllowActionSelect = false;
-        UIManager.Instance.RequestUI( _weaponPickRequest, false );
-    }
-
 
     private void SetupListeners()
     {
@@ -94,12 +64,8 @@ public class PlayerAttackAction : AttackAction
         _actor = actor;
 
         //UIManager.Instance.PlayerAttackUI.Opt()?.SetActive( true );
-        BeginBehavior(game, actor);
-    }
 
-    public void BeginBehavior( Game game, Actor actor )
-    {
-        if( DisplayProps.IsSequenceStart )
+        if( DisplayProps != null && DisplayProps.IsSequenceStart )
         {
             if( actor.Target?.GfxActor != null )
                 UIManager.Instance.ShowSideBMechInfo( actor.Target.GfxActor.Actor, UIManager.MechInfoDisplayMode.Full, true );
@@ -118,7 +84,6 @@ public class PlayerAttackAction : AttackAction
         State = ActorActionState.Executing;
         
         AttackActionResult res = new AttackActionResult( attackerAvatar, this.Target, this.UsedWeapon );
-        res.SequencePosition = this.SequencePos;
         res.DisplayProps = this.DisplayProps;
         res.OnComplete = () =>
         {
@@ -134,28 +99,8 @@ public class PlayerAttackAction : AttackAction
 
         TestKilledTargets( res );
 
-        
         UIManager.Instance.QueueResult( res );
     }
-
-    public class StatisticChangeRootComp : IEqualityComparer<StatisticChange>
-    {
-        public bool Equals( StatisticChange x, StatisticChange y )
-        {
-            return x.Statistic.Entity.GetRoot() == y.Statistic.Entity.GetRoot();
-        }
-
-        public int GetHashCode( StatisticChange obj )
-        {
-            return obj.GetHashCode();
-        }
-    }
-
-    public async void RunAttack( AttackActionResult res )
-    {
-
-    }
-
 
     public override void TurnEnded()
     {

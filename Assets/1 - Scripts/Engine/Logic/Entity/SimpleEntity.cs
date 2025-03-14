@@ -4,6 +4,7 @@ using UnityEngine;
 using Unity.VisualScripting;
 using System.Runtime.Serialization;
 using UnityEngine.Android;
+using System.Linq;
 
 public enum EntityFlags
 {
@@ -178,12 +179,12 @@ public class SimpleEntity<TData> : DataObject<TData>, IEntity
         return null;
     }
 
-    public void FindWeaponEntities( IEntity entity, ref List<IEntity> results, System.Func<MechComponentData, bool> predicate )
+    public void FindWeaponEntities( IEntity entity, ref List<MechComponentData> results, System.Func<MechComponentData, bool> predicate )
     {
         if( entity is MechComponentData component && component.Type == MechComponentType.Weapon )
         {
             if( predicate?.Invoke( component ) ?? true )
-                results.Add( entity );
+                results.Add( entity as MechComponentData );
         }
 
         var subEntities = entity.GetSubEntities();
@@ -193,21 +194,27 @@ public class SimpleEntity<TData> : DataObject<TData>, IEntity
         }
     }
 
-    public List<IEntity> FindWeaponEntities( System.Func<MechComponentData, bool> predicate = null )
+    public List<MechComponentData> FindWeaponEntities( System.Func<MechComponentData, bool> predicate = null )
     {
-        List<IEntity> results = new List<IEntity>();
+        List<MechComponentData> results = new List<MechComponentData>();
         FindWeaponEntities( this, ref results, predicate );
         return results;
     }
 
-    public List<IEntity> FindFunctionalWeaponEntities()
+    public List<MechComponentData> FindFunctionalWeapons()
     {
         return FindWeaponEntities( c => !c.IsBroken() );
     }
 
+    public IEnumerable<MechComponentData> FindFunctionalRangedWeapons()
+    {
+        var weapons = FindFunctionalWeapons();
+        return weapons.Where( x => x.WeaponType != WeaponType.Melee ).ToList();
+    }
+
     public bool HasUsableWeapons( )
     {
-        List<IEntity> weapons = FindFunctionalWeaponEntities();
+        List<MechComponentData> weapons = FindFunctionalWeapons();
         return weapons.Count > 0;
     }
 

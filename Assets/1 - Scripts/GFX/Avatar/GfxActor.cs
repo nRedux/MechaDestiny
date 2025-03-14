@@ -107,6 +107,8 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     private Animator _animator;
 
+    private List<AvatarCamera> _cameras = new List<AvatarCamera>();
+
 
     [HideInInspector]
     public string LastAnimEvent;
@@ -121,16 +123,28 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         _animator = GetComponent<Animator>();
         AnimatorMoveSpeed.Initialize( _animator );
+        CollectCameras();
     }
 
     private void OnDestroy()
     {
     }
 
+    public AvatarCamera GetCamera( string id )
+    {
+        //Find camera with specific ID or camera 
+        return _cameras.Where( x => x.ID == id ).Random() ?? _cameras.Where( x => x.ID == string.Empty ).Random();
+    }
+
+    private void CollectCameras()
+    {
+        _cameras = GetComponentsInChildren<AvatarCamera>( true ).ToList();
+    }
+
     public void CalculateBounds()
     {
         var result = new Bounds();
-        var renderers = GetComponentsInChildren<Renderer>();
+        var renderers = GetComponentsInChildren<Renderer>( );
         renderers.Do( 
             x => {
                 result.Encapsulate( x.bounds );
@@ -254,6 +268,8 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         _attackTurnDone = true;
     }
+
+    
 
     public void StartAttackTurn( Vector3 target )
     {
@@ -414,19 +430,26 @@ public class GfxActor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     }
 
     #region CAMERA
-    public void StartAttackCamera( System.Action cameraDone, GfxActor attacker, SmartPoint target )
+    private const string DEFAULT_CAMERA_ID = "";
+    private const string ATTACK_CAMERA_ID = "attack";
+
+    private AvatarCamera _activeCam = null;
+
+    public void StartCamera( string cameraID, System.Action cameraDone, SmartPoint target )
     {
-        if( !AttackCamera )
+        Debug.Log( $"start camera: '{cameraID}'" );
+        _activeCam = GetCamera( cameraID );
+        if( _activeCam == null )
         {
             cameraDone?.Invoke();
             return;
         }
-        AttackCamera.Begin( cameraDone, attacker.transform, target);
+        _activeCam.Activate( cameraDone, this.transform, target);
     }
 
     public void StopAttackCamera()
     {
-        AttackCamera.Opt()?.End();
+        _activeCam.Opt()?.Deactivate();
     }
 
     public void AttackCameraRunning( ICinemachineMixer mixer, ICinemachineCamera camera )

@@ -66,6 +66,8 @@ public static class AttackHelper
                 if( actor != null )
                     actors.Add( actor );
                 res.AffectedAOECells.Add( x.world );
+
+               
             } );
 
             Debug.Log( $"Found {actors.Count} actors" );
@@ -73,17 +75,20 @@ public static class AttackHelper
             int fragmentCount = res.AttackerWeapon.GetStatisticValue( StatisticType.FragmentCount );
             actors.Do( target =>
             {
+                target.TriggerEvent( ActorEvent.Attacked, res.Attacker.Actor );
+
                 for( int i = 0; i < fragmentCount; i++ )
                 {
                     CheckHitAndApplyDamage( actor, target, res );
                 }
             } );
-
         }
         else
         {
             if( res.Target.Actor == null )
                 Debug.Log( res.Target.ToString() );
+
+            res.Target.Actor.TriggerEvent( ActorEvent.Attacked, res.Attacker.Actor );
 
             res.Evaded = AttackHelper.CalculateAttackEvaded( actor, res.Target.Actor );
             for( int i = 0; i < shotCount; i++ )

@@ -575,6 +575,34 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 119136670, guid: eb4c868af97a1aa40b03688adf15e685, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.2261047
+      objectReference: {fileID: 0}
+    - target: {fileID: 119136670, guid: eb4c868af97a1aa40b03688adf15e685, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0000023841858
+      objectReference: {fileID: 0}
+    - target: {fileID: 119136670, guid: eb4c868af97a1aa40b03688adf15e685, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -9.423432
+      objectReference: {fileID: 0}
+    - target: {fileID: 160714361, guid: eb4c868af97a1aa40b03688adf15e685, type: 3}
+      propertyPath: m_Name
+      value: Attack Cam Rig
+      objectReference: {fileID: 0}
+    - target: {fileID: 544963779, guid: eb4c868af97a1aa40b03688adf15e685, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.2261047
+      objectReference: {fileID: 0}
+    - target: {fileID: 544963779, guid: eb4c868af97a1aa40b03688adf15e685, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0000023841858
+      objectReference: {fileID: 0}
+    - target: {fileID: 544963779, guid: eb4c868af97a1aa40b03688adf15e685, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -17.403433
+      objectReference: {fileID: 0}
     - target: {fileID: 1541798734511910720, guid: eb4c868af97a1aa40b03688adf15e685, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.2261047

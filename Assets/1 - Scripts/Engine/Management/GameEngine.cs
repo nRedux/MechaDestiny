@@ -10,10 +10,6 @@ using Pathfinding;
 using UnityEditor.Localization.Plugins.XLIFF.V12;
 
 
-
-
-
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif

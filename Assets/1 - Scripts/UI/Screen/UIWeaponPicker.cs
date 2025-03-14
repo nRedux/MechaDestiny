@@ -141,7 +141,7 @@ public class UIWeaponPicker : UIPanel
     private void Refresh( MechData MechData )
     {
         OptionsRoot.DestroyChildren();
-        List<IEntity> weapons = MechData.FindFunctionalWeaponEntities();
+        var weapons = MechData.FindFunctionalWeapons();
         weapons.Do( x => CreateOption( x, MechData.ActiveWeapon ) );
     }
 }

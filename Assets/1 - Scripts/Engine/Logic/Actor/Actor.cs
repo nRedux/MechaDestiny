@@ -43,6 +43,12 @@ public class ResultDisplayProps
 }
 
 
+public enum ActorEvent
+{
+    Attacked
+}
+
+
 [System.Serializable]
 public partial class Actor : SimpleEntity<ActorAsset>
 {
@@ -50,7 +56,6 @@ public partial class Actor : SimpleEntity<ActorAsset>
 
     public ActorAction[] Actions = null;
     public GameObjectReference Avatar;
-
 
     /// <summary>
     /// Run all actions automatically - for NPCs
@@ -205,6 +210,17 @@ public partial class Actor : SimpleEntity<ActorAsset>
         ResetBoostsStatistics();
     }
 
+    public void TriggerEvent( ActorEvent evt, Actor source )
+    {
+        foreach( var action in Actions )
+        {
+            if( !action.RespondToEvents )
+                continue;
+
+            action.TriggerEvent( this, source, evt );
+        }
+    }
+
 
     /// <summary>
     /// Regain ability points each turn.
@@ -299,6 +315,11 @@ public partial class Actor : SimpleEntity<ActorAsset>
     public void RunActions( Game game )
     {
         ActionHandler.Tick( game );
+    }
+
+    public bool CanBeInterrupted()
+    {
+        return ActionHandler.CanBeInterrupted();
     }
 
 

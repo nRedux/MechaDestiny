@@ -9,7 +9,6 @@ using static PlayerAttackAction;
 
 public abstract class AttackAction : ActorAction
 {
-    public SequencePos SequencePos { get; internal set; }
     public ResultDisplayProps DisplayProps { get; set; }
 
     [HideInInspector]

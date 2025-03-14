@@ -19,7 +19,7 @@ public abstract class AIPersonality: ScriptableObject
     public virtual int GetIdealAttackRange( Actor actor )
     {
         _desiredRangeDone = true;
-        var weps = actor.FindFunctionalWeaponEntities();
+        var weps = actor.FindFunctionalWeapons();
         int minRange = 1;
         int maxRange = 1;
         weps.Do( x =>

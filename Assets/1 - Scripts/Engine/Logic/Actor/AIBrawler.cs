@@ -20,7 +20,7 @@ public class AIBrawler : AIPersonality
     /// <returns>The weapon component it would like.</returns>
     public override MechComponentData CheckPreferredWeapon( Actor actor )
     {
-        var weps = actor.FindFunctionalWeaponEntities();
+        var weps = actor.FindFunctionalWeapons();
         //Prefer moving to use melee weapon. We could randomly choose to prefer ranged weapons. Or base it on how many enemies are in range at the moment.
         return weps.Random() as MechComponentData;
     }
@@ -35,7 +35,7 @@ public class AIBrawler : AIPersonality
     public override void SelectForAttack( Game game, Actor actor, AIAttackAction action )
     {
         //Get weapon entities with any utility
-        var prefWep = actor.FindFunctionalWeaponEntities().Where( x =>
+        var prefWep = actor.FindFunctionalWeapons().Where( x =>
         {
             var range = x.GetStatisticValue( StatisticType.Range );
             var utility = action.GetDmgUtilityAtLocation( game, actor, actor.Position, range );
@@ -44,12 +44,12 @@ public class AIBrawler : AIPersonality
         } );
 
         //Randomly select one of the options.
-        actor.ActiveWeapon = prefWep.Random( 1 ).FirstOrDefault() as MechComponentData;
+        actor.ActiveWeapon = prefWep.Random( 1 ).FirstOrDefault();
     }
 
-    private List<IEntity> GetRangeOrderedWeapons( Actor actor )
+    private List<MechComponentData> GetRangeOrderedWeapons( Actor actor )
     {
-        var weapons = actor.FindFunctionalWeaponEntities();
+        var weapons = actor.FindFunctionalWeapons();
         return weapons.OrderBy( x => x.GetStatistic( StatisticType.Range )?.Value ?? 0 ).ToList();
     }
 

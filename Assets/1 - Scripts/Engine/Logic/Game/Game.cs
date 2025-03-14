@@ -3,6 +3,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class ActorWantsAct
+{
+    public Actor actor;
+    public ActorAction action;
+    public SmartPoint target;
+
+    public bool ExecuteAction( Game game )
+    {
+        if( action == null )
+            return false;
+
+        if( action.AllowedToExecute( actor ) == CanStartActionResult.Success )
+        {
+            if( action is AttackAction attack )
+            {
+                attack.UsedWeapon = actor.ActiveWeapon;
+                attack.Target = this.target;
+                attack.DisplayProps = new ResultDisplayProps() { DoArmEnd = true, DoArmStart = true, IsSequenceEnd = true, IsSequenceStart = true };
+            }
+            action.Start( game, actor );
+            return true;
+        }
+        return false;
+    }
+
+    public bool Finished
+    {
+        get
+        {
+            return action.State == ActorActionState.Finished;
+        }
+    }
+}
+
+
 public class Game
 {
 
@@ -19,6 +54,8 @@ public class Game
 
     public TurnManager TurnManager { get; private set; }
 
+
+    public List<ActorWantsAct> WantsAct = new List<ActorWantsAct>(); 
 
     private bool _startNewTurn = false;
 

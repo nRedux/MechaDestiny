@@ -116,4 +116,9 @@ public class AIActionHandler : ActorActionHandler
     {
         
     }
+
+    public override bool CanBeInterrupted()
+    {
+        return !HasActionsAvailable() && ActiveAction == null;
+    }
 }

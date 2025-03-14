@@ -12,7 +12,7 @@ public class AttackActionResult : ActionResult
 
     public int Count = 1;
     public Transform _fireSource;
-    public SequencePos SequencePosition = SequencePos.Both;
+
     //Has default, AI isn't set up with custom props when attacking
     public ResultDisplayProps DisplayProps = new ResultDisplayProps() { DoArmEnd = true, DoArmStart = true, IsSequenceEnd = true, IsSequenceStart = true };
 
@@ -37,6 +37,7 @@ public class AttackActionResult : ActionResult
         AttackerMechComponent = AttackerWeapon.GetParent() as MechComponentData;
         Count = AttackerWeapon.GetStatisticValue( StatisticType.ShotCount );
         Target = target;
+
         _camera = new AttackCameraBehavior( attacker.Actor, target );
     }
 
@@ -61,7 +62,6 @@ public class AttackActionResult : ActionResult
 
     public override async void Start()
     {
-
         if( this.DisplayProps.IsSequenceStart )
         {
             await _camera.Begin();
@@ -71,6 +71,8 @@ public class AttackActionResult : ActionResult
         {
             UIInfoPopups.Instance.CreatePop( "Evaded", Target.GfxActor.GetTorsoPosition() );
         }
+
+        
 
         await Attacker.ExecuteAction( this, () =>
         {

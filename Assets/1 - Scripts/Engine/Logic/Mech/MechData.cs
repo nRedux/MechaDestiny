@@ -56,7 +56,7 @@ public class MechData: SimpleEntity<MechAsset>
         {
             if( _activeWeapon == null || _activeWeapon.IsBroken() )
             {
-                ActiveWeapon = FindFunctionalWeaponEntities().FirstOrDefault() as MechComponentData;
+                ActiveWeapon = FindFunctionalRangedWeapons().FirstOrDefault() ?? FindFunctionalWeapons().FirstOrDefault();
             }
             return _activeWeapon;
         } 
@@ -131,7 +131,7 @@ public class MechData: SimpleEntity<MechAsset>
 
         ComponentData = data.NonNull().ToList();
 
-        ActiveWeapon = FindWeaponEntities().FirstOrDefault() as MechComponentData;
+        ActiveWeapon = FindFunctionalRangedWeapons().FirstOrDefault() ?? FindFunctionalWeapons().FirstOrDefault();
         _initialized = true;
     }
 
