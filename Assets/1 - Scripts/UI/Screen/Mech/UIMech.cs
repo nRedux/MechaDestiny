@@ -2,9 +2,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using System;
 
 
-public class UIMech : MonoBehaviour
+public class UIMech : MonoBehaviour, IUIItem<MechData>
 {
     const string NO_PILOT_NAME = "----";
 
@@ -12,8 +13,6 @@ public class UIMech : MonoBehaviour
     public TMP_Text PilotName;
 
     public Image Portrait;
-
-    public System.Action<UIMech> Clicked;
 
     private MechData _mechData;
 
@@ -23,6 +22,8 @@ public class UIMech : MonoBehaviour
     {
         get => _mechData;
     }
+
+    public Action<IUIItem<MechData>> Clicked { get; set; }
 
     private void Awake()
     {

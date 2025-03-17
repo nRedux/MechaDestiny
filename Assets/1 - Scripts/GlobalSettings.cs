@@ -5,7 +5,6 @@ using UnityEngine;
 [CreateAssetMenu( menuName = "Engine/Global Settings" )]
 public class GlobalSettings:SingletonScriptableObject<GlobalSettings>
 {
-
     public List<WeaponTypeInfo> WeaponTypes;
 
     [Space]
@@ -15,6 +14,12 @@ public class GlobalSettings:SingletonScriptableObject<GlobalSettings>
     public GameObject DefaultCompDestroyExplosion;
 
     public GameObject AttackCameraPrefab;
+
+    [Space]
+    public MechComponentReference[] TestMechComponentInventory;
+
+    [Space]
+    public ActorReference TestInventory;
 
     public ActorCollection GetStarterActorsCollection()
     {

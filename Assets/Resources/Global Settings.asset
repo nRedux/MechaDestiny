@@ -125,6 +125,34 @@ MonoBehaviour:
     m_SubObjectType: 
     m_EditorAssetChanged: 1
   DefaultCompDestroyExplosion: {fileID: 1111592506786644, guid: 015e1db5d4d0b494fa73c95f923d4422, type: 3}
+  AttackCameraPrefab: {fileID: 0}
+  TestMechComponentInventory:
+  - m_AssetGUID: 6d2c5b9d83c7de94fa4d28a262700c50
+    m_SubObjectName: 
+    m_SubObjectGUID: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 1
+  - m_AssetGUID: 6d2c5b9d83c7de94fa4d28a262700c50
+    m_SubObjectName: 
+    m_SubObjectGUID: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 1
+  - m_AssetGUID: 654450a8e45214f4c957879c2796dd17
+    m_SubObjectName: 
+    m_SubObjectGUID: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 1
+  - m_AssetGUID: 21a1e8dd213676b4185f14ab2242b473
+    m_SubObjectName: 
+    m_SubObjectGUID: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 1
+  TestInventory:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectGUID: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   references:
     version: 2
     RefIds: []

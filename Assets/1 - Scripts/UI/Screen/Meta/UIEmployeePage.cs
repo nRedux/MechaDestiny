@@ -14,13 +14,13 @@ public class UIEmployeePage : MonoBehaviour
     private void Awake()
     {
         if( ActorList != null )
-            ActorList.ActorClicked += ActorClicked;
+            ActorList.Clicked = item => ActorClicked((UIActor) item);
     }
 
     private void Start()
     {
-        if( ActorList.ActorCollection != null )
-            SelectActor( ActorList.GetActorUIs().FirstOrDefault() );
+        if( ActorList.Collection != null )
+            SelectActor( ActorList.GetUIs().FirstOrDefault() );
         else
             SelectActor( null );
     }

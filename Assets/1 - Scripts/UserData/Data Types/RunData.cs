@@ -18,6 +18,7 @@ public class RunData
     public MapData MapData;
     public CompanyData CompanyData = new CompanyData();
     public MapObjectData Caravan = new MapObjectData();
+    public StorageContainer Inventory = new StorageContainer();
 
     private bool _warmupScene = true;
 

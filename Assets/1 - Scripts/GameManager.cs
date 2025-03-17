@@ -2,13 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Pathfinding;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
-using static UnityEngine.Rendering.DebugUI;
 
 public delegate bool MapObjectFunc( GfxMapObject mapObject );
 

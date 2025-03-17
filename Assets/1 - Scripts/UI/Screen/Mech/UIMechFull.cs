@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 
-
 public class UIMechFull : MonoBehaviour
 {
     public TMP_Text Name;

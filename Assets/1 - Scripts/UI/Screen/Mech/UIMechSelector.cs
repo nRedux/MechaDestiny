@@ -11,7 +11,7 @@ public class UIMechSelector : UIPanel
 
     protected override void Awake()
     {
-        MechList.MechClicked += OnSelect;
+        MechList.Clicked += item => OnSelect((UIMech)item);
         Blocker = GetComponentInChildren<UIBlocker>();
         Blocker.Opt()?.ListenForClicks( OnBlockerClick );
     }

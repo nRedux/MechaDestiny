@@ -43,7 +43,7 @@ public static class DataHandler<TData> where TData : class, new ()
         {
             if( _defaultSerializerSettings == null )
             {
-                _defaultSerializerSettings = GetNewSerializerSettings();
+                _defaultSerializerSettings = Json.Settings;
             }
             return _defaultSerializerSettings;
         }

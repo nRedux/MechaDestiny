@@ -2,7 +2,7 @@ require 'Core'
 
 function doEvent()
 
-	yieldWait(3)
+	--yieldWait(3)
 	TimeManager.PauseTime()
 	yieldWait(.1)
 

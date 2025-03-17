@@ -26,7 +26,7 @@ public enum StatusFlagsType
 
 
 [System.Serializable]
-public class MechComponentData : SimpleEntity<MechComponentAsset>
+public class MechComponentData : SimpleEntity<MechComponentAsset>, IItem
 {
 
     public GameObjectReference Model;
@@ -63,6 +63,9 @@ public class MechComponentData : SimpleEntity<MechComponentAsset>
         }
     }
 
+    public IStorage Storage => _storage;
+
+    public bool Storable => true;
 
     public bool ShowAsWeapon()
     {
@@ -195,5 +198,32 @@ public class MechComponentData : SimpleEntity<MechComponentAsset>
         float distQuotient = 1f - calcDistance / (float)range.Value;
         return Mathf.Lerp( minAccuracy.Value, maxAccuracy.Value, distQuotient );
 
+    }
+
+    private IStorage _storage = null;
+
+    public void SetStorage( IStorage newStorage )
+    {
+        this._storage = newStorage;
+    }
+
+    public string GetObjectName()
+    {
+        return this.GetAssetSync().DisplayName.TryGetLocalizedString();
+    }
+
+    public Sprite GetPortrait()
+    {
+        return this.GetAssetSync().Portrait;
+    }
+
+    public string GetDescription()
+    {
+        return this.GetAssetSync().Description.TryGetLocalizedString();
+    }
+
+    public object GetObjectID()
+    {
+        return this.AssetReference.RuntimeKey;
     }
 }

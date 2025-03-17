@@ -3,7 +3,8 @@ using UnityEngine;
 public enum UIRunInfoPage
 {
     EmployeeInfo,
-    MechInfo
+    MechInfo,
+    InventoryInfo
 }
 
 public class UIRunInfo : Singleton<UIRunInfo>
@@ -13,6 +14,7 @@ public class UIRunInfo : Singleton<UIRunInfo>
 
     public UIEmployeePage EmployeeInfoPage;
     public UIMechsPage MechInfoPage;
+    public UIInventoryPage InventoryPage;
 
     public UIMechSelector MechSelector;
     public UIOptionDialog OptionDialog;
@@ -31,6 +33,7 @@ public class UIRunInfo : Singleton<UIRunInfo>
     {
         EmployeeInfoPage.Opt()?.gameObject.SetActive( false );
         MechInfoPage.Opt()?.gameObject.SetActive( false );
+        InventoryPage.Opt()?.gameObject.SetActive( false );
 
         switch( page )
         {
@@ -39,6 +42,9 @@ public class UIRunInfo : Singleton<UIRunInfo>
                 break;
             case UIRunInfoPage.MechInfo:
                 MechInfoPage.Opt()?.gameObject.SetActive( true );
+                break;
+            case UIRunInfoPage.InventoryInfo:
+                InventoryPage.Opt()?.gameObject.SetActive( true );
                 break;
         }
     }
@@ -57,6 +63,11 @@ public class UIRunInfo : Singleton<UIRunInfo>
     public void UI_ShowMechsInfo()
     {
         ShowPage( UIRunInfoPage.MechInfo );
+    }
+
+    public void UI_ShowInventoryInfo()
+    {
+        ShowPage( UIRunInfoPage.InventoryInfo );
     }
 
     public void Close()

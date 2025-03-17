@@ -15,14 +15,14 @@ public class UIMechsPage : MonoBehaviour
     private void Awake()
     {
         if( MechList != null )
-            MechList.MechClicked += ActorClicked;
+            MechList.Clicked += item => ActorClicked((UIMech)item);
     }
 
     private void Start()
     {
         MechList.Refresh( DataHandler<RunData>.Data.CompanyData.Mechs );
-        if( MechList.MechCollection != null )
-            SelectMech( MechList.GetActorUIs().FirstOrDefault() );
+        if( MechList.Collection != null )
+            SelectMech( MechList.GetUIs().FirstOrDefault() );
         else
             SelectMech( (UIMech)null );
     }
@@ -34,7 +34,7 @@ public class UIMechsPage : MonoBehaviour
 
     public void SelectMech( MechData mechData )
     {
-        var ui = MechList.GetActorUIs().FirstOrDefault( x => x.MechData == mechData );
+        var ui = MechList.GetUIs().FirstOrDefault( x => x.MechData == mechData );
         SelectMech( ui );
     }
 

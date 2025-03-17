@@ -32,6 +32,7 @@ public static class SceneLoadManager
         };
         if( fadeScreen )
         {
+            Debug.Log("Fading screen");
             var suiManager = SUIManager.Instance;
             if( suiManager != null )
             {
@@ -40,14 +41,17 @@ public static class SceneLoadManager
         }
         if (fadeScreen)
         {
+            Debug.Log( "Waiting on fade out" );
             waitObject = new object();
             yield return new WaitWhile(() => { return waitObject != null; });
         }
 
+        Debug.Log( $"Loading scene {scene}" );
         var loadAsync = SceneManager.LoadSceneAsync(scene);
 
         bool finished = false;
-        loadAsync.completed += (a) => { 
+        loadAsync.completed += (a) => {
+            Debug.Log("Async load complete");
             finished = true;
             //Didn't used to fire. Was the Coroutine itself ( CoroutineUtils.DelayUnityFrameEnd ) not the coroutine runner CoroutineUtils.DoDelayUnityFrameEnd
             CoroutineUtils.DoDelayUnityFrameEnd( () => {
@@ -55,8 +59,10 @@ public static class SceneLoadManager
                 onLoadComplete = null;
             }, 2 );
         };
+
         while (!finished )
         {
+            Debug.Log( "Waiting for load to finish." );
             yield return null;
         }
         Debug.Log( "SceneLoadManager: Scene load complete" );
@@ -67,6 +73,7 @@ public static class SceneLoadManager
             var suiManager = SUIManager.Instance;
             if( suiManager != null )
             {
+                Debug.Log( "Hide fader" );
                 suiManager.Fader.Hide( 1f, onFadeFinished );
             }
         }

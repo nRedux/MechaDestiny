@@ -41,6 +41,22 @@ public class RunManager : SingletonScriptableObject<RunManager>
     {
         data.CompanyData.Employees = GlobalSettings.Instance.GetStarterActorsCollection();
         data.CompanyData.Mechs = data.CompanyData.Employees.Select( x => x.Actor.PilotedMech ).ToList();
+
+        GlobalSettings.Instance.TestMechComponentInventory.Do( x =>
+        {
+            if( x.RuntimeKeyIsValid() )
+            {
+                var inst = x.GetDataCopySync();
+
+                var canAdd = data.Inventory.CanAddItem( inst );
+                if( canAdd == AddStoreItemReason.CanStore )
+                    data.Inventory.AddItem( inst );
+                else
+                    Debug.LogError( canAdd.ToString() );
+            }
+        } );
+
+        
     }
 
     public void SetScene( string scene, bool doSceneWarmup )

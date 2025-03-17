@@ -4,6 +4,7 @@ using TMPro;
 using Edgeflow.UI;
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
+using System;
 
 
 public enum UIACtorMode
@@ -12,7 +13,7 @@ public enum UIACtorMode
     Full
 }
 
-public class UIActor : MonoBehaviour
+public class UIActor : MonoBehaviour, IUIItem<Actor>
 {
 
     public UIACtorMode Mode;
@@ -28,8 +29,7 @@ public class UIActor : MonoBehaviour
     [ShowIf(nameof(ShowIfFull))]
     public GameObject MechUIRoot;
 
-    public System.Action<UIActor> Clicked;
-
+    
     private Actor _actor;
     private TMProLinkHandler _mechLinkHandler;
     private Button _button;
@@ -38,6 +38,7 @@ public class UIActor : MonoBehaviour
     {
         get => _actor;
     }
+    public Action<IUIItem<Actor>> Clicked { get; set; }
 
     public bool ShowIfFull()
     {

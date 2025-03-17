@@ -58,6 +58,11 @@ public class MechComponentAsset : DataProviderAsset<MechComponentAsset, MechComp
 {
 
     public LocalizedString DisplayName;
+
+    public LocalizedString Description;
+
+    public Sprite Portrait;
+
     [ShowIf(nameof( Editor_ShowAOE ) )]
     public GridShape AOEShape;
 

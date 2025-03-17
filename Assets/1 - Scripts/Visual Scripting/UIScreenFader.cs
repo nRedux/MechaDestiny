@@ -93,14 +93,12 @@ public class UIScreenFader : MonoBehaviour
             case UITransitionAction.Show:
                 fader.gameObject.SetActive(true);
                 endColor.a = 1f;
-                Events.Instance.Raise(new UITransitionStatusEvent(UITransitionStatus.FadingIn));
                 CoroutineUtils.EndCoroutine(ref currentActionRoutine);
 
                 if (e.instant)
                 {
                     fader.color = endColor;
                     e.OnComplete?.Invoke();
-                    Events.Instance.Raise(new UITransitionStatusEvent(UITransitionStatus.Visible));
                     return;
                 }
 
@@ -111,19 +109,16 @@ public class UIScreenFader : MonoBehaviour
                 }, () =>
                 {
                     e.OnComplete?.Invoke();
-                    Events.Instance.Raise(new UITransitionStatusEvent(UITransitionStatus.Visible));
                 });
                 break;
             case UITransitionAction.Hide:
                 endColor.a = 0f;
-                Events.Instance.Raise(new UITransitionStatusEvent(UITransitionStatus.FadingOut));
                 CoroutineUtils.EndCoroutine(ref currentActionRoutine);
 
                 if (e.instant)
                 {
                     fader.color = endColor;
                     e.OnComplete?.Invoke();
-                    Events.Instance.Raise(new UITransitionStatusEvent(UITransitionStatus.Invisible));
                     return;
                 }
 
@@ -135,7 +130,6 @@ public class UIScreenFader : MonoBehaviour
                 {
                     fader.gameObject.SetActive(false);
                     e.OnComplete?.Invoke();
-                    Events.Instance.Raise(new UITransitionStatusEvent(UITransitionStatus.Invisible));
                 });
                 break;
         }
