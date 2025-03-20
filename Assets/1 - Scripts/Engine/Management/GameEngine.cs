@@ -185,7 +185,9 @@ public class GameEngine : Singleton<GameEngine>
         playerTeam.SetTurnPhases( new TurnPhase[] { playerPhase } );
         _game.AddTeam( playerTeam );
 
-        CreateTeamActors( playerTeam, PlayerType.Ally, PlayerActors );
+        var playerActors = DataHandler.RunData.CompanyData.Employees;
+
+        CreateTeamActors( playerTeam, PlayerType.Ally, playerActors );
         return playerTeam;
     }
 
@@ -232,6 +234,36 @@ public class GameEngine : Singleton<GameEngine>
             var currentActor = actorEnum.Current as ActorReference;
 
             var actor = currentActor.GetDataCopySync();
+            team.AddMember( actor );
+            spawn.UseMe( actor, Game );
+        }
+    }
+
+    public void CreateTeamActors( Team team, PlayerType type, List<Actor> actors )
+    {
+        if( actors.Count() == 0 )
+            return;
+
+        List<SpawnLocation> spawns = GetSpawnLocations( type ).ToList();
+        if( spawns.Count == 0 )
+        {
+            Debug.LogError( "No spawn points exist." );
+            return;
+        }
+
+        IEnumerator actorEnum = actors.GetEnumerator();
+
+        while( spawns.Count > 0 )
+        {
+            var spawn = spawns[0];
+            spawns.RemoveAt( 0 );
+            var spawnPosition = spawn.transform.position;
+
+            if( !actorEnum.MoveNext() )
+            {
+                break;
+            }
+            var actor = actorEnum.Current as Actor;
             team.AddMember( actor );
             spawn.UseMe( actor, Game );
         }

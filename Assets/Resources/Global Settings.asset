@@ -119,11 +119,6 @@ MonoBehaviour:
     m_SubObjectGUID: 
     m_SubObjectType: 
     m_EditorAssetChanged: 1
-  - m_AssetGUID: dace928b0ce9dad4fa18643bbc49203c
-    m_SubObjectName: 
-    m_SubObjectGUID: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 1
   DefaultCompDestroyExplosion: {fileID: 1111592506786644, guid: 015e1db5d4d0b494fa73c95f923d4422, type: 3}
   AttackCameraPrefab: {fileID: 0}
   TestMechComponentInventory:
