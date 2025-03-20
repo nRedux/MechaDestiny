@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e6dd1cdde19a642459268335743dfcc5, type: 3}
-  m_Name: AI Right Arm
+  m_Name: Berserker Torso
   m_EditorClassIdentifier: 
   Data:
     AssetReference:
-      m_AssetGUID: 0e24865c377a1f147ab8a3926cba42e6
+      m_AssetGUID: cb2db94eff8bf564f8f5dfde0c7d585a
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 
@@ -23,7 +23,7 @@ MonoBehaviour:
     Statistics:
       _serializedKeys: 00000000
       _serializedValues:
-      - _value: 100
+      - _value: 275
         _startValue: 0
         Type: 0
     Boosts:
@@ -35,48 +35,10 @@ MonoBehaviour:
       m_SubObjectGUID: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Type: 3
+    Type: 0
     WeaponType: 16
     AttachmentType: {fileID: 0}
-    Attachments:
-    - SlotType:
-        m_AssetGUID: 
-        m_SubObjectName: 
-        m_SubObjectGUID: 
-        m_SubObjectType: 
-        m_EditorAssetChanged: 0
-      DefaultComponent:
-        m_AssetGUID: 21a1e8dd213676b4185f14ab2242b473
-        m_SubObjectName: 
-        m_SubObjectGUID: 
-        m_SubObjectType: 
-        m_EditorAssetChanged: 1
-      Data:
-        AssetReference:
-          m_AssetGUID: 
-          m_SubObjectName: 
-          m_SubObjectGUID: 
-          m_SubObjectType: 
-          m_EditorAssetChanged: 0
-        ID: 
-        Statistics:
-          _serializedKeys: 
-          _serializedValues: []
-        Boosts:
-          _serializedKeys: 
-          _serializedValues: []
-        Model:
-          m_AssetGUID: 
-          m_SubObjectName: 
-          m_SubObjectGUID: 
-          m_SubObjectType: 
-          m_EditorAssetChanged: 0
-        Type: 0
-        WeaponType: 16
-        AttachmentType: {fileID: 0}
-        Attachments: []
-        Flags: 0
-        AOEShape: {fileID: 0}
+    Attachments: []
     Flags: 0
     AOEShape: {fileID: 0}
   DisplayName:

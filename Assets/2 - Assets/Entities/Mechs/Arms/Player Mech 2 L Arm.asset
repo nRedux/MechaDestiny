@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e6dd1cdde19a642459268335743dfcc5, type: 3}
-  m_Name: Mech Left Arm
+  m_Name: Player Mech 2 L Arm
   m_EditorClassIdentifier: 
   Data:
     AssetReference:
@@ -46,7 +46,7 @@ MonoBehaviour:
         m_SubObjectType: 
         m_EditorAssetChanged: 0
       DefaultComponent:
-        m_AssetGUID: 654450a8e45214f4c957879c2796dd17
+        m_AssetGUID: 614974f294610f94fa377aed1069b369
         m_SubObjectName: 
         m_SubObjectGUID: 
         m_SubObjectType: 

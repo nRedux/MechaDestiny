@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e6dd1cdde19a642459268335743dfcc5, type: 3}
-  m_Name: AI Torso
+  m_Name: Brawler Torso
   m_EditorClassIdentifier: 
   Data:
     AssetReference:

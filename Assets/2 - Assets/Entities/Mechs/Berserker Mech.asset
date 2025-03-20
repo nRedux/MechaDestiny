@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e9f80112c6378e408ab46af9c7034ec, type: 3}
-  m_Name: AI Berserker Mech
+  m_Name: Berserker Mech
   m_EditorClassIdentifier: 
   Data:
     AssetReference:

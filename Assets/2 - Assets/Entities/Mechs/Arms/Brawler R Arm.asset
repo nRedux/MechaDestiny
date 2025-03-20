@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e6dd1cdde19a642459268335743dfcc5, type: 3}
-  m_Name: AI Right Arm
+  m_Name: Brawler R Arm
   m_EditorClassIdentifier: 
   Data:
     AssetReference:
-      m_AssetGUID: 370b5f5514c2bbc40a3e7c7cc1c658ff
+      m_AssetGUID: 0e24865c377a1f147ab8a3926cba42e6
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 
@@ -46,7 +46,7 @@ MonoBehaviour:
         m_SubObjectType: 
         m_EditorAssetChanged: 0
       DefaultComponent:
-        m_AssetGUID: 8309d7d0373465645bdf4c1f058c599c
+        m_AssetGUID: 21a1e8dd213676b4185f14ab2242b473
         m_SubObjectName: 
         m_SubObjectGUID: 
         m_SubObjectType: 

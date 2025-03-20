@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e6dd1cdde19a642459268335743dfcc5, type: 3}
-  m_Name: Mech Right Arm
+  m_Name: Player Mech 2 Torso
   m_EditorClassIdentifier: 
   Data:
     AssetReference:
-      m_AssetGUID: f0cc40bbd6ea05e479eab6b5a084f791
+      m_AssetGUID: 8a289ba85b3167b429167d1e9e952c22
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 
@@ -23,7 +23,7 @@ MonoBehaviour:
     Statistics:
       _serializedKeys: 00000000
       _serializedValues:
-      - _value: 100
+      - _value: 200
         _startValue: 0
         Type: 0
     Boosts:
@@ -35,55 +35,17 @@ MonoBehaviour:
       m_SubObjectGUID: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Type: 3
+    Type: 0
     WeaponType: 16
     AttachmentType: {fileID: 0}
-    Attachments:
-    - SlotType:
-        m_AssetGUID: a76bed771f181044dbef4e4b9338e7b9
-        m_SubObjectName: 
-        m_SubObjectGUID: 
-        m_SubObjectType: 
-        m_EditorAssetChanged: 0
-      DefaultComponent:
-        m_AssetGUID: 1399b75d497c49a448595ecc102457ec
-        m_SubObjectName: 
-        m_SubObjectGUID: 
-        m_SubObjectType: 
-        m_EditorAssetChanged: 1
-      Data:
-        AssetReference:
-          m_AssetGUID: 
-          m_SubObjectName: 
-          m_SubObjectGUID: 
-          m_SubObjectType: 
-          m_EditorAssetChanged: 0
-        ID: 
-        Statistics:
-          _serializedKeys: 
-          _serializedValues: []
-        Boosts:
-          _serializedKeys: 
-          _serializedValues: []
-        Model:
-          m_AssetGUID: 
-          m_SubObjectName: 
-          m_SubObjectGUID: 
-          m_SubObjectType: 
-          m_EditorAssetChanged: 0
-        Type: 0
-        WeaponType: 16
-        AttachmentType: {fileID: 0}
-        Attachments: []
-        Flags: 0
-        AOEShape: {fileID: 0}
+    Attachments: []
     Flags: 0
     AOEShape: {fileID: 0}
   DisplayName:
     m_TableReference:
       m_TableCollectionName: GUID:c9f6f54132f444c459cb15fcd0afa795
     m_TableEntryReference:
-      m_KeyId: 93465231360
+      m_KeyId: 103196016640
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0

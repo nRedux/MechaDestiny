@@ -10,23 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e6dd1cdde19a642459268335743dfcc5, type: 3}
-  m_Name: Mech Legs
+  m_Name: Player Mech Torso
   m_EditorClassIdentifier: 
   Data:
     AssetReference:
-      m_AssetGUID: 1b94ecdd1d930fc408545dde50568766
+      m_AssetGUID: 8a289ba85b3167b429167d1e9e952c22
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     ID: 
     Statistics:
-      _serializedKeys: 0000000000010000
+      _serializedKeys: 00000000
       _serializedValues:
-      - _value: 150
-        _startValue: 0
-        Type: 0
-      - _value: 5
+      - _value: 200
         _startValue: 0
         Type: 0
     Boosts:
@@ -38,7 +35,7 @@ MonoBehaviour:
       m_SubObjectGUID: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Type: 1
+    Type: 0
     WeaponType: 16
     AttachmentType: {fileID: 0}
     Attachments: []
@@ -48,7 +45,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:c9f6f54132f444c459cb15fcd0afa795
     m_TableEntryReference:
-      m_KeyId: 111215525888
+      m_KeyId: 103196016640
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
