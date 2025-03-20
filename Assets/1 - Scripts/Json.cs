@@ -8,13 +8,13 @@ public static class Json
 
     public static JsonSerializerSettings Settings = new JsonSerializerSettings()
     {
+        TypeNameHandling = TypeNameHandling.Objects,
         ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
         ConstructorHandling = ConstructorHandling.Default,
-        DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
+        DefaultValueHandling = DefaultValueHandling.Include,
         Formatting = Formatting.None,
-        NullValueHandling = NullValueHandling.Ignore,
+        NullValueHandling = NullValueHandling.Include,
         Converters = new List<JsonConverter>() { new AssetReferenceConverter(), new LocalizedStringConverter(), new ColorConverter() },
-
         //ObjectCreationHandling = ObjectCreationHandling.Replace,
         Error = delegate ( object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args )
         {

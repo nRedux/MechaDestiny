@@ -23,7 +23,7 @@ public class UIMechSelector : UIPanel
 
     public void SelectFromPlayerMechs( System.Action<MechData> selected, List<Actor> excludeActors = null )
     {
-        var data = DataHandler<RunData>.Data;
+        var data = DataHandler.RunData;
 
         List<MechData> filteredMechs = new List<MechData>( data.CompanyData.Mechs );
         if( excludeActors != null )
@@ -56,6 +56,6 @@ public class UIMechSelector : UIPanel
     public override void OnShow()
     {
         base.OnShow();
-        var data = DataHandler<RunData>.Data;
+        var data = DataHandler.RunData;
     }
 }

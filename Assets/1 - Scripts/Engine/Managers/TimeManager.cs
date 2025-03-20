@@ -15,7 +15,7 @@ public class TimeManager : SingletonScriptableObject<TimeManager>
 
     protected override void Initialize()
     {
-        DayData = DataHandler<TimeData>.Data;
+        DayData = DataHandler.RunData.TimeData;
 
         DayData.DayTick += EncounterManager.Instance.OnDayPassed;
         DayData.HourTick += EncounterManager.Instance.OnHourPassed;

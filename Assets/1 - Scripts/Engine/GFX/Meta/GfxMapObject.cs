@@ -15,10 +15,13 @@ public class GfxMapObject : MonoBehaviour
 
     public LuaBehavior LuaBehavior { get; private set; }
 
-    public void Initialize( MapObjectData data )
+    public virtual void Initialize( MapObjectData data )
     {
         this.Data = data;
         this.Data.PathCompleteCallback += this.OnPathCompleted;
+
+        transform.position = data.Position;
+        transform.forward = data.Heading;
     }
 
     private void OnDestroy()

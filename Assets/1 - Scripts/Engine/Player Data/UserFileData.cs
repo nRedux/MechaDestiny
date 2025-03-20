@@ -2,9 +2,9 @@ using Newtonsoft.Json;
 using UnityEngine;
 
 [JsonObject]
-public class UserDataFile
+public class UserFileData
 {
     public string FileVersion;
     public string GameVersion;
-    public string Data;
+    public string RunDataJson;
 }

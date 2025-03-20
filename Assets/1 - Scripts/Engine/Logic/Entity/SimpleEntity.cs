@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using System.Runtime.Serialization;
 using UnityEngine.Android;
 using System.Linq;
+using Newtonsoft.Json;
 
 public enum EntityFlags
 {
@@ -12,6 +13,7 @@ public enum EntityFlags
 }
 
 
+[JsonObject]
 [System.Serializable]
 public class SimpleEntity<TData> : DataObject<TData>, IEntity
 {

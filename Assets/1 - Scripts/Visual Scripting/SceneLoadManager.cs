@@ -20,8 +20,11 @@ public static class SceneLoadManager
         {
             RunManager.Instance.SetScene( scene, doSceneWarmup );
             onLoadComplete?.Invoke();
+
+            DataHandler.RunData.ActiveScene = scene;
         }, 
         fadeScreen ) );
+
     }
 
     private static IEnumerator PerformSceneLoad(string scene, System.Action onFadeComplete, System.Action onLoadComplete, bool fadeScreen = true)

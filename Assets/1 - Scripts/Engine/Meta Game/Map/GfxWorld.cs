@@ -44,7 +44,7 @@ public class GfxWorld : MonoBehaviour
 
     private void ProcessNewScene( DoSceneWarmup e )
     {
-        DataHandler<RunData>.Data.Caravan.Position = StartPos.position;
+        DataHandler.RunData.Caravan.Position = StartPos.position;
     }
 
 
@@ -58,19 +58,18 @@ public class GfxWorld : MonoBehaviour
         if( Light == null )
             return;
 
-        Light.transform.eulerAngles = _lightEulerStart + new Vector3( DataHandler<TimeData>.Data.Days * 360f, 0f, 0f);
+        Light.transform.eulerAngles = _lightEulerStart + new Vector3( DataHandler.RunData.TimeData.Days * 360f, 0f, 0f);
     }
 
 
     private async void CreateCaravanGraphics()
     {
-        var runData = DataHandler<RunData>.Data;
+        var runData = DataHandler.RunData;
         var caravanAsset = await runData.Caravan.Graphics.GetAssetAsync();
 
         var instGO = Instantiate<GameObject>( caravanAsset );
         _caravanGfx = instGO.GetComponent<GfxMoveableMapObject>();
         _caravanGfx.Initialize( runData.Caravan );
-        _caravanGfx.Data = runData.Caravan;
     }
 
 

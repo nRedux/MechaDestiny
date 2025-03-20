@@ -48,26 +48,26 @@ public enum ActorEvent
     Attacked
 }
 
-
+[JsonObject]
 [System.Serializable]
 public partial class Actor : SimpleEntity<ActorAsset>
 {
     private const int MAX_PHASE_ACTIONS = 10;
-
+    [JsonIgnore]
     public ActorAction[] Actions = null;
     public GameObjectReference Avatar;
 
     /// <summary>
     /// Run all actions automatically - for NPCs
     /// </summary>
+    [JsonIgnore]
     public System.Action OnKill;
     public bool RunActionsAutomatically;
     public bool TurnComplete = false;
 
     private Team _team;
-    private ActorActionHandler ActionHandler;
+    private ActorActionHandler _actionHandler;
     private bool _diePerformed = false;
-
 
     public ActorStatus Status
     {
@@ -77,6 +77,7 @@ public partial class Actor : SimpleEntity<ActorAsset>
 
     public int SpawnPriority;
 
+    [JsonIgnore]
     public LuaBehavior LuaScript;
 
     //Actor needs to be able to perform actions such as moving, attacking, executing abilities, etc.
@@ -89,7 +90,7 @@ public partial class Actor : SimpleEntity<ActorAsset>
     [JsonIgnore]
     public List<SequenceAction> Sequence { get; set; }
     [JsonIgnore]
-    public ActorAction ActiveAction { get => ActionHandler?.ActiveAction; }
+    public ActorAction ActiveAction { get => _actionHandler?.ActiveAction; }
 
 
     private AIPersonality _personalityInstance;
@@ -132,7 +133,7 @@ public partial class Actor : SimpleEntity<ActorAsset>
     public void SetIsPlayer( bool isPlayer )
     {
         this.IsPlayer = isPlayer;
-        ActionHandler = isPlayer ? new PlayerActionHandler( this ) : new AIActionHandler( this );
+        _actionHandler = isPlayer ? new PlayerActionHandler( this ) : new AIActionHandler( this );
     }
 
     [JsonIgnore]
@@ -187,19 +188,19 @@ public partial class Actor : SimpleEntity<ActorAsset>
 
     public void Selected()
     {
-        ActionHandler.Selected();
+        _actionHandler.Selected();
     }
 
     public void Deselected()
     {
-        ActionHandler.Deselected();
+        _actionHandler.Deselected();
     }
 
 
     public void ResetForPhase()
     {
         TurnComplete = false;
-        ActionHandler.SetupForTurn();
+        _actionHandler.SetupForTurn();
         Actions.Do( x => x.ResetForPhase() );
         DoStatisticsResetForTurn();
     }
@@ -245,7 +246,7 @@ public partial class Actor : SimpleEntity<ActorAsset>
 
     public void ResetOnSelect()
     {
-        ActionHandler.SetupForTurn();
+        _actionHandler.SetupForTurn();
     }
 
 
@@ -278,7 +279,7 @@ public partial class Actor : SimpleEntity<ActorAsset>
     
     public List<ActorAction> GetActionOptions( ActionCategory category )
     {
-        return this.ActionHandler.GetActionOptions( category );
+        return this._actionHandler.GetActionOptions( category );
     }
 
     public bool Die()
@@ -315,31 +316,31 @@ public partial class Actor : SimpleEntity<ActorAsset>
 
     public void RunActions( Game game )
     {
-        ActionHandler.Tick( game );
+        _actionHandler.Tick( game );
     }
 
     public bool CanBeInterrupted()
     {
-        return ActionHandler.CanBeInterrupted();
+        return _actionHandler.CanBeInterrupted();
     }
 
 
     public void TurnEnded()
     {
-        ActionHandler.TurnEnded();
+        _actionHandler.TurnEnded();
     }
 
 
     public bool HasActionsAvailable()
     {
-        return ActionHandler.HasActionsAvailable();
+        return _actionHandler.HasActionsAvailable();
     }
 
 
     public bool ShouldEndActorTurn()
     {
         if( _team.IsPlayerTeam )
-            return ActionHandler.ShouldEndActorTurn();
+            return _actionHandler.ShouldEndActorTurn();
         else
             return !HasActionsAvailable() && ActiveAction == null;
     }

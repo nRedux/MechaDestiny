@@ -15,7 +15,7 @@ public class UIActorCollection : UIItemList<UIActor, Actor>
 {
     private void OnEnable()
     {
-        Refresh( RunManager.Instance.RunData.CompanyData.Employees.Select( x => x.Actor ) );
+        Refresh( RunManager.Instance.RunData.CompanyData.Employees );
     }
 
     public void RefreshElementsContent()

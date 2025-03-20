@@ -5,37 +5,44 @@ using UnityEngine;
 using Newtonsoft.Json;
 
 
-public static class DataHandler<TData> where TData : class, new ()
+public static class DataHandler
 {
 
-    public static System.Action<TData> OnDataCreated;
+    public static System.Action<RunData> OnDataCreated;
 
     private static JsonSerializerSettings _defaultSerializerSettings;
 
-    private static TData _data;
+    private static UserFileData _fileData;
+    private static RunData _runData;
 
-    public static TData Data 
+    private static IFileLoader _fileLoader = new LocalFileLoader();
+    private static IFileWriter _fileWriter = new LocalFileWriter_v1();
+
+
+    public static RunData RunData 
     {
         get
         {
-            if( _data == null )
+            if( _runData == null )
             {
-                _data = LoadData();
-                if( _data == null )
-                    _data = CreateNewData();
+                LoadData();
+                if( _runData == null )
+                    _runData = CreateNewData();
             }
-            return _data;
+            return _runData;
         }
         private set
         {
-            _data = value;
-        } 
+            _runData = value;
+        }
     }
+
 
     public static void Clear()
     {
-        _data = null;
+        _runData = null;
     }
+
 
     public static JsonSerializerSettings SerializationSettings
     {
@@ -50,69 +57,40 @@ public static class DataHandler<TData> where TData : class, new ()
     }
 
 
-    public static JsonSerializerSettings GetNewSerializerSettings()
+    private static void LoadData()
     {
-        JsonSerializerSettings set = new JsonSerializerSettings()
-        {
-            TypeNameHandling = TypeNameHandling.All,
-            NullValueHandling = NullValueHandling.Include,
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-            PreserveReferencesHandling = PreserveReferencesHandling.All,
-            MissingMemberHandling = MissingMemberHandling.Error,
-            StringEscapeHandling = StringEscapeHandling.Default,
-            //ObjectCreationHandling = ObjectCreationHandling.Replace,
-            Error = delegate ( object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args )
-            {
-                var origObj = args.ErrorContext.OriginalObject;
-                var member = args.ErrorContext.Member;
-                string origObjMessage = origObj != null ? origObj.ToString() + " " + origObj.GetType().Name : "No Value";
-                string memberMessage = member != null ? member.ToString() + " " + member.GetType().Name : "No Value";
-                Debug.LogError( $"{args.ErrorContext.Error.Message} ----  {args.ErrorContext.Path} --- {origObjMessage} --- {memberMessage} :: Stack Trace Below!" );
-                Debug.LogError( args.ErrorContext.Error.StackTrace );
-                //args.ErrorContext.Handled = true;
-            },
-        };
+        string key = typeof( RunData ).Name;
 
-        return set;
+        _fileData = _fileLoader.Load();
+
+        if( _fileData == null )
+            return;
+
+        if( string.IsNullOrEmpty( _fileData.RunDataJson ) )
+            return;
+
+        _runData = Json.DeserializeObject<RunData>( _fileData.RunDataJson );
+
+        if( _runData != null )
+            Debug.Log("Rundata loaded successfully.");
     }
 
 
-    private static TData LoadData()
+    public static void SaveData( )
     {
-        string key = typeof( TData ).Name;
-        string json = PlayerPrefs.GetString( key, string.Empty );
-        if( string.IsNullOrEmpty( json ) )
-            return null;
+        if( RunData == null )
+            return;
 
-        var result = JsonConvert.DeserializeObject<TData>( json, SerializationSettings );
-
-
-
-        return result;
+        _fileWriter.WriteFile( null, RunData );
     }
 
 
-    public static TData CreateNewData()
+    public static RunData CreateNewData()
     {
-        var result = new TData();
+        Debug.Log("Creating new Rundata");
+        var result = new RunData();
         OnDataCreated?.Invoke( result );
         return result;
-    }
-
-
-    public static void SerializeData( )
-    {
-        if( Data == null )
-            return;
-        string key = typeof( TData ).Name;
-        var json = JsonConvert.SerializeObject( Data, SerializationSettings );
-        PlayerPrefs.SetString( key, json );
-    }
-
-
-    public static void SaveData()
-    {
-        PlayerPrefs.Save();
     }
 
 }

@@ -5,11 +5,11 @@ using UnityEngine;
 public class CompanyData
 {
     //Every character in your employ
-    public ActorCollection Employees
+    public List<Actor> Employees
     {
         get; 
         set;
-    } = new ActorCollection();
+    } = new List<Actor>();
 
     public List<MechData> Mechs
     {

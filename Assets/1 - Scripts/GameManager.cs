@@ -62,20 +62,21 @@ public class GameManager : Singleton<GameManager>
 
     private void ValidateData( MapObjectData harvesterData )
     {
-        RunData rd = RunManager.Instance.RunData;
 
-        rd.MapData = new MapData();
-
-        if( !rd.IsValid() )
-        {
-            RunManager.Instance.RunData.Validate( harvesterData );
-        }
     }
 
     private void InitializeCaravan()
     {
-        _playerHarvester = Harvester.GetDataCopySync();
-        ValidateData( _playerHarvester );
+        RunData data = DataHandler.RunData;
+        if( data.Caravan != null )
+            _playerHarvester = data.Caravan;
+        else
+        {
+            _playerHarvester = Harvester.GetDataCopySync();
+            RunManager.Instance.RunData.Caravan = _playerHarvester;
+        }
+
+        data.MapData = new MapData();
     }
 
     private void Start()

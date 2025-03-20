@@ -15,6 +15,7 @@ public class PilotException: System.Exception
     public PilotException( string message, System.Exception innerException ) : base( message, innerException ) { }
 }
 
+
 public partial class Actor
 {
     [JsonIgnore]

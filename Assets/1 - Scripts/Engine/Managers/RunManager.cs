@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.PlayerLoop;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -9,12 +11,12 @@ using UnityEditor;
 
 
 [CreateAssetMenu( menuName = "Engine/Create/RunManager")]
-public class RunManager : SingletonScriptableObject<RunManager>
+public class RunManager : Singleton<RunManager>
 {
 
 //    public ScriptGraphAssetReference DefaultCombatEndGraph;
     public RunData RunData {
-        get => DataHandler<RunData>.Data;
+        get => DataHandler.RunData;
     }
 
     public MapData MapData { get => RunData.MapData; }
@@ -28,19 +30,19 @@ public class RunManager : SingletonScriptableObject<RunManager>
     [InitializeOnEnterPlayMode]
     static void OnEnterPlaymodeInEditor( EnterPlayModeOptions options )
     {
-        DataHandler<RunData>.Clear();
+        DataHandler.Clear();
     }
 #endif
 
     private void OnEnable()
     {
-        DataHandler<RunData>.OnDataCreated = RunDataCreated;
+        DataHandler.OnDataCreated = RunDataCreated;
     }
 
     public static void RunDataCreated(RunData data)
     {
         data.CompanyData.Employees = GlobalSettings.Instance.GetStarterActorsCollection();
-        data.CompanyData.Mechs = data.CompanyData.Employees.Select( x => x.Actor.PilotedMech ).ToList();
+        data.CompanyData.Mechs = data.CompanyData.Employees.Select( x => x.PilotedMech ).ToList();
 
         GlobalSettings.Instance.TestMechComponentInventory.Do( x =>
         {
@@ -59,11 +61,22 @@ public class RunManager : SingletonScriptableObject<RunManager>
         
     }
 
+    public void Update()
+    {
+        if( Input.GetKeyDown( KeyCode.U ) )
+            SaveData();
+    }
+
     public void SetScene( string scene, bool doSceneWarmup )
     {
         this.RunData.SetActiveScene( scene, doSceneWarmup );
     }
 
+
+    public void SaveData()
+    {
+        DataHandler.SaveData();
+    }
 
     public async void RunCombatEndGraph( EncounterData encounter )
     {

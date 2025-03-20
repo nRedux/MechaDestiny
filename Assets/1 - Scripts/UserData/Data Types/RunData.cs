@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 
 
@@ -17,9 +18,15 @@ public class RunData
 
     public MapData MapData;
     public CompanyData CompanyData = new CompanyData();
-    public MapObjectData Caravan = new MapObjectData();
+    public MapObjectData Caravan = null;
     public StorageContainer Inventory = new StorageContainer();
+    public EncounterState EncounterState = new EncounterState();
+    public TimeData TimeData = new TimeData();
 
+    //Should be null by default
+    public string ActiveScene = null;
+
+    [JsonProperty]
     private bool _warmupScene = true;
 
     public RunData()

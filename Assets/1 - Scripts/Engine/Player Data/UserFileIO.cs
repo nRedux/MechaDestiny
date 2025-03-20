@@ -6,9 +6,9 @@ public static class UserFileIO
 
     public const string USERDATA_FILENAME = "UserData";
 
-    public const string PROJECT_SAVE_EXTENSION = ".bdf";
+    public const string PROJECT_SAVE_EXTENSION = ".mxp";
     
-    public const string SUBDIRECTORY_NAME = "UserData";
+    public const string SUBDIRECTORY_NAME = "PlayerData";
     
     public const string TESTPREFIX_PLAYERDATA_FILENAME = "TestPlayerData_";
     
@@ -46,13 +46,6 @@ public static class UserFileIO
 
     public static void WriteTextUserDataFile( string json, string fileName )
     {
-        /*
-        if( BreachwayVersioning.CurrentVersion >= BreachwayVersioning.PLAYER_DATA_VERSION &&
-            AnyUserDataExists() )
-        {
-            MakeBackupCopyOfData();
-        }
-        */
 
         //If needed, create the local data file directory
         CreateLocalFileDirectory();
@@ -70,8 +63,6 @@ public static class UserFileIO
             writer.Flush();
             writer.Close();
         }
-
-        //MakeBackupCopyOfData();
 
         //Delete old main data - prep for move
         if( File.Exists( path ) )

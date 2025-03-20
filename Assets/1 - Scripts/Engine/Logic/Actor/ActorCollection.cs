@@ -6,19 +6,41 @@ using Newtonsoft.Json;
 using Sirenix.Utilities;
 using UnityEngine;
 
+
 [JsonObject]
+[System.Serializable]
+public class ActorTest
+{
+    [JsonProperty]
+    private Actor actor;
+
+    public Actor Actor
+    {
+        get => actor;
+        set => actor = value;
+    }
+}
+
+
+[JsonObject]
+[System.Serializable]
 public class ActorCollectionEntry: IEquatable<ActorCollectionEntry>
 {
 
     [JsonProperty]
     private Actor _actor;
 
+    public int boop;
 
-    [JsonIgnore]
+    [JsonProperty]
     public Actor Actor
     {
-        get => _actor; 
+        get => _actor;
+        set => _actor = value;
     }
+
+    [JsonConstructor]
+    public ActorCollectionEntry() { }
 
 
     public ActorCollectionEntry( Actor actor )
@@ -34,31 +56,7 @@ public class ActorCollectionEntry: IEquatable<ActorCollectionEntry>
         return entry.Actor;
     }
 
-
-    public static bool operator ==( Actor actor, ActorCollectionEntry entry )
-    {
-        return ActorEquals( actor, entry );
-    }
-
     
-    public static bool operator !=( Actor actor, ActorCollectionEntry entry )
-    {
-        return !( actor == entry );
-    }
-
-
-    public static bool operator ==( ActorCollectionEntry entry, Actor actor )
-    {
-        return ActorEquals( actor, entry );
-    }
-
-
-    public static bool operator !=( ActorCollectionEntry entry, Actor actor )
-    {
-        return !( actor == entry );
-    }
-
-
     public static bool operator ==( ActorCollectionEntry lhs, ActorCollectionEntry rhs)
     {
         if( ReferenceEquals( lhs, rhs ) )
@@ -76,7 +74,7 @@ public class ActorCollectionEntry: IEquatable<ActorCollectionEntry>
         return !( lhs == rhs );
     }
 
-
+    /*
     private static bool ActorEquals( Actor actor, ActorCollectionEntry entry )
     {
         if( ReferenceEquals( actor, null ) )
@@ -88,6 +86,7 @@ public class ActorCollectionEntry: IEquatable<ActorCollectionEntry>
         return actor == entry.Actor;
     }
 
+    
 
     public override bool Equals( object obj )
     {
@@ -96,10 +95,10 @@ public class ActorCollectionEntry: IEquatable<ActorCollectionEntry>
         if( obj is ActorCollectionEntry entry )
             return entry.Actor == this.Actor;
         if( obj is Actor actor )
-            return actor == this;
+            return actor == this.Actor;
         return false;
     }
-
+    */
 
     public override int GetHashCode()
     {
@@ -107,9 +106,10 @@ public class ActorCollectionEntry: IEquatable<ActorCollectionEntry>
     }
 
 
+
     public bool Equals( ActorCollectionEntry other )
     {
-        if( ReferenceEquals(other, (ActorCollectionEntry)null ) )
+        if( ReferenceEquals( other, (ActorCollectionEntry) null ) )
             return false;
         return this.Actor == other.Actor;
     }
@@ -157,7 +157,7 @@ public class ActorCollection: IEnumerable<ActorCollectionEntry>
 
     public void Add( ActorCollectionEntry toAdd )
     {
-        if( toAdd == default( ActorCollectionEntry ) )
+        if( toAdd == null )
             throw new System.NullReferenceException( $"Argument '{nameof( toAdd )}' cannot be null" );
 
         if( _entries.Contains( toAdd ) )

@@ -5,6 +5,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 [System.Serializable]
+[JsonObject]
 public class DataObject<TData>
 {
     [JsonIgnore]
@@ -13,6 +14,7 @@ public class DataObject<TData>
     [HideInInspector]
     public AssetReference AssetReference;
 
+    [JsonIgnore]
     public AsyncOperationHandle<TData> Operation;
 
 

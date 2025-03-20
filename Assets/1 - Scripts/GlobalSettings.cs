@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -21,13 +22,12 @@ public class GlobalSettings:SingletonScriptableObject<GlobalSettings>
     [Space]
     public ActorReference TestInventory;
 
-    public ActorCollection GetStarterActorsCollection()
+    public List<Actor> GetStarterActorsCollection()
     {
         if( PlayerActors == null )
-            return new ActorCollection();
+            return new List<Actor>();
 
-        var result = new ActorCollection();
-        PlayerActors.Do( x => result.Add( x.GetDataCopySync() ) );
+        var result = PlayerActors.Select( x => x.GetDataCopySync() ).ToList();
         return result;
     }
 }
