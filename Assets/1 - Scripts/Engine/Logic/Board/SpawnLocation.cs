@@ -19,7 +19,7 @@ public class SpawnLocation : MonoBehaviour
 
         if( ScriptForActor != null ) {
             Dictionary<string, object> props = new Dictionary<string, object> { { "thisActor", actor } };
-            actor.LuaScript = new LuaBehavior( ScriptForActor, props );
+            actor.LuaScript = new LuaBehavior( ScriptForActor, properties: props );
             //actor.LuaScript.AssignActor( actor );
         }
     }

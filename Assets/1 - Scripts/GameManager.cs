@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using MoonSharp.Interpreter;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.EventSystems;
@@ -20,7 +22,49 @@ public class GameManager : Singleton<GameManager>
     public EncounterData TestEncounter;
     public MxSelection Selection;
     public MxSelectionProcessor SelectionProcessor;
-    
+
+
+    [Button]
+    public void DoLUATest()
+    {
+        //Create a way to extract variable 
+
+        Script script = new Script();
+        script.DoString( @"
+            a = nil;
+            b = 20;
+            __exposed__ = { [""a""] = ""GameObject"" }
+            function myFunc() end" );
+
+        var table = script.Globals.Get( "__exposed__" );
+        
+        if( table != null )
+        {
+            foreach( var item in table.Table.Pairs )
+            {
+                Debug.Log( $"{item.Key}: {item.Value.ToString()}" );
+            }
+        }
+
+        string typeName = "MyNamespace.MyClass";
+        Type type = null;
+
+        // Iterate through all loaded assemblies
+        foreach( var assembly in AppDomain.CurrentDomain.GetAssemblies() )
+        {
+            type = assembly.GetType( typeName );
+            if( type != null )
+            {
+                break;
+            }
+        }
+
+        foreach( var key in script.Globals.Keys )
+        {
+            Debug.Log( key );
+        }
+    }
+
     
     private MapObjectData _playerHarvester;
 

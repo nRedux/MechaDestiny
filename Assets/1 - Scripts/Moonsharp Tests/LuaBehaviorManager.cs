@@ -4,6 +4,10 @@ using MoonSharp.Interpreter;
 using MoonSharp.Interpreter.Loaders;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public enum LuaEvent
 {
     ActorDamage = 0x000010,
@@ -19,11 +23,22 @@ public class LuaBehaviorManager : SingletonScriptableObject<LuaBehaviorManager>
 
     private Dictionary<string, object> _superGlobals = new Dictionary<string, object>();
 
+    private static bool _environmentInitialized = false;
+
     public void SetSuperGlobal( string key, object value )
     {
         Script s;
         _superGlobals.Add( key, value );
     }
+
+#if UNITY_EDITOR
+    [InitializeOnEnterPlayMode]
+#endif
+    private void ResetPlaymode()
+    {
+        _environmentInitialized = false;
+    }
+
 
     private void OnEnable()
     {
@@ -58,7 +73,18 @@ public class LuaBehaviorManager : SingletonScriptableObject<LuaBehaviorManager>
 
     public void SetupLUAEnv()
     {
-        SetupMetaGameEnv();
+        SetupLuaEnv();
+    }
+
+    public static void SetupLuaEnv()
+    {
+        if( _environmentInitialized )
+            return;
+
+        UserData.RegisterType<TimeManager>();
+        UserData.RegisterType<MetaGame>();
+
+        UserData.RegisterType<GameObject>();
 
         UserData.RegisterType<LuaBehavior>();
 
@@ -82,14 +108,11 @@ public class LuaBehaviorManager : SingletonScriptableObject<LuaBehaviorManager>
         }
 
         ( (ScriptLoaderBase) Script.DefaultOptions.ScriptLoader ).ModulePaths = new string[] { "Lua/?", "Lua/?.txt" };
-
     }
 
     private void SetupMetaGameEnv()
     {
-        UserData.RegisterType<TimeManager>();
 
-        UserData.RegisterType<MetaGame>();
     }
 
     public void RegisterBehavior( LuaBehavior behavior )

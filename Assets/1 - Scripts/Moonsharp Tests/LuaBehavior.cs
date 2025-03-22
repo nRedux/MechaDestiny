@@ -23,31 +23,46 @@ public class LuaBehavior
 
     private const string ACTOR_KEY = "thisActor";
 
-
     private Script _scriptObject = null;
     private Dictionary<string, object> _methods = new Dictionary<string, object>();
     private List<DynValue> _coroutines = new List<DynValue>();
     private List<DynValue> _deadCoroutines = new List<DynValue>();
 
+    private string _scriptCode;
+    public Script ScriptObject { get => _scriptObject; }
+
     public string ScriptName
     {
         get; private set;
-
     }
 
 
-    public LuaBehavior( TextAsset script, Dictionary<string, object> properties = null )
+    public LuaBehavior( TextAsset script, List<ILuaField> injectedFields = null, Dictionary<string, object> properties = null )
     {
-        //Cache this to use in a second, but additionally gets LUA env set up at the right timing.
+        //Get LUA env set up at the right timing.
         var luaManager = LuaBehaviorManager.Instance;
         ScriptName = script.name;
-        InitializeScript( script.text, properties );
-        
+        _scriptCode = script.text;
+
+        InitializeScript( _scriptCode, properties );
         CacheLuaCalls();
-        luaManager.RegisterBehavior( this );
+        LuaBehaviorManager.Instance.RegisterBehavior( this );
+
+        if( injectedFields != null )
+        {
+            injectedFields.Do( x =>
+            {
+                var scriptVar = _scriptObject.Globals.Get( x.GetName() );
+                if( scriptVar == null )
+                    return;
+
+                Debug.Log( $"{x.GetName()}  {x.GetValue()}" );
+                _scriptObject.Globals.Set( x.GetName(), DynValue.FromObject( _scriptObject, x.GetValue() ) );
+            } );
+        }
+
         CallAwake();
     }
-
 
     public void SetProperty(string key , object value )
     {

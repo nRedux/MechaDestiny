@@ -56,7 +56,7 @@ public class GfxMapObject : MonoBehaviour
     public void RunLuaBehavior( TextAsset asset )
     {
         //Dictionary<string, object> props = new Dictionary<string, object> { { "thisMapObject", this } };
-        this.LuaBehavior = new LuaBehavior( asset, null );
+        this.LuaBehavior = new LuaBehavior( asset );
     }
 
     private void CollectActions()

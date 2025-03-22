@@ -1,0 +1,16 @@
+require 'Core'
+
+__exposed__ = {
+	["a"] = "GameObject",
+	["b"] = "int"
+}
+
+a = nil
+b = 10
+c = "spooky"
+d = false
+
+function awake()
+	log("I am here!")
+	a.SetActive( false )
+end

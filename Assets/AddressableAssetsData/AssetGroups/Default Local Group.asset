@@ -66,6 +66,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1e7af89ea2c29584dad66020aad3e807
+    m_Address: Assets/2 - Assets/Entities/Mechs/Torsos/Weak Mech Torso.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1ecdf63da3b259141b43cad5da1018cf
     m_Address: Assets/2 - Assets/Entities/Map Objects/Harvest Patch.asset
     m_ReadOnly: 0
@@ -127,6 +132,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 714831a19f8514340871069ba18e5ba1
+    m_Address: Assets/2 - Assets/Entities/Mechs/Arms/Weak mech R Arm.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 72dada611f5fdc9479609874b9eaab97
+    m_Address: Assets/2 - Assets/Entities/Mechs/Arms/Weak Mech L Arm.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 78a1279eccbcc0c4a9dce7ba60788597
     m_Address: Assets/3 - Prefabs/Avatar.prefab
@@ -258,6 +273,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d36b94ba256f9604383da0a587e3eaa4
+    m_Address: Assets/2 - Assets/Entities/Mechs/Legs/Weak Mech Legs.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d86ff5662c57c5d4fad4c8fb68981ce5
     m_Address: Assets/2 - Assets/Entities/Mechs/Test AI Brawler/AI Torso.asset
