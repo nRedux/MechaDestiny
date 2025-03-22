@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e9f80112c6378e408ab46af9c7034ec, type: 3}
-  m_Name: Mech Asset
+  m_Name: Weak Mech
   m_EditorClassIdentifier: 
   Data:
     AssetReference:
-      m_AssetGUID: 19f517940b291084caac4da5afe38bf6
+      m_AssetGUID: 4ab53253b1f2d7b439a3198f626f988b
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 
@@ -32,31 +32,31 @@ MonoBehaviour:
       m_SubObjectGUID: 
       m_SubObjectType: 
       m_EditorAssetChanged: 1
-    MechColor: {r: 0.29369885, g: 0.5360936, b: 0.8301887, a: 1}
+    MechColor: {r: 0.38628775, g: 0.6603774, b: 0.07164473, a: 1}
     TorsoAsset:
-      m_AssetGUID: 8a289ba85b3167b429167d1e9e952c22
+      m_AssetGUID: d86ff5662c57c5d4fad4c8fb68981ce5
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 
-      m_EditorAssetChanged: 0
+      m_EditorAssetChanged: 1
     LegsAsset:
-      m_AssetGUID: 1b94ecdd1d930fc408545dde50568766
+      m_AssetGUID: 418313ffb0bede4409ee32f285afb699
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 
-      m_EditorAssetChanged: 0
+      m_EditorAssetChanged: 1
     LeftArmAsset:
-      m_AssetGUID: 0ba063b3a4219ae43953438ea5836988
+      m_AssetGUID: a3d88fa4fffc6b74188e71771febbb8a
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 
-      m_EditorAssetChanged: 0
+      m_EditorAssetChanged: 1
     RightArmAsset:
-      m_AssetGUID: f0cc40bbd6ea05e479eab6b5a084f791
+      m_AssetGUID: 0e24865c377a1f147ab8a3926cba42e6
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 
-      m_EditorAssetChanged: 0
+      m_EditorAssetChanged: 1
     ComponentData: []
     Torso:
       AssetReference:
@@ -166,7 +166,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:a106004198b73894f85ff8b2be73adc3
     m_TableEntryReference:
-      m_KeyId: 118974988288
+      m_KeyId: 236683935744
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0

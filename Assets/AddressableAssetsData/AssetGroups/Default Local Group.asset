@@ -88,11 +88,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 33580b86898447a4095af29da5fa2adc
-    m_Address: Assets/2 - Assets/Entities/Mechs/Kale Mech/Mech Left Arm.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 370b5f5514c2bbc40a3e7c7cc1c658ff
     m_Address: Assets/2 - Assets/Data/Mechs/Test AI Mech/AI Right Arm.asset
     m_ReadOnly: 0
@@ -104,18 +99,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4634455374b940a4889c60c442d02a53
-    m_Address: Assets/2 - Assets/Entities/Mechs/Kale Mech/Mech Asset.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4ab53253b1f2d7b439a3198f626f988b
     m_Address: Assets/2 - Assets/Entities/Mechs/Test AI Brawler/AI Brawler Mech.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 5cead5d9554312a45a58c913aa4ca7d8
-    m_Address: Assets/2 - Assets/Entities/Mechs/Kale Mech/Mech Right Arm.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -142,11 +127,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 73afd4b54282de544b3cc8bb1aacca83
-    m_Address: Assets/2 - Assets/Entities/Mechs/Kale Mech/Mech Torso.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 78a1279eccbcc0c4a9dce7ba60788597
     m_Address: Assets/3 - Prefabs/Avatar.prefab
@@ -197,11 +177,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8b7590e2c54b2ab4dab9c26fd26e35a4
     m_Address: Assets/2 - Assets/Entities/Mechs/Player Mech 2/Mech Torso.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 8f8243b56443742478f59e21cbf84014
-    m_Address: Assets/2 - Assets/Entities/Mechs/Kale Mech/Kale Mech Actor.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -294,11 +269,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e155998fee7852744826d822be0e6560
-    m_Address: Assets/2 - Assets/Entities/Mechs/Kale Mech/Mech Legs.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: eb4c868af97a1aa40b03688adf15e685
     m_Address: Assets/3 - Prefabs/Thorin Variant.prefab

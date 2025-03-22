@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e6dd1cdde19a642459268335743dfcc5, type: 3}
-  m_Name: Mech Left Arm
+  m_Name: Weak mech R Arm
   m_EditorClassIdentifier: 
   Data:
     AssetReference:
-      m_AssetGUID: 0ba063b3a4219ae43953438ea5836988
+      m_AssetGUID: 0e24865c377a1f147ab8a3926cba42e6
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 
@@ -23,16 +23,20 @@ MonoBehaviour:
     Statistics:
       _serializedKeys: 00000000
       _serializedValues:
-      - _value: 1
+      - _value: 100
         _startValue: 0
         Type: 0
+    Boosts:
+      _serializedKeys: 
+      _serializedValues: []
     Model:
       m_AssetGUID: 
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-    Type: 2
+    Type: 3
+    WeaponType: 16
     AttachmentType: {fileID: 0}
     Attachments:
     - SlotType:
@@ -42,7 +46,7 @@ MonoBehaviour:
         m_SubObjectType: 
         m_EditorAssetChanged: 0
       DefaultComponent:
-        m_AssetGUID: 614974f294610f94fa377aed1069b369
+        m_AssetGUID: 21a1e8dd213676b4185f14ab2242b473
         m_SubObjectName: 
         m_SubObjectGUID: 
         m_SubObjectType: 
@@ -58,6 +62,9 @@ MonoBehaviour:
         Statistics:
           _serializedKeys: 
           _serializedValues: []
+        Boosts:
+          _serializedKeys: 
+          _serializedValues: []
         Model:
           m_AssetGUID: 
           m_SubObjectName: 
@@ -65,6 +72,7 @@ MonoBehaviour:
           m_SubObjectType: 
           m_EditorAssetChanged: 0
         Type: 0
+        WeaponType: 16
         AttachmentType: {fileID: 0}
         Attachments: []
         Flags: 0
@@ -73,13 +81,14 @@ MonoBehaviour:
     AOEShape: {fileID: 0}
   DisplayName:
     m_TableReference:
-      m_TableCollectionName: GUID:c9f6f54132f444c459cb15fcd0afa795
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 6429229056
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
+  AOEShape: {fileID: 0}
   references:
     version: 2
     RefIds: []
