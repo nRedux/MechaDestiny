@@ -73,7 +73,9 @@ public static class SceneLoadManager
         waitObject = new object();
         if( fadeScreen )
         {
+            Debug.Log( "Hide fader" );
             var suiManager = SUIManager.Instance;
+            Debug.Assert( suiManager != null, "SUIManager null" );
             if( suiManager != null )
             {
                 Debug.Log( "Hide fader" );

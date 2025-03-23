@@ -1,3 +1,4 @@
+using System.Linq;
 using MoonSharp.Interpreter;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -18,5 +19,19 @@ public class MetaGame
         SceneLoadManager.LoadScene( scene, true, warmupScene, () => { callback.Invoke(); }, null );
     }
 
+    public static void SetCombatEnemies( ActorListAsset actorList )
+    {
+        var actors = actorList.GetActors();
+        var actorsData = actors.Select( x =>
+        {
+            if( x == null )
+                return null;
+            if( !x.RuntimeKeyIsValid() )
+                return null;
+            return x.GetDataCopySync();
+        } ).NonNull().ToList();
+
+        DataHandler.RunData.CombatEnemies = actorsData;
+    }
 
 }

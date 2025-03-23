@@ -179,6 +179,10 @@ MonoBehaviour:
     m_Localized: Chance to counter attack when attacked.
     m_Metadata:
       m_Items: []
+  - m_Id: 122118040186142720
+    m_Localized: Desperate Raider
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:

@@ -10,13 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
-  m_Name: Entity Shared Data
+  m_Name: Entities Shared Data
   m_EditorClassIdentifier: 
-  m_TableCollectionName: Entity
+  m_TableCollectionName: Entities
   m_TableCollectionNameGuidString: 2eaa94f10f2c34f46a2923d670625f58
   m_Entries:
-  - m_Id: 7494582272
-    m_Key: New Entry
+  - m_Id: 122102183007502336
+    m_Key: mech_name_weak
+    m_Metadata:
+      m_Items: []
+  - m_Id: 122102346006544384
+    m_Key: mech_desc_weak
     m_Metadata:
       m_Items: []
   m_Metadata:

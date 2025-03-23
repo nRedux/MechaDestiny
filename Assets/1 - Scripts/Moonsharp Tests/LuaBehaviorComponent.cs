@@ -89,6 +89,12 @@ public class LuaBool : TypedLuaField<bool>
 {
 }
 
+[LuaFieldType( typeof( ActorListAsset ) )]
+[Serializable]
+public class LuaActorList : TypedLuaField<ActorListAsset>
+{
+}
+
 
 public class LuaBehaviorComponent : MonoBehaviour
 {
@@ -112,8 +118,6 @@ public class LuaBehaviorComponent : MonoBehaviour
     public void OnScriptAssetChanged( TextAsset changedTextAsset )
     {
 
-        if( changedTextAsset != _oldScriptAsset )
-            _oldScriptAsset = changedTextAsset;
 
         if( changedTextAsset == null )
         {
@@ -130,6 +134,10 @@ public class LuaBehaviorComponent : MonoBehaviour
         {
             AutoGenParams();
         }
+
+
+        if( changedTextAsset != _oldScriptAsset )
+            _oldScriptAsset = changedTextAsset;
 
     }
 
@@ -205,15 +213,11 @@ public class LuaBehaviorComponent : MonoBehaviour
     private static Dictionary<string, string> _map = new Dictionary<string, string>()
     {
         { "gameobject", typeof(GameObject).AssemblyQualifiedName },
-        { "gameObject", typeof(GameObject).AssemblyQualifiedName },
         { "int", typeof(Int32).AssemblyQualifiedName },
-        { "Int", typeof(Int32).AssemblyQualifiedName },
         { "float", typeof(float).AssemblyQualifiedName },
-        { "Float", typeof(float).AssemblyQualifiedName },
-        { "String", typeof(string).AssemblyQualifiedName },
         { "string", typeof(string).AssemblyQualifiedName },
         { "bool", typeof(bool).AssemblyQualifiedName },
-        { "Bool", typeof(bool).AssemblyQualifiedName },
+        { "actorlist", typeof(ActorListAsset).AssemblyQualifiedName },
     };
 
     private void InjectFields(Script script)
@@ -233,7 +237,7 @@ public class LuaBehaviorComponent : MonoBehaviour
         string typeToFind = typeName;
 
         string tryMapVal = null;
-        if( _map.TryGetValue( typeName, out tryMapVal ) )
+        if( _map.TryGetValue( typeName.ToLower(), out tryMapVal ) )
             typeToFind = tryMapVal;
 
         var qualifiedTypeCheck = Type.GetType( typeToFind );

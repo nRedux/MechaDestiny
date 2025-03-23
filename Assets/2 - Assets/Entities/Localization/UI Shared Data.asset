@@ -169,6 +169,10 @@ MonoBehaviour:
     m_Key: ui_action_counter_desc
     m_Metadata:
       m_Items: []
+  - m_Id: 122118040186142720
+    m_Key: ui_actor_desperate_raider
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

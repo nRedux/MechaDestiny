@@ -60,3 +60,8 @@ function changeScene( scene, doWarmup )
 		coroutine.yield()
 	end
 end
+
+
+function setCombatEnemies( enemies )
+	MetaGame.SetCombatEnemies( enemies )
+end

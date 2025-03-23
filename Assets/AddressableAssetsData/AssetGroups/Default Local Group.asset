@@ -149,6 +149,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7e52ef25f5daad749926eadb567d2dd1
+    m_Address: Assets/2 - Assets/Entities/Actors/AI Weak Map.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7e6659fff24d67543a0caa88c7bef944
     m_Address: Assets/3 - Prefabs/Mech Components/Grenade Launcher.prefab
     m_ReadOnly: 0
@@ -192,6 +197,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8b7590e2c54b2ab4dab9c26fd26e35a4
     m_Address: Assets/2 - Assets/Entities/Mechs/Player Mech 2/Mech Torso.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c0e156b2a13db24f865930978a8187c
+    m_Address: Assets/2 - Assets/Entities/Mechs/Weak Mech.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -239,6 +249,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a9756a8b8345d1641a5dae96ad030c3c
+    m_Address: Assets/3 - Prefabs/Lua Script Objects/Test Event Prefab.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b7386171f93bfe74bbb585f39873d52b
     m_Address: Assets/2 - Assets/Entities/Mechs/Player Mech 2/Mech Left Arm.asset

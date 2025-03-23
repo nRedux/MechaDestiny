@@ -70,7 +70,7 @@ public class LuaBehavior
     }
 
 
-    public void InitializeScript( string script, Dictionary<string, object> properties = null )
+    private void InitializeScript( string script, Dictionary<string, object> properties = null )
     {
         _scriptObject = new Script();
         if( properties == null )

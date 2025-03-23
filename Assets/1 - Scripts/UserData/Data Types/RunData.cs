@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -28,6 +29,11 @@ public class RunData
 
     [JsonProperty]
     private bool _warmupScene = true;
+
+    /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+     * Need to make this be used and make sure lua scripts are able to set it. I'd also love
+     *!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+    public List<Actor> CombatEnemies;
 
     public RunData()
     {

@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using MoonSharp.Interpreter;
 using Newtonsoft.Json;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
+using MoonSharp.Interpreter;
 using UnityEngine.AI;
 
 
@@ -92,6 +93,41 @@ public enum MapObjectType
     Objective = 0x000002
 }
 
+
+public interface ILuaScriptEvent
+{
+    public void Execute();
+}
+
+
+[Serializable]
+public class TextScript: ILuaScriptEvent
+{
+    public TextAssetReference ScriptAsset;
+    public void Execute()
+    {
+        LuaBehavior oneShot = new LuaBehavior( ScriptAsset.GetAssetSync() );
+    }
+}
+
+[Serializable]
+public class ObjectScript : ILuaScriptEvent
+{
+    public GameObjectReference ScriptAsset;
+    public void Execute()
+    {
+        if( !ScriptAsset.RuntimeKeyIsValid() )
+        {
+            Debug.LogError( $"Object script not set: variable {nameof(ScriptAsset)}" );
+            return;
+        }
+
+        var asset = ScriptAsset.GetAssetSync();
+        UnityEngine.Object.Instantiate( asset );
+    }
+}
+
+
 [System.Serializable]
 [JsonObject]
 public class MapObjectData: DataObject<MapObjectAsset>
@@ -110,7 +146,8 @@ public class MapObjectData: DataObject<MapObjectAsset>
     public MapObjectData TargetOnComplete = null;
     public string ActionOnPathComplete;
 
-    public TextAssetReference ScriptOnInteract;
+    [SerializeReference]
+    public ILuaScriptEvent ScriptOnInteract;
 
     private NavMeshPath _navPath;
 

@@ -10,9 +10,10 @@ public class CoroutineUtils : Singleton<CoroutineUtils> {
     public event System.Action OnLateUpdate;
     public event System.Action OnEndOfFrame;
 
-    static CoroutineUtils()
+    protected override void Awake()
     {
-        DoInstantiate = HandleInstatiate;
+        base.Awake();
+        DontDestroyOnLoad( gameObject );
     }
 
     public void Update()
@@ -40,12 +41,7 @@ public class CoroutineUtils : Singleton<CoroutineUtils> {
 		routine = null;
 	}
 
-    private static void HandleInstatiate()
-    {
-        GameObject instance = new GameObject("COROUTINE_UTILS");
-        instance.AddComponent<CoroutineUtils>();
-        DontDestroyOnLoad(instance);
-    }
+
 
     public static Coroutine DoCanvasGroupFade(CanvasGroup group, float targetAlpha, float duration, System.Action onFinished = null, float delay = 0f)
     {

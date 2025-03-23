@@ -2,7 +2,7 @@
 
 public class Singleton<T> : MonoBehaviour where T : Singleton<T>
 {
-    public static System.Action DoInstantiate;
+    public static System.Func<T> DoInstantiate;
 
     public static T Instance {
         get
@@ -17,7 +17,7 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
                 {
                     //Debug.LogFormat("Creating default singleton setup for type: {0}", typeof(T).Name); 
                     GameObject singletonGO = new GameObject(typeof(T).Name + "_SINGLETON");
-                    _instance = singletonGO.AddComponent<T>();
+                    singletonGO.AddComponent<T>();
                 }
             }
 

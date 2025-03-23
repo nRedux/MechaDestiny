@@ -76,9 +76,21 @@ public class TrackedReference<TAsset> : AssetReferenceT<TAsset> where TAsset: Un
         }
     }
 
+    public TAsset GetAssetSync()
+    {
+        if( !Operation.IsValid() )
+        {
+            Operation = Addressables.LoadAssetAsync<TAsset>( this );
+            Operation.Completed += OperationComplete;
+            Operation.WaitForCompletion();
+        }
+
+        return Operation.Result;
+    }
+
     private void OperationComplete( AsyncOperationHandle<TAsset> opHandle )
     {
         var result = opHandle.Result;
-        _onComplete( result );
+        _onComplete?.Invoke( result );
     }
 }

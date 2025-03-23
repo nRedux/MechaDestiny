@@ -30,18 +30,8 @@ MonoBehaviour:
     Type: 2
     Speed: 0
     ActionOnPathComplete: 
-    GraphOnInteract:
-      m_AssetGUID: f8808b9b1df17634d9ab5bb706e8984a
-      m_SubObjectName: 
-      m_SubObjectGUID: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 1
     ScriptOnInteract:
-      m_AssetGUID: a767a77c4df28264bbc0f46d2b88eee2
-      m_SubObjectName: 
-      m_SubObjectGUID: 
-      m_SubObjectType: 
-      m_EditorAssetChanged: 1
+      rid: 3512639999483576403
   DisplayName:
     m_TableReference:
       m_TableCollectionName: 
@@ -53,4 +43,13 @@ MonoBehaviour:
     m_LocalVariables: []
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 3512639999483576403
+      type: {class: ObjectScript, ns: , asm: Assembly-CSharp}
+      data:
+        ScriptAsset:
+          m_AssetGUID: a9756a8b8345d1641a5dae96ad030c3c
+          m_SubObjectName: 
+          m_SubObjectGUID: 
+          m_SubObjectType: 
+          m_EditorAssetChanged: 1

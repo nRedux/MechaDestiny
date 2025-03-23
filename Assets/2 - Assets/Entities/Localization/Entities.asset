@@ -9,15 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
-  m_Name: Entity_en-US
+  m_Script: {fileID: 11500000, guid: 5be51871efa6c3e4eae1703925c8f5ac, type: 3}
+  m_Name: Entities
   m_EditorClassIdentifier: 
-  m_LocaleId:
-    m_Code: en-US
-  m_SharedData: {fileID: 11400000, guid: 2eaa94f10f2c34f46a2923d670625f58, type: 2}
-  m_Metadata:
-    m_Items: []
-  m_TableData: []
+  m_SharedTableData: {fileID: 11400000, guid: 2eaa94f10f2c34f46a2923d670625f58, type: 2}
+  m_Tables:
+  - {fileID: 11400000, guid: 88add660f434ef64cac829ad7ad60577, type: 2}
+  m_Extensions: []
+  m_Group: String Table
   references:
     version: 2
     RefIds: []

@@ -199,10 +199,14 @@ public class GameEngine : Singleton<GameEngine>
         aiTeam.SetTurnPhases( new TurnPhase[] { aiPhase } );
         _game.AddTeam( aiTeam );
 
-        CreateTeamActors( aiTeam, PlayerType.Enemy, AIActors );
+        List<Actor> usedActors = new List<Actor>();
+        AIActors.Do( x => usedActors.Add( x.GetDataCopySync() ) );
+        if( DataHandler.RunData.CombatEnemies != null )
+            usedActors = DataHandler.RunData.CombatEnemies;
+
+        CreateTeamActors( aiTeam, PlayerType.Enemy, usedActors );
         return aiTeam;
     }
-
 
 
     public void CreateTeamActors( Team team, PlayerType type, List<ActorReference> actors )
