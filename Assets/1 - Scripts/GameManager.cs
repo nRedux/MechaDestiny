@@ -78,7 +78,8 @@ public class GameManager : Singleton<GameManager>
         //Get the system UI fired up
         var inst = SUIManager.Instance;
 
-        InitializeCaravan();
+        InitializeMap();
+        PopulateMap();
 
         Selection = new MxSelection();
         Selection.OnSelectionAdd += SelectionAdd;
@@ -109,9 +110,9 @@ public class GameManager : Singleton<GameManager>
 
     }
 
-    private void InitializeCaravan()
+    private void InitializeMap()
     {
-        RunData data = DataHandler.RunData;
+        RunData data = RunManager.Instance.RunData;
         if( data.Caravan != null )
             _playerHarvester = data.Caravan;
         else
@@ -120,8 +121,16 @@ public class GameManager : Singleton<GameManager>
             RunManager.Instance.RunData.Caravan = _playerHarvester;
         }
 
-        data.MapData = new MapData();
+        data.WorldMapData = new MapData( gameObject.scene.name );
     }
+
+
+    private void PopulateMap()
+    {
+        var samplers = GameObject.FindObjectsByType<TerrainPointSampler>( FindObjectsInactive.Exclude, FindObjectsSortMode.None );
+        samplers.Do( x => { x.SampleIfNeeded(); x.RunPopulators( RunManager.Instance.MapData ); } ); 
+    }
+
 
     private void Start()
     {

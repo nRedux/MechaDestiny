@@ -39,6 +39,8 @@ public class UICombatEnd : UIPanel
         }
     }
 
+    //Need flow control post combat.
+
     public override void Show()
     {
         base.Show();
@@ -48,12 +50,21 @@ public class UICombatEnd : UIPanel
             //Need to handle what to do when combat ends
             //LUA script?
 
+            if( GlobalSettings.Instance.PostCombatScript != null )
+            {
+
+            }
 
             //RunManager.Instance.RunCombatEndGraph( null );
             /*SceneLoadManager.LoadScene( "Terrain", true, false, () => {
 
             }, null );*/
         };
+    }
+
+    private void ExecutePostCombatScript()
+    {
+
     }
 
 }

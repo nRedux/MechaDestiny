@@ -13,7 +13,7 @@ public class EncounterManager : SingletonScriptableObject<EncounterManager>
 
     protected override void Initialize()
     {
-        EncounterState = DataHandler.RunData.EncounterState;
+        EncounterState = RunManager.Instance.RunData.EncounterState;
     }
 
 
@@ -60,7 +60,7 @@ public class EncounterManager : SingletonScriptableObject<EncounterManager>
     {
         if( EncounterState.CanRunMainEvent() )
         {
-            var activatedEncounter = CheckActivatedEncounter( DataHandler.RunData.Caravan.Position );
+            var activatedEncounter = CheckActivatedEncounter( RunManager.Instance.RunData.Caravan.Position );
             if( activatedEncounter != null )
             {
                 EncounterState.RanMainEncounter( 1 );

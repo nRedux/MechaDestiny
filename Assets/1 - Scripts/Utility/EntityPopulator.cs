@@ -11,6 +11,7 @@ public class EntityPopulator : TerrainPopulator
 
     private MapObjectAsset _asset;
 
+
     public MapObjectAsset Asset
     {
         get
@@ -25,7 +26,8 @@ public class EntityPopulator : TerrainPopulator
         }
     }
 
-    public MapObjectData MapObjectdata
+
+    public MapObjectData MapObjectData
     {
         get
         {
@@ -36,16 +38,18 @@ public class EntityPopulator : TerrainPopulator
     }
 
 
-    public override void ProcessSample( Vector3 position )
+    public override void ProcessSample( Vector3 position, MapData mapData )
     {
         LoadObject( position );
+        mapData.AddMapdata( MapObjectData );
     }
+
 
     private async void LoadObject( Vector3 position )
     {
         if( Asset == null ) return;
 
-        var data = MapObjectdata;
+        var data = MapObjectData;
         if( data == null ) return;
 
         var mapGfx = data.Graphics;

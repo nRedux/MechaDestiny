@@ -118,6 +118,8 @@ public class GameEngine : Singleton<GameEngine>
 
     private async void Initialize()
     {
+        //Make sure it's loaded everything.
+        var runManager = RunManager.Instance;
         InitializeGameState();
         await CreateAvatars();
         _game.Start();
@@ -185,8 +187,7 @@ public class GameEngine : Singleton<GameEngine>
         playerTeam.SetTurnPhases( new TurnPhase[] { playerPhase } );
         _game.AddTeam( playerTeam );
 
-        var playerActors = DataHandler.RunData.CompanyData.Employees;
-
+        var playerActors = RunManager.Instance.RunData.CompanyData.Employees;
         CreateTeamActors( playerTeam, PlayerType.Ally, playerActors );
         return playerTeam;
     }
@@ -201,8 +202,8 @@ public class GameEngine : Singleton<GameEngine>
 
         List<Actor> usedActors = new List<Actor>();
         AIActors.Do( x => usedActors.Add( x.GetDataCopySync() ) );
-        if( DataHandler.RunData.CombatEnemies != null )
-            usedActors = DataHandler.RunData.CombatEnemies;
+        if( RunManager.Instance.RunData.CombatEnemies != null )
+            usedActors = RunManager.Instance.RunData.CombatEnemies;
 
         CreateTeamActors( aiTeam, PlayerType.Enemy, usedActors );
         return aiTeam;

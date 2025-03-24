@@ -31,7 +31,7 @@ public class MetaGame
             return x.GetDataCopySync();
         } ).NonNull().ToList();
 
-        DataHandler.RunData.CombatEnemies = actorsData;
+        RunManager.Instance.RunData.CombatEnemies = actorsData;
     }
 
 }

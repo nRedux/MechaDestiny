@@ -130,7 +130,7 @@ public class ObjectScript : ILuaScriptEvent
 
 [System.Serializable]
 [JsonObject]
-public class MapObjectData: DataObject<MapObjectAsset>
+public class MapObjectData: DataObject<MapObjectAsset>, IMapEntityData
 {
     public GameObjectReference Graphics;
     public Vector3 Position;
@@ -167,11 +167,6 @@ public class MapObjectData: DataObject<MapObjectAsset>
         }
 
         return false;
-    }
-
-    public void AddToMap()
-    {
-        RunManager.Instance.MapData.Objects.Add( this );
     }
     
     public bool HasValidPath()

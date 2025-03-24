@@ -34,17 +34,17 @@ public class GfxWorld : MonoBehaviour
 
     private void AddListeners()
     {
-        Events.Instance.AddListener<DoSceneWarmup>( ProcessNewScene );
+        Events.Instance.AddListener<DoSceneWarmup>( DoSceneWarmup );
     }
 
     private void RemoveListeners()
     {
-        Events.Instance.RemoveListener<DoSceneWarmup>( ProcessNewScene );
+        Events.Instance.RemoveListener<DoSceneWarmup>( DoSceneWarmup );
     }
 
-    private void ProcessNewScene( DoSceneWarmup e )
+    private void DoSceneWarmup( DoSceneWarmup e )
     {
-        DataHandler.RunData.Caravan.Position = StartPos.position;
+        RunManager.Instance.RunData.Caravan.Position = StartPos.position;
     }
 
 
@@ -58,13 +58,13 @@ public class GfxWorld : MonoBehaviour
         if( Light == null )
             return;
 
-        Light.transform.eulerAngles = _lightEulerStart + new Vector3( DataHandler.RunData.TimeData.Days * 360f, 0f, 0f);
+        Light.transform.eulerAngles = _lightEulerStart + new Vector3( RunManager.Instance.RunData.TimeData.Days * 360f, 0f, 0f);
     }
 
 
     private async void CreateCaravanGraphics()
     {
-        var runData = DataHandler.RunData;
+        var runData = RunManager.Instance.RunData;
         var caravanAsset = await runData.Caravan.Graphics.GetAssetAsync();
 
         var instGO = Instantiate<GameObject>( caravanAsset );

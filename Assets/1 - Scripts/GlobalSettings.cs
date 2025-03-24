@@ -22,6 +22,9 @@ public class GlobalSettings:SingletonScriptableObject<GlobalSettings>
     [Space]
     public ActorReference TestInventory;
 
+    [Space]
+    public TextAsset PostCombatScript;
+
     public List<Actor> GetStarterActorsCollection()
     {
         if( PlayerActors == null )

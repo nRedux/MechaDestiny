@@ -17,7 +17,7 @@ public class RunData
     //What scene are we in right now?
     public string Scene;
 
-    public MapData MapData;
+    public MapData WorldMapData;
     public CompanyData CompanyData = new CompanyData();
     public MapObjectData Caravan = null;
     public StorageContainer Inventory = new StorageContainer();
@@ -34,6 +34,8 @@ public class RunData
      * Need to make this be used and make sure lua scripts are able to set it. I'd also love
      *!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
     public List<Actor> CombatEnemies;
+
+    public string WorldMapScene;
 
     public RunData()
     {
@@ -52,10 +54,9 @@ public class RunData
     }
 
 
-    public void SetActiveScene( string scene, bool doInitState )
+    public void SetActiveScene( string scene )
     {
         this.Scene = scene;
-        _warmupScene = doInitState;
     }
 
     public bool SceneNeedsWarmup()

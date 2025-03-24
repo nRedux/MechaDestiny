@@ -8,7 +8,6 @@ public static class SceneLoadManager
 
     public static void LoadScene( string scene, bool fadeScreen, bool doSceneWarmup, System.Action onFadeComplete, System.Action onLoadComplete )
     {
-        
         Debug.Log( $"SceneLoadManager::LoadScene: Loading scene {scene}. fadeScreen: {fadeScreen}" );
         var suiManager = SUIManager.Instance;
         if( suiManager != null )
@@ -18,11 +17,28 @@ public static class SceneLoadManager
        
         CoroutineUtils.BeginCoroutine( PerformSceneLoad( scene, onFadeComplete, () =>
         {
-            RunManager.Instance.SetScene( scene, doSceneWarmup );
+            RunManager.Instance.RunData.ActiveScene = scene;
             onLoadComplete?.Invoke();
-
-            DataHandler.RunData.ActiveScene = scene;
         }, 
+        fadeScreen ) );
+
+    }
+
+    public static void LoadMapDataScene( MapData mapData, bool fadeScreen, System.Action onFadeComplete, System.Action onLoadComplete )
+    {
+
+        Debug.Log( $"SceneLoadManager::LoadScene: Loading scene {mapData.Scene}. fadeScreen: {fadeScreen}" );
+        var suiManager = SUIManager.Instance;
+        if( suiManager != null )
+        {
+            fadeScreen = suiManager.Fader != null;
+        }
+
+        CoroutineUtils.BeginCoroutine( PerformSceneLoad( mapData.Scene, onFadeComplete, () =>
+        {
+            RunManager.Instance.SetMapData( mapData );
+            onLoadComplete?.Invoke();
+        },
         fadeScreen ) );
 
     }

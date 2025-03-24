@@ -19,12 +19,6 @@ public class TerrainPointSampler : MonoBehaviour
     private Vector3 _terrainSize;
     
 
-    void Start()
-    {
-        _points ??= GetSample();
-        RunPopulators();
-    }
-
 
     public List<VariablePoissonSampling.Point> GetSample()
     {
@@ -57,9 +51,9 @@ public class TerrainPointSampler : MonoBehaviour
     }
 
 
-    private void Populate()
+    public void SampleIfNeeded()
     {
-        
+        _points ??= GetSample();
     }
 
     private void OnDrawGizmos()
@@ -72,7 +66,7 @@ public class TerrainPointSampler : MonoBehaviour
         }
     }
 
-    public void RunPopulators()
+    public void RunPopulators( MapData mapData )
     {
         var pops = GetComponents<TerrainPopulator>();
 
@@ -81,7 +75,7 @@ public class TerrainPointSampler : MonoBehaviour
             RaycastHit hit;
             if( GameUtils.RaycastGround( x.Position3, out hit ) )
             {
-                pops.Do( y => y.ProcessSample( hit.point ) );
+                pops.Do( y => y.ProcessSample( hit.point, mapData ) );
             }
         } );
     }

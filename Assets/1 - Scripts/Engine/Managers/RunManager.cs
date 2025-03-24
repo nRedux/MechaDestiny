@@ -19,7 +19,7 @@ public class RunManager : Singleton<RunManager>
         get => DataHandler.RunData;
     }
 
-    public MapData MapData { get => RunData.MapData; }
+    public MapData MapData { get => RunData.WorldMapData; }
 
     static RunManager()
     {
@@ -33,6 +33,11 @@ public class RunManager : Singleton<RunManager>
         DataHandler.Clear();
     }
 #endif
+
+    protected override void Awake()
+    {
+        base.Awake();
+    }
 
     private void OnEnable()
     {
@@ -67,9 +72,15 @@ public class RunManager : Singleton<RunManager>
             SaveData();
     }
 
-    public void SetScene( string scene, bool doSceneWarmup )
+    public void SetScene( string scene )
     {
-        this.RunData.SetActiveScene( scene, doSceneWarmup );
+        this.RunData.ActiveScene = scene;
+    }
+
+    public void SetMapData( MapData mapData )
+    {
+        this.RunData.WorldMapData = mapData;
+        this.RunData.ActiveScene = mapData.Scene;
     }
 
 
