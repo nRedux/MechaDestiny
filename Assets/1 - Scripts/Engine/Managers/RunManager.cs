@@ -14,7 +14,6 @@ using UnityEditor;
 public class RunManager : Singleton<RunManager>
 {
 
-//    public ScriptGraphAssetReference DefaultCombatEndGraph;
     public RunData RunData {
         get => DataHandler.RunData;
     }

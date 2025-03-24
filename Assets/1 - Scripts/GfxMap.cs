@@ -13,7 +13,7 @@ public delegate bool MapObjectFunc( GfxMapObject mapObject );
 public delegate void MapObjectDelegate( GfxMapObject mapObject );
 public delegate void MapObjectCollectionDelegate( IEnumerable<GfxMapObject> mapObjectCollection );
 
-public class GameManager : Singleton<GameManager>
+public class GfxMap : Singleton<GfxMap>
 {
 
     public const float SKY_HEIGHT = 1000f;
@@ -74,7 +74,7 @@ public class GameManager : Singleton<GameManager>
         var co = CoroutineUtils.Instance;
 
         base.Awake();
-        DontDestroyOnLoad( gameObject );
+        //DontDestroyOnLoad( gameObject );
         //Get the system UI fired up
         var inst = SUIManager.Instance;
 
@@ -87,6 +87,8 @@ public class GameManager : Singleton<GameManager>
         Selection.OnSelectionClear += SelectionCleared;
 
         SelectionProcessor = new MxSelectionProcessor( Selection );
+
+        TimeManager.StartTime();
 
     }
 
@@ -303,7 +305,7 @@ public class MxSelection
         if( !EventSystem.current.IsPointerOverGameObject() )
         {
             RaycastHit hit;
-            if( GameManager.RaycastForSelectables( out hit ) )
+            if( GfxMap.RaycastForSelectables( out hit ) )
             {
                 result = hit.collider.GetComponentInParent<GfxMapObject>();
             }

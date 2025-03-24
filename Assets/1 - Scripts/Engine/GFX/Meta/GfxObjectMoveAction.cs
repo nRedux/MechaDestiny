@@ -82,7 +82,7 @@ public class GfxObjectMoveAction : GfxMapObjectAction
             if( Input.GetMouseButtonDown( 0 ) )
             {
                 RaycastHit hit = new RaycastHit();
-                if( GameManager.RaycastGroundFromMouse( out hit ) )
+                if( GfxMap.RaycastGroundFromMouse( out hit ) )
                 {
                     return hit.point;
                 }
@@ -93,7 +93,7 @@ public class GfxObjectMoveAction : GfxMapObjectAction
             if( Input.GetMouseButtonDown( 1 ) )
             {
                 RaycastHit hit = new RaycastHit();
-                if( GameManager.RaycastGroundFromMouse( out hit ) )
+                if( GfxMap.RaycastGroundFromMouse( out hit ) )
                 {
                     return hit.point;
                 }

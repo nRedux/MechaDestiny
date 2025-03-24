@@ -9,7 +9,7 @@ public class GfxMoveableMapObject : GfxMapObject
     void Update()
     {
         RaycastHit hit;
-        GameManager.RaycastGround( Data.Position, out hit );
+        GfxMap.RaycastGround( Data.Position, out hit );
         transform.position = hit.point;
 
         if( Data.Heading != Vector3.zero )

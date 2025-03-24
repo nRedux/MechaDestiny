@@ -27,18 +27,17 @@ public class LuaBehaviorManager : SingletonScriptableObject<LuaBehaviorManager>
 
     public void SetSuperGlobal( string key, object value )
     {
-        Script s;
+        _superGlobals = new Dictionary<string, object>();
         _superGlobals.Add( key, value );
     }
 
 #if UNITY_EDITOR
     [InitializeOnEnterPlayMode]
-#endif
-    private void ResetPlaymode()
+    public static void ResetPlaymode()
     {
         _environmentInitialized = false;
     }
-
+#endif
 
     private void OnEnable()
     {

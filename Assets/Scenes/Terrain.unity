@@ -4511,7 +4511,7 @@ GameObject:
   - component: {fileID: 917513608}
   - component: {fileID: 917513607}
   m_Layer: 0
-  m_Name: Game Manager
+  m_Name: Gfx Map
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4526,7 +4526,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 917513606}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b744320bed20424eaf207144bd80f15, type: 3}
+  m_Script: {fileID: 11500000, guid: d3fc6a0a931259545980cb8bd0811f98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Harvester:
@@ -4534,18 +4534,18 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectGUID: 
     m_SubObjectType: 
-    m_EditorAssetChanged: 0
+    m_EditorAssetChanged: 1
   TestEncounter:
-    Probability: 1
+    Probability: 0
     EventGraph:
-      m_AssetGUID: 5ae462e3049984b409f5c980e78005ee
+      m_AssetGUID: 
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     Location:
       Coordinate: {x: 0, y: 0, z: 0}
-    Radius: 9999
+    Radius: 0
 --- !u!4 &917513608
 Transform:
   m_ObjectHideFlags: 0
@@ -9178,7 +9178,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1197904504}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.59266984
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
