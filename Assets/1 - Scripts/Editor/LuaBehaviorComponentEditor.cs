@@ -7,6 +7,7 @@ public class LuaBehaviorComponentEditor : OdinEditor
 
     protected override void OnEnable()
     {
+        DoAutoGenParams();
         TextAssetMonitor.TextAssetModified += OnTextAssetModified;
     }
 
@@ -16,6 +17,11 @@ public class LuaBehaviorComponentEditor : OdinEditor
     }
 
     private void OnTextAssetModified()
+    {
+        DoAutoGenParams();
+    }
+
+    private void DoAutoGenParams() 
     {
         var luaComp = this.target as LuaBehaviorComponent;
         luaComp.AutoGenParams();

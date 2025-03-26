@@ -50,6 +50,7 @@ public class UICombatEnd : UIPanel
         RefreshRewards();
         this.PanelBackground.OnClick += () =>
         {
+            //Default behavior is to return to current map
             if( RunManager.Instance.RunData.WorldMapData != null )
             {
                 SceneLoadManager.LoadMapDataScene( RunManager.Instance.RunData.WorldMapData, true, null, null );
@@ -57,17 +58,13 @@ public class UICombatEnd : UIPanel
         };
     }
 
-    private void ExecutePostCombatScript()
-    {
-
-    }
 
     private void RefreshRewards()
     {
-        if( RewardList != null )
-        {
-            RewardList.Refresh( RunManager.Instance.RunData.CombatRewards );
-        }
+        List<IItem> items = new List<IItem>();
+        if( RunManager.Instance.RunData.CombatMoneyReward.HasValue )
+            items.Add( new Money( false, RunManager.Instance.RunData.CombatMoneyReward.Value ) );
+        items.AddRange( RunManager.Instance.RunData.CombatRewards );
+        RewardList.Opt()?.Refresh( items );
     }
-
 }

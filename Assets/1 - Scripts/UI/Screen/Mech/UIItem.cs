@@ -51,6 +51,11 @@ public class UIItem : MonoBehaviour, IUIItem<IItem>
             Name.text = _item.GetDisplayName();
 
         if( Count != null )
-            Count.text = _item.Count().ToString();
+        {
+            if( _item is ICurrency currency )
+                Count.text = currency.GetAmount().ToString();
+            else
+                Count.text = _item.Count().ToString();
+        }
     }
 }

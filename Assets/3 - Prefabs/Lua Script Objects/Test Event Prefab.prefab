@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LuaFields:
   - rid: 3512639977659301994
+  - rid: 3512640072191049815
   ScriptAsset: {fileID: 4900000, guid: a767a77c4df28264bbc0f46d2b88eee2, type: 3}
   _oldScriptAsset: {fileID: 4900000, guid: a767a77c4df28264bbc0f46d2b88eee2, type: 3}
   references:
@@ -56,3 +57,8 @@ MonoBehaviour:
       data:
         Name: enemyForce
         Value: {fileID: 11400000, guid: 515fa434af904f944a4fba9af7968c0b, type: 2}
+    - rid: 3512640072191049815
+      type: {class: LuaInt, ns: , asm: Assembly-CSharp}
+      data:
+        Name: moneyReward
+        Value: 100

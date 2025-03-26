@@ -14,7 +14,7 @@ public class MoneyChangeEvent : GameEvent
 }
 
 [JsonObject]
-public class Money : ICurrency, IItem
+public class Money : DataObject<MoneyAsset>, ICurrency, IItem
 {
     public const string OBJECT_ID = "MONEY_ITEM_OBJECT_ID";
 

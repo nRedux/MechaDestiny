@@ -65,3 +65,7 @@ end
 function setCombatEnemies( enemies )
 	MetaGame.SetCombatEnemies( enemies )
 end
+
+function setCombatMoneyReward( amount )
+	MetaGame.SetCombatMoneyReward( amount )
+end

@@ -34,4 +34,9 @@ public class MetaGame
         RunManager.Instance.RunData.CombatEnemies = actorsData;
     }
 
+    public static void SetCombatMoneyReward( int amount )
+    {
+        RunManager.Instance.RunData.CombatMoneyReward = amount;
+    }
+
 }

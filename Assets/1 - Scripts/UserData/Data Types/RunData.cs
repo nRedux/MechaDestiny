@@ -37,6 +37,8 @@ public class RunData
      *!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
     public List<Actor> CombatEnemies;
 
+    public int? CombatMoneyReward = null;
+
     public string WorldMapScene;
 
     public RunData()
@@ -72,6 +74,11 @@ public class RunData
             return;
         _warmupScene = false;
         Events.Instance.Raise( new DoSceneWarmup() );
+    }
+
+    public void ClearRewards()
+    {
+        CombatMoneyReward = 0;
     }
 
 }
