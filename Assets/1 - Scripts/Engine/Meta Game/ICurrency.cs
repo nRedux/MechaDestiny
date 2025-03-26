@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public interface ICurrency
@@ -15,9 +16,25 @@ public interface ICurrency
     /// <returns>True if can be afforded, false otherwise</returns>
     bool CanAfford( int amount );
 
+    void Add( int amount );
+
     /// <summary>
     /// Deduct this amount of currency from the amount you have.
     /// </summary>
     /// <param name="amount">The amount you want to spend.</param>
-    void Spend( int amount );
+    void Spend( int amount, System.Action OnSuccess, System.Action onFailure );
+
+    string GetDisplayName();
+    string GetDescription();
 }
+
+public interface IBuyable
+{
+    int GetCost();
+}
+
+public interface ISellable
+{
+    int GetValue();
+}
+

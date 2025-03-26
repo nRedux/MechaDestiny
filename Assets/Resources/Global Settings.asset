@@ -132,12 +132,18 @@ MonoBehaviour:
     m_SubObjectGUID: 
     m_SubObjectType: 
     m_EditorAssetChanged: 1
-  - m_AssetGUID: 654450a8e45214f4c957879c2796dd17
+  - m_AssetGUID: 21a1e8dd213676b4185f14ab2242b473
     m_SubObjectName: 
     m_SubObjectGUID: 
     m_SubObjectType: 
     m_EditorAssetChanged: 1
-  - m_AssetGUID: 21a1e8dd213676b4185f14ab2242b473
+  TestCombatRewards:
+  - m_AssetGUID: 1399b75d497c49a448595ecc102457ec
+    m_SubObjectName: 
+    m_SubObjectGUID: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 1
+  - m_AssetGUID: 654450a8e45214f4c957879c2796dd17
     m_SubObjectName: 
     m_SubObjectGUID: 
     m_SubObjectType: 
@@ -148,6 +154,8 @@ MonoBehaviour:
     m_SubObjectGUID: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
+  MoneySprite: {fileID: 0}
+  BaseMoney: 500
   references:
     version: 2
     RefIds: []

@@ -20,7 +20,14 @@ public class GlobalSettings:SingletonScriptableObject<GlobalSettings>
     public MechComponentReference[] TestMechComponentInventory;
 
     [Space]
+    public MechComponentReference[] TestCombatRewards;
+
+    [Space]
     public ActorReference TestInventory;
+    [Space]
+    public Sprite MoneySprite;
+    [Space]
+    public int BaseMoney = 100;
 
     public List<Actor> GetStarterActorsCollection()
     {

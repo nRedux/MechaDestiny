@@ -202,9 +202,9 @@ public class MechComponentData : SimpleEntity<MechComponentAsset>, IItem
 
     private IStorage _storage = null;
 
-    public void SetStorage( IStorage newStorage )
+    public void SetStorage( IStorage storage )
     {
-        this._storage = newStorage;
+        this._storage = storage;
     }
 
     public string GetObjectName()

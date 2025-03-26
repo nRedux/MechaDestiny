@@ -48,6 +48,8 @@ public class RunManager : Singleton<RunManager>
         data.CompanyData.Employees = GlobalSettings.Instance.GetStarterActorsCollection();
         data.CompanyData.Mechs = data.CompanyData.Employees.Select( x => x.PilotedMech ).ToList();
 
+        data.Inventory.AddItem( new Money( true, GlobalSettings.Instance.BaseMoney ) );
+
         GlobalSettings.Instance.TestMechComponentInventory.Do( x =>
         {
             if( x.RuntimeKeyIsValid() )
@@ -62,7 +64,12 @@ public class RunManager : Singleton<RunManager>
             }
         } );
 
-        
+        data.CombatRewards = new List<IItem>();
+        GlobalSettings.Instance.TestCombatRewards.Do( x =>
+        {
+            var itemData = x.GetDataCopySync();
+            data.CombatRewards.Add( itemData );
+        } );
     }
 
     public void Update()

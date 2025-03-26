@@ -32,9 +32,9 @@ public interface IStorage
 
     IEnumerable<IItem> GetItems( object itemID );
 
-    IEnumerable<IItem> GetItems();
+    IEnumerable<IItem> GetItems( bool includeCurrency );
 
-    IItem GetItem<ItemType>() where ItemType : IItem;
+    IItem GetItem<ItemType>(  ) where ItemType : IItem;
 }
 
 
@@ -57,8 +57,12 @@ public enum RemoveStoreItemReason
 [JsonObject]
 public class StorageContainer: IStorage
 {
+
     [JsonProperty]
     private List<IItem> _items = new List<IItem>();
+
+    [JsonConstructor]
+    public StorageContainer() { }
 
     public void AddItem( IItem item )
     {
@@ -69,8 +73,31 @@ public class StorageContainer: IStorage
             item.Storage.RemoveItem( item );
         }
 
+        if( ProcessCurrency( item ) )
+            return;
+
         _items.Add( item );
         item.SetStorage( this );
+    }
+
+
+    /// <summary>
+    /// If the item is a currency and we already have an entry for currency, merge the new currency item into the existing one.
+    /// </summary>
+    /// <param name="item">An item interface</param>
+    /// <returns>If the item WAS a currency AND was merged into an existing currency, returns true - otherwise - returns false.</returns>
+    public bool ProcessCurrency( IItem item )
+    {
+        if( item is ICurrency addedCurrency )
+        {
+            var existing = _items.Where(x => x.GetType() == addedCurrency.GetType() ).FirstOrDefault() as ICurrency;
+            if( existing != null )
+            {
+                existing.Add( addedCurrency.GetAmount() );
+                return true;
+            }
+        }
+        return false;
     }
 
     public void RemoveItem( IItem item )
@@ -129,8 +156,8 @@ public class StorageContainer: IStorage
         return _items.Where( x => x.GetObjectID().Equals( itemID ) );
     }
 
-    public IEnumerable<IItem> GetItems()
+    public IEnumerable<IItem> GetItems( bool includeCurrency )
     {
-        return _items;
+        return includeCurrency ? _items : _items.Where( x => !(x is ICurrency) );
     }
 }

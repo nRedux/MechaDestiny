@@ -24,6 +24,8 @@ public class RunData
     public EncounterState EncounterState = new EncounterState();
     public TimeData TimeData = new TimeData();
 
+    public List<IItem> CombatRewards = null;
+
     //Should be null by default
     public string ActiveScene = null;
 

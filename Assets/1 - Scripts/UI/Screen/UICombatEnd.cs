@@ -13,6 +13,8 @@ public class UICombatEnd : UIPanel
     public LocalizedString DefeatText;
 
 
+    public UICombatRewardList RewardList;
+
     public void PrepareForShow( int winner )
     {
         RefreshStatusText( winner );
@@ -45,6 +47,7 @@ public class UICombatEnd : UIPanel
     {
         base.Show();
         this.CreateBackground();
+        RefreshRewards();
         this.PanelBackground.OnClick += () =>
         {
             if( RunManager.Instance.RunData.WorldMapData != null )
@@ -57,6 +60,14 @@ public class UICombatEnd : UIPanel
     private void ExecutePostCombatScript()
     {
 
+    }
+
+    private void RefreshRewards()
+    {
+        if( RewardList != null )
+        {
+            RewardList.Refresh( RunManager.Instance.RunData.CombatRewards );
+        }
     }
 
 }

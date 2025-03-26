@@ -16,7 +16,7 @@ public class UIInventoryPage : MonoBehaviour
 
     private void Start()
     {
-        InventoryList.Refresh( RunManager.Instance.RunData.Inventory.GetItems().ToList() );
+        InventoryList.Refresh( RunManager.Instance.RunData.Inventory.GetItems( false ).ToList() );
         if( InventoryList.Collection != null )
             SelectItem( InventoryList.GetUIs().FirstOrDefault() );
         else
