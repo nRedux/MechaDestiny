@@ -42,7 +42,7 @@ public class UIItemList<TUIItemType, TDataType> : MonoBehaviour where TUIItemTyp
     {
         if( collection == null )
             throw new System.ArgumentNullException( $"{nameof( collection )} cannot be null." );
-        DeleteEntries();
+        DeleteItems();
         _collection = FilterItems( collection );
         _collection.Do( x =>
         {
@@ -50,7 +50,7 @@ public class UIItemList<TUIItemType, TDataType> : MonoBehaviour where TUIItemTyp
         } );
     }
 
-    public void DeleteEntries()
+    public void DeleteItems()
     {
         if( DisplayTarget is UIGrid grid )
         {
@@ -71,7 +71,6 @@ public class UIItemList<TUIItemType, TDataType> : MonoBehaviour where TUIItemTyp
             throw new UIActorCollectionException( $"{nameof( DisplayTarget )} not set." );
 
         TUIItemType instance = NewUI( data );
-
         if( DisplayTarget is UIGrid grid )
         {
             grid.Add( instance.transform );

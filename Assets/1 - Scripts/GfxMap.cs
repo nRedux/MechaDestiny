@@ -130,7 +130,7 @@ public class GfxMap : Singleton<GfxMap>
     private void PopulateMap()
     {
         var samplers = GameObject.FindObjectsByType<TerrainPointSampler>( FindObjectsInactive.Exclude, FindObjectsSortMode.None );
-        samplers.Do( x => { x.SampleIfNeeded(); x.RunPopulators( RunManager.Instance.MapData ); } ); 
+        samplers.Do( x => { x.SampleIfNeeded(); x.RunPopulators( RunManager.Instance.RunData.WorldMapData ); } ); 
     }
 
 

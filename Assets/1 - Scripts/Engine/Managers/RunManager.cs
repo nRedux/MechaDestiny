@@ -18,8 +18,6 @@ public class RunManager : Singleton<RunManager>
         get => DataHandler.RunData;
     }
 
-    public MapData MapData { get => RunData.WorldMapData; }
-
     static RunManager()
     {
         

@@ -50,12 +50,20 @@ public class UICombatEnd : UIPanel
         RefreshRewards();
         this.PanelBackground.OnClick += () =>
         {
-            //Default behavior is to return to current map
-            if( RunManager.Instance.RunData.WorldMapData != null )
-            {
-                SceneLoadManager.LoadMapDataScene( RunManager.Instance.RunData.WorldMapData, true, null, null );
-            }
+            FinishRewardScreen();
         };
+    }
+
+    public void FinishRewardScreen()
+    {
+        //Take all the items left in the reward screen. Later I'll just make this take the critical "always" items like gold, scrap, etc.
+        RewardList.PlayerTakeAllItems();
+
+        //Default behavior is to return to current map
+        if( RunManager.Instance.RunData.WorldMapData != null )
+        {
+            SceneLoadManager.LoadMapDataScene( RunManager.Instance.RunData.WorldMapData, true, null, null );
+        }
     }
 
 
