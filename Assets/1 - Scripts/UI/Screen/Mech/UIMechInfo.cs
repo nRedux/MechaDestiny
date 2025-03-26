@@ -12,14 +12,24 @@ public class UIMechInfo : UIEntity
 
     private MechData _mechData;
 
-
+    /// <summary>
+    /// Expects an actor. Not sure
+    /// </summary>
+    /// <param name="entity"></param>
     public override void AssignEntity( IEntity entity )
     {
         if( entity == null )
             return;
 
-        var actor = entity as Actor;
-        var mechData = actor.GetSubEntities()[0] as MechData;
+        MechData mechData = null;
+        if( entity is MechData argMechData )
+        {
+            mechData = argMechData;
+        }
+        else if( entity is Actor actor )
+        {
+            mechData = actor.GetSubEntities()[0] as MechData;
+        }
 
         this._mechData = mechData;
         base.AssignEntity( entity );

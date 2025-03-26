@@ -7,6 +7,8 @@ public class UIMechFull : MonoBehaviour
 {
     public TMP_Text Name;
     public RawImage Image;
+    public UIMechInfo MechStats;
+
     private MechData _mechData;
 
     public MechData MechData
@@ -14,15 +16,15 @@ public class UIMechFull : MonoBehaviour
         get => _mechData;
     }
 
-    public void Refresh( MechData actor )
+    public void Refresh( MechData mechData )
     {
-        if( actor == null )
-            throw new System.ArgumentNullException( $"Argument '{nameof( actor )}' cannot be null" );
-        _mechData = actor;
-        var actorAsset = actor.GetAssetSync();
+        if( mechData == null )
+            throw new System.ArgumentNullException( $"Argument '{nameof( mechData )}' cannot be null" );
+        _mechData = mechData;
+        var actorAsset = mechData.GetAssetSync();
         if( Name != null )
             Name.text = actorAsset.DisplayName.TryGetLocalizedString();
 
-        //Set up preview here.
+        MechStats.AssignEntity( mechData.Pilot );
     }
 }
