@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data:
     AssetReference:
-      m_AssetGUID: cb2db94eff8bf564f8f5dfde0c7d585a
+      m_AssetGUID: d86ff5662c57c5d4fad4c8fb68981ce5
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 
@@ -23,7 +23,7 @@ MonoBehaviour:
     Statistics:
       _serializedKeys: 00000000
       _serializedValues:
-      - _value: 180
+      - _value: 45
         _startValue: 0
         Type: 0
     Boosts:
@@ -50,6 +50,16 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
+  Description:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  Portrait: {fileID: 0}
   AOEShape: {fileID: 0}
   references:
     version: 2

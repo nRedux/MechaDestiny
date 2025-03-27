@@ -14,7 +14,7 @@ public class MechSquadException : System.Exception
 [JsonObject]
 public class MechSquad
 {
-
+    [JsonProperty]
     private List<Actor> _actors = new List<Actor>();
 
 

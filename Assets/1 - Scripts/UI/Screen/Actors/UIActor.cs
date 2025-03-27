@@ -29,21 +29,27 @@ public class UIActor : MonoBehaviour, IUIItem<Actor>
     [ShowIf(nameof(ShowIfFull))]
     public GameObject MechUIRoot;
 
+    public UIMechFull MechInfo;
     
     private Actor _actor;
     private TMProLinkHandler _mechLinkHandler;
     private Button _button;
 
+
     public Actor Actor
     {
         get => _actor;
     }
+
+
     public Action<IUIItem<Actor>> Clicked { get; set; }
+
 
     public bool ShowIfFull()
     {
         return Mode == UIACtorMode.Full;
     }
+
 
     private void Awake()
     {
@@ -55,6 +61,7 @@ public class UIActor : MonoBehaviour, IUIItem<Actor>
             _mechLinkHandler.Click = MechNameClicked;
         }
     }
+
 
     private void MechNameClicked( string id )
     {
@@ -75,12 +82,18 @@ public class UIActor : MonoBehaviour, IUIItem<Actor>
         _actor = actor;
 
         RefreshContent();
+
+        //Display mech UI
+        MechInfo.Opt()?.gameObject.SetActive( actor.PilotedMech != null );
+        MechInfo.Opt()?.Refresh( actor.PilotedMech );
     }
+
 
     private string GetMechNameText( string linkID, string mechName )
     {
         return $"<link=\"{linkID}\">{mechName}</link>";
     }
+
 
     public void PickMechToPilot()
     {

@@ -22,7 +22,6 @@ public class UIRunInfo : Singleton<UIRunInfo>
     protected override void Awake()
     {
         base.Awake();
-        ShowPage( UIRunInfoPage.EmployeeInfo );
         Close();
 
         MechSelector.Opt()?.gameObject.SetActive( false );
@@ -31,14 +30,14 @@ public class UIRunInfo : Singleton<UIRunInfo>
 
     public void ShowPage( UIRunInfoPage page )
     {
-        EmployeeInfoPage.Opt()?.gameObject.SetActive( false );
+        EmployeeInfoPage.Opt()?.Hide();
         MechInfoPage.Opt()?.gameObject.SetActive( false );
         InventoryPage.Opt()?.gameObject.SetActive( false );
 
         switch( page )
         {
             case UIRunInfoPage.EmployeeInfo:
-                EmployeeInfoPage.Opt()?.gameObject.SetActive( true );
+                EmployeeInfoPage.Opt()?.Show();
                 break;
             case UIRunInfoPage.MechInfo:
                 MechInfoPage.Opt()?.gameObject.SetActive( true );
@@ -82,5 +81,12 @@ public class UIRunInfo : Singleton<UIRunInfo>
         ShowPage( UIRunInfoPage.EmployeeInfo );
         MainWindow.Opt()?.SetActive( true );
         OpenButton.Opt()?.SetActive( false );
+    }
+
+    public void StartRenderingMech( MechData data )
+    {
+        var renderer = MechRendererSingleton.Instance.GetRenderer();
+        if( renderer != null )
+            renderer.StartRenderingMech( data );
     }
 }

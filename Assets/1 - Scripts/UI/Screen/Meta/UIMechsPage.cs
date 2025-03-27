@@ -10,7 +10,7 @@ public class UIMechsPage : MonoBehaviour
     public UIMechFull SelectedMech;
     public UIMechList MechList;
 
-    private UIMech _selectedActor;
+    private UIMech _selectedMech;
 
     private void Awake()
     {
@@ -40,18 +40,16 @@ public class UIMechsPage : MonoBehaviour
 
     private void SelectMech( UIMech mech )
     {
-        _selectedActor = mech;
+        _selectedMech = mech;
 
-        var renderer = MechRendererSingleton.Instance.GetRenderer();
-        if( renderer != null )
-            renderer.StartRenderingMech( mech.MechData );
+        UIRunInfo.Instance.StartRenderingMech( mech.MechData );
 
-        if( SelectedMech != null && _selectedActor != null )
+        if( SelectedMech != null && _selectedMech != null )
         {
             SelectedMech.gameObject.SetActive( true );
             SelectedMech.Refresh( mech.MechData );
         }
-        if( _selectedActor == null )
+        if( _selectedMech == null )
         {
             SelectedMech.Opt()?.gameObject.SetActive( false );
         }
