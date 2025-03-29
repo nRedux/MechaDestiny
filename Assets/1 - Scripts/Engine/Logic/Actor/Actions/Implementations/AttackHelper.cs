@@ -15,19 +15,19 @@ public static class AttackHelper
 
     private static MechComponentData SelectComponentTarget( this MechData data )
     {
-        if( DevConfiguration.TARGET_TORSO_ONLY )
+        if( DevTools.TARGET_TORSO_ONLY )
         {
             return data.Torso;
         }
-        else if ( DevConfiguration.TARGET_LEGS_ONLY )
+        else if ( DevTools.TARGET_LEGS_ONLY )
         {
-            return data.Torso;
+            return data.Legs;
         }
-        else if ( DevConfiguration.TARGET_L_ARM_ONLY )
+        else if ( DevTools.TARGET_L_ARM_ONLY )
         {
             return data.LeftArm;
         }
-        else if( DevConfiguration.TARGET_R_ARM_ONLY )
+        else if( DevTools.TARGET_R_ARM_ONLY )
         {
             return data.RightArm;
         }

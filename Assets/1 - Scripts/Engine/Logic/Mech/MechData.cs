@@ -97,6 +97,20 @@ public class MechData: SimpleEntity<MechAsset>
     }
 
 
+    public int GetMoveRange()
+    {
+        
+        if( Legs.IsBroken() )
+            return 1;
+        else
+        {
+            //Find max range as either the ap or range of the mech. 1ap per move atm.
+            var apRange = Pilot.GetStatisticValue( StatisticType.AbilityPoints );
+            int legsRange = Legs.Statistics.GetStatistic( StatisticType.Range ).Value;
+            return Mathf.Min( legsRange, apRange );
+        }
+    }
+
     public StatisticCollection AccumulateStatistics()
     {
         StatisticCollection accumulatedStats = new StatisticCollection();

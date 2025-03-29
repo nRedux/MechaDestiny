@@ -91,7 +91,7 @@ public class ActorTurnPhase: TurnPhase
         if( !_team.IsPlayerTeam )
         {
             //Debug.Log( "Start next actor for phase" );
-            _delayAIActionsTimer = DevConfiguration.DELAY_AI_ACTIONS_DURATION;
+            _delayAIActionsTimer = DevTools.DELAY_AI_ACTIONS_DURATION;
         }
 
         SelectActiveActor( nextMember );

@@ -59,10 +59,7 @@ public class PlayerMoveAction : MoveAction
 
         var mechData = actor.GetMechData();
 
-        //Find max range as either the ap or range of the mech. 1ap per move atm.
-        var apRange = actor.GetStatisticValue( StatisticType.AbilityPoints );
-        int legsRange = mechData.Legs.Statistics.GetStatistic( StatisticType.Range ).Value;
-        _range = Mathf.Min( legsRange, apRange );
+        _range = mechData.GetMoveRange();
 
         _moveOptionsWindow = new BoolWindow( _range * 2, game.Board );
 
