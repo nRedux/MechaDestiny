@@ -23,7 +23,6 @@ public class UIActionSequence : UIPanel
 
     private List<UIActionSequenceItem> _items = new List<UIActionSequenceItem>();
     private float _rootWidth = 0f;
-    private float _itemsWidth = 0f;
     private int _maxActionBlocks = 0;
     private int _spentAbilityPoints = 0;
     private RectTransform _itemsRootRT = null;
@@ -76,10 +75,13 @@ public class UIActionSequence : UIPanel
     }
 
 
-    private void CalculateUILayout()
+    private void UpdateExhaustedUI()
     {
+        float padding = ItemsRoot.padding.left - ItemsRoot.padding.right;
+        float wid = ItemRootRT.rect.width - (CalculateBlockWidth( _maxActionBlocks - _spentAbilityPoints ) + ItemsRoot.spacing - padding);
+        float fill = wid / ( ItemRootRT.rect.width - padding);
         if( ExhaustedAPBar != null )
-            ExhaustedAPBar.fillAmount = 1f - ( _spentAbilityPoints / (float)_maxActionBlocks ) - ( ItemsRoot.padding.right / _rootWidth ) * 1;
+            ExhaustedAPBar.fillAmount = 1f - fill;
     }
 
 
@@ -101,7 +103,7 @@ public class UIActionSequence : UIPanel
         _sequence.ActionRemoved += SequenceActionRemoved;
 
         EvaluateActorStats( actor );
-        CalculateUILayout();
+        UpdateExhaustedUI();
         DestroyBlockInstances();
 
         base.Show();
@@ -237,8 +239,13 @@ public class UIActionSequence : UIPanel
             return;
         var rt = item.GetComponent<RectTransform>();
 
-        _itemsWidth = (_rootWidth + ItemsRoot.spacing) / (_maxActionBlocks);
-        rt.SetSizeWithCurrentAnchors( RectTransform.Axis.Horizontal, (_itemsWidth * widthCount) - ItemsRoot.spacing );// = new Vector2( , rect.height );
+        rt.SetSizeWithCurrentAnchors( RectTransform.Axis.Horizontal, CalculateBlockWidth( widthCount ) );// = new Vector2( , rect.height );
+    }
+
+    private float CalculateBlockWidth( int widthCount )
+    {
+        float itemsWidth = ( _rootWidth + ItemsRoot.spacing ) / ( _maxActionBlocks );
+        return ( itemsWidth * widthCount ) - ItemsRoot.spacing;
     }
 
 

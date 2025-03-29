@@ -6792,6 +6792,22 @@ PrefabInstance:
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8806451680270255599, guid: 4d32f08ac227ad243addfd910103d919, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8806451680270255599, guid: 4d32f08ac227ad243addfd910103d919, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -14.3267
+      objectReference: {fileID: 0}
+    - target: {fileID: 8806451680270255599, guid: 4d32f08ac227ad243addfd910103d919, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -24.644997
+      objectReference: {fileID: 0}
+    - target: {fileID: 8806451680270255599, guid: 4d32f08ac227ad243addfd910103d919, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.1930008
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
