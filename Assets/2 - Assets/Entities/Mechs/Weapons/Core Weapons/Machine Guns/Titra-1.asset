@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data:
     AssetReference:
-      m_AssetGUID: 05c74de10b68b2a4588ef87409590f38
+      m_AssetGUID: 21a1e8dd213676b4185f14ab2242b473
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 
@@ -26,7 +26,7 @@ MonoBehaviour:
       - _value: 6
         _startValue: 0
         Type: 0
-      - _value: 14
+      - _value: 3
         _startValue: 0
         Type: 0
       - _value: 9
@@ -68,6 +68,16 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
+  Description:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  Portrait: {fileID: 0}
   AOEShape: {fileID: 0}
   references:
     version: 2

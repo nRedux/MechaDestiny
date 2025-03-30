@@ -8,6 +8,9 @@ public class AIBrawler : AIPersonality
 {
 
     public int RandomDistReduce = 0;
+    [Tooltip("Chance that melee will be done. Otherwise will do ranged.")]
+    [Range(0, 100)]
+    public int meleeChance = 0;
 
     //Ideas:
     //Could track last attacked enemy, and have this influence next attacked enemy
@@ -43,8 +46,18 @@ public class AIBrawler : AIPersonality
             return utility > 0;
         } );
 
-        //Randomly select one of the options.
-        actor.ActiveWeapon = prefWep.Random( 1 ).FirstOrDefault();
+        var melee = prefWep.Where( x => x.WeaponType == WeaponType.Melee ).FirstOrDefault();
+        var ranged = prefWep.Where( x => x.WeaponType != WeaponType.Melee  );
+
+
+        //Occasionally 
+        if( Random.value * 100 < meleeChance || ranged.Count() == 0 )
+            actor.ActiveWeapon = melee;
+        else
+        {
+            //Take any ranged weapon instead
+            actor.ActiveWeapon = ranged.Random( 1 ).FirstOrDefault();
+        }
     }
 
     private List<MechComponentData> GetRangeOrderedWeapons( Actor actor )

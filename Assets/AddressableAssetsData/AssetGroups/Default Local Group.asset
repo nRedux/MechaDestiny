@@ -150,7 +150,7 @@ MonoBehaviour:
     - default
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7e52ef25f5daad749926eadb567d2dd1
-    m_Address: Assets/2 - Assets/Entities/Actors/AI Weak Map.asset
+    m_Address: Assets/2 - Assets/Entities/Actors/Weak Pilot
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

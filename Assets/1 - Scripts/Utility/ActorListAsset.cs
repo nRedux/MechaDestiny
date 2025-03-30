@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,4 +12,10 @@ public class ActorListAsset: ScriptableObject
     {
         return new List<ActorReference>(_actors );
     }
+}
+
+[Serializable]
+public class ActorListCollection
+{
+    public ActorListAsset[] Lists = new ActorListAsset[] { };
 }

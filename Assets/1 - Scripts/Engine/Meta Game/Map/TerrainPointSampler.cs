@@ -10,8 +10,13 @@ using UnityEngine.AI;
 public class TerrainPointSampler : MonoBehaviour
 {
     NavMeshSurface nms;
-    public float Size;
+    [Tooltip("How close to the walkable space a sample must be to be considered.")]
+    public float WalkableProximity;
+    
+
     public VariablePoissonSampling Sampler;
+
+
     private Rect _bounds;
     [SerializeField]
     private List<VariablePoissonSampling.Point> _points;
@@ -37,7 +42,7 @@ public class TerrainPointSampler : MonoBehaviour
         NavMeshHit nmh;
         result = samples.Where( x => {
             bool effectorsAllows = !effectors.Blocks( x.Position3 );
-            bool navMeshAllows = NavMesh.SamplePosition( x.Position3 + Vector3.up * 1f, out nmh, Size, NavMesh.AllAreas );
+            bool navMeshAllows = NavMesh.SamplePosition( x.Position3 + Vector3.up * 1f, out nmh, WalkableProximity, NavMesh.AllAreas );
             return effectorsAllows && navMeshAllows;
         } ).ToList();
         return result;

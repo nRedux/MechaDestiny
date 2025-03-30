@@ -1,12 +1,14 @@
 require 'Core'
 
 __exposed__ = {
-	["enemyForce"] = "ActorList",
-	["moneyReward"] = "int"
+	["enemyForce"] = "ActorListAsset",
+	["moneyReward"] = "int",
+	["test"] = "actorlist"
 }
 
 moneyReward = 0
 enemyForce = nil
+test = nil
 
 
 function doEvent()

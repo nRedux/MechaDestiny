@@ -739,7 +739,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2129468098}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.22767638
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2001,12 +2001,7 @@ MonoBehaviour:
     m_SubObjectType: 
     m_EditorAssetChanged: 1
   AIActors:
-  - m_AssetGUID: d34a77c62755a894da481947f1126ca5
-    m_SubObjectName: 
-    m_SubObjectGUID: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 1
-  - m_AssetGUID: dace928b0ce9dad4fa18643bbc49203c
+  - m_AssetGUID: 7e52ef25f5daad749926eadb567d2dd1
     m_SubObjectName: 
     m_SubObjectGUID: 
     m_SubObjectType: 

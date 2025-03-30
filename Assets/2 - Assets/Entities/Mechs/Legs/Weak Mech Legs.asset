@@ -23,7 +23,7 @@ MonoBehaviour:
     Statistics:
       _serializedKeys: 0000000000010000
       _serializedValues:
-      - _value: 30
+      - _value: 35
         _startValue: 0
         Type: 0
       - _value: 5

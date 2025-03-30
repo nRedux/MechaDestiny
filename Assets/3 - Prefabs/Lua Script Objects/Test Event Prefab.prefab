@@ -45,20 +45,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LuaFields:
-  - rid: 3512639977659301994
-  - rid: 3512640072191049815
+  - rid: 3512640144002777173
+  - rid: 3512640144002777174
+  - rid: 3512640144002777175
   ScriptAsset: {fileID: 4900000, guid: a767a77c4df28264bbc0f46d2b88eee2, type: 3}
   _oldScriptAsset: {fileID: 4900000, guid: a767a77c4df28264bbc0f46d2b88eee2, type: 3}
   references:
     version: 2
     RefIds:
-    - rid: 3512639977659301994
-      type: {class: LuaActorList, ns: , asm: Assembly-CSharp}
+    - rid: 3512640144002777173
+      type: {class: LuaActorListAsset, ns: , asm: Assembly-CSharp}
       data:
         Name: enemyForce
         Value: {fileID: 11400000, guid: 515fa434af904f944a4fba9af7968c0b, type: 2}
-    - rid: 3512640072191049815
+    - rid: 3512640144002777174
       type: {class: LuaInt, ns: , asm: Assembly-CSharp}
       data:
         Name: moneyReward
         Value: 100
+    - rid: 3512640144002777175
+      type: {class: LuaActorList, ns: , asm: Assembly-CSharp}
+      data:
+        Name: test
+        Value:
+        - m_AssetGUID: 7e52ef25f5daad749926eadb567d2dd1
+          m_SubObjectName: 
+          m_SubObjectGUID: 
+          m_SubObjectType: 
+          m_EditorAssetChanged: 1

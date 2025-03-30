@@ -91,7 +91,19 @@ public class LuaBool : TypedLuaField<bool>
 
 [LuaFieldType( typeof( ActorListAsset ) )]
 [Serializable]
-public class LuaActorList : TypedLuaField<ActorListAsset>
+public class LuaActorListAsset : TypedLuaField<ActorListAsset>
+{
+}
+
+[LuaFieldType( typeof( ActorListCollection ) )]
+[Serializable]
+public class LuaActorListAssetCollection : TypedLuaField<ActorListCollection>
+{
+}
+
+[LuaFieldType( typeof( ActorReference[] ) )]
+[Serializable]
+public class LuaActorList : TypedLuaField<ActorReference[]>
 {
 }
 
@@ -217,7 +229,10 @@ public class LuaBehaviorComponent : MonoBehaviour
         { "float", typeof(float).AssemblyQualifiedName },
         { "string", typeof(string).AssemblyQualifiedName },
         { "bool", typeof(bool).AssemblyQualifiedName },
-        { "actorlist", typeof(ActorListAsset).AssemblyQualifiedName },
+        { "actorlistAsset", typeof(ActorListAsset).AssemblyQualifiedName },
+        { nameof(ActorListCollection).ToLower(), typeof(ActorListCollection).AssemblyQualifiedName },
+        { nameof(ActorListAsset).ToLower(), typeof(ActorListAsset).AssemblyQualifiedName },
+        { "actorlist", typeof(ActorReference[]).AssemblyQualifiedName },
     };
 
     private void InjectFields(Script script)

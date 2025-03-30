@@ -10,6 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 57f19b331ad42044eb9b2580b18857dd, type: 3}
-  m_Name: Brawler
+  m_Name: Personality Brawler
   m_EditorClassIdentifier: 
   RandomDistReduce: 0
+  meleeChance: 25
