@@ -6,7 +6,7 @@ using UnityEngine;
 
 public interface IMapEntityData
 {
-
+    void LoadGraphics();
 }
 
 
@@ -17,18 +17,22 @@ public class MapData
     /// <summary>
     /// The scene which this map data is associated with
     /// </summary>
+    [JsonProperty]
     private string _scene = "Scene not set";
 
     /// <summary>
     /// Do we need to do initialization for this data to be properly set up?
     /// </summary>
+    [JsonProperty]
     private bool _needsInitialization = true;
 
     /// <summary>
     /// Counter which is used as map entity data IDs
     /// </summary>
+    [JsonProperty]
     private int _objectIDGenerator = 0;
 
+    [JsonProperty]
     private Dictionary<int, IMapEntityData> Objects = new Dictionary<int, IMapEntityData>();
 
 
@@ -45,13 +49,15 @@ public class MapData
         _objectIDGenerator = 0;
     }
 
-    private void Initialize()
+    public void Initialize()
     {
         if( _needsInitialization )
         {
             Events.Instance.Raise( new DoSceneWarmup() );
         }
         _needsInitialization = false;
+
+        Objects.Do( x => x.Value.LoadGraphics() );
     }
 
     public void AddMapdata( IMapEntityData data )

@@ -40,8 +40,9 @@ public class EntityPopulator : TerrainPopulator
 
     public override void ProcessSample( Vector3 position, MapData mapData )
     {
-        LoadObject( position );
-        mapData.AddMapdata( MapObjectData );
+        var instance = MapObjectData;
+        instance.Position = position;
+        mapData.AddMapdata( instance );
     }
 
 

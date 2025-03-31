@@ -39,8 +39,22 @@ public class TerrainPointSampler : MonoBehaviour
     private List<TerrainSamplerPoint> _points;
     private Terrain _terrain;
     private Vector3 _terrainSize;
-    
 
+    private void Start()
+    {
+        Events.Instance.AddListener<DoSceneWarmup>( OnSceneWarmup );
+    }
+
+    private void OnDestroy()
+    {
+        Events.Instance.RemoveListener<DoSceneWarmup>( OnSceneWarmup );
+    }
+
+    private void OnSceneWarmup( DoSceneWarmup e )
+    {
+        Build();
+        RunPopulators( RunManager.Instance.RunData.WorldMapData );
+    }
 
     public List<TerrainSamplerPoint> GetSample()
     {
@@ -241,16 +255,5 @@ public class TerrainPointSampler : MonoBehaviour
                 pops.Do( y => y.ProcessSample( hit.point, mapData ) );
             }
         }
-
-        /*
-        _points.Do( x =>
-        {
-            RaycastHit hit;
-            if( GameUtils.RaycastGround( x.Position, out hit ) )
-            {
-                pops.Do( y => y.ProcessSample( hit.point, mapData ) );
-            }
-        } );
-        */
     }
 }

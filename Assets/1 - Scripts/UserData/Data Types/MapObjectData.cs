@@ -5,8 +5,9 @@ using MoonSharp.Interpreter;
 using Newtonsoft.Json;
 using Unity.VisualScripting;
 using UnityEngine;
-using MoonSharp.Interpreter;
+using System.Threading.Tasks;
 using UnityEngine.AI;
+using UnityEditor.VersionControl;
 
 
 
@@ -219,5 +220,36 @@ public class MapObjectData: DataObject<MapObjectAsset>, IMapEntityData
         if( !HasValidPath() )
             return;
         Path.MoveAlong( Position, 1, .1f, ref Heading );
+    }
+
+    public async void LoadGraphics()
+    {
+        await LoadGraphics( this.Position );
+    }
+
+    private async Task<GfxMapObject> LoadGraphics( Vector3 position )
+    {
+        var mapGfx = Graphics;
+        if( !mapGfx.RuntimeKeyIsValid() ) return null;
+
+        var graphicsAsset = await mapGfx.GetAssetAsync();
+        if( graphicsAsset == null ) return null;
+
+
+        var dupe = graphicsAsset.Duplicate( position );
+        if( dupe == null )
+            return null;
+        GfxMapObject mapObjInstance = dupe.GetComponent<GfxMapObject>();
+        if( mapObjInstance == null )
+        {
+            UnityEngine.Object.Destroy( mapObjInstance.gameObject );
+            return null;
+        }
+
+        mapObjInstance.Initialize( this );
+        Position = position;
+        mapObjInstance.transform.position = position;
+
+        return mapObjInstance;
     }
 }

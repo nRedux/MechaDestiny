@@ -23,6 +23,10 @@ public class GfxMap : Singleton<GfxMap>
     public MxSelection Selection;
     public MxSelectionProcessor SelectionProcessor;
 
+    public Transform StartPos;
+    public Transform TargetPos;
+
+    private GfxMoveableMapObject _caravanGfx = null;
 
     [Button]
     public void DoLUATest()
@@ -78,9 +82,6 @@ public class GfxMap : Singleton<GfxMap>
         //Get the system UI fired up
         var inst = SUIManager.Instance;
 
-        InitializeMap();
-        PopulateMap();
-
         Selection = new MxSelection();
         Selection.OnSelectionAdd += SelectionAdd;
         Selection.OnSelectionRemove += SelectionRemove;
@@ -90,6 +91,19 @@ public class GfxMap : Singleton<GfxMap>
 
         TimeManager.StartTime();
 
+        Events.Instance.AddListener<DoSceneWarmup>( OnSceneWarmup );
+
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        Events.Instance.RemoveListener<DoSceneWarmup>( OnSceneWarmup );
+    }
+
+    private void OnSceneWarmup( DoSceneWarmup e )
+    {
+        
     }
 
     private void SelectionAdd( GfxMapObject selected )
@@ -115,29 +129,31 @@ public class GfxMap : Singleton<GfxMap>
     private void InitializeMap()
     {
         RunData data = RunManager.Instance.RunData;
+
+        if( data.WorldMapData == null )
+        {
+            data.WorldMapData = new MapData( gameObject.scene.name );
+            data.WorldMapData.Initialize();
+        }
+
         if( data.Caravan != null )
             _playerHarvester = data.Caravan;
         else
         {
             _playerHarvester = Harvester.GetDataCopySync();
             RunManager.Instance.RunData.Caravan = _playerHarvester;
+            RunManager.Instance.RunData.Caravan.Position = StartPos.position;
         }
 
-        data.WorldMapData = new MapData( gameObject.scene.name );
+        CreateCaravanGraphics();
     }
 
-
-    private void PopulateMap()
-    {
-        var samplers = GameObject.FindObjectsByType<TerrainPointSampler>( FindObjectsInactive.Exclude, FindObjectsSortMode.None );
-        samplers.Do( x => { x.Build(); x.RunPopulators( RunManager.Instance.RunData.WorldMapData ); } ); 
-    }
 
 
     private void Start()
     {
         EncounterManager.Instance.AddEncounter( TestEncounter );
-
+        CoroutineUtils.DoWaitForEndOfFrame( InitializeMap );
     }
 
 
@@ -147,20 +163,20 @@ public class GfxMap : Singleton<GfxMap>
         if( TimeManager.Instance != null )
             TimeManager.Instance.Update();
 
-        _playerHarvester.Tick( TimeManager.Instance.DayData.HoursDelta );
-
-        if( RunManager.Instance.RunData.SceneNeedsWarmup() )
-            RunManager.Instance.RunData.DoSceneWarmup();
+        if( _playerHarvester != null )
+            _playerHarvester.Tick( TimeManager.Instance.DayData.HoursDelta );
 
         Selection.Update();
         SelectionProcessor.Update();
     }
+
 
     public static bool RaycastGroundFromMouse( out RaycastHit hit )
     {
         var ray = Camera.main.ScreenPointToRay( Input.mousePosition );
         return Physics.Raycast( ray, out hit, 1000, 1 << LayerMask.NameToLayer( "Ground" ) );
     }
+
 
     public static bool RaycastForSelectables( out RaycastHit hit )
     {
@@ -173,6 +189,17 @@ public class GfxMap : Singleton<GfxMap>
         position.y = SKY_HEIGHT;
         var ray = new Ray( position, Vector3.down );
         return Physics.Raycast( ray, out hit, SKY_HEIGHT + 100, 1 << LayerMask.NameToLayer( "Ground" ) );
+    }
+
+
+    private async void CreateCaravanGraphics()
+    {
+        var runData = RunManager.Instance.RunData;
+        var caravanAsset = await runData.Caravan.Graphics.GetAssetAsync();
+
+        var instGO = Instantiate<GameObject>( caravanAsset );
+        _caravanGfx = instGO.GetComponent<GfxMoveableMapObject>();
+        _caravanGfx.Initialize( runData.Caravan );
     }
 
 }

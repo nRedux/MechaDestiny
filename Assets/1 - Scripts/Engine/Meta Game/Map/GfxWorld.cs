@@ -19,12 +19,12 @@ public class GfxWorld : MonoBehaviour
     {
         if( Light )
             _lightEulerStart = Light.transform.eulerAngles;
-        AddListeners();
+        
     }
 
     private void Start()
     {
-        CreateCaravanGraphics();
+        AddListeners();
     }
 
     private void OnDestroy()
@@ -44,7 +44,7 @@ public class GfxWorld : MonoBehaviour
 
     private void DoSceneWarmup( DoSceneWarmup e )
     {
-        RunManager.Instance.RunData.Caravan.Position = StartPos.position;
+
     }
 
 

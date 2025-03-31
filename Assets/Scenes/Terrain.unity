@@ -4963,6 +4963,8 @@ MonoBehaviour:
     Location:
       Coordinate: {x: 0, y: 0, z: 0}
     Radius: 0
+  StartPos: {fileID: 1737012411}
+  TargetPos: {fileID: 495969596}
 --- !u!4 &917513608
 Transform:
   m_ObjectHideFlags: 0

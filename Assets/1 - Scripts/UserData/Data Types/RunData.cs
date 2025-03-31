@@ -29,12 +29,6 @@ public class RunData
     //Should be null by default
     public string ActiveScene = null;
 
-    [JsonProperty]
-    private bool _warmupScene = true;
-
-    /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-     * Need to make this be used and make sure lua scripts are able to set it. I'd also love
-     *!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
     public List<Actor> CombatEnemies;
 
     public int? CombatMoneyReward = null;
@@ -61,19 +55,6 @@ public class RunData
     public void SetActiveScene( string scene )
     {
         this.Scene = scene;
-    }
-
-    public bool SceneNeedsWarmup()
-    {
-        return _warmupScene;
-    }
-
-    public void DoSceneWarmup()
-    {
-        if( !_warmupScene )
-            return;
-        _warmupScene = false;
-        Events.Instance.Raise( new DoSceneWarmup() );
     }
 
     public void ClearRewards()
