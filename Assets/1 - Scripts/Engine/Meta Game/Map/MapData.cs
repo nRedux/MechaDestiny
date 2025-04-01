@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public interface IMapEntityData
 {
-    void LoadGraphics();
+    public Vector3 Position{ get; set; }
+    Task<GfxMapObject> LoadGraphics();
     MapEntityDisplayState DisplayState { get; }
     MapEntityInteractivity Interactivity { get; }
 }

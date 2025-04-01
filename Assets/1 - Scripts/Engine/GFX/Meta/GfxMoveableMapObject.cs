@@ -6,8 +6,10 @@ using UnityEngine;
 public class GfxMoveableMapObject : GfxMapObject
 {
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
+        base.Update();
+
         RaycastHit hit;
         GfxMap.RaycastGround( Data.Position, out hit );
         transform.position = hit.point;

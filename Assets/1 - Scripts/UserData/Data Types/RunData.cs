@@ -19,7 +19,7 @@ public class RunData
 
     public MapData WorldMapData;
     public CompanyData CompanyData = new CompanyData();
-    public MapObjectData Caravan = null;
+    public IMapEntityData Caravan = null;
     public StorageContainer Inventory = new StorageContainer();
     public EncounterState EncounterState = new EncounterState();
     public TimeData TimeData = new TimeData();

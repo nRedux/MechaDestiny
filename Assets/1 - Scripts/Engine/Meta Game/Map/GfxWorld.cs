@@ -65,9 +65,9 @@ public class GfxWorld : MonoBehaviour
     private async void CreateCaravanGraphics()
     {
         var runData = RunManager.Instance.RunData;
-        var caravanAsset = await runData.Caravan.Graphics.GetAssetAsync();
+        var caravanAsset = await runData.Caravan.LoadGraphics();
 
-        var instGO = Instantiate<GameObject>( caravanAsset );
+        var instGO = Instantiate( caravanAsset.gameObject );
         _caravanGfx = instGO.GetComponent<GfxMoveableMapObject>();
         _caravanGfx.Initialize( runData.Caravan );
     }

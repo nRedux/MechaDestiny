@@ -40,7 +40,7 @@ public class GfxObjectStopAction : GfxMapObjectAction
     {
         try
         {
-            MapObjectData.StopMoving();
+            MapObject.StopMoving();
         }
         catch { }
 

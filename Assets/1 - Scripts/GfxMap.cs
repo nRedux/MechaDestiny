@@ -139,7 +139,7 @@ public class GfxMap : Singleton<GfxMap>
         data.WorldMapData.LoadGraphics();
 
         if( data.Caravan != null )
-            _playerHarvester = data.Caravan;
+            _playerHarvester = data.Caravan as MapObjectData;
         else
         {
             _playerHarvester = Harvester.GetDataCopySync();
@@ -164,9 +164,6 @@ public class GfxMap : Singleton<GfxMap>
     {
         if( TimeManager.Instance != null )
             TimeManager.Instance.Update();
-
-        if( _playerHarvester != null )
-            _playerHarvester.Tick( TimeManager.Instance.DayData.HoursDelta );
 
         Selection.Update();
         SelectionProcessor.Update();
@@ -197,10 +194,8 @@ public class GfxMap : Singleton<GfxMap>
     private async void CreateCaravanGraphics()
     {
         var runData = RunManager.Instance.RunData;
-        var caravanAsset = await runData.Caravan.Graphics.GetAssetAsync();
-
-        var instGO = Instantiate<GameObject>( caravanAsset );
-        _caravanGfx = instGO.GetComponent<GfxMoveableMapObject>();
+        var caravanGO = await runData.Caravan.LoadGraphics();
+        _caravanGfx = caravanGO.GetComponent<GfxMoveableMapObject>();
         _caravanGfx.Initialize( runData.Caravan );
     }
 

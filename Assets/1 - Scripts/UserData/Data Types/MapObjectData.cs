@@ -91,7 +91,7 @@ public enum MapObjectType
 {
     None = 0,
     Unit = 0x000001,
-    Objective = 0x000002
+    Event = 0x000002
 }
 
 
@@ -134,101 +134,26 @@ public class ObjectScript : ILuaScriptEvent
 public class MapObjectData: DataObject<MapObjectAsset>, IMapEntityData
 {
     public GameObjectReference Graphics;
-    public Vector3 Position;
-    public Vector3 Heading;
+
+    public Vector3 Position { get; set; }
+    public Vector3 Heading { get; set; }
 
     public MapObjectType Type;
 
     public float Speed;
 
-    [HideInInspector]
-    public TravelPath Path;
-
-    public MapObjectData TargetOnComplete = null;
-    public string ActionOnPathComplete;
-
     [SerializeReference]
     public ILuaScriptEvent ScriptOnInteract;
-
-    private NavMeshPath _navPath;
-
-    [NonSerialized]
-    public System.Action<string, MapObjectData> PathCompleteCallback;
 
     public MapEntityDisplayState DisplayState => throw new NotImplementedException();
 
     public MapEntityInteractivity Interactivity => throw new NotImplementedException();
 
-    public bool SetPath( Vector3 destination, float desiredProximity, MapObjectData targetOnComplete, Type actionOnArrive )
+
+
+    public async Task<GfxMapObject> LoadGraphics()
     {
-        _navPath = _navPath ?? new NavMeshPath();
-        this.TargetOnComplete = targetOnComplete;
-        this.ActionOnPathComplete = actionOnArrive?.Name;
-        if( NavMesh.CalculatePath( Position, destination, NavMesh.AllAreas, _navPath ) )
-        {
-            Path = new TravelPath( _navPath.corners, desiredProximity );
-            UpdateHeading();
-            return true;
-        }
-
-        return false;
-    }
-    
-    public bool HasValidPath()
-    {
-        return Path != null && !Path.IsComplete();
-    }
-
-    public void StopMoving()
-    {
-        Path = null;
-        ActionOnPathComplete = null;
-    }
-
-    private void Move( float speed, float time )
-    {
-        if( !HasValidPath() )
-            return;
-        Vector3 lastPos = Position;
-        Position = Path.MoveAlong( Position, speed, time, ref Heading );
-
-        if( Path.IsComplete() )
-        {
-            DoPathCompleteAction();
-            Path = null;
-        }
-    }
-
-
-    private void DoPathCompleteAction()
-    {
-        if( string.IsNullOrEmpty( ActionOnPathComplete ) )
-            return;
-
-        PathCompleteCallback?.Invoke( ActionOnPathComplete, TargetOnComplete );
-
-        ActionOnPathComplete = null;
-        TargetOnComplete = null;
-    }
-
-    public void Tick( float time )
-    {
-        if( HasValidPath() )
-        {
-            Move( this.Speed, time );
-        }
-    }
-
-    internal void UpdateHeading()
-    {
-        if( !HasValidPath() )
-            return;
-        Path.MoveAlong( Position, 1, .1f, ref Heading );
-    }
-
-    public async void LoadGraphics()
-    {
-        await LoadGraphics( this.Position );
+        return await LoadGraphics( this.Position );
     }
 
     private async Task<GfxMapObject> LoadGraphics( Vector3 position )

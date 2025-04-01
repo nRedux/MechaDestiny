@@ -34,14 +34,14 @@ public class GfxObjectInteractAction : GfxMapObjectAction
     {
         if( argument is GfxMapObject gfxObj )
         {
-            Data.SetPath( gfxObj.Data.Position, 0f, gfxObj.Data, this.GetType() );
+            MapObject.SetPath( gfxObj.Data.Position, 0f, gfxObj.Data, this.GetType() );
         }
     }
 
     public override bool WantsActivation( GfxMapObject mapObject, GfxMapObjectAction activeAction )
     {
         //Has objective flag
-        if( mapObject != null && ( (int)mapObject.GetData().Type & (int)MapObjectType.Objective) != 0 )
+        if( mapObject != null && ( (int)mapObject.GetData().Type & (int)MapObjectType.Event) != 0 )
         {
             return true;
         }
@@ -124,7 +124,7 @@ public class GfxObjectInteractAction : GfxMapObjectAction
 
     public override void ObjectHover( GfxMapObject obj )
     {
-        if( obj != null && ( (int) obj.GetData().Type & (int) MapObjectType.Objective ) != 0 )
+        if( obj != null && ( (int) obj.GetData().Type & (int) MapObjectType.Event ) != 0 )
         {
             CursorManager.Instance.SetCursorMode( CursorMode.Grab );
         }
