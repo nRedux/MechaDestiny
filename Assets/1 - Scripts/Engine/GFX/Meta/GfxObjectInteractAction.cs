@@ -7,7 +7,7 @@ public class GfxObjectInteractAction : GfxMapObjectAction
 {
     private System.Action _cancelCallback;
     private MapObjActionSelectArgs _selectionArgs;
-
+    private GfxMoveableMapObject _moveable = null;
 
     public MapObjectData Data
     {
@@ -28,18 +28,21 @@ public class GfxObjectInteractAction : GfxMapObjectAction
     public override void Awake()
     {
         base.Awake();
+        _moveable = MapObject as GfxMoveableMapObject;
     }
 
     protected virtual void PerformInteraction( object argument )
     {
         if( argument is GfxMapObject gfxObj )
         {
-            MapObject.SetPath( gfxObj.Data.Position, 0f, gfxObj.Data, this.GetType() );
+            _moveable.SetPath( gfxObj.Data.Position, 0f, gfxObj.Data, this.GetType() );
         }
     }
 
     public override bool WantsActivation( GfxMapObject mapObject, GfxMapObjectAction activeAction )
     {
+        if( _moveable == null )
+            return false;
         //Has objective flag
         if( mapObject != null && ( (int)mapObject.GetData().Type & (int)MapObjectType.Event) != 0 )
         {
@@ -147,10 +150,4 @@ public class GfxObjectInteractAction : GfxMapObjectAction
         VisualScriptingUtility.RunGraph( thing.Task.Result, null );
     }
 
-    public async void RunScript( TextAssetReference reference )
-    {
-        var thing = reference.LoadAssetAsync<TextAsset>();
-        await thing.Task;
-        MapObject.RunLuaBehavior( thing.Task.Result );
-    }
 }

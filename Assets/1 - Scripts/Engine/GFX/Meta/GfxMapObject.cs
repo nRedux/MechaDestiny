@@ -28,7 +28,7 @@ public class GfxMapObject : MonoBehaviour
     [NonSerialized]
     public System.Action<string, MapObjectData> PathCompleteCallback;
 
-    private NavMeshPath _navPath;
+    
 
 
     public virtual void Initialize( IMapEntityData data )
@@ -47,6 +47,18 @@ public class GfxMapObject : MonoBehaviour
         Data = null;
     }
 
+
+
+    protected virtual void Awake()
+    {
+        CollectActions();
+    }
+
+
+    protected virtual void Update()
+    {
+
+    }
 
     private void OnPathCompleted( string actionType, MapObjectData target )
     {
@@ -75,40 +87,9 @@ public class GfxMapObject : MonoBehaviour
     }
 
 
-    public void RunLuaBehavior( TextAsset asset )
-    {
-        //Dictionary<string, object> props = new Dictionary<string, object> { { "thisMapObject", this } };
-        this.LuaBehavior = new LuaBehavior( asset );
-    }
-
-
     private void CollectActions()
     {
         Actions = GetComponentsInChildren<GfxMapObjectAction>().ToList();
-    }
-
-
-    protected virtual void Awake()
-    {
-        CollectActions();
-    }
-
-
-    protected virtual void Update()
-    {
-       
-
-        if( HasValidPath() )
-        {
-            Move( Data.Speed, TimeManager.Instance.DayData.HoursDelta );
-        }
-    }
-
-
-    public void StopMoving()
-    {
-        //Path = null;
-        ActionOnPathComplete = null;
     }
 
 
@@ -121,61 +102,6 @@ public class GfxMapObject : MonoBehaviour
             return;
         }
         SelectedAction = action;
-    }
-
-
-    private void Move( float speed, float time )
-    {
-        if( !HasValidPath() )
-            return;
-        Vector3 lastPos = Data.Position;
-        Vector3 heading = Data.Heading;
-        Data.Position = Path.MoveAlong( Data.Position, speed, time, ref heading );
-        Data.Heading = heading;
-
-        if( Path.IsComplete() )
-        {
-            DoPathCompleteAction();
-            //Path = null;
-        }
-    }
-
-
-    private void DoPathCompleteAction()
-    {
-        if( string.IsNullOrEmpty( ActionOnPathComplete ) )
-            return;
-
-        PathCompleteCallback?.Invoke( ActionOnPathComplete, TargetOnComplete );
-
-        ActionOnPathComplete = null;
-        TargetOnComplete = null;
-    }
-
-
-    public bool SetPath( Vector3 destination, float desiredProximity, MapObjectData targetOnComplete, Type actionOnArrive )
-    {
-        _navPath = _navPath ?? new NavMeshPath();
-        this.TargetOnComplete = targetOnComplete;
-        this.ActionOnPathComplete = actionOnArrive?.Name;
-        if( NavMesh.CalculatePath( transform.position, destination, NavMesh.AllAreas, _navPath ) )
-        {
-            Path = new TravelPath( _navPath.corners, desiredProximity );
-            UpdateHeading();
-            return true;
-        }
-
-        return false;
-    }
-
-
-    internal void UpdateHeading()
-    {
-        if( !HasValidPath() )
-            return;
-        Vector3 heading = Data.Heading;
-        Path.MoveAlong( Data.Position, 1, .1f, ref heading );
-        Data.Heading = heading;
     }
 
 

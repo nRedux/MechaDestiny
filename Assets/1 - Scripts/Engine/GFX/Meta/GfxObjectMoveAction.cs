@@ -12,7 +12,7 @@ public class GfxObjectMoveAction : GfxMapObjectAction
     private MapObjActionSelectArgs _selectionArgs;
     private NavMeshPath _path;
 
-    private GfxMapObject _mapObject;
+    private GfxMoveableMapObject _moveable = null;
 
     public MapObjectData Data { 
         get {
@@ -32,7 +32,7 @@ public class GfxObjectMoveAction : GfxMapObjectAction
     {
         base.Awake();
         _path = new NavMeshPath();
-        _mapObject = GetComponent<GfxMapObject>();
+        _moveable = MapObject as GfxMoveableMapObject;
     }
 
 
@@ -55,7 +55,7 @@ public class GfxObjectMoveAction : GfxMapObjectAction
         try
         {
             Vector3 destination = (Vector3) argument;
-            _mapObject.SetPath( destination, 0f, null, null );
+            _moveable.SetPath( destination, 0f, null, null );
         }
         catch( System.Exception ex )
         {

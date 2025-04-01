@@ -9,6 +9,7 @@ public class GfxObjectStopAction : GfxMapObjectAction
    
     private MapObjActionSelectArgs _selectionArgs;
     private bool _requiresActivation = false;
+    private GfxMoveableMapObject _moveable = null;
 
     public MapObjectData MapObjectData { 
         get {
@@ -24,8 +25,16 @@ public class GfxObjectStopAction : GfxMapObjectAction
     }
 
 
+    public override void Awake()
+    {
+        base.Awake();
+        _moveable = MapObject as GfxMoveableMapObject;
+    }
+
     public override bool WantsActivation( GfxMapObject mapObject, GfxMapObjectAction activeAction )
     {
+        if( _moveable == null )
+            return false;
         return Input.GetKeyDown( KeyCode.S );
     }
 
@@ -40,7 +49,7 @@ public class GfxObjectStopAction : GfxMapObjectAction
     {
         try
         {
-            MapObject.StopMoving();
+            _moveable.StopMoving();
         }
         catch { }
 
