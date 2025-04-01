@@ -7,6 +7,22 @@ using UnityEngine;
 public interface IMapEntityData
 {
     void LoadGraphics();
+    MapEntityDisplayState DisplayState { get; }
+    MapEntityInteractivity Interactivity { get; }
+}
+
+//Visibility
+public enum MapEntityDisplayState
+{
+    NotDiscovered,
+    Discovered,
+    Visited
+}
+
+public enum MapEntityInteractivity
+{
+    Interactable,
+    Complete
 }
 
 
@@ -20,11 +36,13 @@ public class MapData
     [JsonProperty]
     private string _scene = "Scene not set";
 
+
     /// <summary>
     /// Do we need to do initialization for this data to be properly set up?
     /// </summary>
     [JsonProperty]
     private bool _needsInitialization = true;
+
 
     /// <summary>
     /// Counter which is used as map entity data IDs
@@ -32,9 +50,13 @@ public class MapData
     [JsonProperty]
     private int _objectIDGenerator = 0;
 
+    
     [JsonProperty]
     private Dictionary<int, IMapEntityData> Objects = new Dictionary<int, IMapEntityData>();
 
+
+    [JsonProperty]
+    private MapObjectData InteractedMapObject;
 
     public string Scene
     {
@@ -56,7 +78,10 @@ public class MapData
             Events.Instance.Raise( new DoSceneWarmup() );
         }
         _needsInitialization = false;
+    }
 
+    public void LoadGraphics()
+    {
         Objects.Do( x => x.Value.LoadGraphics() );
     }
 

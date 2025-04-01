@@ -136,6 +136,8 @@ public class GfxMap : Singleton<GfxMap>
             data.WorldMapData.Initialize();
         }
 
+        data.WorldMapData.LoadGraphics();
+
         if( data.Caravan != null )
             _playerHarvester = data.Caravan;
         else

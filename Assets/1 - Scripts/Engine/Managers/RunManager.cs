@@ -18,10 +18,12 @@ public class RunManager : Singleton<RunManager>
         get => DataHandler.RunData;
     }
 
+
     static RunManager()
     {
         
     }
+
 
 #if UNITY_EDITOR
     [InitializeOnEnterPlayMode]
@@ -31,15 +33,18 @@ public class RunManager : Singleton<RunManager>
     }
 #endif
 
+
     protected override void Awake()
     {
         base.Awake();
     }
 
+
     private void OnEnable()
     {
         DataHandler.OnDataCreated = RunDataCreated;
     }
+
 
     public static void RunDataCreated(RunData data)
     {
@@ -70,16 +75,19 @@ public class RunManager : Singleton<RunManager>
         } );
     }
 
+
     public void Update()
     {
         if( Input.GetKeyDown( KeyCode.U ) )
             SaveData();
     }
 
+
     public void SetScene( string scene )
     {
         this.RunData.ActiveScene = scene;
     }
+
 
     public void SetMapData( MapData mapData )
     {
@@ -92,6 +100,7 @@ public class RunManager : Singleton<RunManager>
     {
         DataHandler.SaveData();
     }
+
 
     public async void RunCombatEndGraph( EncounterData encounter )
     {

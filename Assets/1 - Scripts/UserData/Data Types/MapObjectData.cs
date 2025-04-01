@@ -155,6 +155,10 @@ public class MapObjectData: DataObject<MapObjectAsset>, IMapEntityData
     [NonSerialized]
     public System.Action<string, MapObjectData> PathCompleteCallback;
 
+    public MapEntityDisplayState DisplayState => throw new NotImplementedException();
+
+    public MapEntityInteractivity Interactivity => throw new NotImplementedException();
+
     public bool SetPath( Vector3 destination, float desiredProximity, MapObjectData targetOnComplete, Type actionOnArrive )
     {
         _navPath = _navPath ?? new NavMeshPath();
