@@ -145,9 +145,9 @@ public class MapObjectData: DataObject<MapObjectAsset>, IMapEntityData
     [SerializeReference]
     public ILuaScriptEvent ScriptOnInteract;
 
-    public MapEntityDisplayState DisplayState => throw new NotImplementedException();
+    public MapEntityDisplayState DisplayState => MapEntityDisplayState.NotDiscovered;
 
-    public MapEntityInteractivity Interactivity => throw new NotImplementedException();
+    public MapEntityInteractivity Interactivity => MapEntityInteractivity.Interactable;
 
 
 
