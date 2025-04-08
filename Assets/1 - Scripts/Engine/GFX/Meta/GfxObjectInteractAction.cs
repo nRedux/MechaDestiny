@@ -140,7 +140,7 @@ public class GfxObjectInteractAction : GfxMapObjectAction
     public override void ActionAfterPathMove( MapObjectData target )
     {
         Debug.Log( "Doing interact action after move!" );
-        target.ScriptOnInteract.Execute();
+        target.Interact();
     }
 
     public async void RunAction( ScriptGraphAssetReference reference )

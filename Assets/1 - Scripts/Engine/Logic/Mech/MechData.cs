@@ -21,6 +21,7 @@ public class MechData: SimpleEntity<MechAsset>
     [HideInInspector]
     public List<MechComponentData> ComponentData;
 
+    [JsonIgnore]
     public System.Action<MechComponentData> ActiveWeaponChanged;
 
 

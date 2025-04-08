@@ -10,22 +10,27 @@ public interface IMapEntityData
 {
     public Vector3 Position{ get; set; }
     Task<GfxMapObject> LoadGraphics();
-    MapEntityDisplayState DisplayState { get; }
+    MapEntityVisibility Visibility { get; }
     MapEntityInteractivity Interactivity { get; }
+
+    void SetVisibilityImmediate( MapEntityVisibility visbility );
+
+    void SetVisibility( MapEntityVisibility visbility );
+
+    void Interact();
 }
 
 //Visibility
-public enum MapEntityDisplayState
+public enum MapEntityVisibility
 {
-    NotDiscovered,
-    Discovered,
-    Visited
+    Invisible,
+    Visible
 }
 
 public enum MapEntityInteractivity
 {
     Interactable,
-    Complete
+    Exhausted
 }
 
 

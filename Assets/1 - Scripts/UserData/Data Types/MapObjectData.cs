@@ -8,6 +8,7 @@ using UnityEngine;
 using System.Threading.Tasks;
 using UnityEngine.AI;
 using UnityEditor.VersionControl;
+using UnityEngine.UIElements;
 
 
 
@@ -145,10 +146,57 @@ public class MapObjectData: DataObject<MapObjectAsset>, IMapEntityData
     [SerializeReference]
     public ILuaScriptEvent ScriptOnInteract;
 
-    public MapEntityDisplayState DisplayState => MapEntityDisplayState.NotDiscovered;
+    [JsonProperty]
+    private MapEntityVisibility _visibilityState = MapEntityVisibility.Visible;
+    [JsonProperty]
+    private MapEntityInteractivity _interactivity = MapEntityInteractivity.Interactable;
 
-    public MapEntityInteractivity Interactivity => MapEntityInteractivity.Interactable;
+    [JsonIgnore]
+    private GfxMapObject _gfxMapObject; 
 
+    public MapEntityVisibility Visibility { get => _visibilityState; }
+
+    public MapEntityInteractivity Interactivity { get => _interactivity; }
+
+    private void SetGfxObjReference( GfxMapObject gfx )
+    {
+        _gfxMapObject = gfx;
+        RefreshVisibility();
+    }
+
+
+    public void Interact()
+    {
+        //Next time map is loaded, won't be visible.
+        SetVisibilityImmediate( MapEntityVisibility.Invisible );
+        ScriptOnInteract.Execute();
+    }
+
+
+    /// <summary>
+    /// Changes visibility immediately but doesn't take effect until next time the map is loaded
+    /// </summary>
+    /// <param name="visbility">The new visibility state</param>
+    public void SetVisibilityImmediate( MapEntityVisibility visbility )
+    {
+        _visibilityState = visbility;
+        RefreshVisibility();
+    }
+
+
+    /// <summary>
+    /// Changes visibility but doesn't take effect until next time the map is loaded
+    /// </summary>
+    /// <param name="visbility">The new visibility state</param>
+    public void SetVisibility( MapEntityVisibility visbility )
+    {
+        _visibilityState = visbility;
+    }
+
+    private void RefreshVisibility()
+    {
+        _gfxMapObject.Opt()?.gameObject.SetActive( Visibility == MapEntityVisibility.Visible );
+    }
 
 
     public async Task<GfxMapObject> LoadGraphics()
@@ -156,8 +204,12 @@ public class MapObjectData: DataObject<MapObjectAsset>, IMapEntityData
         return await LoadGraphics( this.Position );
     }
 
+
     private async Task<GfxMapObject> LoadGraphics( Vector3 position )
     {
+        if( _gfxMapObject != null )
+            return _gfxMapObject;
+
         var mapGfx = Graphics;
         if( !mapGfx.RuntimeKeyIsValid() ) return null;
 
@@ -178,6 +230,8 @@ public class MapObjectData: DataObject<MapObjectAsset>, IMapEntityData
         mapObjInstance.Initialize( this );
         Position = position;
         mapObjInstance.transform.position = position;
+
+        SetGfxObjReference( mapObjInstance );
 
         return mapObjInstance;
     }
