@@ -31,8 +31,11 @@ public class SimpleEntity<TData> : DataObject<TData>, IEntity
 
     public int StatusFlags => _statusFlags;
 
+    [JsonProperty]
     private int _statusFlags = 0;
+    [JsonProperty]
     private int _entityFlags = 0;
+    [JsonProperty]
     private IEntity _parent;
 
     public void ClearAllFlags()

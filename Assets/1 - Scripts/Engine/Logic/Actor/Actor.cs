@@ -139,6 +139,13 @@ public partial class Actor : SimpleEntity<ActorAsset>
         }
     }
 
+    public void InitializeForCombat()
+    {
+        var asset = GetAssetSync();
+        InitializeAIPersonality( asset.AI_Personality );
+        Actions = asset.GetActions().Select( x => x.GetData() ).ToArray();
+    }
+
     public MechData GetMechData()
     {
         return GetSubEntities()[0] as MechData;

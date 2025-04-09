@@ -12,6 +12,7 @@ public class DataObject<TData>
     public string DataID { get; private set; }
 
     [HideInInspector]
+    [JsonProperty]
     public AssetReference AssetReference;
 
     [JsonIgnore]

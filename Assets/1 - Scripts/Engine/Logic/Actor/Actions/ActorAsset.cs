@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Internal;
@@ -15,9 +17,15 @@ public class ActorAsset : DataProviderAsset<ActorAsset, Actor>
     public LocalizedString DisplayName;
 
     public MechAssetReference MechReference;
-    public ActorActionAsset[] Actions;
+    [SerializeField]
+    private ActorActionAsset[] Actions;
 
     public AIPersonality AI_Personality;
+
+    public ActorActionAsset[] GetActions()
+    {
+        return Actions.NotNull().ToArray();
+    }
 
     public override void SetupNewData( Actor newData )
     {
@@ -25,32 +33,15 @@ public class ActorAsset : DataProviderAsset<ActorAsset, Actor>
 
         var mechData = GetMechData();
         newData.StartPilotingMech( mechData );
-        newData.Actions = new ActorAction[Actions.Length];
         newData.AddSubEntity( newData.PilotedMech );
         newData.InitializeAIPersonality( AI_Personality );
+        newData.Actions = new ActorAction[Actions.Length];
         for( int i = 0; i < Actions.Length; i++ )
         {
             if( Actions[i] == null )
                 continue;
             newData.Actions[i] = Actions[i].GetData();
         }
-    }
-
-
-    public Actor GetData()
-    {
-        Actor newActor = Json.Clone<Actor>( Data );
-        newActor.ID = this.name;
-        newActor.Actions = new ActorAction[Actions.Length];
-        newActor.AddSubEntity( GetMechData() );
-
-        for( int i = 0; i < Actions.Length; i++ )
-        {
-            if( Actions[i] == null )
-                continue;
-            newActor.Actions[i] = Actions[i].GetData();
-        }
-        return newActor;
     }
 
     private MechData GetMechData()

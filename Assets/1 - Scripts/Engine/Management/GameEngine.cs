@@ -188,7 +188,7 @@ public class GameEngine : Singleton<GameEngine>
         _game.AddTeam( playerTeam );
 
         var playerActors = RunManager.Instance.RunData.CompanyData.Employees;
-        CreateTeamActors( playerTeam, PlayerType.Ally, playerActors );
+        InitializeTeamActors( playerTeam, PlayerType.Ally, playerActors );
         return playerTeam;
     }
 
@@ -205,7 +205,7 @@ public class GameEngine : Singleton<GameEngine>
         if( RunManager.Instance.RunData.CombatEnemies != null )
             usedActors = RunManager.Instance.RunData.CombatEnemies;
 
-        CreateTeamActors( aiTeam, PlayerType.Enemy, usedActors );
+        InitializeTeamActors( aiTeam, PlayerType.Enemy, usedActors );
         return aiTeam;
     }
 
@@ -244,7 +244,7 @@ public class GameEngine : Singleton<GameEngine>
         }
     }
 
-    public void CreateTeamActors( Team team, PlayerType type, List<Actor> actors )
+    public void InitializeTeamActors( Team team, PlayerType type, List<Actor> actors )
     {
         if( actors.Count() == 0 )
             return;
@@ -269,6 +269,7 @@ public class GameEngine : Singleton<GameEngine>
                 break;
             }
             var actor = actorEnum.Current as Actor;
+            actor.InitializeForCombat();
             team.AddMember( actor );
             spawn.UseMe( actor, Game );
         }

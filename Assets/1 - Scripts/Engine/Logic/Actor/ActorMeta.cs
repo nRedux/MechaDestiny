@@ -26,7 +26,6 @@ public partial class Actor
     public ActorActivity Activity { get; private set; } = ActorActivity.Idle;
 
     [JsonProperty]
-    [NonSerialized]
     private MechData _pilotedMech = null;
 
 

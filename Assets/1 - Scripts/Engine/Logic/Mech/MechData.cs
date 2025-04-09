@@ -6,31 +6,40 @@ using UnityEngine;
 using Newtonsoft.Json;
 using System;
 
+[JsonObject(memberSerialization: MemberSerialization.OptIn)]
 [System.Serializable]
 public class MechData: SimpleEntity<MechAsset>
 {
+    [JsonProperty]
     public GameObjectReference Avatar;
-
+    [JsonProperty]
     public Color MechColor;
-
+    [JsonProperty]
     public MechComponentReference TorsoAsset;
+    [JsonProperty]
     public MechComponentReference LegsAsset;
+    [JsonProperty]
     public MechComponentReference LeftArmAsset;
+    [JsonProperty]
     public MechComponentReference RightArmAsset;
 
+    [JsonProperty]
     [HideInInspector]
     public List<MechComponentData> ComponentData;
 
     [JsonIgnore]
     public System.Action<MechComponentData> ActiveWeaponChanged;
 
-
+    [JsonProperty]
     [HideInInspector]
     public MechComponentData Torso;
+    [JsonProperty]
     [HideInInspector]
     public MechComponentData Legs;
+    [JsonProperty]
     [HideInInspector]
     public MechComponentData LeftArm;
+    [JsonProperty]
     [HideInInspector]
     public MechComponentData RightArm;
 
