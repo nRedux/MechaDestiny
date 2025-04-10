@@ -3,20 +3,16 @@ require 'Core'
 __exposed__ = {
 	["enemyForce"] = "ActorListAsset",
 	["moneyReward"] = "int",
-	["test"] = "actorlist"
+	["test"] = "actorlist",
+	["speaker"] = "sprite",
+	["dialog"] = "dialog"
 }
-
-moneyReward = 0
-enemyForce = nil
-test = nil
-
 
 function doEvent()
 	TimeManager.PauseTime()
 	yieldWait(.1)
 
-	showDialogBox( "Hi!", "Hi 2!" )
-	showDialogBox( "Oh noes!", "Yo you got mad baddies trying to penetrate your soft back side!" )
+	showDialogBox( speaker, dialog )
 
 	setCombatMoneyReward( moneyReward )
 	setCombatEnemies( enemyForce )

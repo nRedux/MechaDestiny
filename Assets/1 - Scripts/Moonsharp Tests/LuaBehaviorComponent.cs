@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEngine.AddressableAssets;
 using System.Linq;
 using Sirenix.Utilities.Editor;
+using UnityEngine.Localization;
 
 
 [AttributeUsage(AttributeTargets.Class)]
@@ -115,6 +116,21 @@ public class LuaActorRef : TypedLuaField<ActorReference>
 [LuaFieldType( typeof( Sprite ) )]
 [Serializable]
 public class LuaSprite : TypedLuaField<Sprite> { }
+
+
+[System.Serializable]
+public class DialogContent
+{
+    public LocalizedString Title;
+    public LocalizedString Message;
+}
+
+
+[LuaFieldType( typeof( DialogContent ) )]
+[Serializable]
+public class LuaDialogContent: TypedLuaField<DialogContent>
+{
+}
 
 public class SpriteDescriptor : SimpleReferenceDescriptor<Sprite> { }
 
@@ -242,17 +258,14 @@ public class LuaBehaviorComponent : MonoBehaviour
         { nameof(ActorListAsset).ToLower(), typeof(ActorListAsset).AssemblyQualifiedName },
         { "actorlist", typeof(ActorReference[]).AssemblyQualifiedName },
         { "actorref", typeof(ActorReference).AssemblyQualifiedName },
-        { "sprite", typeof(Sprite).AssemblyQualifiedName }
+        { "sprite", typeof(Sprite).AssemblyQualifiedName },
+        { "dialog", typeof(DialogContent).AssemblyQualifiedName }
     };
 
     private void InjectFields(Script script)
     {
         LuaFields.Do( x =>
         {
-            var scriptVar = script.Globals.Get(x.GetName());
-            if( scriptVar == null )
-                return;
-
             script.Globals.Set( x.GetName(), DynValue.FromObject( script, x.GetValue() ) );
         } );
     }

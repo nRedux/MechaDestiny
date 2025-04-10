@@ -1,9 +1,8 @@
 fileFormatVersion: 2
-guid: 93714216cceeeea44b3d50083ebc59c2
-labels:
-- LUA
-TextScriptImporter:
+guid: 8de9279204798a844b1a21649ecb4749
+NativeFormatImporter:
   externalObjects: {}
+  mainObjectFileID: 11400000
   userData: 
   assetBundleName: 
   assetBundleVariant: 

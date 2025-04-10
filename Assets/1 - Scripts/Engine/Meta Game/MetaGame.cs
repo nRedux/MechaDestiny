@@ -2,6 +2,7 @@ using System.Linq;
 using MoonSharp.Interpreter;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.Localization.Tables;
 
 public class MetaGame
@@ -28,6 +29,13 @@ public class MetaGame
         var callback = onContinue.Function.GetDelegate<System.Action>();
         SUIManager.Instance.UISystems.DialogBox.OnContinue = () => { callback.Invoke(); };
         SUIManager.Instance.UISystems.DialogBox.Show( speakerSprite, title, content );
+    }
+
+    public static void ShowDialogBox( Sprite speakerSprite, LocalizedString title, LocalizedString content, DynValue onContinue )
+    {
+        var callback = onContinue.Function.GetDelegate<System.Action>();
+        SUIManager.Instance.UISystems.DialogBox.OnContinue = () => { callback.Invoke(); };
+        SUIManager.Instance.UISystems.DialogBox.Show( speakerSprite, title.TryGetLocalizedString(), content.TryGetLocalizedString() );
     }
 
     public static void ChangeScene( string scene, bool warmupScene, DynValue onContinue )

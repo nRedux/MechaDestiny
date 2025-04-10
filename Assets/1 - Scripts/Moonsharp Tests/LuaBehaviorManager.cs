@@ -3,6 +3,8 @@ using System.Linq;
 using MoonSharp.Interpreter;
 using MoonSharp.Interpreter.Loaders;
 using UnityEngine;
+using UnityEngine.Localization;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -87,6 +89,8 @@ public class LuaBehaviorManager : SingletonScriptableObject<LuaBehaviorManager>
         UserData.RegisterType<LuaActorList>();
         UserData.RegisterType<MechData>();
         UserData.RegisterType<Sprite>();
+        UserData.RegisterType<DialogContent>();
+        UserData.RegisterType<LocalizedString>();
 
         UserData.RegisterType<TimeManager>();
         UserData.RegisterType<MetaGame>();

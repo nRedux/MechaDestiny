@@ -29,6 +29,12 @@ MonoBehaviour:
     - Locale-en-US
     - Preload
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8de9279204798a844b1a21649ecb4749
+    m_Address: Dialog_en-US
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en-US
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d2902c6ae94c04b41bc1b51a89da5b6f
     m_Address: Weapons_en-US
     m_ReadOnly: 1

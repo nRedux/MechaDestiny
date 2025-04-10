@@ -36,25 +36,30 @@ function yieldWait(seconds)
 end
 
 
-function showDialogBox( title, content )
-	local canContinue = false
-	function waitDialogBox()
-		canContinue = true
-	end
-
-	MetaGame.ShowDialogBox( title, content, waitDialogBox )
-	while canContinue == false do
-		coroutine.yield()
-	end
-end
-
 function showDialogBox( speaker, title, content )
 	local canContinue = false
 	function waitDialogBox()
 		canContinue = true
 	end
 
+	log("I am here 2")
+
 	MetaGame.ShowDialogBox( speaker, title, content, waitDialogBox )
+	while canContinue == false do
+		coroutine.yield()
+	end
+end
+
+
+function showDialogBox( speaker, dialog )
+	local canContinue = false
+	function waitDialogBox()
+		canContinue = true
+	end
+
+	log("I am here 3")
+
+	MetaGame.ShowDialogBox( speaker, dialog.Title, dialog.Message, waitDialogBox )
 	while canContinue == false do
 		coroutine.yield()
 	end
@@ -77,6 +82,7 @@ end
 function setCombatEnemies( enemies )
 	MetaGame.SetCombatEnemies( enemies )
 end
+
 
 function setCombatMoneyReward( amount )
 	MetaGame.SetCombatMoneyReward( amount )

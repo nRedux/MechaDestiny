@@ -15,7 +15,6 @@ public class AIAttackAction : AttackAction
     private Actor _actor;
 
     [JsonIgnore]
-    [JsonProperty]
     private BoolWindow _attackOptions = null;
 
     UIFindAttackTargetRequest _uiRequest = null;

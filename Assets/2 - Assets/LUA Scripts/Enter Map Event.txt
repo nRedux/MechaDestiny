@@ -2,21 +2,21 @@ require 'Core'
 
 __exposed__ = {
 	["enemyForce"] = "ActorListAsset",
-	["moneyReward"] = "int",
-	["speaker"] = "sprite"
+	["speaker"] = "sprite",
+	["touchdown"] = "dialog",
+	["objective"] = "dialog",
 }
-
-moneyReward = 0
-enemyForce = nil
-speaker = nil
 
 
 function doEvent()
 	TimeManager.PauseTime()
 	yieldWait(.1)
 
-	showDialogBox( speaker, "Hi!", "Hi 2!" )
-	showDialogBox( speaker, "Oh noes!", "Yo you got mad baddies trying to penetrate your soft back side!" )
+	--Touched down safely
+	showDialogBox( speaker, touchdown)
+	--The current critical objective is marked on the map
+	showDialogBox( speaker, objective )
+	TimeManager.PlayTime()
 end
 
 

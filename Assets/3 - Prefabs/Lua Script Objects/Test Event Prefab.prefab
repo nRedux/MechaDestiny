@@ -48,11 +48,41 @@ MonoBehaviour:
   - rid: 3512640144002777173
   - rid: 3512640144002777174
   - rid: 3512640144002777175
+  - rid: 444337066582212704
+  - rid: 444337066582212705
   ScriptAsset: {fileID: 4900000, guid: a767a77c4df28264bbc0f46d2b88eee2, type: 3}
   _oldScriptAsset: {fileID: 4900000, guid: a767a77c4df28264bbc0f46d2b88eee2, type: 3}
   references:
     version: 2
     RefIds:
+    - rid: 444337066582212704
+      type: {class: LuaSprite, ns: , asm: Assembly-CSharp}
+      data:
+        Name: speaker
+        Value: {fileID: 21300000, guid: 086aff097f81f6649bacc742fbbdd7b6, type: 3}
+    - rid: 444337066582212705
+      type: {class: LuaDialogContent, ns: , asm: Assembly-CSharp}
+      data:
+        Name: dialog
+        Value:
+          Title:
+            m_TableReference:
+              m_TableCollectionName: GUID:0f277fde2e0acff43bab773fca291229
+            m_TableEntryReference:
+              m_KeyId: 6258244861952
+              m_Key: 
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          Message:
+            m_TableReference:
+              m_TableCollectionName: GUID:0f277fde2e0acff43bab773fca291229
+            m_TableEntryReference:
+              m_KeyId: 6445101105152
+              m_Key: 
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
     - rid: 3512640144002777173
       type: {class: LuaActorListAsset, ns: , asm: Assembly-CSharp}
       data:

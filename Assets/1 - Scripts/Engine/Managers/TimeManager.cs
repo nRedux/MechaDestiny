@@ -48,7 +48,7 @@ public class TimeManager : SingletonScriptableObject<TimeManager>
         TimeManager.Instance.DayData.SetTimePlaying( false );
     }
 
-    public static void StartTime()
+    public static void PlayTime()
     {
         TimeManager.Instance.DayData.SetTimePlaying( true );
     }

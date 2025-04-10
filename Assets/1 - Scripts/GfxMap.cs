@@ -89,7 +89,7 @@ public class GfxMap : Singleton<GfxMap>
 
         SelectionProcessor = new MxSelectionProcessor( Selection );
 
-        TimeManager.StartTime();
+        TimeManager.PlayTime();
 
         Events.Instance.AddListener<DoSceneWarmup>( OnSceneWarmup );
 

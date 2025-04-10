@@ -79,6 +79,7 @@ public partial class Actor : SimpleEntity<ActorAsset>
     public SmartPoint Target { get; set; } = null;
     [JsonIgnore]
     public List<SequenceAction> Sequence { get; set; }
+
     [JsonIgnore]
     public ActorAction ActiveAction { get => _actionHandler?.ActiveAction; }
 
