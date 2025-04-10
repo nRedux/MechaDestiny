@@ -48,6 +48,18 @@ function showDialogBox( title, content )
 	end
 end
 
+function showDialogBox( speaker, title, content )
+	local canContinue = false
+	function waitDialogBox()
+		canContinue = true
+	end
+
+	MetaGame.ShowDialogBox( speaker, title, content, waitDialogBox )
+	while canContinue == false do
+		coroutine.yield()
+	end
+end
+
 
 function changeScene( scene, doWarmup )
 	local canContinue = false

@@ -4342,6 +4342,74 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: 1000
   m_LayoutPriority: 1
+--- !u!1 &670855839
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 670855841}
+  - component: {fileID: 670855840}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &670855840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 670855839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6a059a6705b50d4d88ca6fbe7af3502, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LuaFields:
+  - rid: 3512640144002777173
+  - rid: 3512640144002777174
+  - rid: 444337066582212690
+  ScriptAsset: {fileID: 4900000, guid: 93714216cceeeea44b3d50083ebc59c2, type: 3}
+  _oldScriptAsset: {fileID: 4900000, guid: 93714216cceeeea44b3d50083ebc59c2, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: 444337066582212690
+      type: {class: LuaSprite, ns: , asm: Assembly-CSharp}
+      data:
+        Name: speaker
+        Value: {fileID: 21300000, guid: 086aff097f81f6649bacc742fbbdd7b6, type: 3}
+    - rid: 3512640144002777173
+      type: {class: LuaActorListAsset, ns: , asm: Assembly-CSharp}
+      data:
+        Name: enemyForce
+        Value: {fileID: 11400000, guid: 515fa434af904f944a4fba9af7968c0b, type: 2}
+    - rid: 3512640144002777174
+      type: {class: LuaInt, ns: , asm: Assembly-CSharp}
+      data:
+        Name: moneyReward
+        Value: 99
+--- !u!4 &670855841
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 670855839}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 201.58379, y: 590.27765, z: 360.52573}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &683905155
 GameObject:
   m_ObjectHideFlags: 0
@@ -11790,3 +11858,4 @@ SceneRoots:
   - {fileID: 1220629061}
   - {fileID: 977156142}
   - {fileID: 1737827886}
+  - {fileID: 670855841}

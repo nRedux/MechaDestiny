@@ -4,18 +4,20 @@ using Sirenix.OdinInspector.Editor;
 [CustomEditor(typeof(LuaBehaviorComponent))]
 public class LuaBehaviorComponentEditor : OdinEditor
 {
-
+    
     protected override void OnEnable()
     {
+        base.OnEnable();
         DoAutoGenParams();
         TextAssetMonitor.TextAssetModified += OnTextAssetModified;
     }
 
     protected override void OnDisable()
     {
+        base.OnDisable();
         TextAssetMonitor.TextAssetModified -= OnTextAssetModified;
     }
-
+    
     private void OnTextAssetModified()
     {
         DoAutoGenParams();

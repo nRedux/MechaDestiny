@@ -13,15 +13,16 @@ public class UIDialogBox : UIPanel
 
     public System.Action OnContinue;
 
-    public void Refresh(string titleContent, string stringContent)
+    public void Refresh( Sprite speakerSprite, string titleContent, string stringContent)
     {
         this.TitleText.text = titleContent;
         this.ContentText.text = stringContent;
+        this.PortraitImage.sprite = speakerSprite;
     }
 
-    public void Show( string titleContent, string stringContent )
+    public void Show( Sprite speakerSprite, string titleContent, string stringContent )
     {
-        Refresh( titleContent, stringContent );
+        Refresh( speakerSprite, titleContent, stringContent );
         CreateBackground();
 
         //On click hide self!

@@ -2,6 +2,7 @@ using System.Linq;
 using MoonSharp.Interpreter;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Localization.Tables;
 
 public class MetaGame
 {
@@ -10,7 +11,23 @@ public class MetaGame
     {
         var callback = onContinue.Function.GetDelegate<System.Action>();
         SUIManager.Instance.UISystems.DialogBox.OnContinue = () => { callback.Invoke(); };
-        SUIManager.Instance.UISystems.DialogBox.Show( title, content );
+        SUIManager.Instance.UISystems.DialogBox.Show( null, title, content );
+    }
+
+    public static void ShowDialogBox( ActorReference actor, string title, string content, DynValue onContinue )
+    {
+        var asset = actor.GetAssetSync();
+        
+        var callback = onContinue.Function.GetDelegate<System.Action>();
+        SUIManager.Instance.UISystems.DialogBox.OnContinue = () => { callback.Invoke(); };
+        SUIManager.Instance.UISystems.DialogBox.Show( asset.PortraitImage, title, content );
+    }
+
+    public static void ShowDialogBox( Sprite speakerSprite, string title, string content, DynValue onContinue )
+    {
+        var callback = onContinue.Function.GetDelegate<System.Action>();
+        SUIManager.Instance.UISystems.DialogBox.OnContinue = () => { callback.Invoke(); };
+        SUIManager.Instance.UISystems.DialogBox.Show( speakerSprite, title, content );
     }
 
     public static void ChangeScene( string scene, bool warmupScene, DynValue onContinue )

@@ -1,0 +1,25 @@
+require 'Core'
+
+__exposed__ = {
+	["enemyForce"] = "ActorListAsset",
+	["moneyReward"] = "int",
+	["speaker"] = "sprite"
+}
+
+moneyReward = 0
+enemyForce = nil
+speaker = nil
+
+
+function doEvent()
+	TimeManager.PauseTime()
+	yieldWait(.1)
+
+	showDialogBox( speaker, "Hi!", "Hi 2!" )
+	showDialogBox( speaker, "Oh noes!", "Yo you got mad baddies trying to penetrate your soft back side!" )
+end
+
+
+function awake()
+	thisScript.CreateCoroutine( doEvent )
+end

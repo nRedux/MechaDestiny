@@ -82,10 +82,11 @@ public class LuaBehaviorManager : SingletonScriptableObject<LuaBehaviorManager>
 
         UserData.RegisterType<ActorListAsset>();
         UserData.RegisterType<ActorListCollection>();
-        //UserData.RegisterType<ActorReference>();
-        UserData.RegisterType<ActorReference[]>();
+        UserData.RegisterType<ActorReference>( new ActorReferenceDescriptor() );
+        //UserData.RegisterType<ActorReference[]>();
         UserData.RegisterType<LuaActorList>();
-
+        UserData.RegisterType<MechData>();
+        UserData.RegisterType<Sprite>();
 
         UserData.RegisterType<TimeManager>();
         UserData.RegisterType<MetaGame>();

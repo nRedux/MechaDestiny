@@ -4,7 +4,9 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 using MoonSharp.Interpreter;
 using UnityEditor;
+using UnityEngine.AddressableAssets;
 using System.Linq;
+using Sirenix.Utilities.Editor;
 
 
 [AttributeUsage(AttributeTargets.Class)]
@@ -25,7 +27,7 @@ public interface ILuaField
     string GetFieldTypeName();
 }
 
-
+[InlineProperty]
 [Serializable]
 public abstract class TypedLuaField<T>: ILuaField
 {
@@ -62,20 +64,17 @@ public class LuaGameObject: TypedLuaField<GameObject>
 {
 }
 
-
 [LuaFieldType( typeof( int ) )]
 [Serializable]
 public class LuaInt : TypedLuaField<int>
 {
 }
 
-
 [LuaFieldType( typeof( float ) )]
 [Serializable]
 public class LuaFloat : TypedLuaField<float>
 {
 }
-
 
 [LuaFieldType( typeof( string ) )]
 [Serializable]
@@ -107,12 +106,23 @@ public class LuaActorList : TypedLuaField<ActorReference[]>
 {
 }
 
+[LuaFieldType( typeof( ActorReference ) )]
+[Serializable]
+public class LuaActorRef : TypedLuaField<ActorReference>
+{
+}
+
+[LuaFieldType( typeof( Sprite ) )]
+[Serializable]
+public class LuaSprite : TypedLuaField<Sprite> { }
+
+public class SpriteDescriptor : SimpleReferenceDescriptor<Sprite> { }
+
 
 public class LuaBehaviorComponent : MonoBehaviour
 {
     private const string EXPOSED_FIELDS_SIGNATURE = "__exposed__";
 
-    [InlineProperty]
     [HideReferenceObjectPicker]
     [ListDrawerSettings( HideAddButton = true, HideRemoveButton = true )]
     [SerializeReference]
@@ -129,8 +139,6 @@ public class LuaBehaviorComponent : MonoBehaviour
 
     public void OnScriptAssetChanged( TextAsset changedTextAsset )
     {
-
-
         if( changedTextAsset == null )
         {
 #if UNITY_EDITOR
@@ -233,6 +241,8 @@ public class LuaBehaviorComponent : MonoBehaviour
         { nameof(ActorListCollection).ToLower(), typeof(ActorListCollection).AssemblyQualifiedName },
         { nameof(ActorListAsset).ToLower(), typeof(ActorListAsset).AssemblyQualifiedName },
         { "actorlist", typeof(ActorReference[]).AssemblyQualifiedName },
+        { "actorref", typeof(ActorReference).AssemblyQualifiedName },
+        { "sprite", typeof(Sprite).AssemblyQualifiedName }
     };
 
     private void InjectFields(Script script)

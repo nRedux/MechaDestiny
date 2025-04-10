@@ -51,7 +51,7 @@ public class SUIManager : SingletonScriptableObject<SUIManager>
     /// <param name="text">The spoken text.</param>
     public static void ShowDialog(string title, string text)
     {
-        Instance.UISystems.DialogBox.Show(title, text);
+        Instance.UISystems.DialogBox.Show( null, title, text);
     }
 
 }
