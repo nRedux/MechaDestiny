@@ -6,13 +6,16 @@ using UnityEngine;
 public static class UnityExtensions
 {
     private static readonly Vector3 ZERO = new Vector3( 0, 0, 0 );
+
+
+    #region INSTATIATION AND DESTRUCTION
+
     public static T Duplicate<T>( this T unityObject ) where T: Object
     {
         if( unityObject == null )
             return null;
 
         var inst = Object.Instantiate<T>( unityObject );
-
 
         return inst;
     }
@@ -28,10 +31,6 @@ public static class UnityExtensions
         return inst;
     }
 
-    public static T GetOrAddComponent<T>( this GameObject gameObject ) where T: Component
-    {
-        return gameObject.GetComponent<T>().Opt() ?? gameObject.AddComponent<T>().Opt();
-    }
 
     public static void DestroyChildren( this GameObject gameObject )
     {
@@ -45,6 +44,7 @@ public static class UnityExtensions
         }
     }
 
+
     public static void DestroyChildren( this Transform transform )
     {
         if( transform == null )
@@ -56,7 +56,53 @@ public static class UnityExtensions
         }
     }
 
+    #endregion
 
+
+
+
+
+    #region COMPONENTS
+
+    public static IEnumerable<TInterfaceType> GetInterfaceComponents<TInterfaceType>( this GameObject obj ) where TInterfaceType : class
+    {
+        return obj.GetComponents<Component>().Where( x => typeof( TInterfaceType ).IsAssignableFrom( x.GetType() ) ).Select( x => x as TInterfaceType );
+    }
+
+    public static IEnumerable<TInterfaceType> GetInterfaceComponents<TInterfaceType>( this Component obj ) where TInterfaceType : class
+    {
+        return obj.gameObject.GetInterfaceComponents<TInterfaceType>();
+    }
+
+    public static T GetOrAddComponent<T>( this GameObject gameObject ) where T : Component
+    {
+        return gameObject.GetComponent<T>().Opt() ?? gameObject.AddComponent<T>().Opt();
+    }
+
+    #endregion
+
+
+
+
+
+    #region CONVERSIONS
+
+    public static Vector2Int ToVector2Int( this Vector2 vec2 )
+    {
+        return new Vector2Int( Mathf.FloorToInt( vec2.x ), Mathf.FloorToInt( vec2.y ) );
+    }
+
+    public static Vector2Int ToVector2Int( this Vector3 vec3 )
+    {
+        return new Vector2Int( Mathf.FloorToInt( vec3.x ), Mathf.FloorToInt( vec3.z ) );
+    }
+
+    #endregion
+
+
+
+
+    #region MISC.
 
     /**************************************************
      * 
@@ -82,23 +128,5 @@ public static class UnityExtensions
         _rectTransform.Opt()?.PositionOverWorld( _canvasRectTransform, worldPosition );
     }
 
-    public static Vector2Int ToVector2Int( this Vector2 vec2 )
-    {
-        return new Vector2Int( Mathf.FloorToInt( vec2.x ), Mathf.FloorToInt( vec2.y ) );
-    }
-
-    public static Vector2Int ToVector2Int( this Vector3 vec3 )
-    {
-        return new Vector2Int( Mathf.FloorToInt( vec3.x ), Mathf.FloorToInt( vec3.z ) );
-    }
-
-    public static IEnumerable<TInterfaceType> GetInterfaceComponents<TInterfaceType>( this GameObject obj ) where TInterfaceType: class
-    {
-       return obj.GetComponents<Component>().Where( x => typeof(TInterfaceType).IsAssignableFrom( x.GetType() ) ).Select( x => x as TInterfaceType );
-    }
-
-    public static IEnumerable<TInterfaceType> GetInterfaceComponents<TInterfaceType>( this Component obj ) where TInterfaceType : class
-    {
-        return obj.gameObject.GetInterfaceComponents<TInterfaceType>();
-    }
+    #endregion
 }
