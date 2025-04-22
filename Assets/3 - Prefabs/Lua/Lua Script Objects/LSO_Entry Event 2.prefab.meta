@@ -1,7 +1,8 @@
 fileFormatVersion: 2
-guid: 2692aa7cca8c6194cb935c1dbc32462e
-folderAsset: yes
-DefaultImporter:
+guid: a902fcddb39728d4b9cbfa463e74aabb
+labels:
+- EventPrefab
+PrefabImporter:
   externalObjects: {}
   userData: 
   assetBundleName: 

@@ -74,8 +74,7 @@ MonoBehaviour:
   - m_GUID: 1ecdf63da3b259141b43cad5da1018cf
     m_Address: Assets/2 - Assets/Entities/Map Objects/Harvest Patch.asset
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - default
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 21a1e8dd213676b4185f14ab2242b473
     m_Address: Assets/2 - Assets/Entities/Mechs/Weapons/Core Weapons/Machine Guns/Titra-1.asset
@@ -101,6 +100,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 418313ffb0bede4409ee32f285afb699
     m_Address: Assets/2 - Assets/Entities/Mechs/Test AI Brawler/AI Legs.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4a38e8b651cd3c840a57f0a2efb4e3cf
+    m_Address: Assets/2 - Assets/Entities/Map Objects/MO_Harvest Patch 1.asset
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -277,6 +281,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - default
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ccebae12a9d95984dbccc591ea4af9bf
+    m_Address: Assets/2 - Assets/Entities/Map Objects/MO_Harvest Patch 2.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ce350250886983b4cbbe41e2dbc56707
     m_Address: Assets/2 - Assets/Entities/Mechs/Player Mech 2/Player Mech 2.asset

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5131185527085727183}
   - component: {fileID: 6097400104064624686}
   m_Layer: 0
-  m_Name: Test Event Prefab
+  m_Name: LSO_Entry Event 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,30 +46,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LuaFields:
   - rid: 3512640144002777173
-  - rid: 3512640144002777174
-  - rid: 3512640144002777175
-  - rid: 444337066582212704
-  - rid: 444337066582212705
-  ScriptAsset: {fileID: 4900000, guid: a767a77c4df28264bbc0f46d2b88eee2, type: 3}
-  _oldScriptAsset: {fileID: 4900000, guid: a767a77c4df28264bbc0f46d2b88eee2, type: 3}
+  - rid: 444337066582212690
+  - rid: 444337087515459584
+  - rid: 444337087515459585
+  ScriptAsset: {fileID: 4900000, guid: 93714216cceeeea44b3d50083ebc59c2, type: 3}
+  _oldScriptAsset: {fileID: 4900000, guid: 93714216cceeeea44b3d50083ebc59c2, type: 3}
   references:
     version: 2
     RefIds:
-    - rid: 444337066582212704
+    - rid: 444337066582212690
       type: {class: LuaSprite, ns: , asm: Assembly-CSharp}
       data:
         Name: speaker
         Value: {fileID: 21300000, guid: 086aff097f81f6649bacc742fbbdd7b6, type: 3}
-    - rid: 444337066582212705
+    - rid: 444337087515459584
       type: {class: LuaDialogContent, ns: , asm: Assembly-CSharp}
       data:
-        Name: dialog
+        Name: touchdown
         Value:
           Title:
             m_TableReference:
               m_TableCollectionName: GUID:0f277fde2e0acff43bab773fca291229
             m_TableEntryReference:
-              m_KeyId: 6258244861952
+              m_KeyId: 197152620544
               m_Key: 
             m_FallbackState: 0
             m_WaitForCompletion: 0
@@ -78,7 +77,30 @@ MonoBehaviour:
             m_TableReference:
               m_TableCollectionName: GUID:0f277fde2e0acff43bab773fca291229
             m_TableEntryReference:
-              m_KeyId: 6445101105152
+              m_KeyId: 9184886784
+              m_Key: 
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+    - rid: 444337087515459585
+      type: {class: LuaDialogContent, ns: , asm: Assembly-CSharp}
+      data:
+        Name: objective
+        Value:
+          Title:
+            m_TableReference:
+              m_TableCollectionName: GUID:0f277fde2e0acff43bab773fca291229
+            m_TableEntryReference:
+              m_KeyId: 313792020480
+              m_Key: 
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          Message:
+            m_TableReference:
+              m_TableCollectionName: GUID:0f277fde2e0acff43bab773fca291229
+            m_TableEntryReference:
+              m_KeyId: 105884565504
               m_Key: 
             m_FallbackState: 0
             m_WaitForCompletion: 0
@@ -88,18 +110,3 @@ MonoBehaviour:
       data:
         Name: enemyForce
         Value: {fileID: 11400000, guid: 515fa434af904f944a4fba9af7968c0b, type: 2}
-    - rid: 3512640144002777174
-      type: {class: LuaInt, ns: , asm: Assembly-CSharp}
-      data:
-        Name: moneyReward
-        Value: 100
-    - rid: 3512640144002777175
-      type: {class: LuaActorList, ns: , asm: Assembly-CSharp}
-      data:
-        Name: test
-        Value:
-        - m_AssetGUID: 7e52ef25f5daad749926eadb567d2dd1
-          m_SubObjectName: 
-          m_SubObjectGUID: 
-          m_SubObjectType: 
-          m_EditorAssetChanged: 1

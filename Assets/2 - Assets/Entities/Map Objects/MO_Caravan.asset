@@ -9,10 +9,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfa98d171206acf4db67fc1a9dc10a01, type: 3}
-  m_Name: Dialog_01_Report
+  m_Script: {fileID: 11500000, guid: 9b9a77a985e1cc74388d7872e4a41838, type: 3}
+  m_Name: MO_Caravan
   m_EditorClassIdentifier: 
-  String:
+  Data:
+    AssetReference:
+      m_AssetGUID: 634cf266f8eccec47a91d727f51dd717
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    Graphics:
+      m_AssetGUID: 25cf1dd3425cc0843a00500cc80c4a4a
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    Position: {x: 0, y: 0, z: 0}
+    Heading: {x: 0, y: 0, z: 0}
+    Speed: 5
+  DisplayName:
     m_TableReference:
       m_TableCollectionName: 
     m_TableEntryReference:
