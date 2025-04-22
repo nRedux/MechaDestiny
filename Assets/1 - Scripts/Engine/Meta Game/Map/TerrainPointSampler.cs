@@ -8,6 +8,7 @@ using UnityEditor;
 using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEditor.PlayerSettings;
 
 [System.Serializable]
 public class TerrainSamplerPoint
@@ -15,6 +16,44 @@ public class TerrainSamplerPoint
     public Vector3 Position;
     public float Radius;
 }
+
+[System.Serializable]
+public class Curve3D
+{
+    public AnimationCurve CurveX;
+    public AnimationCurve CurveY;
+    public AnimationCurve CurveZ;
+
+    public int KeyCount => CurveX.keys.Length;
+
+    public void AddKey( float time, Vector3 pos )
+    {
+        CurveX.AddKey( new Keyframe( time, pos.x ) );
+        CurveY.AddKey( new Keyframe( time, pos.y ) );
+        CurveZ.AddKey( new Keyframe( time, pos.z ) );
+    }
+
+    public Vector3 Evaluate( float time )
+    {
+        Vector3 result = new Vector3( CurveX.Evaluate( time ), CurveY.Evaluate( time ), CurveZ.Evaluate( time ) );
+        return result;
+    }
+
+    public void SmoothCurve()
+    {
+        int keyCount = CurveX.keys.Length;
+        for( int i = 0; i < keyCount; i++ )
+        {
+            AnimationUtility.SetKeyLeftTangentMode( CurveX, i, AnimationUtility.TangentMode.Auto );
+            AnimationUtility.SetKeyRightTangentMode( CurveX, i, AnimationUtility.TangentMode.Auto );
+            AnimationUtility.SetKeyLeftTangentMode( CurveY, i, AnimationUtility.TangentMode.Auto );
+            AnimationUtility.SetKeyRightTangentMode( CurveY, i, AnimationUtility.TangentMode.Auto );
+            AnimationUtility.SetKeyLeftTangentMode( CurveZ, i, AnimationUtility.TangentMode.Auto );
+            AnimationUtility.SetKeyRightTangentMode( CurveZ, i, AnimationUtility.TangentMode.Auto );
+        }
+    }
+}
+
 
 public class TerrainPointSampler : MonoBehaviour
 {
@@ -30,6 +69,8 @@ public class TerrainPointSampler : MonoBehaviour
     public AnimationCurve CurveX;
     public AnimationCurve CurveY;
     public AnimationCurve CurveZ;
+
+    public Curve3D Curve;
 
     public float EventTimeVariation = .5f;
 
@@ -114,6 +155,7 @@ public class TerrainPointSampler : MonoBehaviour
     [ReadOnly]
     public float TurningAngle = 0f;
 
+
     [Button]
     public void Build()
     {
@@ -127,6 +169,7 @@ public class TerrainPointSampler : MonoBehaviour
         }
         BuildCurve();
     }
+
 
     private float GetPathTurningAngle()
     {
@@ -143,10 +186,6 @@ public class TerrainPointSampler : MonoBehaviour
         return turnAngle;
     }
 
-    public List<TerrainSamplerPoint> GetPath()
-    {
-        return new List<TerrainSamplerPoint>( Path );
-    }
 
     private void BuildCurve()
     {
@@ -158,21 +197,12 @@ public class TerrainPointSampler : MonoBehaviour
         {
             float time = i / (float) ( pathCount - 1 );
             Vector3 pos = Path[i].Position;
-            CurveX.AddKey( new Keyframe( time, pos.x ) );
-            CurveY.AddKey( new Keyframe( time, pos.y ) );
-            CurveZ.AddKey( new Keyframe( time, pos.z ) );
+            Curve.AddKey( time, pos );
         }
 
-        for( int i = 0; i < pathCount; i++ )
-        {
-            AnimationUtility.SetKeyLeftTangentMode( CurveX, i, AnimationUtility.TangentMode.Auto );
-            AnimationUtility.SetKeyRightTangentMode( CurveX, i, AnimationUtility.TangentMode.Auto );
-            AnimationUtility.SetKeyLeftTangentMode( CurveY, i, AnimationUtility.TangentMode.Auto );
-            AnimationUtility.SetKeyRightTangentMode( CurveY, i, AnimationUtility.TangentMode.Auto );
-            AnimationUtility.SetKeyLeftTangentMode( CurveZ, i, AnimationUtility.TangentMode.Auto );
-            AnimationUtility.SetKeyRightTangentMode( CurveZ, i, AnimationUtility.TangentMode.Auto );
-        }
+        Curve.SmoothCurve();
     }
+
 
     private void RenderGizmosCurve()
     {
@@ -191,12 +221,13 @@ public class TerrainPointSampler : MonoBehaviour
         for( int i = 0; i < res; i++ )
         {
             float time = i / (float)( res - 1);
-            Vector3 pos = new Vector3( CurveX.Evaluate( time ), CurveY.Evaluate( time ), CurveZ.Evaluate( time ) );
+            Vector3 pos = Curve.Evaluate( time );
             Gizmos.DrawLine( lastPos + Vector3.up * 40f, pos + Vector3.up * 40f );
             lastPos = pos;
         }
         Gizmos.color = oldColor;
     }
+
 
     private TerrainSamplerPoint GetNextPoint( List<TerrainSamplerPoint> points, Vector3 endPoint, Vector3 location )
     {
@@ -214,13 +245,10 @@ public class TerrainPointSampler : MonoBehaviour
     }
 
 
-    public void SampleIfNeeded()
-    {
-        _points ??= GetSample();
-    }
-
     private void OnDrawGizmos()
     {
+        if( !this.enabled )
+            return;
         if( _points == null )
             return;
 
@@ -232,11 +260,6 @@ public class TerrainPointSampler : MonoBehaviour
         RenderGizmosCurve();
     }
 
-    private Vector3 EvaluateCurve( float time )
-    {
-        Vector3 result = new Vector3( CurveX.Evaluate( time ), CurveY.Evaluate( time ), CurveZ.Evaluate( time ) );
-        return result;
-    }
 
     public void RunPopulators( MapData mapData )
     {
@@ -250,7 +273,7 @@ public class TerrainPointSampler : MonoBehaviour
             if( i == 0 )
                 time = Mathf.Max( time, .04f + Random.value * .08f );
             RaycastHit hit;
-            if( GameUtils.RaycastGround( EvaluateCurve(time), out hit ) )
+            if( GameUtils.RaycastGround( Curve.Evaluate(time), out hit ) )
             {
                 pops.Do( y => y.ProcessSample( hit.point, mapData ) );
             }

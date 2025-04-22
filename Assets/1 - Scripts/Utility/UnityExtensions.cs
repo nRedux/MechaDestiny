@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public static class UnityExtensions
@@ -89,5 +90,15 @@ public static class UnityExtensions
     public static Vector2Int ToVector2Int( this Vector3 vec3 )
     {
         return new Vector2Int( Mathf.FloorToInt( vec3.x ), Mathf.FloorToInt( vec3.z ) );
+    }
+
+    public static IEnumerable<TInterfaceType> GetInterfaceComponents<TInterfaceType>( this GameObject obj ) where TInterfaceType: class
+    {
+       return obj.GetComponents<Component>().Where( x => typeof(TInterfaceType).IsAssignableFrom( x.GetType() ) ).Select( x => x as TInterfaceType );
+    }
+
+    public static IEnumerable<TInterfaceType> GetInterfaceComponents<TInterfaceType>( this Component obj ) where TInterfaceType : class
+    {
+        return obj.gameObject.GetInterfaceComponents<TInterfaceType>();
     }
 }
