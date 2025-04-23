@@ -1,15 +1,16 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mail;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class EntitySeriesPopulator : TerrainPopulator
+public class EntitySeriesPopulator : MonoBehaviour, ITerrainCurvePopulator
 {
 
     public MapObjectReference[] MapObjects;
+
+    [Range(0f, 1f)]
+    [Tooltip("Minimum distance along the curve before first population is performed")]
+    public float MinPopulationDistance;
 
     private MapObjectAsset[] _assets;
 
@@ -27,11 +28,9 @@ public class EntitySeriesPopulator : TerrainPopulator
     /// <summary>
     /// Cache valid entries in MapObjects for use during population
     /// </summary>
-    private void InitializeEnumerator()
+    private IEnumerable<MapObjectReference> GetMapObjectRefs()
     {
-        if( _mapObjEnumerator != null && _mapObjEnumerator.Current != null )
-            return;
-        _mapObjEnumerator = MapObjects.Where( x => x.RuntimeKeyIsValid() ).GetEnumerator();
+        return MapObjects.Where( x => x.RuntimeKeyIsValid() );
     }
 
 
@@ -42,7 +41,7 @@ public class EntitySeriesPopulator : TerrainPopulator
     /// <returns></returns>
     public MapObjectAsset GetAssetAtIndex( int index )
     {
-        InitializeEnumerator();
+        GetMapObjectRefs();
 
         if( _assets == null )
             _assets = new MapObjectAsset[_validMapObjectRefs.Length];
@@ -60,7 +59,7 @@ public class EntitySeriesPopulator : TerrainPopulator
 
     public MapObjectAsset GetNextMapObject()
     {
-        InitializeEnumerator();
+        GetMapObjectRefs();
         var current = _mapObjEnumerator.Current;
         return current.GetAssetSync();
     }
@@ -75,14 +74,43 @@ public class EntitySeriesPopulator : TerrainPopulator
     }
 
 
-    public override void ProcessSample( Vector3 position, MapData mapData )
+    private float GetPopulationRange()
     {
-        var instance = GetMapObjectdata();
-
-        if( instance == null )
-        instance.Position = position;
-        mapData.AddMapdata( instance );
+        return 1f - MinPopulationDistance;
     }
 
+    public void ProcessCurve( Curve3D curve, MapData mapData )
+    {
+        var references = GetMapObjectRefs().ToList();
+        int numMapObjRefs = references.Count();
+        float populationRange = GetPopulationRange();
+        float curveTimePerEvent = populationRange / (numMapObjRefs-1);
+
+        for( int i = 0; i < numMapObjRefs; ++i )
+        {
+            var time = MinPopulationDistance + i * curveTimePerEvent;// + Random.value * ( curveTimePerEvent - curveTimePerEvent * .5f );
+            //if( i == 0 )
+            //    time = Mathf.Max( time, .04f + Random.value * .08f );
+            RaycastHit hit;
+            Vector3 curveSamplePos = curve.Evaluate( time );
+            if( GameUtils.RaycastGround( curveSamplePos, out hit ) )
+            {
+                var instance = references[i].GetDataCopySync();
+                if( instance == null )
+                {
+                    Debug.LogError( "Couldn't load asset in reference" );
+                    continue;
+                }
+                instance.Position = hit.point;
+                mapData.AddMapdata( instance );
+            }
+            else
+            {
+                Debug.LogError( $"{nameof(EntitySeriesPopulator)} Missed terrain." );
+            }
+        }
+
+
+    }
 
 }

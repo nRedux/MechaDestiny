@@ -15,43 +15,37 @@ public class TerrainSamplerPoint
 {
     public Vector3 Position;
     public float Radius;
+
+    //If used by a population action, should be set true.
+    public bool UsedForPopulation = false;
+
+
+    /// <summary>
+    /// Tells the population system this isn't usable for population.
+    /// </summary>
+    /// <returns></returns>
+    public void Use()
+    {
+        UsedForPopulation = true;
+    }
+
+
+    /// <summary>
+    /// Was the point already used in a population routine?
+    /// </summary>
+    /// <returns></returns>
+    public bool AlreadyUsed()
+    {
+        return !UsedForPopulation;
+    }
 }
 
-[System.Serializable]
-public class Curve3D
+
+public class TerrainSamplerException: System.Exception
 {
-    public AnimationCurve CurveX;
-    public AnimationCurve CurveY;
-    public AnimationCurve CurveZ;
-
-    public int KeyCount => CurveX.keys.Length;
-
-    public void AddKey( float time, Vector3 pos )
-    {
-        CurveX.AddKey( new Keyframe( time, pos.x ) );
-        CurveY.AddKey( new Keyframe( time, pos.y ) );
-        CurveZ.AddKey( new Keyframe( time, pos.z ) );
-    }
-
-    public Vector3 Evaluate( float time )
-    {
-        Vector3 result = new Vector3( CurveX.Evaluate( time ), CurveY.Evaluate( time ), CurveZ.Evaluate( time ) );
-        return result;
-    }
-
-    public void SmoothCurve()
-    {
-        int keyCount = CurveX.keys.Length;
-        for( int i = 0; i < keyCount; i++ )
-        {
-            AnimationUtility.SetKeyLeftTangentMode( CurveX, i, AnimationUtility.TangentMode.Auto );
-            AnimationUtility.SetKeyRightTangentMode( CurveX, i, AnimationUtility.TangentMode.Auto );
-            AnimationUtility.SetKeyLeftTangentMode( CurveY, i, AnimationUtility.TangentMode.Auto );
-            AnimationUtility.SetKeyRightTangentMode( CurveY, i, AnimationUtility.TangentMode.Auto );
-            AnimationUtility.SetKeyLeftTangentMode( CurveZ, i, AnimationUtility.TangentMode.Auto );
-            AnimationUtility.SetKeyRightTangentMode( CurveZ, i, AnimationUtility.TangentMode.Auto );
-        }
-    }
+    public TerrainSamplerException(): base() { }
+    public TerrainSamplerException( string msg) : base(msg) { }
+    public TerrainSamplerException( string msg, System.Exception inner) : base(msg, inner) { }
 }
 
 
@@ -61,14 +55,9 @@ public class TerrainPointSampler : MonoBehaviour
     [Tooltip("How close to the walkable space a sample must be to be considered.")]
     public float WalkableProximity;
     
-
     public VariablePoissonSampling Sampler;
 
     public List<TerrainSamplerPoint> Path;
-
-    public AnimationCurve CurveX;
-    public AnimationCurve CurveY;
-    public AnimationCurve CurveZ;
 
     public Curve3D Curve;
 
@@ -106,18 +95,27 @@ public class TerrainPointSampler : MonoBehaviour
         Sampler.FieldWidth = _terrainSize.x;
         Sampler.FieldHeight = _terrainSize.z;
         Sampler.CalculatePoints();
-        var samples = Sampler.GetPointCopy( _bounds );
+        var samples = Sampler.GetPointCopy( _bounds ).Select( x =>
+        {
+            RaycastHit hit;
+            if( GameUtils.RaycastGround( x.Position3, out hit ) )
+            {
+                return new TerrainSamplerPoint() { Position = hit.point, Radius = x.Radius };
+            }
+            else
+                return new TerrainSamplerPoint() { Position = x.Position3, Radius = x.Radius } ;
+        } ).ToArray();
 
         var effectors = TerrainPopulatorEffect.GetEffectors();
 
-        List<VariablePoissonSampling.Point> result = new List<VariablePoissonSampling.Point>();
+        List<TerrainSamplerPoint> result = new List<TerrainSamplerPoint>();
         NavMeshHit nmh;
         result = samples.Where( x => {
-            bool effectorsAllows = !effectors.Blocks( x.Position3 );
-            bool navMeshAllows = NavMesh.SamplePosition( x.Position3 + Vector3.up * 1f, out nmh, WalkableProximity, NavMesh.AllAreas );
+            bool effectorsAllows = !effectors.Blocks( x.Position );
+            bool navMeshAllows = NavMesh.SamplePosition( x.Position, out nmh, WalkableProximity, NavMesh.AllAreas );
             return effectorsAllows && navMeshAllows;
         } ).ToList();
-        return result.Select(x=>new TerrainSamplerPoint() { Position = x.Position3, Radius = x.Radius } ).ToList();
+        return result;
     }
 
 
@@ -142,6 +140,7 @@ public class TerrainPointSampler : MonoBehaviour
         TerrainSamplerPoint cur = GetNextPoint( points, world.TargetPos.position, world.StartPos.position );
         while( cur != null )
         {
+            cur.Use();
             points.Remove( cur );
             Path.Add( cur );
             cur = GetNextPoint( points, world.TargetPos.position, cur.Position );
@@ -189,9 +188,8 @@ public class TerrainPointSampler : MonoBehaviour
 
     private void BuildCurve()
     {
-        CurveX = new AnimationCurve();
-        CurveY = new AnimationCurve();
-        CurveZ = new AnimationCurve();
+        Curve.ClearKeys();
+
         int pathCount = Path.Count;
         for( int i = 0; i < pathCount; i++ )
         {
@@ -231,7 +229,11 @@ public class TerrainPointSampler : MonoBehaviour
 
     private TerrainSamplerPoint GetNextPoint( List<TerrainSamplerPoint> points, Vector3 endPoint, Vector3 location )
     {
-        Vector3 toEnd = endPoint - location;
+        GfxWorld world = FindFirstObjectByType<GfxWorld>();
+        if( world == null )
+            throw new TerrainSamplerException( "GfxWorld must exist in scene" );
+
+        Vector3 toEnd = world.TargetPos.position - world.StartPos.position;
 
         return points.Where( x =>
         {
@@ -241,6 +243,7 @@ public class TerrainPointSampler : MonoBehaviour
         } ).OrderBy( x =>
         {
             return Vector3.Distance( x.Position, location );
+            //return Vector3.Distance( x.Position, location );
         } ).FirstOrDefault();
     }
 
@@ -263,10 +266,14 @@ public class TerrainPointSampler : MonoBehaviour
 
     public void RunPopulators( MapData mapData )
     {
-        var pops = GetComponents<TerrainPopulator>();
+        var pointPopulators = this.GetInterfaceComponents<ITerrainPointPopulator>();
+        var curvePopulators = this.GetInterfaceComponents<ITerrainCurvePopulator>();
 
         int numPrimaryEvents = DesiredPathLength - 2;
         float curveTimePerEvent = 1f / numPrimaryEvents;
+
+        curvePopulators.Do( x => x.ProcessCurve( Curve, mapData ) );
+
         for( int i = 0; i <= numPrimaryEvents; ++i )
         {
             var time = (i) * curveTimePerEvent + Random.value * ( curveTimePerEvent - curveTimePerEvent * .5f );
@@ -275,7 +282,7 @@ public class TerrainPointSampler : MonoBehaviour
             RaycastHit hit;
             if( GameUtils.RaycastGround( Curve.Evaluate(time), out hit ) )
             {
-                pops.Do( y => y.ProcessSample( hit.point, mapData ) );
+                pointPopulators.Do( x => x.ProcessSample( hit.point, mapData ) );
             }
         }
     }

@@ -4,7 +4,7 @@ using System.Net.Mail;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class EntityPopulator : TerrainPopulator
+public class EntityPopulator : MonoBehaviour, ITerrainPointPopulator
 {
 
     public MapObjectReference MapObject;
@@ -38,10 +38,14 @@ public class EntityPopulator : TerrainPopulator
     }
 
 
-    public override void ProcessSample( Vector3 position, MapData mapData )
+    public void ProcessSample( TerrainSamplerPoint point, MapData mapData )
     {
+        if( !point.AlreadyUsed() )
+            return;
+
         var instance = MapObjectData;
-        instance.Position = position;
+        point.Use();
+        instance.Position = point.Position;
         mapData.AddMapdata( instance );
     }
 
