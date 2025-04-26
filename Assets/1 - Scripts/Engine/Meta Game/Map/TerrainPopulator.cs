@@ -5,10 +5,10 @@ using UnityEngine;
 
 public interface ITerrainPointPopulator
 {
-    void ProcessSample( TerrainSamplerPoint point, MapData mapData );
+    void PopulatePoint( TerrainSamplerPoint point, MapData mapData );
 }
 
 public interface ITerrainCurvePopulator
 {
-    void ProcessCurve( Curve3D curve, MapData mapData );
+    void PopulateCurve( Curve3D curve, MapData mapData );
 }

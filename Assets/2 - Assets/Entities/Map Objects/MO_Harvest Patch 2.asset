@@ -14,22 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data:
     AssetReference:
-      m_AssetGUID: 1ecdf63da3b259141b43cad5da1018cf
+      m_AssetGUID: ccebae12a9d95984dbccc591ea4af9bf
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
     Graphics:
-      m_AssetGUID: 96192f87cc04bd64cb4095633a416bd0
+      m_AssetGUID: c4eb9d4ac49ed164380334dfd40b2972
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 
-      m_EditorAssetChanged: 0
-    Position: {x: 0, y: 0, z: 0}
-    Heading: {x: 0, y: 0, z: 0}
+      m_EditorAssetChanged: 1
     Type: 2
     Speed: 0
-    ActionOnPathComplete: 
     ScriptOnInteract:
       rid: 3512639999483576403
   DisplayName:

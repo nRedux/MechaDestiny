@@ -276,6 +276,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - default
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c4eb9d4ac49ed164380334dfd40b2972
+    m_Address: Assets/3 - Prefabs/Meta/Critical Node.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cb2db94eff8bf564f8f5dfde0c7d585a
     m_Address: Assets/2 - Assets/Data/Mechs/Test AI Mech/AI Torso.asset
     m_ReadOnly: 0

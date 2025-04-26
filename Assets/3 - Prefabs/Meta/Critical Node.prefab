@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1893763007811527225}
   - component: {fileID: 1114858226597259451}
   m_Layer: 10
-  m_Name: Harvest Patch
+  m_Name: Critical Node
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,8 +45,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f51e7bf06b4999b4890ff01c1a99ed0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Data:
+    AssetReference:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectGUID: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    Graphics:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectGUID: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    Type: 0
+    Speed: 0
+    ScriptOnInteract:
+      rid: -2
   Actions: []
   SelectedAction: {fileID: 0}
+  TargetOnComplete:
+    AssetReference:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectGUID: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    Graphics:
+      m_AssetGUID: 
+      m_SubObjectName: 
+      m_SubObjectGUID: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+    Type: 0
+    Speed: 0
+    ScriptOnInteract:
+      rid: -2
+  ActionOnPathComplete: 
+  ScriptOnInteract:
+    rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!1 &3671484454120820409
 GameObject:
   m_ObjectHideFlags: 0
@@ -76,7 +118,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.3005, y: 1.3005, z: 1.3005}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1893763007811527225}
@@ -112,7 +154,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0321425faceb4e240b7a0646d3970427, type: 2}
+  - {fileID: 2100000, guid: 9a1d2fd0c66bbe0438ab6c842edf8f93, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

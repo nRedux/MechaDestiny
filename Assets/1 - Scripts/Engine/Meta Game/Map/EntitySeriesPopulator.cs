@@ -79,7 +79,7 @@ public class EntitySeriesPopulator : MonoBehaviour, ITerrainCurvePopulator
         return 1f - MinPopulationDistance;
     }
 
-    public void ProcessCurve( Curve3D curve, MapData mapData )
+    public void PopulateCurve( Curve3D curve, MapData mapData )
     {
         var references = GetMapObjectRefs().ToList();
         int numMapObjRefs = references.Count();

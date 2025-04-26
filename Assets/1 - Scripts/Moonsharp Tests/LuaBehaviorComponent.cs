@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using MoonSharp.Interpreter;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine.AddressableAssets;
 using System.Linq;
 using Sirenix.Utilities.Editor;
@@ -135,6 +137,19 @@ public class LuaDialogContent: TypedLuaField<DialogContent>
 public class SpriteDescriptor : SimpleReferenceDescriptor<Sprite> { }
 
 
+/*
+ * 
+ * 
+ * 
+ * WHERE THE GOOD STUFF STARTS
+ *  
+ * 
+ * 
+ */
+
+#if UNITY_EDITOR
+[InitializeOnLoad]
+#endif
 public class LuaBehaviorComponent : MonoBehaviour
 {
     private const string EXPOSED_FIELDS_SIGNATURE = "__exposed__";
@@ -157,6 +172,7 @@ public class LuaBehaviorComponent : MonoBehaviour
     {
         if( changedTextAsset == null )
         {
+            //We clear LUA fields, nothing to see with no script
 #if UNITY_EDITOR
             Undo.RecordObject( this, "Script asset cleared." );
             LuaFields = new List<ILuaField>();
@@ -184,13 +200,17 @@ public class LuaBehaviorComponent : MonoBehaviour
 
         if( ScriptAsset == null )
             return;
+
         Script script = new Script();
         script.DoString( ScriptAsset.text );
 
 
         //Find fields in LuaFields which don't exist in 
+        DoReflection( script );
+    }
 
-
+    private void DoReflection(Script script)
+    {
         var updatedLuaFields = new List<ILuaField>() { };
         var table = script.Globals.Get( "__exposed__" );
 
@@ -201,11 +221,11 @@ public class LuaBehaviorComponent : MonoBehaviour
                 Type desiredType = GetType( item.Value.String );
                 if( desiredType == null )
                 {
-                    Debug.LogError($"Invalid requested type {item.Value.String}");
+                    Debug.LogError( $"Invalid requested type {item.Value.String}" );
                     continue;
                 }
 
-                Type desiredFieldType  = FindTypesWithLuaFieldType( desiredType );
+                Type desiredFieldType = FindTypesWithLuaFieldType( desiredType );
                 if( desiredFieldType == null )
                 {
                     Debug.LogError( $"Unsupported LuaField type {desiredType.Name}" );
@@ -214,7 +234,7 @@ public class LuaBehaviorComponent : MonoBehaviour
 
                 var inst = Activator.CreateInstance( desiredFieldType ) as ILuaField;
                 inst.SetName( item.Key.String );
-                updatedLuaFields.Add( inst  );
+                updatedLuaFields.Add( inst );
             }
         }
 
@@ -285,8 +305,9 @@ public class LuaBehaviorComponent : MonoBehaviour
         // Iterate through all loaded assemblies
         foreach( var assembly in AppDomain.CurrentDomain.GetAssemblies() )
         {
+            var types = assembly.GetTypes();
             // Iterate through all types in the assembly
-            foreach( var type in assembly.GetTypes() )
+            foreach( var type in types )
             {
                 if( type.Name == typeToFind )
                 {
@@ -297,24 +318,45 @@ public class LuaBehaviorComponent : MonoBehaviour
         return null;
     }
 
-    private static Type FindTypesWithLuaFieldType( Type targetType )
-    {
-        var gameObjectType = targetType;
 
+    static Dictionary<LuaFieldType, Type> _luaFieldTypes = new Dictionary<LuaFieldType, Type>();
+
+#if UNITY_EDITOR
+    static LuaBehaviorComponent()
+    {
+        Remap();
+    }
+
+    public static void Remap()
+    {
+        Debug.LogError( "remap" );
+        _luaFieldTypes = new Dictionary<LuaFieldType, Type>();
         // Iterate through all loaded assemblies
         foreach( var assembly in AppDomain.CurrentDomain.GetAssemblies() )
         {
+            var types = assembly.GetTypes();
             // Iterate through all types in the assembly
-            foreach( var type in assembly.GetTypes() )
+            foreach( var type in types )
             {
                 // Use Attribute.GetCustomAttribute to retrieve the specific attribute
                 var attribute = (LuaFieldType) Attribute.GetCustomAttribute( type, typeof( LuaFieldType ) );
 
-                if( attribute != null && attribute.Type == gameObjectType )
+                if( attribute != null )
                 {
-                    return type;
+                    _luaFieldTypes.Add( attribute, type );
                 }
             }
+        }
+
+    } 
+#endif
+
+    private static Type FindTypesWithLuaFieldType( Type targetType ) 
+    {
+        foreach( var pair in _luaFieldTypes )
+        {
+            if( pair.Key.Type == targetType )
+                return pair.Value; 
         }
 
         return null;

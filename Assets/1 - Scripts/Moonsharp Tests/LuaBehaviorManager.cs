@@ -16,6 +16,7 @@ public enum LuaEvent
     ActorDied = 0x000010
 }
 
+
 [CreateAssetMenu(fileName = "Lua Behavior Manager", menuName = "Engine/Managers/LuaBehaviorManager")]
 
 public class LuaBehaviorManager : SingletonScriptableObject<LuaBehaviorManager>
@@ -33,6 +34,10 @@ public class LuaBehaviorManager : SingletonScriptableObject<LuaBehaviorManager>
         _superGlobals.Add( key, value );
     }
 
+    
+    /*
+     * This idea of a flag which resets could be encapsulated
+     */
 #if UNITY_EDITOR
     [InitializeOnEnterPlayMode]
     public static void ResetPlaymode()
